@@ -1,0 +1,47 @@
+{
+  "name": "markdown-preview.nvim",
+  "version": "0.0.1",
+  "author": "Gual Casas",
+  "license": "MIT",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "prepare": "husky install",
+    "web:dev": "vite dev nodejs/vite",
+    "web:build": "tsc && vite build nodejs/vite --emptyOutDir --outDir ../../dist",
+    "web:preview": "vite preview nodejs/vite",
+    "server:build": "ncc build nodejs/server/index.ts -m",
+    "build": "pnpm web:build && pnpm server:build",
+    "lint": "eslint \"**/*.ts*\"",
+    "format": "prettier --write \"nodejs/**/*.{ts,html,css}\""
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@wooorm/starry-night": "^2.1.1",
+    "github-markdown-css": "^5.2.0",
+    "hast-util-to-html": "^9.0.0",
+    "markdown-it": "^13.0.1",
+    "neovim": "^4.10.1",
+    "opener": "^1.5.2",
+    "serve-handler": "^6.1.5",
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "8.44.2",
+    "@types/markdown-it": "^13.0.0",
+    "@types/opener": "^1.4.0",
+    "@types/serve-handler": "^6.1.1",
+    "@types/ws": "^8.5.5",
+    "@typescript-eslint/eslint-plugin": "6.3.0",
+    "@typescript-eslint/parser": "6.3.0",
+    "@vercel/ncc": "^0.36.1",
+    "eslint": "8.46.0",
+    "husky": "^8.0.0",
+    "prettier": "3.0.1",
+    "prettier-plugin-organize-imports": "3.2.3",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.9"
+  }
+}

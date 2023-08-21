@@ -1,0 +1,8 @@
+[x] make PORT configurable
+[] improve css (https://github.com/sindresorhus/github-markdown-css)
+[] close browser tab on buffer delete
+[] implement auto scroll & make it configurable
+[] send buffer content on init, page opens with no content otherwise
+[] if user starts server after server had been started somewhere else kill other server and restart in current session
+  [] if server belongs to current session, update buffer id
+[] send message when we want to close browser tab instead of closing onclose, if we close tab on ws.onclose, we can't refresh
