@@ -54,7 +54,10 @@ export async function startServer(nvim: NeovimClient, PORT: number) {
                 }
 
                 if (event === "markdown-preview-buffer-delete") {
-                    ws.close();
+                    const message: ServerMessage = {
+                        goodbye: true,
+                    };
+                    ws.send(JSON.stringify(message));
                 }
             },
         );

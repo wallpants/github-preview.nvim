@@ -7,5 +7,6 @@ export type NeovimNotificationArgs = Array<{
 }>;
 
 export type ServerMessage = {
-    markdown: string;
+    markdown?: string;
+    goodbye?: true;
 };
