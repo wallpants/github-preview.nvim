@@ -6,6 +6,7 @@ import {
 } from "@wooorm/starry-night";
 import { toHtml } from "hast-util-to-html";
 import markdownIt from "markdown-it";
+import copyBlock from "./copy-block";
 
 type StarryNight = {
     flagToScope: (flag: string) => string | undefined;
@@ -45,7 +46,7 @@ export async function markdownToHtml(markdown: string) {
                     : [{ type: "text", value }],
             });
         },
-    });
+    }).use(copyBlock);
 
     return markdownItInstance.render(markdown);
 }

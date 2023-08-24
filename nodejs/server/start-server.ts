@@ -59,9 +59,9 @@ export async function startServer(nvim: NeovimClient, PORT: number) {
             },
         );
 
-        ws.on("close", () => {
-            server.close();
-        });
+        // ws.on("close", () => {
+        //     server.close();
+        // });
     });
 
     opener(`http://localhost:${PORT}`);
