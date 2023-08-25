@@ -8,46 +8,17 @@ import opener from "opener";
 import handler from "serve-handler";
 import { WebSocketServer, type WebSocket } from "ws";
 import {
-    type CursorMove,
     type NeovimNotificationArgs,
     type PluginProps,
     type ServerMessage,
 } from "../types";
+import { getBufferContent, getCursorMove, wsSend } from "./utils";
 
 const RPC_EVENTS = [
     "markdown-preview-text-changed",
     "markdown-preview-cursor-moved",
     "markdown-preview-buffer-delete",
 ] as const;
-
-function wsSend(ws: WebSocket, message: ServerMessage) {
-    ws.send(JSON.stringify(message));
-}
-
-async function getBufferContent(buffer: AsyncBuffer) {
-    const bufferLines = await buffer.lines;
-    return bufferLines.join("\n");
-}
-
-async function getCursorMove(
-    nvim: NeovimClient,
-    buffer: AsyncBuffer,
-    props: PluginProps,
-): Promise<CursorMove | undefined> {
-    if (props.disable_sync_scroll) return undefined;
-    const currentWindow = await nvim.window;
-    const winLine = Number(await nvim.call("winline"));
-    const winHeight = await currentWindow.height;
-    const [cursorLine] = await currentWindow.cursor;
-    const markdown = await getBufferContent(buffer);
-    return {
-        cursorLine,
-        markdownLen: markdown.length,
-        winHeight,
-        winLine,
-        sync_scroll_type: props.sync_scroll_type,
-    };
-}
 
 export async function startServer(nvim: NeovimClient, props: PluginProps) {
     await nvim.lua('print("starting MarkdownPreview server")');
@@ -59,6 +30,17 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
         }
         return handler(req, res, {
             public: fileURLToPath(dirname(import.meta.url)),
+            headers: [
+                {
+                    source: "**/*",
+                    headers: [
+                        {
+                            key: "Cache-Control",
+                            value: "no-cache",
+                        },
+                    ],
+                },
+            ],
         });
     });
     const wss = new WebSocketServer({ server });

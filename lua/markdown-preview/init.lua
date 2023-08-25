@@ -7,7 +7,7 @@ local M = {}
 M.default_opts = {
 	port = 4002,
 	log_output = Types.LOG_OUTPUT.none,
-	scroll_debounce_ms = 300,
+	scroll_debounce_ms = 250,
 	disable_sync_scroll = false,
 	sync_scroll_type = Types.SYNC_SCROLL_TYPE.middle,
 }

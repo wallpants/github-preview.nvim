@@ -19,8 +19,5 @@
   "runtime": {
     "version": "LuaJIT",
     "pathStrict": true
-  },
-  "workspace": {
-    "checkThirdParty": false
   }
 }
