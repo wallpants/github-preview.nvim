@@ -6,7 +6,8 @@ import {
 } from "@wooorm/starry-night";
 import { toHtml } from "hast-util-to-html";
 import markdownIt from "markdown-it";
-import copyBlock from "./copy-block";
+import copyBlockPlugin from "./copy-block";
+import injectLinenumbersPlugin from "./linenumbers";
 
 type StarryNight = {
     flagToScope: (flag: string) => string | undefined;
@@ -46,7 +47,9 @@ export async function markdownToHtml(markdown: string) {
                     : [{ type: "text", value }],
             });
         },
-    }).use(copyBlock);
+    })
+        .use(copyBlockPlugin)
+        .use(injectLinenumbersPlugin);
 
     return markdownItInstance.render(markdown);
 }

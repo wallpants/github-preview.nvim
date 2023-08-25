@@ -24,6 +24,50 @@ const starryNight = await createStarryNight(common, {
 1. Open markdown file in neovim and run `:MarkdownPreview` to start server
 2. Close browser tab that was opened by previous command
 3. Start vite dev server
+## Vite Development
+1. Open markdown file in neovim and run `:MarkdownPreview` to start server
+2. Close browser tab that was opened by previous command
+3. Start vite dev server
+## Vite Development
+1. Open markdown file in neovim and run `:MarkdownPreview` to start server
+2. Close browser tab that was opened by previous command
+3. Start vite dev server
+## Vite Development
+1. Open markdown file in neovim and run `:MarkdownPreview` to start server
+2. Close browser tab that was opened by previous command
+3. Start vite dev server
+## Vite Development
+1. Open markdown file in neovim and run `:MarkdownPreview` to start server
+2. Close browser tab that was opened by previous command
+3. Start vite dev server
+## Vite Development
+1. Open markdown file in neovim and run `:MarkdownPreview` to start server
+2. Close browser tab that was opened by previous command
+3. Start vite dev server
+## Vite Development
+1. Open markdown file in neovim and run `:MarkdownPreview` to start server
+2. Close browser tab that was opened by previous command
+3. Start vite dev server
+## Vite Development
+1. Open markdown file in neovim and run `:MarkdownPreview` to start server
+2. Close browser tab that was opened by previous command
+3. Start vite dev server
+## Vite Development
+1. Open markdown file in neovim and run `:MarkdownPreview` to start server
+2. Close browser tab that was opened by previous command
+3. Start vite dev server
+## Vite Development
+1. Open markdown file in neovim and run `:MarkdownPreview` to start server
+2. Close browser tab that was opened by previous command
+3. Start vite dev server
+## Vite Development
+1. Open markdown file in neovim and run `:MarkdownPreview` to start server
+2. Close browser tab that was opened by previous command
+3. Start vite dev server
+## Vite Development
+1. Open markdown file in neovim and run `:MarkdownPreview` to start server
+2. Close browser tab that was opened by previous command
+3. Start vite dev server
 ```bash
 markdown-preview/: $ pnpm web:dev
 ```

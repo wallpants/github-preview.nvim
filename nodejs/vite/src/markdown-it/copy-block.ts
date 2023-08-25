@@ -1,3 +1,6 @@
+/*
+ * https://github.com/DCsunset/markdown-it-code-copy/blob/master/index.js
+ */
 import type MarkdownIt from "markdown-it";
 import { type RenderRule } from "markdown-it/lib/renderer";
 
@@ -39,7 +42,7 @@ function renderCode(origRule: RenderRule): RenderRule {
     };
 }
 
-export default function (md: MarkdownIt) {
+export default function copyBlockPlugin(md: MarkdownIt) {
     const { code_block, fence } = md.renderer.rules;
     if (code_block) {
         md.renderer.rules.code_block = renderCode(code_block);

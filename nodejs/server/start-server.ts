@@ -1,3 +1,4 @@
+import { debounce } from "lodash-es";
 import { type NeovimClient } from "neovim";
 import { type AsyncBuffer } from "neovim/lib/api/Buffer.js";
 import { createServer } from "node:http";
@@ -49,6 +50,11 @@ export async function startServer(nvim: NeovimClient, PORT: number) {
         const markdown = await getBufferContent(buffer);
         wsSend(ws, { markdown });
 
+        const debouncedWsSend = debounce(
+            (ws: WebSocket, message: ServerMessage) => wsSend(ws, message),
+            1000,
+        );
+
         nvim.on(
             "notification",
             async (
@@ -71,7 +77,7 @@ export async function startServer(nvim: NeovimClient, PORT: number) {
                     const winHeight = await currentWindow.height;
                     const [cursorLine] = await currentWindow.cursor;
                     const markdown = await getBufferContent(buffer);
-                    wsSend(ws, {
+                    debouncedWsSend(ws, {
                         cursorMove: {
                             cursorLine,
                             markdownLen: markdown.length,
