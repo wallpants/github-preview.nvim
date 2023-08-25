@@ -14,12 +14,20 @@
 
 .copy-button-container {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 9px;
+    right: 9px;
 }
 
 .markdown-it-copy-block {
     cursor: pointer;
+    height: 30px;
+    width: 30px;
+    padding: 0;
+}
+
+.markdown-it-copy-block svg {
+    height: 20px;
+    width: 20px;
 }
 
 .copied {

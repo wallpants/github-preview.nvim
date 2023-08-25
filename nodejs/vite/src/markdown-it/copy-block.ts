@@ -33,7 +33,9 @@ function renderCode(origRule: RenderRule): RenderRule {
 	${origRendered}
     <div class="copy-button-container">
         <button class="markdown-it-copy-block" data-clipboard-text="${content}">
-            Copy
+            <svg>
+                <use xlink:href="/copy.svg#copy-svg"></use>
+            </svg>
         </button>
         <span class="copied">copied</span>
     </div>
