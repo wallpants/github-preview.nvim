@@ -7,6 +7,7 @@ import {
 import { toHtml } from "hast-util-to-html";
 import markdownIt from "markdown-it";
 import copyBlockPlugin from "./copy-block";
+import { starryNightGutter } from "./gutter";
 import injectLinenumbersPlugin from "./linenumbers";
 import localImage from "./local-image";
 import relativeLinks from "./relative-links";
@@ -45,7 +46,8 @@ export async function markdownToHtml(markdown: string) {
                 // eslint-disable-next-line
                 // @ts-ignore
                 children: scope
-                    ? starryNight!.highlight(value, scope).children
+                    ? starryNightGutter(starryNight!.highlight(value, scope))
+                          .children
                     : [{ type: "text", value }],
             });
         },
