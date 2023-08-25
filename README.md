@@ -1,4 +1,4 @@
-my name is gualberto
+# my name is gualberto
 
 [follow this link](http://hello)
 
@@ -7,67 +7,25 @@ my name is gualberto
 what if I typeee
 
 ```ts
-console.log("hello world")
+console.log("hello world");
 ```
 
 ```typescript
-import {common, createStarryNight} from '@wooorm/starry-night'
+import { common, createStarryNight } from "@wooorm/starry-night";
 
 const starryNight = await createStarryNight(common, {
-  getOnigurumaUrlFetch() {
-    return new URL('/onig.wasm', window.location.href);
-  }
-})
+    getOnigurumaUrlFetch() {
+        return new URL("/onig.wasm", window.location.href);
+    },
+});
 ```
 
 ## Vite Development
+
 1. Open markdown file in neovim and run `:MarkdownPreview` to start server
 2. Close browser tab that was opened by previous command
 3. Start vite dev server
-## Vite Development
-1. Open markdown file in neovim and run `:MarkdownPreview` to start server
-2. Close browser tab that was opened by previous command
-3. Start vite dev server
-## Vite Development
-1. Open markdown file in neovim and run `:MarkdownPreview` to start server
-2. Close browser tab that was opened by previous command
-3. Start vite dev server
-## Vite Development
-1. Open markdown file in neovim and run `:MarkdownPreview` to start server
-2. Close browser tab that was opened by previous command
-3. Start vite dev server
-## Vite Development
-1. Open markdown file in neovim and run `:MarkdownPreview` to start server
-2. Close browser tab that was opened by previous command
-3. Start vite dev server
-## Vite Development
-1. Open markdown file in neovim and run `:MarkdownPreview` to start server
-2. Close browser tab that was opened by previous command
-3. Start vite dev server
-## Vite Development
-1. Open markdown file in neovim and run `:MarkdownPreview` to start server
-2. Close browser tab that was opened by previous command
-3. Start vite dev server
-## Vite Development
-1. Open markdown file in neovim and run `:MarkdownPreview` to start server
-2. Close browser tab that was opened by previous command
-3. Start vite dev server
-## Vite Development
-1. Open markdown file in neovim and run `:MarkdownPreview` to start server
-2. Close browser tab that was opened by previous command
-3. Start vite dev server
-## Vite Development
-1. Open markdown file in neovim and run `:MarkdownPreview` to start server
-2. Close browser tab that was opened by previous command
-3. Start vite dev server
-## Vite Development
-1. Open markdown file in neovim and run `:MarkdownPreview` to start server
-2. Close browser tab that was opened by previous command
-3. Start vite dev server
-## Vite Development
-1. Open markdown file in neovim and run `:MarkdownPreview` to start server
-2. Close browser tab that was opened by previous command
-3. Start vite dev server
+
 ```bash
 markdown-preview/: $ pnpm web:dev
 ```
