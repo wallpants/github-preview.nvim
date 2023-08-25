@@ -1,5 +1,6 @@
 import { attach } from "neovim";
-import { startServer } from "./start-server.js";
+import { type PluginProps } from "../types";
+import { startServer } from "./start-server";
 
 const socket = process.argv[2];
 
@@ -12,9 +13,9 @@ async function killExisting(PORT: number) {
 export async function main() {
     if (!socket) throw Error("missing socket");
     const nvim = attach({ socket });
-    const PORT = Number(await nvim.getVar("markdown_preview_port"));
-    await killExisting(PORT);
-    await startServer(nvim, PORT);
+    const props = (await nvim.getVar("markdown_preview_props")) as PluginProps;
+    await killExisting(props.port);
+    await startServer(nvim, props);
 }
 
 void main();

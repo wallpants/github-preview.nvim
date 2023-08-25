@@ -1,3 +1,11 @@
+export type PluginProps = {
+    port: number;
+    scroll_debounce_ms: number;
+    buffer_id: number;
+    disable_sync_scroll: boolean;
+    sync_scroll_type: "middle" | "top" | "relative";
+};
+
 export type NeovimNotificationArgs = Array<{
     id: number;
     match: string;
@@ -11,6 +19,7 @@ export type CursorMove = {
     markdownLen: number;
     winHeight: number;
     winLine: number;
+    sync_scroll_type: "middle" | "top" | "relative";
 };
 
 export type ServerMessage = {

@@ -20,7 +20,7 @@ ws.onmessage = async (event) => {
     }
 
     if (message.cursorMove) {
-        scrollFnMap["middle"](message.cursorMove);
+        scrollFnMap[message.cursorMove.sync_scroll_type](message.cursorMove);
     }
 
     if (message.goodbye) {

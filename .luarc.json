@@ -1,0 +1,26 @@
+{
+  "diagnostics": {
+    "groupFileStatus": {
+      "ambiguity": "Any",
+      "await": "Any",
+      "duplicate": "Any",
+      "global": "Any",
+      "luadoc": "Any",
+      "redefined": "Any",
+      "strict": "Any",
+      "strong": "Any",
+      "type-check": "Any",
+      "unbalanced": "Any",
+      "unused": "Any"
+    },
+    "ignoredFiles": "Opened",
+    "libraryFiles": "Opened"
+  },
+  "runtime": {
+    "version": "LuaJIT",
+    "pathStrict": true
+  },
+  "workspace": {
+    "checkThirdParty": false
+  }
+}
