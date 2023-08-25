@@ -47,7 +47,6 @@ M.setup = function(opts)
 			end,
 		})
 
-		---@type string
 		local shell_command = "node " .. Utils.plugin_root .. "dist/index.js " .. Utils.nvim_socket
 
 		vim.fn.jobstart(shell_command, {

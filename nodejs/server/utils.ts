@@ -1,19 +1,10 @@
 import { type NeovimClient } from "neovim";
 import { type AsyncBuffer } from "neovim/lib/api/Buffer";
 import type WebSocket from "ws";
-import {
-    type CursorMove,
-    type PluginProps,
-    type ServerMessage,
-} from "../types";
+import { type CursorMove, type PluginProps, type WsMessage } from "../types";
 
-export function wsSend(ws: WebSocket, message: ServerMessage) {
+export function wsSend(ws: WebSocket, message: WsMessage) {
     ws.send(JSON.stringify(message));
-}
-
-export async function getBufferContent(buffer: AsyncBuffer) {
-    const bufferLines = await buffer.lines;
-    return bufferLines.join("\n");
 }
 
 export async function getCursorMove(
@@ -26,7 +17,7 @@ export async function getCursorMove(
     const winLine = Number(await nvim.call("winline"));
     const winHeight = await currentWindow.height;
     const [cursorLine] = await currentWindow.cursor;
-    const markdown = await getBufferContent(buffer);
+    const markdown = (await buffer.lines).join("\n");
     return {
         cursorLine,
         markdownLen: markdown.length,

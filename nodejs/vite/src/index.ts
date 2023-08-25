@@ -1,6 +1,6 @@
 import "@wooorm/starry-night/style/both.css";
 import "github-markdown-css/github-markdown.css";
-import { type ServerMessage } from "../../types";
+import { type WsMessage } from "../../types";
 import { markdownToHtml } from "./markdown-it";
 import { scrollFnMap } from "./markdown-it/scroll";
 import "./style.css";
@@ -12,7 +12,7 @@ const ws = new WebSocket(url);
 const contentElement = document.getElementById("content");
 
 ws.onmessage = async (event) => {
-    const message = JSON.parse(String(event.data)) as ServerMessage;
+    const message = JSON.parse(String(event.data)) as WsMessage;
 
     if (message.markdown) {
         const html = await markdownToHtml(message.markdown);

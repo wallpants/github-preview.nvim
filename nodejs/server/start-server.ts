@@ -10,9 +10,9 @@ import { WebSocketServer, type WebSocket } from "ws";
 import {
     type NeovimNotificationArgs,
     type PluginProps,
-    type ServerMessage,
+    type WsMessage,
 } from "../types";
-import { getBufferContent, getCursorMove, wsSend } from "./utils";
+import { getCursorMove, wsSend } from "./utils";
 
 const RPC_EVENTS = [
     "markdown-preview-text-changed",
@@ -53,13 +53,13 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
     }
 
     const debouncedWsSend = debounce(
-        (ws: WebSocket, message: ServerMessage) => wsSend(ws, message),
+        (ws: WebSocket, message: WsMessage) => wsSend(ws, message),
         props.scroll_debounce_ms,
         { leading: false, trailing: true },
     );
 
     wss.on("connection", async (ws, _req) => {
-        const markdown = await getBufferContent(buffer);
+        const markdown = (await buffer.lines).join("\n");
         const cursorMove = await getCursorMove(nvim, buffer, props);
         wsSend(ws, { markdown, cursorMove });
 
@@ -70,7 +70,7 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
                 [_arg]: NeovimNotificationArgs,
             ) => {
                 if (event === "markdown-preview-text-changed") {
-                    const markdown = await getBufferContent(buffer);
+                    const markdown = (await buffer.lines).join("\n");
                     wsSend(ws, { markdown });
                 }
 

@@ -22,7 +22,7 @@ export type CursorMove = {
     sync_scroll_type: "middle" | "top" | "relative";
 };
 
-export type ServerMessage = {
+export type WsMessage = {
     markdown?: string;
     cursorMove?: CursorMove;
     goodbye?: true;
