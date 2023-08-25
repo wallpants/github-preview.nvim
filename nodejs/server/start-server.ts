@@ -7,11 +7,13 @@ import { fileURLToPath } from "node:url";
 import opener from "opener";
 import handler from "serve-handler";
 import { WebSocketServer, type WebSocket } from "ws";
+import { LOCAL_FILE_ROUTE } from "../consts";
 import {
     type NeovimNotificationArgs,
     type PluginProps,
     type WsMessage,
 } from "../types";
+import { localFileHandler } from "./local-file-handler";
 import { getCursorMove, wsSend } from "./utils";
 
 const RPC_EVENTS = [
@@ -23,11 +25,21 @@ const RPC_EVENTS = [
 export async function startServer(nvim: NeovimClient, props: PluginProps) {
     await nvim.lua('print("starting MarkdownPreview server")');
 
+    const pwd = (await nvim.callFunction(
+        "expand",
+        `#${props.buffer_id}:p:h`,
+    )) as string;
+
     const server = createServer((req, res) => {
         if (req.method === "POST") {
             res.writeHead(200).end();
             server.close();
         }
+
+        if (req.url?.startsWith(LOCAL_FILE_ROUTE)) {
+            return localFileHandler(req, res, pwd);
+        }
+
         return handler(req, res, {
             public: fileURLToPath(dirname(import.meta.url)),
             headers: [
@@ -45,12 +57,12 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
     });
     const wss = new WebSocketServer({ server });
 
-    const buffers = (await nvim.buffers) as AsyncBuffer[];
-    const buffer = buffers.find(async (b) => (await b).id === props.buffer_id)!;
-
     for (const event of RPC_EVENTS) {
         await nvim.subscribe(event);
     }
+
+    const buffers = (await nvim.buffers) as AsyncBuffer[];
+    const buffer = buffers.find(async (b) => (await b).id === props.buffer_id)!;
 
     const debouncedWsSend = debounce(
         (ws: WebSocket, message: WsMessage) => wsSend(ws, message),

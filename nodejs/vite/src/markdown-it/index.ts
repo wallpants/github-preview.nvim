@@ -8,6 +8,8 @@ import { toHtml } from "hast-util-to-html";
 import markdownIt from "markdown-it";
 import copyBlockPlugin from "./copy-block";
 import injectLinenumbersPlugin from "./linenumbers";
+import localImage from "./local-image";
+import relativeLinks from "./relative-links";
 
 type StarryNight = {
     flagToScope: (flag: string) => string | undefined;
@@ -49,7 +51,9 @@ export async function markdownToHtml(markdown: string) {
         },
     })
         .use(copyBlockPlugin)
-        .use(injectLinenumbersPlugin);
+        .use(localImage)
+        .use(injectLinenumbersPlugin)
+        .use(relativeLinks);
 
     return markdownItInstance.render(markdown);
 }

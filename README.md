@@ -20,6 +20,8 @@ const starryNight = await createStarryNight(common, {
 });
 ```
 
+![gualbert](local.jpeg)
+
 ## Vite Development
 
 1. Open markdown file in neovim and run `:MarkdownPreview` to start server
