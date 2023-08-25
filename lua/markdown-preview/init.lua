@@ -23,11 +23,11 @@ M.setup = function(opts)
 		vim.api.nvim_create_autocmd({ "TextChangedI", "TextChanged" }, {
 			buffer = 0,
 			callback = function(args)
-				vim.rpcnotify(0, "markdown-preview-text-change", args)
+				vim.rpcnotify(0, "markdown-preview-text-changed", args)
 			end,
 		})
 
-		vim.api.nvim_create_autocmd({ "CursorMoved" }, {
+		vim.api.nvim_create_autocmd({ "CursorMovedI", "CursorMoved", "CursorHoldI", "CursorHold" }, {
 			buffer = 0,
 			callback = function(args)
 				vim.rpcnotify(0, "markdown-preview-cursor-moved", args)

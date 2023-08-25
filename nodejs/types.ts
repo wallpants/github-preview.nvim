@@ -6,7 +6,15 @@ export type NeovimNotificationArgs = Array<{
     event: string;
 }>;
 
+export type CursorMove = {
+    cursorLine: number;
+    markdownLen: number;
+    winHeight: number;
+    winLine: number;
+};
+
 export type ServerMessage = {
     markdown?: string;
+    cursorMove?: CursorMove;
     goodbye?: true;
 };
