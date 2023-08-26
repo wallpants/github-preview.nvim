@@ -13,7 +13,7 @@ const ELEMENT_ID = "markdown-content";
 
 export const Markdown = ({ className }: Props) => {
     const filename = "README.md";
-    const ws = useContext(websocketContext);
+    const { ws, status } = useContext(websocketContext);
 
     useEffect(() => {
         if (!ws) return;
@@ -40,6 +40,7 @@ export const Markdown = ({ className }: Props) => {
 
     return (
         <Container className={className}>
+            <p className="!mb-0 p-4 text-sm font-semibold">Status: {status}</p>
             <p className="!mb-0 p-4 text-sm font-semibold">{filename}</p>
             <div id={ELEMENT_ID} className="p-11 pt-0" />
         </Container>

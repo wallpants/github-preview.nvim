@@ -1,20 +1,26 @@
-import { type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import ReconnectingWebSocket from "reconnecting-websocket";
 import { PORT } from "../../env";
-import { websocketContext } from "./context";
+import { websocketContext, type Status } from "./context";
 
 // we check for PORT for dev env
 const url = "ws://" + (PORT ? `localhost:${PORT}` : window.location.host);
-console.log("PORT: ", PORT);
-
-const ws = new WebSocket(url);
+const ws = new ReconnectingWebSocket(url);
 
 type Props = {
     children: ReactNode;
 };
 
 export const WebsocketProvider = ({ children }: Props) => {
+    const [status, setStatus] = useState<Status>("offline");
+
+    useEffect(() => {
+        ws.onopen = () => setStatus("online");
+        ws.onclose = () => setStatus("offline");
+    }, []);
+
     return (
-        <websocketContext.Provider value={ws}>
+        <websocketContext.Provider value={{ ws, status }}>
             {children}
         </websocketContext.Provider>
     );
