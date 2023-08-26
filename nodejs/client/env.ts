@@ -1,2 +1,1 @@
-export const SOCKET = process.env.GP_SOCKET;
-export const PORT = process.env.GP_PORT;
+export const PORT = import.meta.env.VITE_GP_PORT;

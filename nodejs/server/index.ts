@@ -1,12 +1,15 @@
 import { attach } from "neovim";
 import { type PluginProps } from "../types";
+import { PORT, SOCKET } from "./env";
 import { startServer } from "./start-server";
 
-const socket = process.argv[2];
+// we check for SOCKET for dev env
+const socket = SOCKET || process.argv[2];
 
-async function killExisting(PORT: number) {
+async function killExisting(port: number) {
     try {
-        await fetch(`http://localhost:${PORT}`, { method: "POST" });
+        // we check for PORT for dev env
+        await fetch(`http://localhost:${PORT || port}`, { method: "POST" });
     } catch (err) {
         console.log("no server to kill");
     }

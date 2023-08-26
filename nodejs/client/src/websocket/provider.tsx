@@ -1,10 +1,11 @@
 import { type ReactNode } from "react";
+import { PORT } from "../../env";
 import { websocketContext } from "./context";
 
-const url =
-    "ws://" + import.meta.env.DEV
-        ? import.meta.env.SERVER_HOST
-        : window.location.host;
+// we check for PORT for dev env
+const url = "ws://" + (PORT ? `localhost:${PORT}` : window.location.host);
+console.log("PORT: ", PORT);
+
 const ws = new WebSocket(url);
 
 type Props = {

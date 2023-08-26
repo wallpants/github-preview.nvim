@@ -33,31 +33,28 @@ function parseGitIgnore(filePath: string) {
     console.log("gitignore path: ", filePath);
 }
 
-export async function findRepoRoot(filePath: string): Promise<string> {
+export function findRepoRoot(filePath: string): string | null {
     let dir = dirname(filePath);
-    return new Promise((resolve, reject) => {
-        do {
-            try {
-                const paths = readdirSync(dir);
-                for (const path of paths) {
-                    const absolute = `${dir}/${path}`;
-                    const pathStats = statSync(absolute);
-                    if (pathStats.isFile() && path === ".gitignore") {
-                        parseGitIgnore(absolute);
-                    }
-
-                    if (pathStats.isDirectory() && path === ".git") {
-                        resolve(dir + "/");
-                    }
+    do {
+        try {
+            const paths = readdirSync(dir);
+            for (const path of paths) {
+                const absolute = `${dir}/${path}`;
+                const pathStats = statSync(absolute);
+                if (pathStats.isFile() && path === ".gitignore") {
+                    parseGitIgnore(absolute);
                 }
-                dir = dirname(dir);
-            } catch (e) {
-                // TODO: throw error, implement better logging
-                console.log("error: ", e);
-                reject();
-            }
-        } while (dir !== "/");
 
-        reject();
-    });
+                if (pathStats.isDirectory() && path === ".git") {
+                    return dir + "/";
+                }
+            }
+            dir = dirname(dir);
+        } catch (e) {
+            // TODO: throw error, implement better logging
+            console.log("error: ", e);
+            return null;
+        }
+    } while (dir !== "/");
+    return null;
 }

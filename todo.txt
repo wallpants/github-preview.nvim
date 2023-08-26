@@ -7,3 +7,4 @@
   [] if server belongs to current session, update buffer id
 [] send message when we want to close browser tab instead of closing onclose, if we close tab on ws.onclose, we can't refresh
 [] improve socket connectivity? If laptop closed and connection closes, user must refresh website to reestablish connection. (no bueno)
+[] why isn't vite automagically loading .env.dev file?

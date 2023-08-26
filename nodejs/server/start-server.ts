@@ -13,6 +13,7 @@ import {
     type PluginProps,
     type WsMessage,
 } from "../types";
+import { PORT } from "./env";
 import { localFileHandler } from "./local-file-handler";
 import { findRepoRoot, getCursorMove, wsSend } from "./utils";
 
@@ -25,7 +26,7 @@ const RPC_EVENTS = [
 export async function startServer(nvim: NeovimClient, props: PluginProps) {
     await nvim.lua('print("starting MarkdownPreview server")');
 
-    const root = await findRepoRoot(props.filepath);
+    const root = findRepoRoot(props.filepath);
     console.log("root: ", root);
 
     const server = createServer((req, res) => {
@@ -99,6 +100,9 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
         );
     });
 
-    opener(`http://localhost:${props.port}`);
-    server.listen(props.port);
+    // we check for PORT for dev env
+    const port = PORT || props.port;
+    // don't open browser in dev, webapp is hosted on other port
+    if (!PORT) opener(`http://localhost:${port}`);
+    server.listen(port);
 }
