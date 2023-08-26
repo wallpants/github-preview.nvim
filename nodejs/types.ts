@@ -1,9 +1,9 @@
 export type PluginProps = {
     port: number;
     scroll_debounce_ms: number;
-    buffer_id: number;
     disable_sync_scroll: boolean;
     sync_scroll_type: "middle" | "top" | "relative";
+    filepath: string;
 };
 
 export type NeovimNotificationArgs = Array<{

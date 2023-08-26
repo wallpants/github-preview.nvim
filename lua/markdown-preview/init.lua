@@ -21,27 +21,24 @@ M.setup = function(opts)
 		vim.g.markdown_preview_props = {
 			port = opts.port,
 			scroll_debounce_ms = opts.scroll_debounce_ms,
-			buffer_id = vim.api.nvim_get_current_buf(),
 			disable_sync_scroll = false,
 			sync_scroll_type = Types.SYNC_SCROLL_TYPE.middle,
+			filepath = vim.fn.expand("%:p"),
 		}
 
 		vim.api.nvim_create_autocmd({ "TextChangedI", "TextChanged" }, {
-			buffer = 0,
 			callback = function(args)
 				vim.rpcnotify(0, "markdown-preview-text-changed", args)
 			end,
 		})
 
 		vim.api.nvim_create_autocmd({ "CursorMovedI", "CursorMoved", "CursorHoldI", "CursorHold" }, {
-			buffer = 0,
 			callback = function(args)
 				vim.rpcnotify(0, "markdown-preview-cursor-moved", args)
 			end,
 		})
 
 		vim.api.nvim_create_autocmd({ "BufDelete" }, {
-			buffer = 0,
 			callback = function(args)
 				vim.rpcnotify(0, "markdown-preview-buffer-delete", args)
 			end,
@@ -56,7 +53,7 @@ M.setup = function(opts)
 		})
 	end
 
-	vim.api.nvim_create_user_command("MarkdownPreview", start_server, {})
+	vim.api.nvim_create_user_command("GithubPreview", start_server, {})
 end
 
 return M

@@ -1,5 +1,7 @@
 import { type NeovimClient } from "neovim";
 import { type AsyncBuffer } from "neovim/lib/api/Buffer";
+import { readdirSync, statSync } from "node:fs";
+import { dirname } from "node:path";
 import type WebSocket from "ws";
 import { type CursorMove, type PluginProps, type WsMessage } from "../types";
 
@@ -25,4 +27,37 @@ export async function getCursorMove(
         winLine,
         sync_scroll_type: props.sync_scroll_type,
     };
+}
+
+function parseGitIgnore(filePath: string) {
+    console.log("gitignore path: ", filePath);
+}
+
+export async function findRepoRoot(filePath: string): Promise<string> {
+    let dir = dirname(filePath);
+    return new Promise((resolve, reject) => {
+        do {
+            try {
+                const paths = readdirSync(dir);
+                for (const path of paths) {
+                    const absolute = `${dir}/${path}`;
+                    const pathStats = statSync(absolute);
+                    if (pathStats.isFile() && path === ".gitignore") {
+                        parseGitIgnore(absolute);
+                    }
+
+                    if (pathStats.isDirectory() && path === ".git") {
+                        resolve(dir + "/");
+                    }
+                }
+                dir = dirname(dir);
+            } catch (e) {
+                // TODO: throw error, implement better logging
+                console.log("error: ", e);
+                reject();
+            }
+        } while (dir !== "/");
+
+        reject();
+    });
 }

@@ -8,7 +8,7 @@ async function killExisting(PORT: number) {
     try {
         await fetch(`http://localhost:${PORT}`, { method: "POST" });
     } catch (err) {
-        console.log("error: ", err);
+        console.log("no server to kill");
     }
 }
 
