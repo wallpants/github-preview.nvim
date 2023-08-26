@@ -6,3 +6,4 @@
 [] if user starts server after server had been started somewhere else kill other server and restart in current session
   [] if server belongs to current session, update buffer id
 [] send message when we want to close browser tab instead of closing onclose, if we close tab on ws.onclose, we can't refresh
+[] improve socket connectivity? If laptop closed and connection closes, user must refresh website to reestablish connection. (no bueno)
