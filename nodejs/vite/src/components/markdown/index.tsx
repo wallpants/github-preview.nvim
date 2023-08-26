@@ -11,14 +11,13 @@ type Props = {
 
 const ELEMENT_ID = "markdown-content";
 
-const contentElement = document.getElementById(ELEMENT_ID);
-
 export const Markdown = ({ className }: Props) => {
     const filename = "README.md";
     const ws = useContext(websocketContext);
 
     useEffect(() => {
         if (ws) {
+            const contentElement = document.getElementById(ELEMENT_ID);
             ws.onmessage = async (event) => {
                 const message = JSON.parse(String(event.data)) as WsMessage;
 
@@ -43,7 +42,7 @@ export const Markdown = ({ className }: Props) => {
     return (
         <Container className={className}>
             <p className="!mb-0 p-4 text-sm font-semibold">{filename}</p>
-            <div id={ELEMENT_ID} className="p-11" />
+            <div id={ELEMENT_ID} className="p-11 pt-0" />
         </Container>
     );
 };

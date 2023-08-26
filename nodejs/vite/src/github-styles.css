@@ -47,6 +47,9 @@
     --color-danger-fg: #f85149;
     --color-icon-directory: #7d8590;
     --color-icon-file: #7d8590;
+    --color-btn-bg: #21262d;
+    --color-btn-border: rgba(240, 246, 252, 0.1);
+    --color-btn-hover-bg: #30363d;
 }
 
 .github-styles.light {
@@ -95,6 +98,9 @@
     --color-danger-fg: #d1242f;
     --color-icon-directory: #54aeff;
     --color-icon-file: #656d76;
+    --color-btn-bg: #f6f8fa;
+    --color-btn-border: rgba(31, 35, 40, 0.15);
+    --color-btn-hover-bg: #f3f4f6;
 }
 
 .github-styles {
