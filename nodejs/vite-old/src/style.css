@@ -1,0 +1,40 @@
+#content {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+}
+
+@media (max-width: 767px) {
+    #content {
+        padding: 15px;
+    }
+}
+
+.copy-button-container {
+    position: absolute;
+    top: 9px;
+    right: 9px;
+}
+
+.markdown-it-copy-block {
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+    padding: 0;
+}
+
+.markdown-it-copy-block svg {
+    height: 20px;
+    width: 20px;
+}
+
+.copied {
+    right: 120%;
+    pointer-events: none;
+    position: absolute;
+    display: none;
+    color: green;
+    font-size: 0.9rem;
+}

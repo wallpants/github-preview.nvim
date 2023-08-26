@@ -7,7 +7,9 @@ const socket = process.argv[2];
 async function killExisting(PORT: number) {
     try {
         await fetch(`http://localhost:${PORT}`, { method: "POST" });
-    } catch (e) {}
+    } catch (err) {
+        console.log("error: ", err);
+    }
 }
 
 export async function main() {
