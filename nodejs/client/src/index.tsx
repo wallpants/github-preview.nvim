@@ -1,15 +1,33 @@
-import "./index.css";
+import "./github-styles.css";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
-import "./github-styles.css";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { App } from "./App";
+import "./index.css";
 import { WebsocketProvider } from "./websocket/provider";
+
+const Nothing = () => (
+    <div>
+        <p>Nothing</p>
+    </div>
+);
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <App />,
+    },
+    {
+        path: "/nothing",
+        element: <Nothing />,
+    },
+]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <WebsocketProvider>
-            <App />
+            <RouterProvider router={router} />
         </WebsocketProvider>
     </React.StrictMode>,
 );

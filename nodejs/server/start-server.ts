@@ -1,3 +1,4 @@
+import { globby } from "globby";
 import { debounce } from "lodash-es";
 import { type NeovimClient } from "neovim";
 import { type AsyncBuffer } from "neovim/lib/api/Buffer";
@@ -27,7 +28,24 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
     await nvim.lua('print("starting MarkdownPreview server")');
 
     const root = findRepoRoot(props.filepath);
+    if (!root) throw Error("root .git directory NOT FOUND");
+
     console.log("root: ", root);
+
+    const paths = await globby("*", {
+        cwd: root,
+        onlyFiles: false,
+        gitignore: true,
+        objectMode: true,
+    });
+    // const isIgnored = await isGitIgnored();
+
+    for (const path of paths) {
+        console.log("path: ", path);
+        console.log("isDirectory: ", path.dirent.isDirectory());
+        // console.log("isIgnored: ", isIgnored(path));
+        console.log("");
+    }
 
     const server = createServer((req, res) => {
         if (req.method === "POST") {

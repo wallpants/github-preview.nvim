@@ -29,10 +29,6 @@ export async function getCursorMove(
     };
 }
 
-function parseGitIgnore(filePath: string) {
-    console.log("gitignore path: ", filePath);
-}
-
 export function findRepoRoot(filePath: string): string | null {
     let dir = dirname(filePath);
     do {
@@ -41,12 +37,8 @@ export function findRepoRoot(filePath: string): string | null {
             for (const path of paths) {
                 const absolute = `${dir}/${path}`;
                 const pathStats = statSync(absolute);
-                if (pathStats.isFile() && path === ".gitignore") {
-                    parseGitIgnore(absolute);
-                }
-
                 if (pathStats.isDirectory() && path === ".git") {
-                    return dir + "/";
+                    return dir;
                 }
             }
             dir = dirname(dir);
