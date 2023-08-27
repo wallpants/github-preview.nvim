@@ -45,7 +45,7 @@ export const WebsocketProvider = ({ children }: Props) => {
 
     return (
         <websocketContext.Provider value={{ addMessageHandler, status }}>
-            {status === "reconnecting" && <Banner className="z-50" />}
+            <Banner className="z-50" />
             {children}
         </websocketContext.Provider>
     );

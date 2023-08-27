@@ -56,13 +56,16 @@ export function ThemePicker() {
     }, [override]);
 
     return (
-        <select
-            value={selected}
-            onChange={(e) => setSelected(e.target.value as Selected)}
-        >
-            <option value="system">System</option>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-        </select>
+        <div>
+            <span className="mr-2">Theme</span>
+            <select
+                value={selected}
+                onChange={(e) => setSelected(e.target.value as Selected)}
+            >
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+            </select>
+        </div>
     );
 }

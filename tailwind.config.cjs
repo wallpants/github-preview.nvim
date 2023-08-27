@@ -27,6 +27,7 @@ module.exports = {
                     },
                     attention: {
                         subtle: "var(--color-attention-subtle)",
+                        muted: "var(--color-attention-muted)",
                     },
                     icon: {
                         directory: "var(--color-icon-directory)",

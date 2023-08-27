@@ -5,6 +5,7 @@ import {
     type MessageHandler,
 } from "../../websocket-content/context";
 import { Container } from "../container";
+import { ThemePicker } from "../theme-select";
 import { DirIcon } from "./dir-icon";
 import { FileIcon } from "./file-icon";
 
@@ -52,6 +53,7 @@ export const Explorer = () => {
     return (
         <>
             <Container className="border-none">
+                <ThemePicker />
                 <div className="flex">
                     {/* TODO: add fallback if image or repo info not found */}
                     <img

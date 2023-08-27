@@ -44,6 +44,7 @@
     --color-accent-fg: #2f81f7;
     --color-accent-emphasis: #1f6feb;
     --color-attention-subtle: rgba(187, 128, 9, 0.15);
+    --color-attention-muted: rgba(187, 128, 9, 0.4);
     --color-danger-fg: #f85149;
     --color-icon-directory: #7d8590;
     --color-icon-file: #7d8590;
@@ -95,6 +96,7 @@
     --color-accent-fg: #0969da;
     --color-accent-emphasis: #0969da;
     --color-attention-subtle: #fff8c5;
+    --color-attention-muted: rgba(212, 167, 44, 0.4);
     --color-danger-fg: #d1242f;
     --color-icon-directory: #54aeff;
     --color-icon-file: #656d76;

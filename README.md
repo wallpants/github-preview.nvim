@@ -10,6 +10,8 @@ what if I typeee
 console.log("hello world");
 ```
 
+[hello](.eslintrc.cjs#L9)
+
 ```typescript
 import { common, createStarryNight } from "@wooorm/starry-night";
 
