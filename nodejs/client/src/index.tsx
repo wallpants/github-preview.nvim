@@ -2,22 +2,19 @@ import "./github-styles.css";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { App } from "./App";
 import "./index.css";
-import { WebsocketProvider } from "./websocket/provider";
+import { RouterProvider } from "./router-context/provider";
+import { WebsocketProvider } from "./websocket-content/provider";
 
-const router = createBrowserRouter([
-    {
-        path: "*",
-        element: <App />,
-    },
-]);
+// const router = createBrowserRouter([{ element: <App />,  }]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <WebsocketProvider>
-            <RouterProvider router={router} />
+            <RouterProvider>
+                <App />
+            </RouterProvider>
         </WebsocketProvider>
     </React.StrictMode>,
 );

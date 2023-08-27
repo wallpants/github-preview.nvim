@@ -49,15 +49,11 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
 
         return handler(req, res, {
             public: fileURLToPath(dirname(import.meta.url)),
+            rewrites: [{ source: "**", destination: "/index.html" }],
             headers: [
                 {
                     source: "**/*",
-                    headers: [
-                        {
-                            key: "Cache-Control",
-                            value: "no-cache",
-                        },
-                    ],
+                    headers: [{ key: "Cache-Control", value: "no-cache" }],
                 },
             ],
         });
@@ -78,6 +74,7 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
     const entries = await getDirEntries(dirname(props.filepath));
 
     wss.on("connection", async (ws, _req) => {
+        for (const event of RPC_EVENTS) await nvim.subscribe(event);
         const markdown = (await buffer.lines).join("\n");
         const cursorMove = await getCursorMove(nvim, buffer, props);
         const relativeFilepath = relative(root, props.filepath);
@@ -89,10 +86,9 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
             repoName,
         });
 
-        for (const event of RPC_EVENTS) await nvim.subscribe(event);
-        ws.onclose = async () => {
+        ws.on("close", async () => {
             for (const event of RPC_EVENTS) await nvim.unsubscribe(event);
-        };
+        });
 
         nvim.on(
             "notification",

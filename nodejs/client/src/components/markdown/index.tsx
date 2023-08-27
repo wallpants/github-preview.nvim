@@ -1,5 +1,8 @@
 import { useContext, useEffect } from "react";
-import { websocketContext, type MessageHandler } from "../../websocket/context";
+import {
+    websocketContext,
+    type MessageHandler,
+} from "../../websocket-content/context";
 import { Container } from "../container";
 import { markdownToHtml } from "./markdown-it";
 import { scrollFnMap } from "./markdown-it/scroll";
@@ -12,7 +15,7 @@ const ELEMENT_ID = "markdown-content";
 
 export const Markdown = ({ className }: Props) => {
     const filename = "README.md";
-    const { addMessageHandler, status } = useContext(websocketContext);
+    const { addMessageHandler } = useContext(websocketContext);
 
     useEffect(() => {
         const messageHandler: MessageHandler = (message) => {
@@ -37,7 +40,6 @@ export const Markdown = ({ className }: Props) => {
 
     return (
         <Container className={className}>
-            <p className="!mb-0 p-4 text-sm font-semibold">Status: {status}</p>
             <p className="!mb-0 p-4 text-sm font-semibold">{filename}</p>
             <div id={ELEMENT_ID} className="p-11 pt-0" />
         </Container>
