@@ -5,7 +5,7 @@ import ReactDOM from "react-dom/client";
 import { App } from "./App";
 import "./index.css";
 import { RouterProvider } from "./router-context/provider";
-import { WebsocketProvider } from "./websocket-content/provider";
+import { WebsocketProvider } from "./websocket-context/provider";
 
 // const router = createBrowserRouter([{ element: <App />,  }]);
 

@@ -11,7 +11,7 @@ import { LOCAL_FILE_ROUTE } from "../consts";
 import {
     type NeovimNotificationArgs,
     type PluginProps,
-    type WsMessage,
+    type WsServerMessage,
 } from "../types";
 import { PORT } from "./env";
 import { localFileHandler } from "./local-file-handler";
@@ -66,7 +66,7 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
     )!;
 
     const debouncedWsSend = debounce(
-        (ws: WebSocket, message: WsMessage) => wsSend(ws, message),
+        (ws: WebSocket, message: WsServerMessage) => wsSend(ws, message),
         props.scroll_debounce_ms,
         { leading: false, trailing: true },
     );

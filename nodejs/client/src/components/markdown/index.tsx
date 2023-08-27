@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import {
     websocketContext,
     type MessageHandler,
-} from "../../websocket-content/context";
+} from "../../websocket-context/context";
 import { Container } from "../container";
 import { markdownToHtml } from "./markdown-it";
 import { scrollFnMap } from "./markdown-it/scroll";

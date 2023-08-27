@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { cn } from "../lib/styles";
-import { websocketContext } from "../websocket-content/context";
+import { websocketContext } from "../websocket-context/context";
 import { Container } from "./container";
 
 type Props = {
@@ -22,7 +22,7 @@ export const Banner = ({ className }: Props) => {
             )}
         >
             <div className="absolute inset-0 flex items-center bg-github-attention-subtle px-4">
-                <span className="font-semibold">Banner</span>
+                <span className="mr-2 font-semibold">Banner</span>
                 {status}
             </div>
         </Container>

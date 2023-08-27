@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { type WsMessage } from "../../../../types";
+import { type WsServerMessage } from "../../../../types";
 import {
     websocketContext,
     type MessageHandler,
-} from "../../websocket-content/context";
+} from "../../websocket-context/context";
 import { Container } from "../container";
 import { ThemePicker } from "../theme-select";
 import { DirIcon } from "./dir-icon";
@@ -29,9 +29,9 @@ const Entry = ({ type, name }: { type: "dir" | "file"; name: string }) => {
 
 export const Explorer = () => {
     const { addMessageHandler } = useContext(websocketContext);
-    const [entries, setEntries] = useState<NonNullable<WsMessage["entries"]>>(
-        [],
-    );
+    const [entries, setEntries] = useState<
+        NonNullable<WsServerMessage["entries"]>
+    >([]);
     const [relativePath, setRelativePath] = useState<string>("");
     const [repoName, setRepoName] = useState<string>("");
 

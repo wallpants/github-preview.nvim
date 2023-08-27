@@ -1,6 +1,6 @@
 # my name is gualberto
 
-[follow this link](http://hello)
+[follow this link](https://github.com)
 
 ![Alt text](https://www.digitalocean.com/_next/static/media/intro-to-cloud.d49bc5f7.jpeg)
 
@@ -10,7 +10,9 @@ what if I typeee
 console.log("hello world");
 ```
 
-[hello](.eslintrc.cjs#L9)
+[eslint line 9](.eslintrc.cjs#L9)
+
+[eslint](.eslintrc.cjs)
 
 ```typescript
 import { common, createStarryNight } from "@wooorm/starry-night";

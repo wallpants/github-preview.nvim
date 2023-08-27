@@ -4,9 +4,13 @@ import { type AsyncBuffer } from "neovim/lib/api/Buffer";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import type WebSocket from "ws";
-import { type CursorMove, type PluginProps, type WsMessage } from "../types";
+import {
+    type CursorMove,
+    type PluginProps,
+    type WsServerMessage,
+} from "../types";
 
-export function wsSend(ws: WebSocket, message: WsMessage) {
+export function wsSend(ws: WebSocket, message: WsServerMessage) {
     ws.send(JSON.stringify(message));
 }
 
@@ -68,7 +72,7 @@ export function getRepoName(root: string) {
 
 export async function getDirEntries(
     dir: string,
-): Promise<WsMessage["entries"]> {
+): Promise<WsServerMessage["entries"]> {
     const paths = await globby("*", {
         cwd: dir,
         onlyFiles: false,
@@ -93,7 +97,7 @@ export async function getDirEntries(
         .map((dir) => ({ name: dir, type: "dir" }))
         .concat(
             files.map((file) => ({ name: file, type: "file" })),
-        ) as WsMessage["entries"];
+        ) as WsServerMessage["entries"];
 
     return entries;
 }

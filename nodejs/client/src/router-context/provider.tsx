@@ -3,7 +3,7 @@ import { useContext, useEffect, type ReactNode } from "react";
 import {
     websocketContext,
     type MessageHandler,
-} from "../websocket-content/context";
+} from "../websocket-context/context";
 import { routerContext } from "./context";
 
 const history = createBrowserHistory();
@@ -17,7 +17,7 @@ export const RouterProvider = ({ children }: Props) => {
 
     useEffect(() => {
         const messageHandler: MessageHandler = (message) => {
-            history.push(message.relativeFilepath);
+            history.push("/" + message.relativeFilepath);
         };
         addMessageHandler("ws-router", messageHandler);
     }, [addMessageHandler]);
