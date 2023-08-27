@@ -81,8 +81,8 @@ export async function getDirEntries(
     const files: string[] = [];
 
     for (const path of paths) {
-        if (path.dirent.isDirectory() && path.name !== ".git") {
-            dirs.push(path.name);
+        if (path.dirent.isDirectory()) {
+            if (path.name !== ".git") dirs.push(path.name);
         } else files.push(path.name);
     }
 
