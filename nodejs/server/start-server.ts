@@ -6,11 +6,13 @@ import { dirname, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import opener from "opener";
 import handler from "serve-handler";
-import { WebSocketServer, type WebSocket } from "ws";
+import { WebSocketServer } from "ws";
 import { LOCAL_FILE_ROUTE } from "../consts";
 import {
+    type Entry,
     type NeovimNotificationArgs,
     type PluginProps,
+    type WsClientMessage,
     type WsServerMessage,
 } from "../types";
 import { PORT } from "./env";
@@ -20,7 +22,6 @@ import {
     getCursorMove,
     getDirEntries,
     getRepoName,
-    wsSend,
 } from "./utils";
 
 const RPC_EVENTS = [
@@ -65,23 +66,27 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
         async (b) => (await b).name === props.filepath,
     )!;
 
-    const debouncedWsSend = debounce(
-        (ws: WebSocket, message: WsServerMessage) => wsSend(ws, message),
-        props.scroll_debounce_ms,
-        { leading: false, trailing: true },
-    );
-
     const entries = await getDirEntries(dirname(props.filepath));
 
     wss.on("connection", async (ws, _req) => {
+        const wsSend = (m: WsServerMessage) => ws.send(JSON.stringify(m));
+        const debouncedWsSend = debounce(wsSend, props.scroll_debounce_ms, {
+            leading: false,
+            trailing: true,
+        });
+
         for (const event of RPC_EVENTS) await nvim.subscribe(event);
         const markdown = (await buffer.lines).join("\n");
         const cursorMove = await getCursorMove(nvim, buffer, props);
-        const relativeFilepath = relative(root, props.filepath);
-        wsSend(ws, {
+        const entry: Entry = {
+            name: relative(root, props.filepath),
+            type: "file",
+        };
+
+        wsSend({
             markdown,
             cursorMove,
-            relativeFilepath,
+            entry,
             entries,
             repoName,
         });
@@ -90,27 +95,40 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
             for (const event of RPC_EVENTS) await nvim.unsubscribe(event);
         });
 
+        ws.on("message", async (event) => {
+            const { entry } = JSON.parse(event.toString()) as WsClientMessage;
+            if (entry) {
+                if (entry.type === "dir") {
+                    const entries = await getDirEntries(entry.name);
+                    wsSend({ entries, entry });
+                }
+            }
+        });
+
         nvim.on(
             "notification",
             async (
                 event: (typeof RPC_EVENTS)[number],
                 [arg]: NeovimNotificationArgs,
             ) => {
-                const relativeFilepath = relative(root, arg.file);
+                const entry: Entry = {
+                    name: relative(root, arg.file),
+                    type: "file",
+                };
 
                 if (event === "markdown-preview-text-changed") {
                     const markdown = (await buffer.lines).join("\n");
-                    wsSend(ws, { markdown, relativeFilepath });
+                    wsSend({ markdown, entry });
                 }
 
                 if (event === "markdown-preview-buffer-delete") {
-                    wsSend(ws, { goodbye: true, relativeFilepath });
+                    wsSend({ goodbye: true, entry });
                     server.close();
                 }
 
                 if (event === "markdown-preview-cursor-moved") {
                     const cursorMove = await getCursorMove(nvim, buffer, props);
-                    debouncedWsSend(ws, { cursorMove, relativeFilepath });
+                    debouncedWsSend({ cursorMove, entry });
                 }
             },
         );

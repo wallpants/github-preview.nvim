@@ -3,16 +3,7 @@ import { type NeovimClient } from "neovim";
 import { type AsyncBuffer } from "neovim/lib/api/Buffer";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import type WebSocket from "ws";
-import {
-    type CursorMove,
-    type PluginProps,
-    type WsServerMessage,
-} from "../types";
-
-export function wsSend(ws: WebSocket, message: WsServerMessage) {
-    ws.send(JSON.stringify(message));
-}
+import { type CursorMove, type Entry, type PluginProps } from "../types";
 
 export async function getCursorMove(
     nvim: NeovimClient,
@@ -70,9 +61,7 @@ export function getRepoName(root: string) {
     }
 }
 
-export async function getDirEntries(
-    dir: string,
-): Promise<WsServerMessage["entries"]> {
+export async function getDirEntries(dir: string): Promise<Entry[]> {
     const paths = await globby("*", {
         cwd: dir,
         onlyFiles: false,
@@ -93,11 +82,8 @@ export async function getDirEntries(
     dirs.sort();
     files.sort();
 
-    const entries = dirs
-        .map((dir) => ({ name: dir, type: "dir" }))
-        .concat(
-            files.map((file) => ({ name: file, type: "file" })),
-        ) as WsServerMessage["entries"];
+    const dirEntries: Entry[] = dirs.map((d) => ({ name: d, type: "dir" }));
+    const fileEntries: Entry[] = files.map((f) => ({ name: f, type: "file" }));
 
-    return entries;
+    return dirEntries.concat(fileEntries);
 }

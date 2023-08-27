@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { type WsServerMessage } from "../../../types";
+import { type WsClientMessage, type WsServerMessage } from "../../../types";
 import { PORT } from "../../env";
 import { Banner } from "../components/banner";
 import { websocketContext, type MessageHandler, type Status } from "./context";
@@ -44,8 +44,14 @@ export const WebsocketProvider = ({ children }: Props) => {
         [],
     );
 
+    const wsSend = useCallback((message: WsClientMessage) => {
+        ws.send(JSON.stringify(message));
+    }, []);
+
     return (
-        <websocketContext.Provider value={{ addMessageHandler, status }}>
+        <websocketContext.Provider
+            value={{ wsSend, addMessageHandler, status }}
+        >
             <Banner className="z-50" />
             {children}
         </websocketContext.Provider>

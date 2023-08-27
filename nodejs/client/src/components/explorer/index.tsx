@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { type WsServerMessage } from "../../../../types";
+import { type Entry } from "../../../../types";
 import {
     websocketContext,
     type MessageHandler,
@@ -16,11 +16,26 @@ const IconMap = {
     file: <FileIcon className={iconClassName} />,
 };
 
-const Entry = ({ type, name }: { type: "dir" | "file"; name: string }) => {
+const EntryComponent = ({
+    type,
+    name,
+}: {
+    type: "dir" | "file";
+    name: string;
+}) => {
+    const { wsSend } = useContext(websocketContext);
+
+    function requestEntries() {
+        wsSend({ entry: { name, type } });
+    }
+
     return (
         <div className="group flex h-[38px] items-center border-t border-github-border-default px-4 first:border-t-0 hover:bg-github-canvas-subtle">
             {IconMap[type]}
-            <span className="cursor-pointer text-sm !text-github-fg-default hover:!text-github-accent-fg hover:underline">
+            <span
+                onClick={requestEntries}
+                className="cursor-pointer text-sm !text-github-fg-default hover:!text-github-accent-fg hover:underline"
+            >
                 {name}
             </span>
         </div>
@@ -29,25 +44,20 @@ const Entry = ({ type, name }: { type: "dir" | "file"; name: string }) => {
 
 export const Explorer = () => {
     const { addMessageHandler } = useContext(websocketContext);
-    const [entries, setEntries] = useState<
-        NonNullable<WsServerMessage["entries"]>
-    >([]);
-    const [relativePath, setRelativePath] = useState<string>("");
+    const [entries, setEntries] = useState<Entry[]>([]);
+    const [entry, setEntry] = useState<Entry>();
     const [repoName, setRepoName] = useState<string>("");
 
     useEffect(() => {
         const messageHandler: MessageHandler = (message) => {
             if (message.repoName) setRepoName(message.repoName);
             if (message.entries) setEntries(message.entries);
-            if (message.relativeFilepath) {
-                setRelativePath(message.relativeFilepath);
-            }
+            if (message.entry) setEntry(message.entry);
         };
         addMessageHandler("explorer", messageHandler);
     }, [addMessageHandler]);
 
-    const segments = relativePath.split("/");
-
+    const segments = entry?.name.split("/") ?? [];
     const [username, repo] = repoName.split("/");
 
     return (
@@ -55,19 +65,20 @@ export const Explorer = () => {
             <Container className="border-none">
                 <ThemePicker />
                 <div className="flex">
-                    {/* TODO: add fallback if image or repo info not found */}
-                    <img
-                        src={`https://github.com/${username}.png?size=48`}
-                        className="mb-4 mr-2 mt-6 h-6 w-6 rounded-[100%]"
-                    />
+                    {username && (
+                        <img
+                            src={`https://github.com/${username}.png?size=48`}
+                            className="mb-4 mr-2 mt-6 h-6 w-6 rounded-[100%]"
+                        />
+                    )}
                     <h3>{repo}</h3>
                 </div>
                 {segments}
             </Container>
             <Container>
-                {segments.length > 1 && <Entry name=".." type="dir" />}
+                {segments.length > 1 && <EntryComponent name=".." type="dir" />}
                 {entries.map(({ name, type }) => (
-                    <Entry key={name} name={name} type={type} />
+                    <EntryComponent key={name} name={name} type={type} />
                 ))}
             </Container>
         </>

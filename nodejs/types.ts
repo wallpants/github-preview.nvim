@@ -22,15 +22,20 @@ export type CursorMove = {
     sync_scroll_type: "middle" | "top" | "relative";
 };
 
+export type Entry = {
+    name: string;
+    type: "file" | "dir";
+};
+
 export type WsServerMessage = {
     repoName?: string;
     markdown?: string;
     cursorMove?: CursorMove;
     goodbye?: true;
-    entries?: Array<{ name: string; type: "file" | "dir" }>;
-    relativeFilepath: string;
+    entries?: Entry[];
+    entry: Entry;
 };
 
 export type WsClientMessage = {
-    relativeFilepath: string;
+    entry?: Entry;
 };

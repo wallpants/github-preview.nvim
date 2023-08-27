@@ -17,7 +17,7 @@ export const RouterProvider = ({ children }: Props) => {
 
     useEffect(() => {
         const messageHandler: MessageHandler = (message) => {
-            history.push("/" + message.relativeFilepath);
+            history.push("/" + message.entry.name);
         };
         addMessageHandler("ws-router", messageHandler);
     }, [addMessageHandler]);
