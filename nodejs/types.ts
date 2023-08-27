@@ -26,4 +26,5 @@ export type WsMessage = {
     markdown?: string;
     cursorMove?: CursorMove;
     goodbye?: true;
+    relativeFilepath: string;
 };

@@ -7,20 +7,10 @@ import { App } from "./App";
 import "./index.css";
 import { WebsocketProvider } from "./websocket/provider";
 
-const Nothing = () => (
-    <div>
-        <p>Nothing</p>
-    </div>
-);
-
 const router = createBrowserRouter([
     {
-        path: "/",
+        path: "*",
         element: <App />,
-    },
-    {
-        path: "/nothing",
-        element: <Nothing />,
     },
 ]);
 

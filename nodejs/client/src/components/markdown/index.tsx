@@ -18,12 +18,14 @@ export const Markdown = ({ className }: Props) => {
     useEffect(() => {
         if (!ws) return;
         const contentElement = document.getElementById(ELEMENT_ID);
-        ws.onmessage = async (event) => {
+
+        function handleWsMessage(event: MessageEvent<unknown>) {
             const message = JSON.parse(String(event.data)) as WsMessage;
 
-            if (message.markdown) {
-                const html = await markdownToHtml(message.markdown);
-                if (contentElement) contentElement.innerHTML = html;
+            if (message.markdown && contentElement) {
+                markdownToHtml(message.markdown).then(
+                    (html) => (contentElement.innerHTML = html),
+                );
             }
 
             if (message.cursorMove) {
@@ -35,6 +37,11 @@ export const Markdown = ({ className }: Props) => {
             if (message.goodbye) {
                 window.close();
             }
+        }
+
+        ws.addEventListener("message", handleWsMessage);
+        return () => {
+            ws.removeEventListener("message", handleWsMessage);
         };
     }, [ws]);
 

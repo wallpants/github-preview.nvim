@@ -3,7 +3,7 @@ import { debounce } from "lodash-es";
 import { type NeovimClient } from "neovim";
 import { type AsyncBuffer } from "neovim/lib/api/Buffer";
 import { createServer } from "node:http";
-import { dirname } from "node:path";
+import { dirname, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import opener from "opener";
 import handler from "serve-handler";
@@ -92,27 +92,30 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
     wss.on("connection", async (ws, _req) => {
         const markdown = (await buffer.lines).join("\n");
         const cursorMove = await getCursorMove(nvim, buffer, props);
-        wsSend(ws, { markdown, cursorMove });
+        const relativeFilepath = relative(root, props.filepath);
+        wsSend(ws, { markdown, cursorMove, relativeFilepath });
 
         nvim.on(
             "notification",
             async (
                 event: (typeof RPC_EVENTS)[number],
-                [_arg]: NeovimNotificationArgs,
+                [arg]: NeovimNotificationArgs,
             ) => {
+                const relativeFilepath = relative(root, arg.file);
+
                 if (event === "markdown-preview-text-changed") {
                     const markdown = (await buffer.lines).join("\n");
-                    wsSend(ws, { markdown });
+                    wsSend(ws, { markdown, relativeFilepath });
                 }
 
                 if (event === "markdown-preview-buffer-delete") {
-                    wsSend(ws, { goodbye: true });
+                    wsSend(ws, { goodbye: true, relativeFilepath });
                     server.close();
                 }
 
                 if (event === "markdown-preview-cursor-moved") {
                     const cursorMove = await getCursorMove(nvim, buffer, props);
-                    debouncedWsSend(ws, { cursorMove });
+                    debouncedWsSend(ws, { cursorMove, relativeFilepath });
                 }
             },
         );

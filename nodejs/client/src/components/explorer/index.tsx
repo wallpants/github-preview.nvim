@@ -1,3 +1,6 @@
+import { useContext, useEffect } from "react";
+import { type WsMessage } from "../../../../types";
+import { websocketContext } from "../../websocket/context";
 import { Container } from "../container";
 import { DirIcon } from "./dir-icon";
 import { FileIcon } from "./file-icon";
@@ -21,6 +24,22 @@ const Entry = ({ type }: { type: "dir" | "file" }) => {
 };
 
 export const Explorer = () => {
+    const { ws } = useContext(websocketContext);
+
+    useEffect(() => {
+        if (!ws) return;
+
+        function handleWsMessage(event: MessageEvent<unknown>) {
+            const message = JSON.parse(String(event.data)) as WsMessage;
+            console.log("relativeFilepath: ", message.relativeFilepath);
+        }
+
+        ws.addEventListener("message", handleWsMessage);
+        return () => {
+            ws.removeEventListener("message", handleWsMessage);
+        };
+    }, [ws]);
+
     return (
         <Container>
             <Entry type="dir" />
