@@ -1,4 +1,3 @@
-import { globby } from "globby";
 import { debounce } from "lodash-es";
 import { type NeovimClient } from "neovim";
 import { type AsyncBuffer } from "neovim/lib/api/Buffer";
@@ -16,7 +15,13 @@ import {
 } from "../types";
 import { PORT } from "./env";
 import { localFileHandler } from "./local-file-handler";
-import { findRepoRoot, getCursorMove, wsSend } from "./utils";
+import {
+    findRepoRoot,
+    getCursorMove,
+    getDirEntries,
+    getRepoName,
+    wsSend,
+} from "./utils";
 
 const RPC_EVENTS = [
     "markdown-preview-text-changed",
@@ -29,6 +34,8 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
 
     const root = findRepoRoot(props.filepath);
     if (!root) throw Error("root .git directory NOT FOUND");
+
+    const repoName = getRepoName(root);
 
     const server = createServer((req, res) => {
         if (req.method === "POST") {
@@ -68,35 +75,19 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
         { leading: false, trailing: true },
     );
 
-    const paths = await globby("*", {
-        cwd: root,
-        onlyFiles: false,
-        gitignore: true,
-        objectMode: true,
-    });
-
-    const dirs: string[] = [];
-    const files: string[] = [];
-
-    for (const path of paths) {
-        if (path.dirent.isDirectory()) dirs.push(path.name);
-        else files.push(path.name);
-    }
-
-    dirs.sort();
-    files.sort();
-
-    const entries = dirs
-        .map((dir) => ({ name: dir, type: "dir" }))
-        .concat(
-            files.map((file) => ({ name: file, type: "file" })),
-        ) as WsMessage["entries"];
+    const entries = await getDirEntries(dirname(props.filepath));
 
     wss.on("connection", async (ws, _req) => {
         const markdown = (await buffer.lines).join("\n");
         const cursorMove = await getCursorMove(nvim, buffer, props);
         const relativeFilepath = relative(root, props.filepath);
-        wsSend(ws, { markdown, cursorMove, relativeFilepath, entries });
+        wsSend(ws, {
+            markdown,
+            cursorMove,
+            relativeFilepath,
+            entries,
+            repoName,
+        });
 
         for (const event of RPC_EVENTS) await nvim.subscribe(event);
         ws.onclose = async () => {

@@ -23,6 +23,7 @@ export type CursorMove = {
 };
 
 export type WsMessage = {
+    repoName?: string;
     markdown?: string;
     cursorMove?: CursorMove;
     goodbye?: true;

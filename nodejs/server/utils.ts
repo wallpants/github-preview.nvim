@@ -1,7 +1,8 @@
+import { globby } from "globby";
 import { type NeovimClient } from "neovim";
 import { type AsyncBuffer } from "neovim/lib/api/Buffer";
-import { readdirSync, statSync } from "node:fs";
-import { dirname } from "node:path";
+import { readFileSync, readdirSync, statSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import type WebSocket from "ws";
 import { type CursorMove, type PluginProps, type WsMessage } from "../types";
 
@@ -49,4 +50,50 @@ export function findRepoRoot(filePath: string): string | null {
         }
     } while (dir !== "/");
     return null;
+}
+
+export function getRepoName(root: string) {
+    const gitConfig = readFileSync(resolve(root, ".git/config")).toString();
+    const lines = gitConfig.split("\n");
+
+    for (let i = 0; i < lines.length; i += 1) {
+        const line = lines[i];
+        if (line === '[remote "origin"]') {
+            // nextLine = git@github.com:gualcasas/github-preview.nvim.git
+            const nextLine = lines[i + 1] as string | undefined;
+            return nextLine?.split(":")[1].slice(0, -4);
+        }
+    }
+}
+
+export async function getDirEntries(
+    dir: string,
+): Promise<WsMessage["entries"]> {
+    const paths = await globby("*", {
+        cwd: dir,
+        onlyFiles: false,
+        gitignore: true,
+        objectMode: true,
+        dot: true,
+    });
+
+    const dirs: string[] = [];
+    const files: string[] = [];
+
+    for (const path of paths) {
+        if (path.dirent.isDirectory() && path.name !== ".git") {
+            dirs.push(path.name);
+        } else files.push(path.name);
+    }
+
+    dirs.sort();
+    files.sort();
+
+    const entries = dirs
+        .map((dir) => ({ name: dir, type: "dir" }))
+        .concat(
+            files.map((file) => ({ name: file, type: "file" })),
+        ) as WsMessage["entries"];
+
+    return entries;
 }

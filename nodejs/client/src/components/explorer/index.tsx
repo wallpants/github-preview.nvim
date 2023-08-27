@@ -41,7 +41,6 @@ export const Explorer = () => {
     }, [addMessageHandler]);
 
     const segments = relativePath.split("/");
-    console.log("segments: ", segments);
 
     return (
         <Container>
