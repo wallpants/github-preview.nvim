@@ -25,7 +25,7 @@ const starryNight = await createStarryNight(common, {
 ## Vite Development
 
 1. Open markdown file in neovim and run `:MarkdownPreview` to start server
-2. Close browser tab that was opened by previous command
+2. Close browser tab that was opened by previous
 3. Start vite dev server
 
 ```bash

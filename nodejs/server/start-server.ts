@@ -30,23 +30,6 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
     const root = findRepoRoot(props.filepath);
     if (!root) throw Error("root .git directory NOT FOUND");
 
-    console.log("root: ", root);
-
-    const paths = await globby("*", {
-        cwd: root,
-        onlyFiles: false,
-        gitignore: true,
-        objectMode: true,
-    });
-    // const isIgnored = await isGitIgnored();
-
-    for (const path of paths) {
-        console.log("path: ", path);
-        console.log("isDirectory: ", path.dirent.isDirectory());
-        // console.log("isIgnored: ", isIgnored(path));
-        console.log("");
-    }
-
     const server = createServer((req, res) => {
         if (req.method === "POST") {
             res.writeHead(200).end();
@@ -74,10 +57,6 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
     });
     const wss = new WebSocketServer({ server });
 
-    for (const event of RPC_EVENTS) {
-        await nvim.subscribe(event);
-    }
-
     const buffers = (await nvim.buffers) as AsyncBuffer[];
     const buffer = buffers.find(
         async (b) => (await b).name === props.filepath,
@@ -89,11 +68,40 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
         { leading: false, trailing: true },
     );
 
+    const paths = await globby("*", {
+        cwd: root,
+        onlyFiles: false,
+        gitignore: true,
+        objectMode: true,
+    });
+
+    const dirs: string[] = [];
+    const files: string[] = [];
+
+    for (const path of paths) {
+        if (path.dirent.isDirectory()) dirs.push(path.name);
+        else files.push(path.name);
+    }
+
+    dirs.sort();
+    files.sort();
+
+    const entries = dirs
+        .map((dir) => ({ name: dir, type: "dir" }))
+        .concat(
+            files.map((file) => ({ name: file, type: "file" })),
+        ) as WsMessage["entries"];
+
     wss.on("connection", async (ws, _req) => {
         const markdown = (await buffer.lines).join("\n");
         const cursorMove = await getCursorMove(nvim, buffer, props);
         const relativeFilepath = relative(root, props.filepath);
-        wsSend(ws, { markdown, cursorMove, relativeFilepath });
+        wsSend(ws, { markdown, cursorMove, relativeFilepath, entries });
+
+        for (const event of RPC_EVENTS) await nvim.subscribe(event);
+        ws.onclose = async () => {
+            for (const event of RPC_EVENTS) await nvim.unsubscribe(event);
+        };
 
         nvim.on(
             "notification",

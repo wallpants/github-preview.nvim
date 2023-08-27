@@ -16,7 +16,7 @@ export const Container = ({
         <div
             id={markdownElementId}
             className={cn(
-                "mx-auto my-0 border-border-default box-border min-w-[200px] max-w-[980px] border rounded",
+                "overflow-hidden mx-auto my-0 border-border-default box-border min-w-[200px] max-w-[980px] border rounded",
                 className,
             )}
         >

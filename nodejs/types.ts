@@ -26,5 +26,6 @@ export type WsMessage = {
     markdown?: string;
     cursorMove?: CursorMove;
     goodbye?: true;
+    entries?: Array<{ name: string; type: "file" | "dir" }>;
     relativeFilepath: string;
 };

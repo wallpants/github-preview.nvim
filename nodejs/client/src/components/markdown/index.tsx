@@ -1,6 +1,5 @@
 import { useContext, useEffect } from "react";
-import { type WsMessage } from "../../../../types";
-import { websocketContext } from "../../websocket/context";
+import { websocketContext, type MessageHandler } from "../../websocket/context";
 import { Container } from "../container";
 import { markdownToHtml } from "./markdown-it";
 import { scrollFnMap } from "./markdown-it/scroll";
@@ -13,14 +12,12 @@ const ELEMENT_ID = "markdown-content";
 
 export const Markdown = ({ className }: Props) => {
     const filename = "README.md";
-    const { ws, status } = useContext(websocketContext);
+    const { addMessageHandler, status } = useContext(websocketContext);
 
     useEffect(() => {
-        if (!ws) return;
-        const contentElement = document.getElementById(ELEMENT_ID);
-
-        function handleWsMessage(event: MessageEvent<unknown>) {
-            const message = JSON.parse(String(event.data)) as WsMessage;
+        const messageHandler: MessageHandler = (message) => {
+            const contentElement = document.getElementById(ELEMENT_ID);
+            if (!contentElement) return;
 
             if (message.markdown && contentElement) {
                 markdownToHtml(message.markdown).then(
@@ -33,17 +30,10 @@ export const Markdown = ({ className }: Props) => {
                     message.cursorMove,
                 );
             }
-
-            if (message.goodbye) {
-                window.close();
-            }
-        }
-
-        ws.addEventListener("message", handleWsMessage);
-        return () => {
-            ws.removeEventListener("message", handleWsMessage);
         };
-    }, [ws]);
+
+        addMessageHandler("markdown", messageHandler);
+    }, [addMessageHandler]);
 
     return (
         <Container className={className}>
