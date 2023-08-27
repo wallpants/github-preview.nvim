@@ -10,6 +10,11 @@ const config = {
         "plugin:react-hooks/recommended",
     ],
     plugins: ["react-refresh", "tsdoc", "import"],
+    settings: {
+        tailwindcss: {
+            callees: ["cn"],
+        },
+    },
     ignorePatterns: ["dist", ".eslintrc.cjs"],
     rules: {
         "react-refresh/only-export-components": [
