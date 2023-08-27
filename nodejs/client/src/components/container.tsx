@@ -17,7 +17,7 @@ export const Container = ({
             id={markdownElementId}
             className={cn(
                 "mx-auto my-0 mb-6 box-border overflow-hidden rounded border",
-                "min-h-[100px] min-w-[200px] max-w-[980px]",
+                "min-h-[38px] min-w-[200px] max-w-[980px]",
                 "border-github-border-default bg-github-canvas-default",
                 className,
             )}

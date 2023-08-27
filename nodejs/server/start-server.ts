@@ -66,7 +66,10 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
         async (b) => (await b).name === props.filepath,
     )!;
 
-    const entries = await getDirEntries(dirname(props.filepath));
+    const entries = await getDirEntries(
+        root,
+        relative(root, dirname(props.filepath)),
+    );
 
     wss.on("connection", async (ws, _req) => {
         const wsSend = (m: WsServerMessage) => ws.send(JSON.stringify(m));
@@ -79,11 +82,12 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
         const markdown = (await buffer.lines).join("\n");
         const cursorMove = await getCursorMove(nvim, buffer, props);
         const entry: Entry = {
-            name: relative(root, props.filepath),
+            relativeToRoot: relative(root, props.filepath),
             type: "file",
         };
 
         wsSend({
+            root,
             markdown,
             cursorMove,
             entry,
@@ -99,8 +103,11 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
             const { entry } = JSON.parse(event.toString()) as WsClientMessage;
             if (entry) {
                 if (entry.type === "dir") {
-                    const entries = await getDirEntries(entry.name);
-                    wsSend({ entries, entry });
+                    const entries = await getDirEntries(
+                        root,
+                        entry.relativeToRoot,
+                    );
+                    wsSend({ root, entries, entry });
                 }
             }
         });
@@ -112,23 +119,23 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
                 [arg]: NeovimNotificationArgs,
             ) => {
                 const entry: Entry = {
-                    name: relative(root, arg.file),
+                    relativeToRoot: relative(root, arg.file),
                     type: "file",
                 };
 
                 if (event === "markdown-preview-text-changed") {
                     const markdown = (await buffer.lines).join("\n");
-                    wsSend({ markdown, entry });
+                    wsSend({ root, markdown, entry });
                 }
 
                 if (event === "markdown-preview-buffer-delete") {
-                    wsSend({ goodbye: true, entry });
+                    wsSend({ root, goodbye: true, entry });
                     server.close();
                 }
 
                 if (event === "markdown-preview-cursor-moved") {
                     const cursorMove = await getCursorMove(nvim, buffer, props);
-                    debouncedWsSend({ cursorMove, entry });
+                    debouncedWsSend({ root, cursorMove, entry });
                 }
             },
         );

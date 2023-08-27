@@ -23,7 +23,7 @@ export type CursorMove = {
 };
 
 export type Entry = {
-    name: string;
+    relativeToRoot: string;
     type: "file" | "dir";
 };
 
@@ -34,6 +34,7 @@ export type WsServerMessage = {
     goodbye?: true;
     entries?: Entry[];
     entry: Entry;
+    root: string;
 };
 
 export type WsClientMessage = {

@@ -6,41 +6,7 @@ import {
 } from "../../websocket-context/context";
 import { Container } from "../container";
 import { ThemePicker } from "../theme-select";
-import { DirIcon } from "./dir-icon";
-import { FileIcon } from "./file-icon";
-
-const iconClassName = "mr-3 h-5 w-5";
-
-const IconMap = {
-    dir: <DirIcon className={iconClassName} />,
-    file: <FileIcon className={iconClassName} />,
-};
-
-const EntryComponent = ({
-    type,
-    name,
-}: {
-    type: "dir" | "file";
-    name: string;
-}) => {
-    const { wsSend } = useContext(websocketContext);
-
-    function requestEntries() {
-        wsSend({ entry: { name, type } });
-    }
-
-    return (
-        <div className="group flex h-[38px] items-center border-t border-github-border-default px-4 first:border-t-0 hover:bg-github-canvas-subtle">
-            {IconMap[type]}
-            <span
-                onClick={requestEntries}
-                className="cursor-pointer text-sm !text-github-fg-default hover:!text-github-accent-fg hover:underline"
-            >
-                {name}
-            </span>
-        </div>
-    );
-};
+import { EntryComponent } from "./entry";
 
 export const Explorer = () => {
     const { addMessageHandler } = useContext(websocketContext);
@@ -57,7 +23,7 @@ export const Explorer = () => {
         addMessageHandler("explorer", messageHandler);
     }, [addMessageHandler]);
 
-    const segments = entry?.name.split("/") ?? [];
+    const segments = entry?.relativeToRoot.split("/") ?? [];
     const [username, repo] = repoName.split("/");
 
     return (
@@ -76,9 +42,18 @@ export const Explorer = () => {
                 {segments}
             </Container>
             <Container>
-                {segments.length > 1 && <EntryComponent name=".." type="dir" />}
-                {entries.map(({ name, type }) => (
-                    <EntryComponent key={name} name={name} type={type} />
+                {(segments.length > 1 || entry?.type === "dir") && (
+                    <EntryComponent
+                        relativeToRoot={entry?.relativeToRoot + "/.."}
+                        type="dir"
+                    />
+                )}
+                {entries.map(({ relativeToRoot, type }) => (
+                    <EntryComponent
+                        key={relativeToRoot}
+                        relativeToRoot={relativeToRoot}
+                        type={type}
+                    />
                 ))}
             </Container>
         </>

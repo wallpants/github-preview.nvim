@@ -2,7 +2,7 @@ import { globby } from "globby";
 import { type NeovimClient } from "neovim";
 import { type AsyncBuffer } from "neovim/lib/api/Buffer";
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { dirname, relative, resolve } from "node:path";
 import { type CursorMove, type Entry, type PluginProps } from "../types";
 
 export async function getCursorMove(
@@ -34,7 +34,7 @@ export function findRepoRoot(filePath: string): string | null {
                 const absolute = `${dir}/${path}`;
                 const pathStats = statSync(absolute);
                 if (pathStats.isDirectory() && path === ".git") {
-                    return dir;
+                    return dir + "/";
                 }
             }
             dir = dirname(dir);
@@ -61,9 +61,14 @@ export function getRepoName(root: string) {
     }
 }
 
-export async function getDirEntries(dir: string): Promise<Entry[]> {
+// TODO This seems convoluted
+export async function getDirEntries(
+    root: string,
+    relativeDir: string,
+): Promise<Entry[]> {
+    const resolved = resolve(root, relativeDir);
     const paths = await globby("*", {
-        cwd: dir,
+        cwd: resolved,
         onlyFiles: false,
         gitignore: true,
         objectMode: true,
@@ -82,8 +87,15 @@ export async function getDirEntries(dir: string): Promise<Entry[]> {
     dirs.sort();
     files.sort();
 
-    const dirEntries: Entry[] = dirs.map((d) => ({ name: d, type: "dir" }));
-    const fileEntries: Entry[] = files.map((f) => ({ name: f, type: "file" }));
+    const relati = relative(root, resolved);
+    const dirEntries: Entry[] = dirs.map((d) => ({
+        relativeToRoot: relati ? `${relati}/${d}` : d,
+        type: "dir",
+    }));
+    const fileEntries: Entry[] = files.map((f) => ({
+        relativeToRoot: relati ? `${relati}/${f}` : f,
+        type: "file",
+    }));
 
     return dirEntries.concat(fileEntries);
 }
