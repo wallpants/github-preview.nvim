@@ -2,7 +2,7 @@ import { debounce } from "lodash-es";
 import { type NeovimClient } from "neovim";
 import { type AsyncBuffer } from "neovim/lib/api/Buffer";
 import { createServer } from "node:http";
-import { dirname, relative } from "node:path";
+import { dirname, normalize, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import opener from "opener";
 import handler from "serve-handler";
@@ -102,12 +102,24 @@ export async function startServer(nvim: NeovimClient, props: PluginProps) {
         ws.on("message", async (event) => {
             const { entry } = JSON.parse(event.toString()) as WsClientMessage;
             if (entry) {
+                const normalizedEntry = {
+                    ...entry,
+                    // if we're at dir "./src" and navigate to "..",
+                    // the path becomes "./src/.."
+                    //
+                    // normalize converts "./src/.." to "./"
+                    relativeToRoot: normalize(entry.relativeToRoot),
+                };
                 if (entry.type === "dir") {
                     const entries = await getDirEntries(
                         root,
                         entry.relativeToRoot,
                     );
-                    wsSend({ root, entries, entry });
+                    wsSend({
+                        root,
+                        entries,
+                        entry: normalizedEntry,
+                    });
                 }
             }
         });
