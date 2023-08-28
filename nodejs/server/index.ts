@@ -1,5 +1,6 @@
 import { attach } from "neovim";
-import { type PluginProps } from "../types";
+import { parse } from "valibot";
+import { PluginPropsSchema } from "../types";
 import { PORT, SOCKET } from "./env";
 import { startServer } from "./start-server";
 
@@ -18,7 +19,10 @@ async function killExisting(port: number) {
 export async function main() {
     if (!socket) throw Error("missing socket");
     const nvim = attach({ socket });
-    const props = (await nvim.getVar("markdown_preview_props")) as PluginProps;
+    const props = parse(
+        PluginPropsSchema,
+        await nvim.getVar("markdown_preview_props"),
+    );
     await killExisting(props.port);
     await startServer(nvim, props);
 }
