@@ -32,6 +32,7 @@
     "lodash-es": "^4.17.21",
     "markdown-it": "^13.0.1",
     "match-sorter": "^6.3.1",
+    "minimatch": "^9.0.3",
     "neovim": "^4.10.1",
     "opener": "^1.5.2",
     "react": "^18.2.0",

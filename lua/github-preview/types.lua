@@ -18,6 +18,7 @@ M.LOG_OUTPUT = {
 ---@field port number
 ---@field scroll_debounce_ms number
 ---@field disable_sync_scroll boolean
+---@field ignore_buffer_patterns string[]
 ---@field sync_scroll_type sync_scroll_type
 
 ---@class opts
@@ -25,6 +26,7 @@ M.LOG_OUTPUT = {
 ---@field log_output log_output
 ---@field scroll_debounce_ms number
 ---@field disable_sync_scroll boolean
+---@field ignore_buffer_patterns string[]
 ---@field sync_scroll_type sync_scroll_type
 
 return M

@@ -16,6 +16,7 @@ export async function getCursorMove(
     const [cursorLine] = await currentWindow.cursor;
     return {
         cursorLine,
+        // TODO: would buffer.lenght work here?
         markdownLen: markdown.length,
         winHeight,
         winLine,

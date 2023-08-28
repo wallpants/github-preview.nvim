@@ -9,6 +9,7 @@ M.default_opts = {
 	log_output = Types.LOG_OUTPUT.none,
 	scroll_debounce_ms = 250,
 	disable_sync_scroll = false,
+	ignore_buffer_patterns = { "NvimTree_*" },
 	sync_scroll_type = Types.SYNC_SCROLL_TYPE.middle,
 }
 
@@ -22,6 +23,7 @@ M.setup = function(opts)
 			port = opts.port,
 			scroll_debounce_ms = opts.scroll_debounce_ms,
 			disable_sync_scroll = false,
+			ignore_buffer_patterns = opts.ignore_buffer_patterns,
 			sync_scroll_type = Types.SYNC_SCROLL_TYPE.middle,
 		}
 
