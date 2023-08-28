@@ -2,14 +2,14 @@ import { debounce } from "lodash-es";
 import { minimatch } from "minimatch";
 import { type NeovimClient } from "neovim";
 import { type Server } from "node:http";
-import { relative } from "node:path";
+import { extname, relative } from "node:path";
 import {
     type CurrentEntry,
     type NeovimNotificationArg,
     type PluginProps,
     type WsServerMessage,
 } from "../types";
-import { getCursorMove } from "./utils";
+import { getCursorMove, textToMarkdown } from "./utils";
 
 export const RPC_EVENTS = [
     "markdown-preview-text-changed",
@@ -65,12 +65,16 @@ export function onNvimNotification({
         const buffers = await nvim.buffers;
         const buffer = buffers.find((b) => b.id === arg.buf);
         if (!buffer) throw Error("buffer not found");
-        const markdown = (await buffer.lines).join("\n");
+        const text = (await buffer.lines).join("\n");
+        const fileExt = extname(arg.file);
 
         const currentEntry: CurrentEntry = {
             relativeToRoot: relative(root, arg.file),
             type: "file",
-            markdown,
+            content: {
+                markdown: textToMarkdown({ text, fileExt }),
+                fileExt,
+            },
         };
 
         if (event === "markdown-preview-text-changed") {
@@ -79,9 +83,10 @@ export function onNvimNotification({
         }
 
         if (event === "markdown-preview-cursor-moved") {
+            // TODO do we really need text.length?
+            const cursorMove = await getCursorMove(nvim, props, text.length);
             // TODO only send currentEntry if it's different
             // from what the browser has
-            const cursorMove = await getCursorMove(nvim, props, markdown);
             debouncedWsSend({ root, cursorMove, currentEntry });
             return;
         }

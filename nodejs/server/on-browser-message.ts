@@ -1,19 +1,12 @@
 import { readFileSync } from "node:fs";
 import { dirname, extname, normalize } from "node:path";
 import { type RawData } from "ws";
-import { type WsBrowserMessage, type WsServerMessage } from "../types";
-import { getDirEntries } from "./utils";
-
-function resolveLocalMarkdown(path: string): string {
-    const ext = extname(path);
-    const content = readFileSync(path).toString();
-
-    if (ext === "md") return content;
-
-    return `\`\`\`${ext}
-${content}
-\`\`\``;
-}
+import {
+    type EntryContent,
+    type WsBrowserMessage,
+    type WsServerMessage,
+} from "../types";
+import { getDirEntries, textToMarkdown } from "./utils";
 
 type Args = {
     root: string;
@@ -39,18 +32,19 @@ export function onBrowserMessage({ root, wsSend }: Args) {
 
             const entries = await getDirEntries({ relativeDir, root });
 
-            let markdown: string | undefined;
+            let content: EntryContent | undefined;
             if (type === "file") {
-                /** We generate a markdown representation of any file that's
-                 * requested by the browser */
-                markdown = resolveLocalMarkdown(relativeToRoot);
+                const fileExt = extname(relativeToRoot);
+                const text = readFileSync(relativeToRoot).toString();
+                const markdown = textToMarkdown({ text, fileExt });
+                content = { markdown, fileExt };
             }
 
             wsSend({
                 root,
                 currentEntry: {
                     relativeToRoot,
-                    markdown,
+                    content,
                     type,
                 },
                 entries,

@@ -1,6 +1,6 @@
 import { type NeovimClient } from "neovim";
 import { type Server } from "node:http";
-import { dirname, relative } from "node:path";
+import { dirname, extname, relative } from "node:path";
 import { type WebSocket } from "ws";
 import {
     type CurrentEntry,
@@ -9,7 +9,12 @@ import {
 } from "../types";
 import { onBrowserMessage } from "./on-browser-message";
 import { onNvimNotification } from "./on-nvim-notification";
-import { getCursorMove, getDirEntries, getRepoName } from "./utils";
+import {
+    getCursorMove,
+    getDirEntries,
+    getRepoName,
+    textToMarkdown,
+} from "./utils";
 
 type Args = {
     nvim: NeovimClient;
@@ -23,16 +28,20 @@ export function onWssConnection({ nvim, httpServer, root, props }: Args) {
         const repoName = getRepoName(root);
         const buffer = await nvim.buffer;
 
-        const markdown = (await buffer.lines).join("\n");
-        const cursorMove = await getCursorMove(nvim, props, markdown);
+        const text = (await buffer.lines).join("\n");
+        const cursorMove = await getCursorMove(nvim, props, text.length);
 
         const wsSend = (m: WsServerMessage) => ws.send(JSON.stringify(m));
 
         const relativeToRoot = relative(root, await buffer.name);
+        const fileExt = extname(relativeToRoot);
         const currentEntry: CurrentEntry = {
             relativeToRoot,
             type: "file",
-            markdown,
+            content: {
+                markdown: textToMarkdown({ text, fileExt }),
+                fileExt,
+            },
         };
 
         const entries = await getDirEntries({

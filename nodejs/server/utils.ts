@@ -4,10 +4,30 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 import { type CursorMove, type Entry, type PluginProps } from "../types";
 
+/** Takes a string and wraps it inside a markdown
+ * codeblock using file extension as language
+ *
+ * example:
+ * textToMarkdown({text, fileExt: "ts"})
+ *
+ * \`\`\`ts
+ * ${text}
+ * \`\`\`
+ */
+export function textToMarkdown({
+    text,
+    fileExt,
+}: {
+    text: string;
+    fileExt: string;
+}) {
+    return fileExt === "md" ? text : "```" + fileExt + `\n${text}` + "```";
+}
+
 export async function getCursorMove(
     nvim: NeovimClient,
     props: PluginProps,
-    markdown: string,
+    contentLen: number,
 ): Promise<CursorMove | undefined> {
     if (props.disable_sync_scroll) return undefined;
     const currentWindow = await nvim.window;
@@ -17,7 +37,7 @@ export async function getCursorMove(
     return {
         cursorLine,
         // TODO: would buffer.lenght work here?
-        markdownLen: markdown.length,
+        contentLen,
         winHeight,
         winLine,
         sync_scroll_type: props.sync_scroll_type,

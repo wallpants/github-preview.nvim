@@ -38,7 +38,7 @@ export type NeovimNotificationArg = {
 
 export type CursorMove = {
     cursorLine: number;
-    markdownLen: number;
+    contentLen: number;
     winHeight: number;
     winLine: number;
     sync_scroll_type: "middle" | "top" | "relative";
@@ -49,8 +49,13 @@ export type Entry = {
     type: "file" | "dir";
 };
 
+export type EntryContent = {
+    markdown: string;
+    fileExt: string;
+};
+
 export type CurrentEntry = Entry & {
-    markdown?: string;
+    content?: EntryContent;
 };
 
 export type WsServerMessage = {
