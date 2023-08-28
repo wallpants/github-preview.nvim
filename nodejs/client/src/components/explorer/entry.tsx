@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { type Entry } from "../../../../types";
+import { cn } from "../../lib/styles";
 import { websocketContext } from "../../websocket-context/context";
 import { DirIcon } from "./dir-icon";
 import { FileIcon } from "./file-icon";
@@ -21,12 +22,15 @@ export const EntryComponent = ({ type, relativeToRoot }: Entry) => {
     const name = relativeToRoot.split("/").pop();
 
     return (
-        <div className="group flex h-[38px] items-center border-t border-github-border-default px-4 first:border-t-0 hover:bg-github-canvas-subtle">
+        <div
+            onClick={requestEntries}
+            className={cn(
+                "group flex h-[38px] cursor-pointer items-center border-t px-4 first:border-t-0",
+                "border-github-border-default hover:bg-github-canvas-subtle",
+            )}
+        >
             {IconMap[type]}
-            <span
-                onClick={requestEntries}
-                className="cursor-pointer text-sm !text-github-fg-default hover:!text-github-accent-fg hover:underline"
-            >
+            <span className="text-sm group-hover:text-github-accent-fg group-hover:underline">
                 {name}
             </span>
         </div>

@@ -27,7 +27,7 @@ type Args = {
 
 export function onNvimNotification({
     nvim,
-    httpServer,
+    // httpServer,
     root,
     props,
     wsSend,
@@ -43,18 +43,19 @@ export function onNvimNotification({
     ) => {
         if (!arg.file) return; // arg.file is "" on telescope buffers
 
-        if (event === "markdown-preview-buffer-delete") {
-            wsSend({
-                root,
-                goodbye: true,
-                currentEntry: {
-                    type: "dir",
-                    relativeToRoot: "",
-                },
-            });
-            httpServer.close();
-            return;
-        }
+        // TODO: implement browser auto close
+        // if (event === "markdown-preview-buffer-delete") {
+        //     wsSend({
+        //         root,
+        //         goodbye: true,
+        //         currentEntry: {
+        //             type: "dir",
+        //             relativeToRoot: "",
+        //         },
+        //     });
+        //     httpServer.close();
+        //     return;
+        // }
 
         for (const ignorePattern of props.ignore_buffer_patterns) {
             // we use this to avoid updating browser when opening

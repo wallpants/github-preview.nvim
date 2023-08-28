@@ -1,3 +1,4 @@
+import { isBinary } from "istextorbinary";
 import { readFileSync } from "node:fs";
 import { dirname, extname, normalize } from "node:path";
 import { type RawData } from "ws";
@@ -16,7 +17,6 @@ type Args = {
 export function onBrowserMessage({ root, wsSend }: Args) {
     return async (event: RawData) => {
         const message = JSON.parse(String(event)) as WsBrowserMessage;
-        console.log("message: ", message);
         const { currentBrowserEntry } = message;
 
         if (currentBrowserEntry) {
@@ -34,6 +34,9 @@ export function onBrowserMessage({ root, wsSend }: Args) {
 
             let content: EntryContent | undefined;
             if (type === "file") {
+                // TODO: add support for binary files (images, etc)
+                if (isBinary(relativeToRoot)) return;
+
                 const fileExt = extname(relativeToRoot);
                 const text = readFileSync(relativeToRoot).toString();
                 const markdown = textToMarkdown({ text, fileExt });

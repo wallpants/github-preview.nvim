@@ -21,7 +21,7 @@ export function textToMarkdown({
     text: string;
     fileExt: string;
 }) {
-    return fileExt === "md" ? text : "```" + fileExt + `\n${text}` + "```";
+    return fileExt === ".md" ? text : "```" + fileExt + `\n${text}`;
 }
 
 export async function getCursorMove(

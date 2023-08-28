@@ -18,7 +18,7 @@ M.log = function(log_output, source)
 			print(source .. vim.inspect(data))
 		end
 		if log_output == Types.LOG_OUTPUT.file then
-			local file = io.open(M.plugin_root .. "logs/" .. source .. ".log", "a")
+			local file = io.open(M.plugin_root .. source .. ".log", "a")
 			if file then
 				file:write(vim.inspect(data) .. "\n")
 				file:close()

@@ -1,4 +1,5 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { cn } from "../../lib/styles";
 import {
     websocketContext,
     type MessageHandler,
@@ -14,7 +15,8 @@ type Props = {
 const ELEMENT_ID = "markdown-content";
 
 export const Markdown = ({ className }: Props) => {
-    const filename = "README.md";
+    const [fileName, setFileName] = useState<string>();
+    const [fileExt, setFileExt] = useState<string>();
     const { addMessageHandler } = useContext(websocketContext);
 
     useEffect(() => {
@@ -23,6 +25,11 @@ export const Markdown = ({ className }: Props) => {
             if (!contentElement) return;
 
             if (message.currentEntry?.content && contentElement) {
+                setFileExt(message.currentEntry.content.fileExt);
+                const filename = message.currentEntry.relativeToRoot
+                    .split("/")
+                    .pop();
+                setFileName(filename);
                 markdownToHtml(message.currentEntry.content.markdown)
                     .then((html) => (contentElement.innerHTML = html))
                     .catch((error) => {
@@ -42,8 +49,15 @@ export const Markdown = ({ className }: Props) => {
 
     return (
         <Container className={className}>
-            <p className="!mb-0 p-4 text-sm font-semibold">{filename}</p>
-            <div id={ELEMENT_ID} className="p-11 pt-0" />
+            <p className="!mb-0 p-4 text-sm font-semibold">{fileName}</p>
+            <div
+                id={ELEMENT_ID}
+                className={cn(
+                    "[&>div>pre]:!mb-0",
+                    fileExt === ".md" && "p-11",
+                    "pt-0",
+                )}
+            />
         </Container>
     );
 };
