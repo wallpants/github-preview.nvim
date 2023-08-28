@@ -6,13 +6,13 @@ export type PluginProps = {
     filepath: string;
 };
 
-export type NeovimNotificationArgs = Array<{
+export type NeovimNotificationArg = {
     id: number;
     match: string;
     buf: number;
     file: string;
     event: string;
-}>;
+};
 
 export type CursorMove = {
     cursorLine: number;

@@ -62,10 +62,13 @@ export function getRepoName(root: string) {
 }
 
 // TODO This seems convoluted
-export async function getDirEntries(
-    root: string,
-    relativeDir: string,
-): Promise<Entry[]> {
+export async function getDirEntries({
+    root,
+    relativeDir,
+}: {
+    root: string;
+    relativeDir: string;
+}): Promise<Entry[]> {
     const resolved = resolve(root, relativeDir);
     const paths = await globby("*", {
         cwd: resolved,

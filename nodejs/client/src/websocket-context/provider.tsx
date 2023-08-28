@@ -21,13 +21,10 @@ export const WebsocketProvider = ({ children }: Props) => {
     const [status, setStatus] = useState<Status>("online");
 
     useEffect(() => {
-        ws.onopen = () => {
-            setStatus("online");
-        };
+        ws.onopen = () => setStatus("online");
         ws.onclose = () => setStatus("reconnecting");
         ws.onmessage = (event) => {
             const message = JSON.parse(String(event.data)) as WsServerMessage;
-            console.log("message: ", message);
             if (message.goodbye) window.close();
             messageHandlers.forEach((handler) => handler(message));
         };

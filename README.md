@@ -4,7 +4,7 @@
 
 ![Alt text](https://www.digitalocean.com/_next/static/media/intro-to-cloud.d49bc5f7.jpeg)
 
-what if I typeee
+what if I type
 
 ```ts
 console.log("hello world");
@@ -30,7 +30,7 @@ const starryNight = await createStarryNight(common, {
 
 1. Open markdown file in neovim and run `:MarkdownPreview` to start server
 2. Close browser tab that was opened by previous
-3. Start vite dev server
+3. Start vite dev server and then something else
 
 ```bash
 markdown-preview/: $ pnpm web:dev

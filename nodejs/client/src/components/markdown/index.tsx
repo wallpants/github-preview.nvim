@@ -23,9 +23,11 @@ export const Markdown = ({ className }: Props) => {
             if (!contentElement) return;
 
             if (message.markdown && contentElement) {
-                markdownToHtml(message.markdown).then(
-                    (html) => (contentElement.innerHTML = html),
-                );
+                markdownToHtml(message.markdown)
+                    .then((html) => (contentElement.innerHTML = html))
+                    .catch((error) => {
+                        throw error;
+                    });
             }
 
             if (message.cursorMove) {

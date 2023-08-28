@@ -3,11 +3,15 @@ const config = {
     root: true,
     env: { browser: true, es2020: true },
     parser: "@typescript-eslint/parser",
+    parserOptions: {
+        project: "./tsconfig.json",
+    },
     extends: [
         "eslint:recommended",
         "plugin:tailwindcss/recommended",
-        "plugin:@typescript-eslint/recommended",
         "plugin:react-hooks/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-type-checked",
     ],
     plugins: ["react-refresh", "tsdoc", "import"],
     settings: {
