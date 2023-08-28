@@ -3,9 +3,13 @@
  */
 import { type CursorMove } from "../../../../../types";
 
+export const EXPLORER_ELE_ID = "explorer-ele-id";
+
 function scroll(offsetTop: number) {
+    const explorerEle = document.getElementById(EXPLORER_ELE_ID);
+    const explorerOffset = explorerEle?.offsetHeight ?? 0;
     [document.body, document.documentElement].forEach((ele) => {
-        ele.scroll({ top: offsetTop, behavior: "smooth" });
+        ele.scroll({ top: offsetTop + explorerOffset, behavior: "smooth" });
     });
 }
 
