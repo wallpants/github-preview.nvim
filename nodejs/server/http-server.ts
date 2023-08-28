@@ -7,15 +7,13 @@ import {
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import handler from "serve-handler";
-import { LOCAL_FILE_ROUTE } from "../consts";
 import { type PluginProps } from "../types";
-import { localFileHandler } from "./local-file-handler";
 import { RPC_EVENTS } from "./on-nvim-notification";
 
 export async function initHttpServer(
     nvim: NeovimClient,
     httpServer: Server,
-    props: PluginProps,
+    _props: PluginProps,
     req: IncomingMessage,
     res: ServerResponse,
 ) {
@@ -25,9 +23,9 @@ export async function initHttpServer(
         httpServer.close();
     }
 
-    if (req.url?.startsWith(LOCAL_FILE_ROUTE)) {
-        return localFileHandler(req, res, props.filepath);
-    }
+    // if (req.url?.startsWith(LOCAL_FILE_ROUTE)) {
+    //     return localFileHandler(req, res, props.filepath);
+    // }
 
     return handler(req, res, {
         public: fileURLToPath(dirname(import.meta.url)),

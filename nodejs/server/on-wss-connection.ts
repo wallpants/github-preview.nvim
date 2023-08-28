@@ -1,5 +1,4 @@
 import { type NeovimClient } from "neovim";
-import { type AsyncBuffer } from "neovim/lib/api/Buffer";
 import { type Server } from "node:http";
 import { dirname, relative } from "node:path";
 import { type WebSocket } from "ws";
@@ -20,26 +19,24 @@ export function onWssConnection(
 ) {
     return async (ws: WebSocket) => {
         const repoName = getRepoName(root);
-        const buffers = (await nvim.buffers) as AsyncBuffer[];
-        const buffer = buffers.find(
-            async (b) => (await b).name === props.filepath,
-        )!;
-
-        const entries = await getDirEntries({
-            relativeDir: relative(root, dirname(props.filepath)),
-            root,
-        });
+        const buffer = await nvim.buffer;
 
         const markdown = (await buffer.lines).join("\n");
         const cursorMove = await getCursorMove(nvim, props, markdown);
 
         const wsSend = (m: WsServerMessage) => ws.send(JSON.stringify(m));
 
+        const relativeToRoot = relative(root, await buffer.name);
         const currentEntry: CurrentEntry = {
-            relativeToRoot: relative(root, props.filepath),
+            relativeToRoot,
             type: "file",
             markdown,
         };
+
+        const entries = await getDirEntries({
+            relativeDir: dirname(relativeToRoot),
+            root,
+        });
 
         wsSend({
             root,

@@ -23,7 +23,6 @@ M.setup = function(opts)
 			scroll_debounce_ms = opts.scroll_debounce_ms,
 			disable_sync_scroll = false,
 			sync_scroll_type = Types.SYNC_SCROLL_TYPE.middle,
-			filepath = vim.fn.expand("%:p"),
 		}
 
 		vim.api.nvim_create_autocmd({ "TextChangedI", "TextChanged" }, {

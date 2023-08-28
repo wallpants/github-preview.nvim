@@ -46,19 +46,10 @@ export function onNvimNotification(
         }
 
         const buffers = await nvim.buffers;
-        console.log("arg.file: ", arg.file);
-        const buffer = buffers.find(async (b) => {
-            const name = await b.name;
-            console.log("name: ", name);
-            if (name === arg.file) {
-                console.log("match: ", name);
-                return true;
-            }
-        })!;
-        console.log("buffer.name: ", await buffer.name);
+        const buffer = buffers.find((b) => b.id === arg.buf);
+        if (!buffer) throw Error("buffer not found");
+        console.log("match buffer.name: ", await buffer.name);
         const markdown = (await buffer.lines).join("\n");
-        console.log("markdown: ", markdown);
-        console.log("-------------------");
 
         const currentEntry: CurrentEntry = {
             relativeToRoot: relative(root, arg.file),

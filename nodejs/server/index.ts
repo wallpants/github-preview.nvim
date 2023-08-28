@@ -33,7 +33,7 @@ const props = parse(
 await killExisting(props.port);
 await nvim.lua('print("starting MarkdownPreview server")');
 
-const root = findRepoRoot(props.filepath);
+const root = findRepoRoot(await nvim.buffer.name);
 if (!root) throw Error("root .git directory NOT FOUND");
 
 for (const event of RPC_EVENTS) await nvim.subscribe(event);

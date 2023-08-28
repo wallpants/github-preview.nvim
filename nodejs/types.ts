@@ -2,7 +2,6 @@ import { boolean, literal, number, object, union, type Output } from "valibot";
 
 export const PluginPropsSchema = object({
     port: number(),
-    buff_id: number(),
     scroll_debounce_ms: number(),
     disable_sync_scroll: boolean(),
     sync_scroll_type: union([
@@ -15,11 +14,15 @@ export const PluginPropsSchema = object({
 export type PluginProps = Output<typeof PluginPropsSchema>;
 
 export type NeovimNotificationArg = {
+    /** autocommand id */
     id: number;
+    /** expanded value of <amatch> */
     match: string;
+    /** expanded value of <abuf> */
     buf: number;
     /** absolute filepath */
     file: string;
+    /** name of the triggered event */
     event: string;
 };
 

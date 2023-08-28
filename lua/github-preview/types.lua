@@ -16,7 +16,6 @@ M.LOG_OUTPUT = {
 
 ---@class plugin_props
 ---@field port number
----@field buff_id number
 ---@field scroll_debounce_ms number
 ---@field disable_sync_scroll boolean
 ---@field sync_scroll_type sync_scroll_type
