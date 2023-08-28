@@ -15,10 +15,12 @@ ${content}
 \`\`\``;
 }
 
-export function onBrowserMessage(
-    root: string,
-    wsSend: (w: WsServerMessage) => void,
-) {
+type Args = {
+    root: string;
+    wsSend: (w: WsServerMessage) => void;
+};
+
+export function onBrowserMessage({ root, wsSend }: Args) {
     return async (event: RawData) => {
         const message = JSON.parse(String(event)) as WsBrowserMessage;
         console.log("message: ", message);

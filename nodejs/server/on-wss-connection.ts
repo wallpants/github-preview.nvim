@@ -11,12 +11,14 @@ import { onBrowserMessage } from "./on-browser-message";
 import { onNvimNotification } from "./on-nvim-notification";
 import { getCursorMove, getDirEntries, getRepoName } from "./utils";
 
-export function onWssConnection(
-    nvim: NeovimClient,
-    httpServer: Server,
-    root: string,
-    props: PluginProps,
-) {
+type Args = {
+    nvim: NeovimClient;
+    httpServer: Server;
+    root: string;
+    props: PluginProps;
+};
+
+export function onWssConnection({ nvim, httpServer, root, props }: Args) {
     return async (ws: WebSocket) => {
         const repoName = getRepoName(root);
         const buffer = await nvim.buffer;
@@ -46,11 +48,11 @@ export function onWssConnection(
             repoName,
         });
 
-        ws.on("message", onBrowserMessage(root, wsSend));
+        ws.on("message", onBrowserMessage({ root, wsSend }));
 
         nvim.on(
             "notification",
-            onNvimNotification(nvim, httpServer, root, props, wsSend),
+            onNvimNotification({ nvim, httpServer, root, props, wsSend }),
         );
     };
 }

@@ -16,13 +16,21 @@ export const RPC_EVENTS = [
     "markdown-preview-buffer-delete",
 ] as const;
 
-export function onNvimNotification(
-    nvim: NeovimClient,
-    httpServer: Server,
-    root: string,
-    props: PluginProps,
-    wsSend: (w: WsServerMessage) => void,
-) {
+type Args = {
+    nvim: NeovimClient;
+    httpServer: Server;
+    root: string;
+    props: PluginProps;
+    wsSend: (w: WsServerMessage) => void;
+};
+
+export function onNvimNotification({
+    nvim,
+    httpServer,
+    root,
+    props,
+    wsSend,
+}: Args) {
     const debouncedWsSend = debounce(wsSend, props.scroll_debounce_ms, {
         leading: false,
         trailing: true,

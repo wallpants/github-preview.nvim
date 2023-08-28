@@ -22,34 +22,41 @@ async function killExisting(port: number) {
     }
 }
 
-if (!socket) throw Error("missing socket");
-const nvim = attach({ socket });
+async function main() {
+    if (!socket) throw Error("missing socket");
+    const nvim = attach({ socket });
 
-const props = parse(
-    PluginPropsSchema,
-    await nvim.getVar("markdown_preview_props"),
-);
+    const props = parse(
+        PluginPropsSchema,
+        await nvim.getVar("markdown_preview_props"),
+    );
 
-await killExisting(props.port);
-await nvim.lua('print("starting MarkdownPreview server")');
+    await killExisting(props.port);
+    await nvim.lua('print("starting MarkdownPreview server")');
 
-const root = findRepoRoot(await nvim.buffer.name);
-if (!root) throw Error("root .git directory NOT FOUND");
+    const root = findRepoRoot(await nvim.buffer.name);
+    if (!root) throw Error("root .git directory NOT FOUND");
 
-for (const event of RPC_EVENTS) await nvim.subscribe(event);
+    for (const event of RPC_EVENTS) await nvim.subscribe(event);
 
-const httpServer: Server = createServer((req, res) =>
-    initHttpServer(nvim, httpServer, props, req, res),
-);
+    const httpServer: Server = createServer((req, res) =>
+        initHttpServer({ nvim, httpServer, props, req, res }),
+    );
 
-const wsServer = new WebSocketServer({ server: httpServer });
-wsServer.on("connection", onWssConnection(nvim, httpServer, root, props));
+    const wsServer = new WebSocketServer({ server: httpServer });
+    wsServer.on(
+        "connection",
+        onWssConnection({ nvim, httpServer, root, props }),
+    );
 
-// we check for PORT for dev env
-const port = PORT || props.port;
-// don't open browser in dev, webapp is hosted on other port
-if (!PORT) opener(`http://localhost:${port}`);
-httpServer.listen(port);
+    // we check for PORT for dev env
+    const port = PORT || props.port;
+    // don't open browser in dev, webapp is hosted on other port
+    if (!PORT) opener(`http://localhost:${port}`);
+    httpServer.listen(port);
+}
+
+void main();
 
 // nvim.on('request', (method: string, args: any, resp: any) => {
 // if (method === 'close_all_pages') {
