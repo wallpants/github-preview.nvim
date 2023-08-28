@@ -1,75 +1,62 @@
 import { useContext, useEffect, useState } from "react";
-import { type WsMessage } from "../../../../types";
+import { type CurrentEntry, type Entry } from "../../../../types";
 import {
     websocketContext,
     type MessageHandler,
-} from "../../websocket-content/context";
+} from "../../websocket-context/context";
 import { Container } from "../container";
+import { EXPLORER_ELE_ID } from "../markdown/markdown-it/scroll";
 import { ThemePicker } from "../theme-select";
-import { DirIcon } from "./dir-icon";
-import { FileIcon } from "./file-icon";
-
-const iconClassName = "mr-3 h-5 w-5";
-
-const IconMap = {
-    dir: <DirIcon className={iconClassName} />,
-    file: <FileIcon className={iconClassName} />,
-};
-
-const Entry = ({ type, name }: { type: "dir" | "file"; name: string }) => {
-    return (
-        <div className="group flex h-[38px] items-center border-t border-github-border-default px-4 first:border-t-0 hover:bg-github-canvas-subtle">
-            {IconMap[type]}
-            <span className="cursor-pointer text-sm !text-github-fg-default hover:!text-github-accent-fg hover:underline">
-                {name}
-            </span>
-        </div>
-    );
-};
+import { EntryComponent } from "./entry";
 
 export const Explorer = () => {
     const { addMessageHandler } = useContext(websocketContext);
-    const [entries, setEntries] = useState<NonNullable<WsMessage["entries"]>>(
-        [],
-    );
-    const [relativePath, setRelativePath] = useState<string>("");
+    const [entries, setEntries] = useState<Entry[]>([]);
+    const [currentEntry, setCurrentEntry] = useState<CurrentEntry>();
     const [repoName, setRepoName] = useState<string>("");
 
     useEffect(() => {
         const messageHandler: MessageHandler = (message) => {
             if (message.repoName) setRepoName(message.repoName);
             if (message.entries) setEntries(message.entries);
-            if (message.relativeFilepath) {
-                setRelativePath(message.relativeFilepath);
-            }
+            if (message.currentEntry) setCurrentEntry(message.currentEntry);
         };
         addMessageHandler("explorer", messageHandler);
     }, [addMessageHandler]);
 
-    const segments = relativePath.split("/");
-
+    const segments = currentEntry?.relativeToRoot.split("/") ?? [];
     const [username, repo] = repoName.split("/");
 
     return (
-        <>
+        <div id={EXPLORER_ELE_ID}>
             <Container className="border-none">
                 <ThemePicker />
                 <div className="flex">
-                    {/* TODO: add fallback if image or repo info not found */}
-                    <img
-                        src={`https://github.com/${username}.png?size=48`}
-                        className="mb-4 mr-2 mt-6 h-6 w-6 rounded-[100%]"
-                    />
+                    {username && (
+                        <img
+                            src={`https://github.com/${username}.png?size=48`}
+                            className="mb-4 mr-2 mt-6 h-6 w-6 rounded-[100%]"
+                        />
+                    )}
                     <h3>{repo}</h3>
                 </div>
                 {segments}
             </Container>
             <Container>
-                {segments.length > 1 && <Entry name=".." type="dir" />}
-                {entries.map(({ name, type }) => (
-                    <Entry key={name} name={name} type={type} />
+                {(segments.length > 1 || currentEntry?.type === "dir") && (
+                    <EntryComponent
+                        relativeToRoot={currentEntry?.relativeToRoot + "/.."}
+                        type="dir"
+                    />
+                )}
+                {entries.map(({ relativeToRoot, type }) => (
+                    <EntryComponent
+                        key={relativeToRoot}
+                        relativeToRoot={relativeToRoot}
+                        type={type}
+                    />
                 ))}
             </Container>
-        </>
+        </div>
     );
 };

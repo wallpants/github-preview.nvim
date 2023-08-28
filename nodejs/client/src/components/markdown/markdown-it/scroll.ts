@@ -3,9 +3,13 @@
  */
 import { type CursorMove } from "../../../../../types";
 
+export const EXPLORER_ELE_ID = "explorer-ele-id";
+
 function scroll(offsetTop: number) {
+    const explorerEle = document.getElementById(EXPLORER_ELE_ID);
+    const explorerOffset = explorerEle?.offsetHeight ?? 0;
     [document.body, document.documentElement].forEach((ele) => {
-        ele.scroll({ top: offsetTop, behavior: "smooth" });
+        ele.scroll({ top: offsetTop + explorerOffset, behavior: "smooth" });
     });
 }
 
@@ -64,33 +68,33 @@ function relativeScroll(line: number, ratio: number, len: number) {
 export const scrollFnMap = {
     relative: function ({
         cursorLine,
-        markdownLen,
+        contentLen,
         winLine,
         winHeight,
     }: CursorMove) {
         const line = cursorLine - 1;
         const ratio = winLine / winHeight;
-        if (line === 0 || line === markdownLen - 1) {
-            topOrBottom(line, markdownLen);
+        if (line === 0 || line === contentLen - 1) {
+            topOrBottom(line, contentLen);
         } else {
-            relativeScroll(line, ratio, markdownLen);
+            relativeScroll(line, ratio, contentLen);
         }
     },
-    middle: function ({ cursorLine, markdownLen }: CursorMove) {
+    middle: function ({ cursorLine, contentLen }: CursorMove) {
         const line = cursorLine - 1;
-        if (line === 0 || line === markdownLen - 1) {
-            topOrBottom(line, markdownLen);
+        if (line === 0 || line === contentLen - 1) {
+            topOrBottom(line, contentLen);
         } else {
-            relativeScroll(line, 0.5, markdownLen);
+            relativeScroll(line, 0.5, contentLen);
         }
     },
-    top: function ({ cursorLine, winLine, markdownLen }: CursorMove) {
+    top: function ({ cursorLine, winLine, contentLen }: CursorMove) {
         let line = cursorLine - 1;
-        if (line === 0 || line === markdownLen - 1) {
-            topOrBottom(line, markdownLen);
+        if (line === 0 || line === contentLen - 1) {
+            topOrBottom(line, contentLen);
         } else {
             line = cursorLine - winLine;
-            relativeScroll(line, 0, markdownLen);
+            relativeScroll(line, 0, contentLen);
         }
     },
 };

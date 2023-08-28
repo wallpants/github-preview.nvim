@@ -1,29 +1,43 @@
 import { globby } from "globby";
 import { type NeovimClient } from "neovim";
-import { type AsyncBuffer } from "neovim/lib/api/Buffer";
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import type WebSocket from "ws";
-import { type CursorMove, type PluginProps, type WsMessage } from "../types";
+import { dirname, relative, resolve } from "node:path";
+import { type CursorMove, type Entry, type PluginProps } from "../types";
 
-export function wsSend(ws: WebSocket, message: WsMessage) {
-    ws.send(JSON.stringify(message));
+/** Takes a string and wraps it inside a markdown
+ * codeblock using file extension as language
+ *
+ * example:
+ * textToMarkdown({text, fileExt: "ts"})
+ *
+ * \`\`\`ts
+ * ${text}
+ * \`\`\`
+ */
+export function textToMarkdown({
+    text,
+    fileExt,
+}: {
+    text: string;
+    fileExt: string;
+}) {
+    return fileExt === "md" ? text : "```" + fileExt + `\n${text}` + "```";
 }
 
 export async function getCursorMove(
     nvim: NeovimClient,
-    buffer: AsyncBuffer,
     props: PluginProps,
+    contentLen: number,
 ): Promise<CursorMove | undefined> {
     if (props.disable_sync_scroll) return undefined;
     const currentWindow = await nvim.window;
     const winLine = Number(await nvim.call("winline"));
     const winHeight = await currentWindow.height;
     const [cursorLine] = await currentWindow.cursor;
-    const markdown = (await buffer.lines).join("\n");
     return {
         cursorLine,
-        markdownLen: markdown.length,
+        // TODO: would buffer.lenght work here?
+        contentLen,
         winHeight,
         winLine,
         sync_scroll_type: props.sync_scroll_type,
@@ -39,7 +53,7 @@ export function findRepoRoot(filePath: string): string | null {
                 const absolute = `${dir}/${path}`;
                 const pathStats = statSync(absolute);
                 if (pathStats.isDirectory() && path === ".git") {
-                    return dir;
+                    return dir + "/";
                 }
             }
             dir = dirname(dir);
@@ -66,11 +80,17 @@ export function getRepoName(root: string) {
     }
 }
 
-export async function getDirEntries(
-    dir: string,
-): Promise<WsMessage["entries"]> {
+// TODO This seems convoluted
+export async function getDirEntries({
+    root,
+    relativeDir,
+}: {
+    root: string;
+    relativeDir: string;
+}): Promise<Entry[]> {
+    const resolved = resolve(root, relativeDir);
     const paths = await globby("*", {
-        cwd: dir,
+        cwd: resolved,
         onlyFiles: false,
         gitignore: true,
         objectMode: true,
@@ -89,11 +109,15 @@ export async function getDirEntries(
     dirs.sort();
     files.sort();
 
-    const entries = dirs
-        .map((dir) => ({ name: dir, type: "dir" }))
-        .concat(
-            files.map((file) => ({ name: file, type: "file" })),
-        ) as WsMessage["entries"];
+    const relati = relative(root, resolved);
+    const dirEntries: Entry[] = dirs.map((d) => ({
+        relativeToRoot: relati ? `${relati}/${d}` : d,
+        type: "dir",
+    }));
+    const fileEntries: Entry[] = files.map((f) => ({
+        relativeToRoot: relati ? `${relati}/${f}` : f,
+        type: "file",
+    }));
 
-    return entries;
+    return dirEntries.concat(fileEntries);
 }

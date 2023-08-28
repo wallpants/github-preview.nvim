@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import {
     websocketContext,
     type MessageHandler,
-} from "../../websocket-content/context";
+} from "../../websocket-context/context";
 import { Container } from "../container";
 import { markdownToHtml } from "./markdown-it";
 import { scrollFnMap } from "./markdown-it/scroll";
@@ -22,10 +22,12 @@ export const Markdown = ({ className }: Props) => {
             const contentElement = document.getElementById(ELEMENT_ID);
             if (!contentElement) return;
 
-            if (message.markdown && contentElement) {
-                markdownToHtml(message.markdown).then(
-                    (html) => (contentElement.innerHTML = html),
-                );
+            if (message.currentEntry?.content && contentElement) {
+                markdownToHtml(message.currentEntry.content.markdown)
+                    .then((html) => (contentElement.innerHTML = html))
+                    .catch((error) => {
+                        throw error;
+                    });
             }
 
             if (message.cursorMove) {

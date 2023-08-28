@@ -1,32 +1,72 @@
-export type PluginProps = {
-    port: number;
-    scroll_debounce_ms: number;
-    disable_sync_scroll: boolean;
-    sync_scroll_type: "middle" | "top" | "relative";
-    filepath: string;
-};
+import {
+    array,
+    boolean,
+    literal,
+    number,
+    object,
+    string,
+    union,
+    type Output,
+} from "valibot";
 
-export type NeovimNotificationArgs = Array<{
+export const PluginPropsSchema = object({
+    port: number(),
+    scroll_debounce_ms: number(),
+    disable_sync_scroll: boolean(),
+    ignore_buffer_patterns: array(string()),
+    sync_scroll_type: union([
+        literal("middle"),
+        literal("top"),
+        literal("relative"),
+    ]),
+});
+
+export type PluginProps = Output<typeof PluginPropsSchema>;
+
+export type NeovimNotificationArg = {
+    /** autocommand id */
     id: number;
+    /** expanded value of <amatch> */
     match: string;
+    /** expanded value of <abuf> */
     buf: number;
+    /** absolute filepath */
     file: string;
+    /** name of the triggered event */
     event: string;
-}>;
+};
 
 export type CursorMove = {
     cursorLine: number;
-    markdownLen: number;
+    contentLen: number;
     winHeight: number;
     winLine: number;
     sync_scroll_type: "middle" | "top" | "relative";
 };
 
-export type WsMessage = {
+export type Entry = {
+    relativeToRoot: string;
+    type: "file" | "dir";
+};
+
+export type EntryContent = {
+    markdown: string;
+    fileExt: string;
+};
+
+export type CurrentEntry = Entry & {
+    content?: EntryContent;
+};
+
+export type WsServerMessage = {
+    root: string;
+    currentEntry: CurrentEntry;
     repoName?: string;
-    markdown?: string;
     cursorMove?: CursorMove;
     goodbye?: true;
-    entries?: Array<{ name: string; type: "file" | "dir" }>;
-    relativeFilepath: string;
+    entries?: Entry[];
+};
+
+export type WsBrowserMessage = {
+    currentBrowserEntry: Entry;
 };
