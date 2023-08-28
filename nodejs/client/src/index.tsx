@@ -7,8 +7,6 @@ import "./index.css";
 import { RouterProvider } from "./router-context/provider";
 import { WebsocketProvider } from "./websocket-context/provider";
 
-// const router = createBrowserRouter([{ element: <App />,  }]);
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <WebsocketProvider>

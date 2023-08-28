@@ -7,12 +7,13 @@
   "type": "module",
   "scripts": {
     "prepare": "husky install",
+    "clean": "rm -rf dist && rm -rf logs/*.log",
     "web:dev": "dotenv -e .env.dev -- vite dev nodejs/client --open",
-    "web:build": "tsc && vite build nodejs/client --emptyOutDir --outDir ../../dist",
+    "web:build": "tsc && vite build nodejs/client --outDir ../../dist",
     "web:preview": "vite preview nodejs/client",
     "server:dev": "dotenv -e .env.dev -- esno watch nodejs/server/index.ts ",
     "server:build": "ncc build nodejs/server/index.ts -m",
-    "build": "pnpm web:build && pnpm server:build",
+    "build": "pnpm clean && pnpm web:build && pnpm server:build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"nodejs/**/*.{ts,html,css}\""
   },

@@ -15,7 +15,7 @@ export const EntryComponent = ({ type, relativeToRoot }: Entry) => {
     const { wsSend } = useContext(websocketContext);
 
     function requestEntries() {
-        wsSend({ entry: { relativeToRoot, type } });
+        wsSend({ currentBrowserEntry: { relativeToRoot, type } });
     }
 
     const name = relativeToRoot.split("/").pop();

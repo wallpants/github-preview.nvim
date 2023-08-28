@@ -1,21 +1,19 @@
 import { globby } from "globby";
 import { type NeovimClient } from "neovim";
-import { type AsyncBuffer } from "neovim/lib/api/Buffer";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 import { type CursorMove, type Entry, type PluginProps } from "../types";
 
 export async function getCursorMove(
     nvim: NeovimClient,
-    buffer: AsyncBuffer,
     props: PluginProps,
+    markdown: string,
 ): Promise<CursorMove | undefined> {
     if (props.disable_sync_scroll) return undefined;
     const currentWindow = await nvim.window;
     const winLine = Number(await nvim.call("winline"));
     const winHeight = await currentWindow.height;
     const [cursorLine] = await currentWindow.cursor;
-    const markdown = (await buffer.lines).join("\n");
     return {
         cursorLine,
         markdownLen: markdown.length,

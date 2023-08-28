@@ -22,8 +22,8 @@ export const Markdown = ({ className }: Props) => {
             const contentElement = document.getElementById(ELEMENT_ID);
             if (!contentElement) return;
 
-            if (message.markdown && contentElement) {
-                markdownToHtml(message.markdown)
+            if (message.currentEntry?.markdown && contentElement) {
+                markdownToHtml(message.currentEntry.markdown)
                     .then((html) => (contentElement.innerHTML = html))
                     .catch((error) => {
                         throw error;

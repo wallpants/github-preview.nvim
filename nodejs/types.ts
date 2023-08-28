@@ -26,6 +26,7 @@ export type NeovimNotificationArg = {
     id: number;
     match: string;
     buf: number;
+    /** absolute filepath */
     file: string;
     event: string;
 };
@@ -43,16 +44,19 @@ export type Entry = {
     type: "file" | "dir";
 };
 
-export type WsServerMessage = {
-    repoName?: string;
+export type CurrentEntry = Entry & {
     markdown?: string;
+};
+
+export type WsServerMessage = {
+    root: string;
+    currentEntry: CurrentEntry;
+    repoName?: string;
     cursorMove?: CursorMove;
     goodbye?: true;
     entries?: Entry[];
-    entry: Entry;
-    root: string;
 };
 
-export type WsClientMessage = {
-    entry?: Entry;
+export type WsBrowserMessage = {
+    currentBrowserEntry: Entry;
 };

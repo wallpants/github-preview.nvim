@@ -12,21 +12,13 @@ import { type PluginProps } from "../types";
 import { localFileHandler } from "./local-file-handler";
 import { RPC_EVENTS } from "./on-nvim-notification";
 
-type Args = {
-    httpServer: Server;
-    nvim: NeovimClient;
-    props: PluginProps;
-    req: IncomingMessage;
-    res: ServerResponse;
-};
-
-export async function initHttpServer({
-    httpServer,
-    nvim,
-    props,
-    req,
-    res,
-}: Args) {
+export async function initHttpServer(
+    nvim: NeovimClient,
+    httpServer: Server,
+    props: PluginProps,
+    req: IncomingMessage,
+    res: ServerResponse,
+) {
     if (req.method === "POST") {
         res.writeHead(200).end();
         for (const event of RPC_EVENTS) await nvim.unsubscribe(event);

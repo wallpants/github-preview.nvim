@@ -4,7 +4,7 @@
 
 ![Alt text](https://www.digitalocean.com/_next/static/media/intro-to-cloud.d49bc5f7.jpeg)
 
-what if I type
+what if I type and then
 
 ```ts
 console.log("hello world");
@@ -37,5 +37,15 @@ markdown-preview/: $ pnpm web:dev
 ```
 
 we need to know
+
+something else
+
+something else
+
+something else
+
+something else
+
+something else
 
 something else

@@ -3,24 +3,21 @@ import { type AsyncBuffer } from "neovim/lib/api/Buffer";
 import { type Server } from "node:http";
 import { dirname, relative } from "node:path";
 import { type WebSocket } from "ws";
-import { type Entry, type PluginProps, type WsServerMessage } from "../types";
-import { onClientMessage } from "./on-client-message";
+import {
+    type CurrentEntry,
+    type PluginProps,
+    type WsServerMessage,
+} from "../types";
+import { onBrowserMessage } from "./on-browser-message";
 import { onNvimNotification } from "./on-nvim-notification";
 import { getCursorMove, getDirEntries, getRepoName } from "./utils";
 
-export type OnWssConnectionArgs = {
-    nvim: NeovimClient;
-    root: string;
-    props: PluginProps;
-    httpServer: Server;
-};
-
-export function onWssConnection({
-    root,
-    nvim,
-    props,
-    httpServer,
-}: OnWssConnectionArgs) {
+export function onWssConnection(
+    nvim: NeovimClient,
+    httpServer: Server,
+    root: string,
+    props: PluginProps,
+) {
     return async (ws: WebSocket) => {
         const repoName = getRepoName(root);
         const buffers = (await nvim.buffers) as AsyncBuffer[];
@@ -34,34 +31,29 @@ export function onWssConnection({
         });
 
         const markdown = (await buffer.lines).join("\n");
-        const cursorMove = await getCursorMove(nvim, buffer, props);
-        const entry: Entry = {
-            relativeToRoot: relative(root, props.filepath),
-            type: "file",
-        };
+        const cursorMove = await getCursorMove(nvim, props, markdown);
 
         const wsSend = (m: WsServerMessage) => ws.send(JSON.stringify(m));
 
+        const currentEntry: CurrentEntry = {
+            relativeToRoot: relative(root, props.filepath),
+            type: "file",
+            markdown,
+        };
+
         wsSend({
             root,
-            markdown,
             cursorMove,
-            entry,
+            currentEntry,
             entries,
             repoName,
         });
 
-        ws.on("message", onClientMessage({ wsSend, root }));
+        ws.on("message", onBrowserMessage(root, wsSend));
 
         nvim.on(
             "notification",
-            onNvimNotification({
-                props,
-                root,
-                nvim,
-                httpServer,
-                wsSend,
-            }),
+            onNvimNotification(nvim, httpServer, root, props, wsSend),
         );
     };
 }

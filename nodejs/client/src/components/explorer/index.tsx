@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { type Entry } from "../../../../types";
+import { type CurrentEntry, type Entry } from "../../../../types";
 import {
     websocketContext,
     type MessageHandler,
@@ -12,19 +12,19 @@ import { EntryComponent } from "./entry";
 export const Explorer = () => {
     const { addMessageHandler } = useContext(websocketContext);
     const [entries, setEntries] = useState<Entry[]>([]);
-    const [entry, setEntry] = useState<Entry>();
+    const [currentEntry, setCurrentEntry] = useState<CurrentEntry>();
     const [repoName, setRepoName] = useState<string>("");
 
     useEffect(() => {
         const messageHandler: MessageHandler = (message) => {
             if (message.repoName) setRepoName(message.repoName);
             if (message.entries) setEntries(message.entries);
-            if (message.entry) setEntry(message.entry);
+            if (message.currentEntry) setCurrentEntry(message.currentEntry);
         };
         addMessageHandler("explorer", messageHandler);
     }, [addMessageHandler]);
 
-    const segments = entry?.relativeToRoot.split("/") ?? [];
+    const segments = currentEntry?.relativeToRoot.split("/") ?? [];
     const [username, repo] = repoName.split("/");
 
     return (
@@ -43,9 +43,9 @@ export const Explorer = () => {
                 {segments}
             </Container>
             <Container>
-                {(segments.length > 1 || entry?.type === "dir") && (
+                {(segments.length > 1 || currentEntry?.type === "dir") && (
                     <EntryComponent
-                        relativeToRoot={entry?.relativeToRoot + "/.."}
+                        relativeToRoot={currentEntry?.relativeToRoot + "/.."}
                         type="dir"
                     />
                 )}

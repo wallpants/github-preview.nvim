@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { type WsClientMessage, type WsServerMessage } from "../../../types";
+import { type WsBrowserMessage, type WsServerMessage } from "../../../types";
 import { PORT } from "../../env";
 import { Banner } from "../components/banner";
 import { websocketContext, type MessageHandler, type Status } from "./context";
@@ -41,7 +41,7 @@ export const WebsocketProvider = ({ children }: Props) => {
         [],
     );
 
-    const wsSend = useCallback((message: WsClientMessage) => {
+    const wsSend = useCallback((message: WsBrowserMessage) => {
         ws.send(JSON.stringify(message));
     }, []);
 
