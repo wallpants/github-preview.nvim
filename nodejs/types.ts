@@ -1,15 +1,8 @@
-import {
-    boolean,
-    literal,
-    number,
-    object,
-    string,
-    union,
-    type Output,
-} from "valibot";
+import { boolean, literal, number, object, union, type Output } from "valibot";
 
 export const PluginPropsSchema = object({
     port: number(),
+    buff_id: number(),
     scroll_debounce_ms: number(),
     disable_sync_scroll: boolean(),
     sync_scroll_type: union([
@@ -17,7 +10,6 @@ export const PluginPropsSchema = object({
         literal("top"),
         literal("relative"),
     ]),
-    filepath: string(),
 });
 
 export type PluginProps = Output<typeof PluginPropsSchema>;
