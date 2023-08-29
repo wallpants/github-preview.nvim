@@ -11,16 +11,23 @@ M.nvim_socket = vim.fn.serverlist()[1]
 
 ---@param log_output log_output
 ---@param source string
----@return fun(_: any, data: table)
+---@return fun(_: any, data: string[])
 M.log = function(log_output, source)
 	return function(_, data)
+		-- log to statusline
 		if log_output == Types.LOG_OUTPUT.print then
-			print(source .. vim.inspect(data))
+			for _, line in pairs(data) do
+				print(line)
+			end
 		end
+
+		-- log to file
 		if log_output == Types.LOG_OUTPUT.file then
 			local file = io.open(M.plugin_root .. source .. ".log", "a")
 			if file then
-				file:write(vim.inspect(data) .. "\n")
+				for _, line in pairs(data) do
+					file:write(line .. "\n")
+				end
 				file:close()
 			end
 		end

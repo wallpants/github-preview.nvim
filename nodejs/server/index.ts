@@ -34,6 +34,9 @@ async function main() {
     await killExisting(props.port);
     await nvim.lua('print("starting MarkdownPreview server")');
 
+    // TODO more testing with logging
+    nvim.logger.error("nvim error");
+
     const root = findRepoRoot(await nvim.buffer.name);
     if (!root) throw Error("root .git directory NOT FOUND");
 
@@ -56,7 +59,14 @@ async function main() {
     httpServer.listen(port);
 }
 
-void main();
+try {
+    await main();
+} catch (e) {
+    const err = e as Error;
+    console.log(err.name);
+    console.log("message:", err.message);
+    console.log("stack:", err.stack);
+}
 
 // nvim.on('request', (method: string, args: any, resp: any) => {
 // if (method === 'close_all_pages') {

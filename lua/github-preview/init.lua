@@ -21,6 +21,7 @@ M.setup = function(opts)
 		---@type plugin_props
 		vim.g.markdown_preview_props = {
 			port = opts.port,
+			log_output = opts.log_output,
 			scroll_debounce_ms = opts.scroll_debounce_ms,
 			disable_sync_scroll = false,
 			ignore_buffer_patterns = opts.ignore_buffer_patterns,
@@ -49,8 +50,6 @@ M.setup = function(opts)
 
 		vim.fn.jobstart(shell_command, {
 			on_stdout = Utils.log(opts.log_output, "stdout"),
-			on_stderr = Utils.log(opts.log_output, "stderr"),
-			on_exit = Utils.log(opts.log_output, "exit"),
 		})
 	end
 

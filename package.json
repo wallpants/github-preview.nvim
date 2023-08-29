@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "prepare": "husky install",
-    "clean": "rm -rf dist && rm -rf logs/*.log",
+    "clean": "rm -rf dist",
     "web:dev": "dotenv -e .env.dev -- vite dev nodejs/client --open",
     "web:build": "tsc && vite build nodejs/client --outDir ../../dist",
     "web:preview": "vite preview nodejs/client",
