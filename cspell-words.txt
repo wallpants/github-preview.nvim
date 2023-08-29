@@ -1,6 +1,5 @@
 nvim
 neovim
 valibot
-tailwindcss
-tsdoc
 consts
+istextorbinary

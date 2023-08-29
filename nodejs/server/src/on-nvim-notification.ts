@@ -3,12 +3,8 @@ import { minimatch } from "minimatch";
 import { type NeovimClient } from "neovim";
 import { type Server } from "node:http";
 import { extname, relative } from "node:path";
-import {
-    type CurrentEntry,
-    type NeovimNotificationArg,
-    type PluginProps,
-    type WsServerMessage,
-} from "../types";
+import { type CurrentEntry, type WsServerMessage } from "../../types";
+import { type NeovimNotificationArg, type PluginProps } from "./types";
 import { getCursorMove, textToMarkdown } from "./utils";
 
 export const RPC_EVENTS = [
@@ -17,13 +13,13 @@ export const RPC_EVENTS = [
     "markdown-preview-buffer-delete",
 ] as const;
 
-type Args = {
+interface Args {
     nvim: NeovimClient;
     httpServer: Server;
     root: string;
     props: PluginProps;
     wsSend: (w: WsServerMessage) => void;
-};
+}
 
 export function onNvimNotification({
     nvim,
@@ -41,7 +37,7 @@ export function onNvimNotification({
         event: (typeof RPC_EVENTS)[number],
         [arg]: NeovimNotificationArg[],
     ) => {
-        if (!arg.file) return; // arg.file is "" on telescope buffers
+        if (!arg?.file) return; // arg.file is "" on telescope buffers
 
         // TODO: implement browser auto close
         // if (event === "markdown-preview-buffer-delete") {

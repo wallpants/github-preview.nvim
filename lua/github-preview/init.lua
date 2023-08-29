@@ -1,3 +1,4 @@
+-- cspell:ignore autocmd rpcnotify jobstart
 local Utils = require("github-preview.utils")
 local Types = require("github-preview.types")
 

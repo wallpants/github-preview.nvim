@@ -1,23 +1,24 @@
+// cspell:ignore winline
 import { globby } from "globby";
 import { type NeovimClient } from "neovim";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
-import { type CursorMove, type Entry, type PluginProps } from "../types";
+import { type CursorMove, type Entry } from "../../types";
+import { type PluginProps } from "./types";
 
 /** Takes a string and wraps it inside a markdown
  * codeblock using file extension as language
  *
- * example:
- * textToMarkdown({text, fileExt: "ts"})
- *
- * \`\`\`ts
- * ${text}
- * \`\`\`
+ * @example
+ * ```
+ * textToMarkdown({text, fileExt: "ts"});
+ * ```
  */
 export function textToMarkdown({
     text,
     fileExt,
 }: {
+    /** some def */
     text: string;
     fileExt: string;
 }) {
@@ -28,15 +29,14 @@ export async function getCursorMove(
     nvim: NeovimClient,
     props: PluginProps,
     contentLen: number,
-): Promise<CursorMove | undefined> {
-    if (props.disable_sync_scroll) return undefined;
+): Promise<CursorMove> {
     const currentWindow = await nvim.window;
     const winLine = Number(await nvim.call("winline"));
     const winHeight = await currentWindow.height;
     const [cursorLine] = await currentWindow.cursor;
     return {
         cursorLine,
-        // TODO: would buffer.lenght work here?
+        // TODO: would buffer.length work here?
         contentLen,
         winHeight,
         winLine,
@@ -66,18 +66,21 @@ export function findRepoRoot(filePath: string): string | null {
     return null;
 }
 
-export function getRepoName(root: string) {
+export function getRepoName(root: string): string {
     const gitConfig = readFileSync(resolve(root, ".git/config")).toString();
     const lines = gitConfig.split("\n");
+    let repoName = "no-repo-name";
 
     for (let i = 0; i < lines.length; i += 1) {
         const line = lines[i];
         if (line === '[remote "origin"]') {
             // nextLine = git@github.com:gualcasas/github-preview.nvim.git
-            const nextLine = lines[i + 1] as string | undefined;
-            return nextLine?.split(":")[1].slice(0, -4);
+            const nextLine = lines[i + 1];
+            const repo = nextLine?.split(":")[1]?.slice(0, -4);
+            if (repo) repoName = repo;
         }
     }
+    return repoName;
 }
 
 // TODO This seems convoluted
@@ -109,13 +112,13 @@ export async function getDirEntries({
     dirs.sort();
     files.sort();
 
-    const relati = relative(root, resolved);
+    const relativePath = relative(root, resolved);
     const dirEntries: Entry[] = dirs.map((d) => ({
-        relativeToRoot: relati ? `${relati}/${d}` : d,
+        relativeToRoot: relativePath ? `${relativePath}/${d}` : d,
         type: "dir",
     }));
     const fileEntries: Entry[] = files.map((f) => ({
-        relativeToRoot: relati ? `${relati}/${f}` : f,
+        relativeToRoot: relativePath ? `${relativePath}/${f}` : f,
         type: "file",
     }));
 

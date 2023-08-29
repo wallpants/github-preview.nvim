@@ -1,11 +1,13 @@
-module.exports = {
-    env: { browser: true, es2020: true },
+/** @type {import("eslint").Linter.Config} */
+const config = {
+    env: { browser: true },
     extends: [
+        "plugin:tailwindcss/recommended",
         "plugin:react-hooks/recommended",
-        "plugin:react/recommended",
-        "plugin:react/jsx-runtime",
     ],
     plugins: ["react-refresh"],
+    // cspell:ignore callees
+    settings: { tailwindcss: { callees: ["cn"] } },
     rules: {
         "react-refresh/only-export-components": [
             "warn",
@@ -13,3 +15,5 @@ module.exports = {
         ],
     },
 };
+
+module.exports = config;

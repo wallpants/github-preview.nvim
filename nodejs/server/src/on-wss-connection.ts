@@ -2,13 +2,10 @@ import { type NeovimClient } from "neovim";
 import { type Server } from "node:http";
 import { dirname, extname, relative } from "node:path";
 import { type WebSocket } from "ws";
-import {
-    type CurrentEntry,
-    type PluginProps,
-    type WsServerMessage,
-} from "../types";
+import { type CurrentEntry, type WsServerMessage } from "../../types";
 import { onBrowserMessage } from "./on-browser-message";
 import { onNvimNotification } from "./on-nvim-notification";
+import { type PluginProps } from "./types";
 import {
     getCursorMove,
     getDirEntries,
@@ -16,12 +13,12 @@ import {
     textToMarkdown,
 } from "./utils";
 
-type Args = {
+interface Args {
     nvim: NeovimClient;
     httpServer: Server;
     root: string;
     props: PluginProps;
-};
+}
 
 export function onWssConnection({ nvim, httpServer, root, props }: Args) {
     return async (ws: WebSocket) => {
@@ -31,7 +28,9 @@ export function onWssConnection({ nvim, httpServer, root, props }: Args) {
         const text = (await buffer.lines).join("\n");
         const cursorMove = await getCursorMove(nvim, props, text.length);
 
-        const wsSend = (m: WsServerMessage) => ws.send(JSON.stringify(m));
+        const wsSend = (m: WsServerMessage) => {
+            ws.send(JSON.stringify(m));
+        };
 
         const relativeToRoot = relative(root, await buffer.name);
         const fileExt = extname(relativeToRoot);

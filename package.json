@@ -4,10 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "setup:dev": "dotenv -e .env.dev",
-    "vi": "pnpm setup:dev:env -- nvim",
+    "vi": "dotenv -e .env.dev -- nvim",
     "build": "turbo run build",
-    "dev": "pnpm setup:dev -- turbo run dev",
+    "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

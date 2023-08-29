@@ -1,13 +1,13 @@
 import { attach } from "neovim";
-import { createServer, type Server } from "node:http";
+import { createServer } from "node:http";
 import opener from "opener";
 import { parse } from "valibot";
 import { WebSocketServer } from "ws";
-import { PluginPropsSchema } from "../../types";
 import { NVIM_LISTEN_ADDRESS, VITE_GP_PORT } from "./env";
-import { initHttpServer } from "./http-server";
+import { httpRequestHandler } from "./http-request-handler";
 import { RPC_EVENTS } from "./on-nvim-notification";
 import { onWssConnection } from "./on-wss-connection";
+import { PluginPropsSchema } from "./types";
 import { findRepoRoot } from "./utils";
 
 // if GP_PORT defined, we're on dev env
@@ -45,9 +45,8 @@ async function main() {
 
     for (const event of RPC_EVENTS) await nvim.subscribe(event);
 
-    const httpServer: Server = createServer((req, res) =>
-        initHttpServer({ nvim, httpServer, props, req, res }),
-    );
+    const httpServer = createServer();
+    httpServer.on("request", httpRequestHandler({ nvim, httpServer, props }));
 
     const wsServer = new WebSocketServer({ server: httpServer });
     wsServer.on(
@@ -56,7 +55,9 @@ async function main() {
     );
 
     !VITE_GP_PORT && opener(`http://localhost:${props.port}`);
-    httpServer.listen(props.port);
+    httpServer.listen(props.port, () => {
+        console.log(`Server is listening on port ${props.port}`);
+    });
 }
 
 await main();

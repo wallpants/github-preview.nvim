@@ -10,7 +10,8 @@
   },
   "scripts": {
     "clean": "rm -rf dist && rm *.log",
-    "dev": "esno watch src/index.ts",
+    "setup:dev": "dotenv -e ../../env.dev",
+    "dev": "pnpm setup:dev -- esno watch src/index.ts",
     "build": "pnpm clean && ncc build src/index.ts -m -e neovim -e winston",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,html,css}\""

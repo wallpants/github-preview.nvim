@@ -2,56 +2,47 @@ import { isBinary } from "istextorbinary";
 import { readFileSync } from "node:fs";
 import { dirname, extname, normalize } from "node:path";
 import { type RawData } from "ws";
-import {
-    type EntryContent,
-    type WsBrowserMessage,
-    type WsServerMessage,
-} from "../../types";
+import { type WsBrowserMessage, type WsServerMessage } from "../../types";
 import { getDirEntries, textToMarkdown } from "./utils";
 
-type Args = {
+interface Args {
     root: string;
     wsSend: (w: WsServerMessage) => void;
-};
+}
 
 export function onBrowserMessage({ root, wsSend }: Args) {
     return async (event: RawData) => {
         const message = JSON.parse(String(event)) as WsBrowserMessage;
         const { currentBrowserEntry } = message;
 
-        if (currentBrowserEntry) {
-            const { type, relativeToRoot: _relative } = currentBrowserEntry;
-            /* if we're at dir "./src" and navigate to "..",
-             * the path becomes "./src/.."
-             *
-             * normalize converts "./src/.." to "./"
-             **/
-            const relativeToRoot = normalize(_relative);
-            const relativeDir =
-                type === "dir" ? relativeToRoot : dirname(relativeToRoot);
+        const { type, relativeToRoot: _relative } = currentBrowserEntry;
+        /* if we're at dir "./src" and navigate to "..",
+         * the path becomes "./src/.."
+         *
+         * normalize converts "./src/.." to "./"
+         **/
+        const relativeToRoot = normalize(_relative);
+        const relativeDir =
+            type === "dir" ? relativeToRoot : dirname(relativeToRoot);
 
-            const entries = await getDirEntries({ relativeDir, root });
+        const entries = await getDirEntries({ relativeDir, root });
 
-            let content: EntryContent | undefined;
-            if (type === "file") {
-                // TODO: add support for binary files (images, etc)
-                if (isBinary(relativeToRoot)) return;
+        const response: WsServerMessage = {
+            root,
+            entries,
+            currentEntry: { relativeToRoot, type },
+        };
 
-                const fileExt = extname(relativeToRoot);
-                const text = readFileSync(relativeToRoot).toString();
-                const markdown = textToMarkdown({ text, fileExt });
-                content = { markdown, fileExt };
-            }
+        if (type === "file") {
+            // TODO: add support for binary files (images, etc)
+            if (isBinary(relativeToRoot)) return;
 
-            wsSend({
-                root,
-                currentEntry: {
-                    relativeToRoot,
-                    content,
-                    type,
-                },
-                entries,
-            });
+            const fileExt = extname(relativeToRoot);
+            const text = readFileSync(relativeToRoot).toString();
+            const markdown = textToMarkdown({ text, fileExt });
+            response.currentEntry.content = { markdown, fileExt };
         }
+
+        wsSend(response);
     };
 }

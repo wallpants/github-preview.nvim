@@ -12,10 +12,10 @@ export function localFileHandler(
     pwd: string,
 ) {
     let imgPath = decodeURIComponent(
-        decodeURIComponent(req.url!.replace(LOCAL_FILE_ROUTE, "")),
+        decodeURIComponent(req.url?.replace(LOCAL_FILE_ROUTE, "") ?? ""),
     );
     imgPath = imgPath.replace(/\\ /g, " ");
-    if (imgPath[0] !== "/" && imgPath[0] !== "\\") {
+    if (!imgPath.startsWith("/") && !imgPath.startsWith("\\")) {
         imgPath = path.join(pwd, imgPath);
     } else if (!fs.existsSync(imgPath)) {
         let tmpDirPath = pwd;
