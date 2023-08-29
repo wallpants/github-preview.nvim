@@ -4,19 +4,17 @@ import opener from "opener";
 import { parse } from "valibot";
 import { WebSocketServer } from "ws";
 import { PluginPropsSchema } from "../types";
-import { PORT, SOCKET } from "./env";
 import { initHttpServer } from "./http-server";
 import { RPC_EVENTS } from "./on-nvim-notification";
 import { onWssConnection } from "./on-wss-connection";
 import { findRepoRoot } from "./utils";
 
-// we check for SOCKET for dev env
-const socket = SOCKET || process.argv[2];
+const socket = process.argv[2];
 
 async function killExisting(port: number) {
     try {
         // we check for PORT for dev env
-        await fetch(`http://localhost:${PORT || port}`, { method: "POST" });
+        await fetch(`http://localhost:${port}`, { method: "POST" });
     } catch (err) {
         console.log("no server to kill");
     }
@@ -52,11 +50,8 @@ async function main() {
         onWssConnection({ nvim, httpServer, root, props }),
     );
 
-    // we check for PORT for dev env
-    const port = PORT || props.port;
-    // don't open browser in dev, webapp is hosted on other port
-    if (!PORT) opener(`http://localhost:${port}`);
-    httpServer.listen(port);
+    opener(`http://localhost:${props.port}`);
+    httpServer.listen(props.port);
 }
 
 try {

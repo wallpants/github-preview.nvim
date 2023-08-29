@@ -5,20 +5,21 @@
   "license": "MIT",
   "description": "",
   "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "prepare": "husky install",
     "clean": "rm -rf dist",
-    "web:dev": "dotenv -e .env.dev -- vite dev nodejs/client --open",
+    "web:dev": "vite dev nodejs/client --open",
     "web:build": "tsc && vite build nodejs/client --outDir ../../dist",
     "web:preview": "vite preview nodejs/client",
-    "server:dev": "dotenv -e .env.dev -- esno watch nodejs/server/index.ts ",
-    "server:build": "ncc build nodejs/server/index.ts -m",
+    "nvim:dev": "NVIM_LISTEN_ADDRESS=/tmp/nvim nvim",
+    "server:dev": "NVIM_LISTEN_ADDRESS=/tmp/nvim && esno watch nodejs/server/index.ts ",
+    "server:build": "ncc build nodejs/server/index.ts -m -e neovim",
     "build": "pnpm clean && pnpm web:build && pnpm server:build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"nodejs/**/*.{ts,html,css}\""
-  },
-  "engines": {
-    "node": ">=18"
   },
   "dependencies": {
     "@wooorm/starry-night": "^2.1.1",
@@ -62,7 +63,6 @@
     "@vitejs/plugin-react": "^4.0.4",
     "autoprefixer": "^10.4.15",
     "connect-history-api-fallback": "^2.0.0",
-    "dotenv-cli": "^7.3.0",
     "eslint": "8.46.0",
     "eslint-plugin-import": "npm:eslint-plugin-i@2.28.0-2",
     "eslint-plugin-react-hooks": "^4.6.0",
