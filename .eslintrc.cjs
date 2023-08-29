@@ -8,18 +8,17 @@ const config = {
     },
     extends: [
         "eslint:recommended",
-        "plugin:tailwindcss/recommended",
-        "plugin:react-hooks/recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-type-checked",
     ],
     plugins: ["react-refresh", "tsdoc", "import"],
     settings: {
         tailwindcss: {
+            // cspell:ignore callees
             callees: ["cn"],
         },
     },
-    ignorePatterns: ["dist", ".eslintrc.cjs"],
+    ignorePatterns: ["dist"],
     rules: {
         "react-refresh/only-export-components": [
             "warn",

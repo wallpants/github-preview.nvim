@@ -6,7 +6,7 @@ import {
     type EntryContent,
     type WsBrowserMessage,
     type WsServerMessage,
-} from "../types";
+} from "../../types";
 import { getDirEntries, textToMarkdown } from "./utils";
 
 type Args = {

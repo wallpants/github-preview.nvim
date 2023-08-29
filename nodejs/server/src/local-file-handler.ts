@@ -4,7 +4,7 @@
 import fs from "node:fs";
 import { type IncomingMessage, type ServerResponse } from "node:http";
 import path from "node:path";
-import { LOCAL_FILE_ROUTE } from "../consts";
+import { LOCAL_FILE_ROUTE } from "../../consts";
 
 export function localFileHandler(
     req: IncomingMessage,
@@ -34,4 +34,5 @@ export function localFileHandler(
         }
         return fs.createReadStream(imgPath).pipe(res);
     }
+    return;
 }

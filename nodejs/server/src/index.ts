@@ -3,7 +3,7 @@ import { createServer, type Server } from "node:http";
 import opener from "opener";
 import { parse } from "valibot";
 import { WebSocketServer } from "ws";
-import { PluginPropsSchema } from "../types";
+import { PluginPropsSchema } from "../../types";
 import { NVIM_LISTEN_ADDRESS, VITE_GP_PORT } from "./env";
 import { initHttpServer } from "./http-server";
 import { RPC_EVENTS } from "./on-nvim-notification";

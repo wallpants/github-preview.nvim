@@ -7,7 +7,7 @@ import {
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import handler from "serve-handler";
-import { type PluginProps } from "../types";
+import { type PluginProps } from "../../types";
 import { RPC_EVENTS } from "./on-nvim-notification";
 
 type Args = {

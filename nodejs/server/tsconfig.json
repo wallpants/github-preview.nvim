@@ -1,0 +1,16 @@
+{
+  "display": "Node 18",
+  "extends": "../../tsconfig.json",
+  "include": ["src", "../types.ts", "../consts.ts"],
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM"],
+    "module": "Node16",
+    "target": "ES2022",
+
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "Bundler"
+  }
+}

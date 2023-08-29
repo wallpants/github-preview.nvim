@@ -1,0 +1,46 @@
+{
+  "name": "server",
+  "version": "0.0.1",
+  "author": "Gual Casas",
+  "license": "MIT",
+  "description": "",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "clean": "rm -rf dist && rm *.log",
+    "dev": "esno watch src/index.ts",
+    "build": "pnpm clean && ncc build src/index.ts -m -e neovim -e winston",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write \"src/**/*.{ts,html,css}\""
+  },
+  "peerDependencies": {
+    "neovim": "^4.10.1",
+    "winston": "3.3.3"
+  },
+  "dependencies": {
+    "globby": "^13.2.2",
+    "istextorbinary": "^6.0.0",
+    "lodash-es": "^4.17.21",
+    "minimatch": "^9.0.3",
+    "opener": "^1.5.2",
+    "reconnecting-websocket": "^4.4.0",
+    "serve-handler": "^6.1.5",
+    "valibot": "^0.13.1",
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "8.44.2",
+    "@types/lodash-es": "^4.17.8",
+    "@types/node": "^20.5.7",
+    "@types/opener": "^1.4.0",
+    "@types/serve-handler": "^6.1.1",
+    "@types/ws": "^8.5.5",
+    "@typescript-eslint/eslint-plugin": "6.3.0",
+    "@typescript-eslint/parser": "6.3.0",
+    "@vercel/ncc": "^0.36.1",
+    "dotenv-cli": "^7.3.0",
+    "esno": "^0.17.0"
+  }
+}
