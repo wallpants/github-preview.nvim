@@ -16,8 +16,10 @@ interface Args {
     props: PluginProps;
 }
 
-export function httpRequestHandler({ nvim, httpServer }: Args) {
+export function onHttpRequest({ nvim, httpServer }: Args) {
     return async (req: IncomingMessage, res: ServerResponse) => {
+        console.log("req.url: ", req.url);
+
         if (req.method === "POST") {
             res.writeHead(200).end();
             for (const event of RPC_EVENTS) await nvim.unsubscribe(event);
@@ -28,10 +30,9 @@ export function httpRequestHandler({ nvim, httpServer }: Args) {
         //     return localFileHandler(req, res, props.filepath);
         // }
 
+        const __dirname = dirname(fileURLToPath(import.meta.url));
         return handler(req, res, {
-            public: fileURLToPath(
-                resolve(dirname(import.meta.url), "../../web/dist"),
-            ),
+            public: resolve(__dirname, "../../web/dist"),
             rewrites: [{ source: "**", destination: "/index.html" }],
             headers: [
                 {

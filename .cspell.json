@@ -19,5 +19,5 @@
     "vite",
     "wooorm"
   ],
-  "ignorePaths": ["node_modules", "dist", "pnpm-lock.yaml", "*.svg"]
+  "ignorePaths": ["node_modules", "dist", "pnpm-lock.yaml", "*.svg", "*.log"]
 }

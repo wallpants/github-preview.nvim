@@ -4,7 +4,7 @@ import opener from "opener";
 import { parse } from "valibot";
 import { WebSocketServer } from "ws";
 import { NVIM_LISTEN_ADDRESS, VITE_GP_PORT } from "./env";
-import { httpRequestHandler } from "./http-request-handler";
+import { onHttpRequest } from "./on-http-request";
 import { RPC_EVENTS } from "./on-nvim-notification";
 import { onWssConnection } from "./on-wss-connection";
 import { PluginPropsSchema } from "./types";
@@ -48,7 +48,7 @@ async function main() {
     for (const event of RPC_EVENTS) await nvim.subscribe(event);
 
     const httpServer = createServer();
-    httpServer.on("request", httpRequestHandler({ nvim, httpServer, props }));
+    httpServer.on("request", onHttpRequest({ nvim, httpServer, props }));
 
     const wsServer = new WebSocketServer({ server: httpServer });
     wsServer.on(
@@ -62,4 +62,8 @@ async function main() {
     });
 }
 
-await main();
+try {
+    await main();
+} catch (err) {
+    console.log(err);
+}
