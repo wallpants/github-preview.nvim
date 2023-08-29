@@ -1,5 +1,5 @@
 import {
-    all,
+    common,
     createStarryNight,
     type Grammar,
     type Root,
@@ -23,7 +23,7 @@ type StarryNight = {
 let starryNight: StarryNight | null = null;
 
 export async function markdownToHtml(markdown: string) {
-    if (!starryNight) starryNight = await createStarryNight(all);
+    if (!starryNight) starryNight = await createStarryNight(common);
 
     const markdownItInstance = markdownIt({
         highlight(value, lang) {

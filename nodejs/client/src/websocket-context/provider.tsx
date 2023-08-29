@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { type WsBrowserMessage, type WsServerMessage } from "../../../types";
+import { VITE_GP_PORT } from "../../env";
 import { Banner } from "../components/banner";
 import { websocketContext, type MessageHandler, type Status } from "./context";
 
 // we check for PORT for dev env
-const url = "ws://" + window.location.host;
+const url =
+    "ws://" + VITE_GP_PORT ? `localhost:${VITE_GP_PORT}` : window.location.host;
 const ws = new ReconnectingWebSocket(url, [], {
     maxReconnectionDelay: 3000,
 });

@@ -11,15 +11,18 @@
   "scripts": {
     "prepare": "husky install",
     "clean": "rm -rf dist",
-    "web:dev": "vite dev nodejs/client --open",
+    "setup:dev:env": "dotenv -e .env.dev",
+    "vi": "pnpm setup:dev:env -- nvim",
+    "web:dev": "pnpm setup:dev:env -- vite dev nodejs/client --open",
+    "server:dev": "pnpm setup:dev:env -- esno watch nodejs/server/index.ts",
     "web:build": "tsc && vite build nodejs/client --outDir ../../dist",
-    "web:preview": "vite preview nodejs/client",
-    "nvim:dev": "NVIM_LISTEN_ADDRESS=/tmp/nvim nvim",
-    "server:dev": "NVIM_LISTEN_ADDRESS=/tmp/nvim && esno watch nodejs/server/index.ts ",
-    "server:build": "ncc build nodejs/server/index.ts -m -e neovim",
+    "server:build": "ncc build nodejs/server/index.ts -m -e neovim -e winston",
     "build": "pnpm clean && pnpm web:build && pnpm server:build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"nodejs/**/*.{ts,html,css}\""
+  },
+  "peerDependencies": {
+    "winston": "3.3.3"
   },
   "dependencies": {
     "@wooorm/starry-night": "^2.1.1",
@@ -63,6 +66,7 @@
     "@vitejs/plugin-react": "^4.0.4",
     "autoprefixer": "^10.4.15",
     "connect-history-api-fallback": "^2.0.0",
+    "dotenv-cli": "^7.3.0",
     "eslint": "8.46.0",
     "eslint-plugin-import": "npm:eslint-plugin-i@2.28.0-2",
     "eslint-plugin-react-hooks": "^4.6.0",

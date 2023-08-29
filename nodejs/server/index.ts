@@ -4,17 +4,22 @@ import opener from "opener";
 import { parse } from "valibot";
 import { WebSocketServer } from "ws";
 import { PluginPropsSchema } from "../types";
+import { NVIM_LISTEN_ADDRESS, VITE_GP_PORT } from "./env";
 import { initHttpServer } from "./http-server";
 import { RPC_EVENTS } from "./on-nvim-notification";
 import { onWssConnection } from "./on-wss-connection";
 import { findRepoRoot } from "./utils";
 
-const socket = process.argv[2];
+// if GP_PORT defined, we're on dev env
+// we don't directly load NVIM_LISTEN_ADDRESS, because
+// it might be set for someone else
+const socket = VITE_GP_PORT ? NVIM_LISTEN_ADDRESS : process.argv[2];
 
 async function killExisting(port: number) {
     try {
         // we check for PORT for dev env
         await fetch(`http://localhost:${port}`, { method: "POST" });
+        console.log("innocent server killed");
     } catch (err) {
         console.log("no server to kill");
     }
@@ -50,18 +55,11 @@ async function main() {
         onWssConnection({ nvim, httpServer, root, props }),
     );
 
-    opener(`http://localhost:${props.port}`);
+    !VITE_GP_PORT && opener(`http://localhost:${props.port}`);
     httpServer.listen(props.port);
 }
 
-try {
-    await main();
-} catch (e) {
-    const err = e as Error;
-    console.log(err.name);
-    console.log("message:", err.message);
-    console.log("stack:", err.stack);
-}
+await main();
 
 // nvim.on('request', (method: string, args: any, resp: any) => {
 // if (method === 'close_all_pages') {
@@ -69,4 +67,5 @@ try {
 // }
 // resp.send()
 // })
+// cspell:ignore rpcrequest
 // vim.rpcrequest(0, "close_all_pages", {})
