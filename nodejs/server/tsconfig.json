@@ -1,10 +1,9 @@
 {
-  "display": "Node 18",
   "extends": "../../tsconfig.json",
   "include": ["src", "../types.ts", "../consts.ts"],
   "compilerOptions": {
-    "lib": ["ES2023", "DOM"],
-    "module": "Node16",
+    "lib": ["ES2022", "DOM"],
+    "module": "ES2022",
     "target": "ES2022",
 
     "strict": true,

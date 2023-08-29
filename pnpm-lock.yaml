@@ -123,9 +123,6 @@ importers:
 
   nodejs/web:
     devDependencies:
-      typescript:
-        specifier: ^5.0.2
-        version: 5.1.6
       vite:
         specifier: ^4.4.5
         version: 4.4.9

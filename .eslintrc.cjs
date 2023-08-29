@@ -1,29 +1,23 @@
 /** @type {import("eslint").Linter.Config} */
 const config = {
     root: true,
-    env: { browser: true, es2020: true },
     parser: "@typescript-eslint/parser",
     parserOptions: {
-        project: "./tsconfig.json",
+        tsconfigRootDir: __dirname,
+        project: [
+            "./nodejs/web/tsconfig.json",
+            "./nodejs/server/tsconfig.json",
+        ],
     },
     extends: [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-type-checked",
     ],
-    plugins: ["react-refresh", "tsdoc", "import"],
-    settings: {
-        tailwindcss: {
-            // cspell:ignore callees
-            callees: ["cn"],
-        },
-    },
-    ignorePatterns: ["dist"],
+    plugins: ["eslint-plugin-tsdoc", "import"],
+    ignorePatterns: ["dist", ".eslintrc.cjs"],
     rules: {
-        "react-refresh/only-export-components": [
-            "warn",
-            { allowConstantExport: true },
-        ],
+        "tsdoc/syntax": "warn",
         "@typescript-eslint/no-unused-vars": [
             "error",
             { argsIgnorePattern: "^_" },
@@ -32,7 +26,6 @@ const config = {
             "warn",
             { prefer: "type-imports", fixStyle: "inline-type-imports" },
         ],
-        "@typescript-eslint/no-misused-promises": ["off"],
     },
 };
 
