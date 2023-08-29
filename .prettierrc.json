@@ -3,7 +3,7 @@
   "plugins": ["prettier-plugin-organize-imports"],
   "overrides": [
     {
-      "files": ["*.json"],
+      "files": ["*.json", "*.yaml"],
       "options": {
         "tabWidth": 2
       }
