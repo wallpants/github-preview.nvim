@@ -46,11 +46,14 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: pnpm build
+        run: |
+          pnpm build
+          echo '!dist' >> .gitignore
 
       - name: Commit & Push changes
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
+          amend: true
           force: true
