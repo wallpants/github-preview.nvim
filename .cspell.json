@@ -3,16 +3,20 @@
   "version": "0.2",
   "ignoreWords": [
     "automagically",
-    "consts",
     "clsx",
+    "consts",
+    "dotenv",
     "esno",
     "gual",
     "istextorbinary",
+    "luadoc",
     "neovim",
     "nvim",
+    "postcss",
     "tailwindcss",
     "tsdoc",
     "valibot",
+    "vite",
     "wooorm"
   ],
   "ignorePaths": ["node_modules", "dist", "pnpm-lock.yaml", "*.svg"]

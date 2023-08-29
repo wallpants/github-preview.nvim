@@ -1,6 +1,6 @@
-// cspell:disable
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from "tailwindcss";
+
+export default {
     darkMode: ["class"],
     content: ["./**/*.{html,ts,tsx}"],
     theme: {
@@ -38,4 +38,4 @@ module.exports = {
         }),
     },
     plugins: [],
-};
+} satisfies Config;
