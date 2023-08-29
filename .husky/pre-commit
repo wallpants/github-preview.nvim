@@ -3,4 +3,6 @@
 
 echo "Building..."
 pnpm build
-git add dist
+
+git add nodejs/server/dist
+git add nodejs/web/dist

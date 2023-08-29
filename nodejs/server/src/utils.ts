@@ -1,4 +1,4 @@
-// cspell:ignore winline
+// cspell:ignore winline gualcasas
 import { globby } from "globby";
 import { type NeovimClient } from "neovim";
 import { readFileSync, readdirSync, statSync } from "node:fs";

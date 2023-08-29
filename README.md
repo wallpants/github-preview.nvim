@@ -1,4 +1,4 @@
-# my name is gualberto
+# my name is
 
 [follow this link](https://github.com)
 
@@ -19,12 +19,12 @@ import { common, createStarryNight } from "@wooorm/starry-night";
 
 const starryNight = await createStarryNight(common, {
     getOnigurumaUrlFetch() {
-        return new URL("/onig.wasm", window.location.href);
+        return new URL("/file.wasm", window.location.href);
     },
 });
 ```
 
-![gualbert](local.jpeg)
+![some tag](local.jpeg)
 
 ## Vite Development
 

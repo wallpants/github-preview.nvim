@@ -1,3 +1,4 @@
+--cspell:ignore fnamemodify serverlist statusline
 local Types = require("github-preview.types")
 
 local M = {}

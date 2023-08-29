@@ -1,13 +1,19 @@
 {
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "version": "0.2",
-  "dictionaryDefinitions": [
-    {
-      "name": "project-words",
-      "path": "./cspell-words.txt",
-      "addWords": true
-    }
+  "ignoreWords": [
+    "automagically",
+    "consts",
+    "clsx",
+    "esno",
+    "gual",
+    "istextorbinary",
+    "neovim",
+    "nvim",
+    "tailwindcss",
+    "tsdoc",
+    "valibot",
+    "wooorm"
   ],
-  "dictionaries": ["project-words"],
-  "ignorePaths": ["node_modules", "/cspell-words.txt"]
+  "ignorePaths": ["node_modules", "dist", "pnpm-lock.yaml", "*.svg"]
 }

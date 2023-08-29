@@ -34,7 +34,9 @@ async function main() {
         await nvim.getVar("markdown_preview_props"),
     );
 
-    await killExisting(props.port);
+    const PORT = VITE_GP_PORT ?? props.port;
+
+    await killExisting(PORT);
     await nvim.lua('print("starting MarkdownPreview server")');
 
     // TODO more testing with logging
@@ -54,19 +56,10 @@ async function main() {
         onWssConnection({ nvim, httpServer, root, props }),
     );
 
-    !VITE_GP_PORT && opener(`http://localhost:${props.port}`);
-    httpServer.listen(props.port, () => {
-        console.log(`Server is listening on port ${props.port}`);
+    !VITE_GP_PORT && opener(`http://localhost:${PORT}`);
+    httpServer.listen(PORT, () => {
+        console.log(`Server is listening on port ${PORT}`);
     });
 }
 
 await main();
-
-// nvim.on('request', (method: string, args: any, resp: any) => {
-// if (method === 'close_all_pages') {
-//   app.closeAllPages()
-// }
-// resp.send()
-// })
-// cspell:ignore rpcrequest
-// vim.rpcrequest(0, "close_all_pages", {})

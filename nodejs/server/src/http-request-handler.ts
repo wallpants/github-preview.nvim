@@ -4,7 +4,7 @@ import {
     type Server,
     type ServerResponse,
 } from "node:http";
-import { dirname } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import handler from "serve-handler";
 import { RPC_EVENTS } from "./on-nvim-notification";
@@ -29,7 +29,9 @@ export function httpRequestHandler({ nvim, httpServer }: Args) {
         // }
 
         return handler(req, res, {
-            public: fileURLToPath(dirname(import.meta.url)),
+            public: fileURLToPath(
+                resolve(dirname(import.meta.url), "../../web/dist"),
+            ),
             rewrites: [{ source: "**", destination: "/index.html" }],
             headers: [
                 {

@@ -1,5 +1,0 @@
-nvim
-neovim
-valibot
-consts
-istextorbinary
