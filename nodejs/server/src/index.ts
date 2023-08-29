@@ -38,6 +38,7 @@ async function main() {
 
     await killExisting(PORT);
     await nvim.lua('print("starting MarkdownPreview server")');
+    await nvim.lua('print("starting MarkdownPreview server")');
 
     // TODO more testing with logging
     nvim.logger.error("nvim error");
