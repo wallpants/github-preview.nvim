@@ -1,22 +1,19 @@
 {
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "version": "0.2",
+  "dictionaries": ["typescript", "html"],
   "ignoreWords": [
     "automagically",
     "clsx",
     "consts",
-    "dotenv",
     "esno",
     "gual",
     "istextorbinary",
-    "luadoc",
     "neovim",
     "nvim",
-    "postcss",
     "tailwindcss",
     "tsdoc",
     "valibot",
-    "vite",
     "wooorm"
   ],
   "ignorePaths": ["node_modules", "dist", "pnpm-lock.yaml", "*.svg", "*.log"]

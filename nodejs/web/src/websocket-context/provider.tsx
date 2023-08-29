@@ -7,7 +7,8 @@ import { websocketContext, type MessageHandler, type Status } from "./context";
 
 // we check for PORT for dev env
 const url =
-    "ws://" + VITE_GP_PORT ? `localhost:${VITE_GP_PORT}` : window.location.host;
+    "ws://" +
+    (VITE_GP_PORT ? `localhost:${VITE_GP_PORT}` : window.location.host);
 const ws = new ReconnectingWebSocket(url, [], {
     maxReconnectionDelay: 3000,
 });
