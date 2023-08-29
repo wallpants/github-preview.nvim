@@ -1,0 +1,72 @@
+name: build & push
+on:
+  push:
+    branches:
+      - lite
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          # required config: https://github.com/marketplace/actions/github-commit-push
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Install nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.7
+          run_install: false
+
+      - name: get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: install dependencies
+        run: pnpm install
+
+      - name: build "common-only"
+        run: |
+          pnpm build
+          echo '!dist' >> .gitignore
+
+      - name: update "common-only"
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: common-only
+          force: true
+
+      - name: build "main"
+        run: |
+          # delete last commit so "main" doesn't include
+          # the commit for "common-only" build
+          git reset --hard HEAD^
+          new_import='import { all as languages } from "@wooorm/starry-night";'
+          languages_file=nodejs/web/src/languages.ts
+          sed -i "1s|.*|$new_import|" $languages_file
+          pnpm build
+          echo '!dist' >> .gitignore
+
+      - name: update "main"
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+          force: true

@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "version": "0.2",
-  "dictionaries": ["typescript", "html"],
+  "dictionaries": ["typescript", "html", "npm"],
   "ignoreWords": [
     "automagically",
     "clsx",

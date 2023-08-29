@@ -1,13 +1,14 @@
-import { common, createStarryNight } from "@wooorm/starry-night";
+import { createStarryNight } from "@wooorm/starry-night";
 import { toHtml } from "hast-util-to-html";
 import markdownIt from "markdown-it";
+import languages from "../../../languages";
 import copyBlockPlugin from "./copy-block";
 import { starryNightGutter } from "./gutter";
 import injectLinenumbersPlugin from "./linenumbers";
 import localImage from "./local-image";
 import relativeLinks from "./relative-links";
 
-const starryNight = await createStarryNight(common);
+const starryNight = await createStarryNight(languages);
 
 export function markdownToHtml(markdown: string) {
     const markdownItInstance = markdownIt({

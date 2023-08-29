@@ -34,7 +34,7 @@ async function main() {
         await nvim.getVar("markdown_preview_props"),
     );
 
-    const PORT = VITE_GP_PORT ?? props.port;
+    const PORT = Number(VITE_GP_PORT ?? props.port);
 
     await killExisting(PORT);
     await nvim.lua('print("starting MarkdownPreview server")');

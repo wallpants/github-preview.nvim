@@ -13,7 +13,7 @@
     "dev": "turbo run dev",
     "spell:check": "pnpm cspell ** --no-progress",
     "lint": "pnpm spell:check && turbo run lint",
-    "build": "rm -rf dist && pnpm lint && turbo run build"
+    "build": "turbo run build"
   },
   "devDependencies": {
     "@types/eslint": "8.44.2",
