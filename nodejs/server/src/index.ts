@@ -10,10 +10,9 @@ import { onWssConnection } from "./on-wss-connection";
 import { PluginPropsSchema } from "./types";
 import { findRepoRoot } from "./utils";
 
-// if GP_PORT defined, we're on dev env
-// we don't directly load NVIM_LISTEN_ADDRESS, because
-// it might be set for someone else
-const socket = VITE_GP_PORT ? NVIM_LISTEN_ADDRESS : process.argv[2];
+// I don't understand why NVIM_LISTEN_ADDRESS is undefined
+// in the server started by nvim, but VITE_GP_PORT is not
+const socket = NVIM_LISTEN_ADDRESS ?? process.argv[2];
 
 async function killExisting(port: number) {
     try {
@@ -33,11 +32,9 @@ async function main() {
         PluginPropsSchema,
         await nvim.getVar("markdown_preview_props"),
     );
-
-    const PORT = Number(VITE_GP_PORT ?? props.port);
+const PORT = Number(VITE_GP_PORT ?? props.port)
 
     await killExisting(PORT);
-    await nvim.lua('print("starting MarkdownPreview server")');
     await nvim.lua('print("starting MarkdownPreview server")');
 
     // TODO more testing with logging

@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "prepare": "husky install",
-    "vi": "dotenv -e .env.dev -- nvim",
+    "vi": "dotenv -e .env.dev -- bash -c 'nvim'",
     "format": "turbo run format",
     "dev": "turbo run dev",
     "spell:check": "pnpm cspell ** --no-progress",

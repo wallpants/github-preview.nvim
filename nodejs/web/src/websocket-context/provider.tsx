@@ -5,6 +5,8 @@ import { VITE_GP_PORT } from "../../env";
 import { Banner } from "../components/banner";
 import { websocketContext, type MessageHandler, type Status } from "./context";
 
+console.log("VITE_GP_PORT: ", VITE_GP_PORT);
+
 // we check for PORT for dev env
 const url =
     "ws://" +
