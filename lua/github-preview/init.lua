@@ -1,4 +1,4 @@
--- cspell:ignore autocmd rpcnotify jobstart
+-- cspell:ignore autocmd rpcnotify jobstart getcwd
 local Utils = require("github-preview.utils")
 local Types = require("github-preview.types")
 
@@ -23,6 +23,7 @@ M.setup = function(opts)
 		vim.g.markdown_preview_props = {
 			port = opts.port,
 			log_output = opts.log_output,
+			cwd = vim.fn.getcwd(),
 			scroll_debounce_ms = opts.scroll_debounce_ms,
 			disable_sync_scroll = false,
 			ignore_buffer_patterns = opts.ignore_buffer_patterns,

@@ -1,4 +1,4 @@
-// cspell:ignore winline gualcasas
+// cspell:ignore winline readdirSync
 import { globby } from "globby";
 import { type NeovimClient } from "neovim";
 import { readFileSync, readdirSync, statSync } from "node:fs";
@@ -44,25 +44,27 @@ export async function getCursorMove(
     };
 }
 
-export function findRepoRoot(filePath: string): string | null {
-    let dir = dirname(filePath);
+const MAX_ATTEMPTS = 30;
+let attempt = 0;
+export function findRepoRoot(cwd: string): string | null {
     do {
+        attempt += 1;
         try {
-            const paths = readdirSync(dir);
+            const paths = readdirSync(cwd);
             for (const path of paths) {
-                const absolute = `${dir}/${path}`;
+                const absolute = `${cwd}/${path}`;
                 const pathStats = statSync(absolute);
                 if (pathStats.isDirectory() && path === ".git") {
-                    return dir + "/";
+                    return cwd + "/";
                 }
             }
-            dir = dirname(dir);
+            cwd = dirname(cwd);
         } catch (e) {
             // TODO: throw error, implement better logging
             console.log("error: ", e);
             return null;
         }
-    } while (dir !== "/");
+    } while (![".", "/"].includes(cwd) && attempt < MAX_ATTEMPTS);
     return null;
 }
 

@@ -52,7 +52,7 @@ markdown-preview/: $ pnpm web:dev
 
 we need to know
 
-something else gualberto
+something else
 
 something else
 

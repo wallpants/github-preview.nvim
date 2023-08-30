@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "setup:dev": "dotenv -e ./../../.env.dev",
+    "setup:dev": "dotenv -e ../../.env.dev",
     "dev": "pnpm setup:dev -- vite --open",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

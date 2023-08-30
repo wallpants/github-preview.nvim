@@ -3,16 +3,15 @@ import { createServer } from "node:http";
 import opener from "opener";
 import { parse } from "valibot";
 import { WebSocketServer } from "ws";
-import { NVIM_LISTEN_ADDRESS, VITE_GP_PORT } from "./env";
+import { NVIM_LISTEN_ADDRESS, VITE_GP_PORT } from "../env";
 import { onHttpRequest } from "./on-http-request";
 import { RPC_EVENTS } from "./on-nvim-notification";
 import { onWssConnection } from "./on-wss-connection";
 import { PluginPropsSchema } from "./types";
 import { findRepoRoot } from "./utils";
 
-// I don't understand why NVIM_LISTEN_ADDRESS is undefined
-// in the server started by nvim, but VITE_GP_PORT is not
 const socket = NVIM_LISTEN_ADDRESS ?? process.argv[2];
+const IS_DEV = Boolean(VITE_GP_PORT);
 
 async function killExisting(port: number) {
     try {
@@ -32,15 +31,12 @@ async function main() {
         PluginPropsSchema,
         await nvim.getVar("markdown_preview_props"),
     );
-const PORT = Number(VITE_GP_PORT ?? props.port)
-
+    const PORT = Number(VITE_GP_PORT ?? props.port);
     await killExisting(PORT);
     await nvim.lua('print("starting MarkdownPreview server")');
 
-    // TODO more testing with logging
-    nvim.logger.error("nvim error");
-
-    const root = findRepoRoot(await nvim.buffer.name);
+    const root = findRepoRoot(props.cwd);
+    // TODO: better logging
     if (!root) throw Error("root .git directory NOT FOUND");
 
     for (const event of RPC_EVENTS) await nvim.subscribe(event);
@@ -54,7 +50,7 @@ const PORT = Number(VITE_GP_PORT ?? props.port)
         onWssConnection({ nvim, httpServer, root, props }),
     );
 
-    !VITE_GP_PORT && opener(`http://localhost:${PORT}`);
+    !IS_DEV && opener(`http://localhost:${PORT}`);
     httpServer.listen(PORT, () => {
         console.log(`Server is listening on port ${PORT}`);
     });
