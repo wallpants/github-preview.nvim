@@ -13,6 +13,7 @@
 -   [x] fix scroll so it doesn't take explorer into consideration when calculating offset
 -   [] scroll doesn't work with code files (non .md)
 -   [] add bottom margin to allow scrolling when markdown content too short
+-   [] github renders html within markdown [see here](https://github.com/microsoft/vscode-extension-samples), **VS Code Extension Samples** doesn't render well in github-preview
 
 [follow this link](https://github.com)
 
