@@ -3,15 +3,15 @@ import { createServer } from "node:http";
 import opener from "opener";
 import { parse } from "valibot";
 import { WebSocketServer } from "ws";
-import { NVIM_LISTEN_ADDRESS, VITE_GP_PORT } from "../env";
+import { ENV } from "../../env";
 import { onHttpRequest } from "./on-http-request";
 import { RPC_EVENTS } from "./on-nvim-notification";
 import { onWssConnection } from "./on-wss-connection";
 import { PluginPropsSchema } from "./types";
 import { findRepoRoot } from "./utils";
 
-const socket = NVIM_LISTEN_ADDRESS ?? process.argv[2];
-const IS_DEV = Boolean(VITE_GP_PORT);
+const socket = ENV.NVIM_LISTEN_ADDRESS ?? process.argv[2];
+const IS_DEV = Boolean(ENV.VITE_GP_PORT);
 
 async function killExisting(port: number) {
     try {
@@ -32,7 +32,7 @@ async function main() {
         PluginPropsSchema,
         await nvim.getVar("markdown_preview_props"),
     );
-    const PORT = Number(VITE_GP_PORT ?? props.port);
+    const PORT = Number(ENV.VITE_GP_PORT ?? props.port);
     await killExisting(PORT);
     await nvim.lua('print("starting MarkdownPreview server")');
 

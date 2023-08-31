@@ -18,6 +18,7 @@ import {
 } from "vscode-languageserver/node";
 
 import { TextDocument } from "vscode-languageserver-textdocument";
+import { logger } from "./logger";
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -31,6 +32,14 @@ let hasWorkspaceFolderCapability = false;
 let hasDiagnosticRelatedInformationCapability = false;
 
 connection.onInitialize((params: InitializeParams) => {
+    const initializationOptions = params.initializationOptions as {
+        hostInfo?: string;
+        gualberto?: string;
+    };
+
+    logger.debug(initializationOptions);
+    logger.info(initializationOptions);
+
     const capabilities = params.capabilities;
 
     // Does the client support the `workspace/configuration` request?
@@ -98,7 +107,7 @@ connection.onDidChangeConfiguration((change) => {
         documentSettings.clear();
     } else {
         // eslint-disable-next-line
-        globalSettings = (change.settings.languageServerExample ||
+        globalSettings = (change.settings.langual ||
             defaultSettings) as ExampleSettings;
     }
 
@@ -111,6 +120,15 @@ function getDocumentSettings(_resource: string): Thenable<ExampleSettings> {
         return Promise.resolve(globalSettings);
     }
 
+    // connection.workspace
+    //     .getConfiguration({
+    //         scopeUri: resource,
+    //         section: "langual",
+    //     })
+    //     .then((res1) => {
+    //         throw Error(`res1: ${JSON.stringify(res1)}`);
+    //     });
+
     // TODO(gualcasas): "result" is undefined
     // at the end of this call when connecting to the server
     // from neovim, but it works for vscode
@@ -118,7 +136,7 @@ function getDocumentSettings(_resource: string): Thenable<ExampleSettings> {
     // if (!result) {
     //     result = connection.workspace.getConfiguration({
     //         scopeUri: resource,
-    //         section: "languageServerExample",
+    //         section: "langual",
     //     });
 
     //     documentSettings.set(resource, result);

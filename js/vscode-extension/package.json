@@ -11,15 +11,15 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "Example configuration",
+      "title": "Langual language server",
       "properties": {
-        "languageServerExample.maxNumberOfProblems": {
+        "langual.maxNumberOfProblems": {
           "scope": "resource",
           "type": "number",
           "default": 100,
           "description": "Controls the maximum number of problems produced by the server."
         },
-        "languageServerExample.trace.server": {
+        "langual.trace.server": {
           "scope": "window",
           "type": "string",
           "enum": [
@@ -35,14 +35,13 @@
   },
   "scripts": {
     "clean": "rm -rf dist && rm -rf node_modules",
-    "dev": "dotenv -e ../../.env.dev -- ncc build src/index.ts -w -s",
+    "dev": "ncc build src/index.ts -w -s",
     "build": "ncc build src/index.ts",
     "lint": "eslint src --ext ts --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts}\""
   },
   "devDependencies": {
-    "@types/vscode": "^1.81.0",
-    "dotenv-cli": "^7.3.0"
+    "@types/vscode": "^1.81.0"
   },
   "dependencies": {
     "@vercel/ncc": "^0.36.1",
