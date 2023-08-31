@@ -34,6 +34,7 @@
     }
   },
   "scripts": {
+    "clean": "rm -rf dist && rm -rf node_modules",
     "dev": "dotenv -e ../../.env.dev -- ncc build src/index.ts -w -s",
     "build": "ncc build src/index.ts",
     "lint": "eslint src --ext ts --report-unused-disable-directives --max-warnings 0",

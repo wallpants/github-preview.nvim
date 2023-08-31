@@ -18,17 +18,14 @@ let client: LanguageClient;
 export function activate(context: ExtensionContext) {
     // The server is implemented in node
     const serverModule = context.asAbsolutePath(
-        path.join("..", "langual", "dist", "index.js"),
+        path.join("..", "langual-server", "dist", "index.js"),
     );
 
     // If the extension is launched in debug mode then the debug server options are used
     // Otherwise the run options are used
     const serverOptions: ServerOptions = {
         run: { module: serverModule, transport: TransportKind.ipc },
-        debug: {
-            module: serverModule,
-            transport: TransportKind.ipc,
-        },
+        debug: { module: serverModule, transport: TransportKind.ipc },
     };
 
     // Options to control the language client

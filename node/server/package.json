@@ -1,11 +1,11 @@
 {
   "name": "server",
   "version": "0.0.1",
-  "type": "module",
   "engines": {
     "node": ">=18"
   },
   "scripts": {
+    "clean": "rm -rf dist && rm -rf node_modules",
     "dev": "dotenv -e ../../.env.dev -- tsx watch src/index.ts",
     "build": "rm -rf dist && tsc --noEmit && ncc build src/index.ts -m -e neovim -e winston",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

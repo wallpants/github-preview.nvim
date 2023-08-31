@@ -9,6 +9,7 @@
     "prepare": "husky install",
     "vi": "dotenv -e .env.dev nvim",
     "format": "turbo run format",
+    "clean": "turbo run clean && rm -rf node_modules",
     "dev": "turbo run dev",
     "spell:check": "pnpm cspell ** --no-progress",
     "lint": "pnpm spell:check && turbo run lint",

@@ -4,8 +4,7 @@ import {
     type Server,
     type ServerResponse,
 } from "node:http";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 import handler from "serve-handler";
 import { RPC_EVENTS } from "./on-nvim-notification";
 import { type PluginProps } from "./types";
@@ -30,7 +29,6 @@ export function onHttpRequest({ nvim, httpServer }: Args) {
         //     return localFileHandler(req, res, props.filepath);
         // }
 
-        const __dirname = dirname(fileURLToPath(import.meta.url));
         return handler(req, res, {
             public: resolve(__dirname, "../../web/dist"),
             rewrites: [{ source: "**", destination: "/index.html" }],

@@ -106,19 +106,26 @@ connection.onDidChangeConfiguration((change) => {
     documents.all().forEach(validateTextDocument);
 });
 
-function getDocumentSettings(resource: string): Thenable<ExampleSettings> {
+function getDocumentSettings(_resource: string): Thenable<ExampleSettings> {
     if (!hasConfigurationCapability) {
         return Promise.resolve(globalSettings);
     }
-    let result = documentSettings.get(resource);
-    if (!result) {
-        result = connection.workspace.getConfiguration({
-            scopeUri: resource,
-            section: "languageServerExample",
-        });
-        documentSettings.set(resource, result);
-    }
-    return result;
+
+    // TODO(gualcasas): "result" is undefined
+    // at the end of this call when connecting to the server
+    // from neovim, but it works for vscode
+    // let result = documentSettings.get(resource);
+    // if (!result) {
+    //     result = connection.workspace.getConfiguration({
+    //         scopeUri: resource,
+    //         section: "languageServerExample",
+    //     });
+
+    //     documentSettings.set(resource, result);
+    // }
+    // return result;
+
+    return Promise.resolve(globalSettings);
 }
 
 // Only keep settings for open documents
@@ -179,7 +186,10 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
     }
 
     // Send the computed diagnostics to VSCode.
-    await connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+    await connection.sendDiagnostics({
+        uri: textDocument.uri,
+        diagnostics,
+    });
 }
 
 connection.onDidChangeWatchedFiles((_change) => {

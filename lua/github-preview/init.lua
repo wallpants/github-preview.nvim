@@ -48,7 +48,7 @@ M.setup = function(opts)
 			end,
 		})
 
-		local shell_command = "node " .. Utils.plugin_root .. "nodejs/server/dist/index.js " .. Utils.nvim_socket
+		local shell_command = "node " .. Utils.plugin_root .. "node/server/dist/index.js " .. Utils.nvim_socket
 
 		vim.fn.jobstart(shell_command, {
 			on_stdout = Utils.log(opts.log_output, "stdout"),
