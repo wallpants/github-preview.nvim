@@ -1,0 +1,38 @@
+{
+  "name": "langual",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "engines": {
+    "vscode": "^1.81.0"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "new-lsp.helloWorld",
+        "title": "Hello World"
+      }
+    ]
+  },
+  "scripts": {
+    "lint": "eslint src --ext ts --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write \"src/**/*.{ts}\"",
+    "watch": "ncc build -w src/index.ts -s",
+    "build": "ncc build src/index.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.0",
+    "@types/vscode": "^1.81.0",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "dotenv-cli": "^7.3.0",
+    "eslint": "^8.48.0",
+    "eslint-plugin-import": "^2.28.1",
+    "prettier": "^3.0.3",
+    "prettier-plugin-organize-imports": "^3.2.3",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@vercel/ncc": "^0.36.1",
+    "zod": "^3.22.2"
+  }
+}

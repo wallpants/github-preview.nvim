@@ -1,0 +1,20 @@
+{
+  "name": "langual",
+  "description": "Langual",
+  "version": "1.0.0",
+  "author": "Gual Casas",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "vscode-languageserver": "^8.1.0",
+    "vscode-languageserver-textdocument": "^1.0.8"
+  },
+  "scripts": {
+    "dev": "dotenv -e ../../.env.dev -- tsx watch src/index.ts",
+    "build": "rm -rf dist && ncc build src/index.ts -m -e neovim -e winston",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write \"src/**/*.{ts,html,css}\""
+  }
+}
