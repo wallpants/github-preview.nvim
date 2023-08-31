@@ -5,13 +5,33 @@
   "engines": {
     "vscode": "^1.81.0"
   },
+  "activationEvents": [
+    "onLanguage:plaintext"
+  ],
   "contributes": {
-    "commands": [
-      {
-        "command": "new-lsp.helloWorld",
-        "title": "Hello World"
+    "configuration": {
+      "type": "object",
+      "title": "Example configuration",
+      "properties": {
+        "languageServerExample.maxNumberOfProblems": {
+          "scope": "resource",
+          "type": "number",
+          "default": 100,
+          "description": "Controls the maximum number of problems produced by the server."
+        },
+        "languageServerExample.trace.server": {
+          "scope": "window",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the language server."
+        }
       }
-    ]
+    }
   },
   "scripts": {
     "dev": "dotenv -e ../../.env.dev -- ncc build src/index.ts -w -s",
