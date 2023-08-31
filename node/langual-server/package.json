@@ -1,24 +1,28 @@
 {
-  "name": "langual",
+  "name": "langual-server",
   "description": "Langual",
   "version": "1.0.0",
   "author": "Gual Casas",
   "license": "MIT",
+  "bin": {
+    "langual-server": "./dist/index.js"
+  },
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
+    "commander": "^11.0.0",
     "vscode-languageserver": "^8.1.0",
     "vscode-languageserver-textdocument": "^1.0.8"
   },
   "scripts": {
+    "clean": "rm -rf dist && rm -rf node_modules",
     "dev": "dotenv -e ../../.env.dev -- ncc build src/index.ts -w -s",
     "build": "rm -rf dist && tsc --noEmit && ncc build src/index.ts -m",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts}\""
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.36.1",
-    "tsx": "^3.12.7"
+    "@vercel/ncc": "^0.36.1"
   }
 }

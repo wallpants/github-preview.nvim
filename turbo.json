@@ -7,6 +7,7 @@
       "outputs": ["dist/**"]
     },
     "format": {},
+    "clean": {},
     "lint": {},
     "dev": {
       "cache": false,

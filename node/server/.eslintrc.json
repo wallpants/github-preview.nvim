@@ -1,6 +1,6 @@
 {
   "env": {
     "node": true,
-    "es2022": true
+    "es2020": true
   }
 }

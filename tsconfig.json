@@ -1,6 +1,9 @@
 {
   "display": "Strictest",
   "compilerOptions": {
+    "lib": ["ES2020"],
+    "module": "CommonJS",
+    "target": "ES2020",
     "strict": true,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
@@ -14,6 +17,7 @@
     "noUnusedParameters": true,
     "checkJs": true,
     "esModuleInterop": true,
+    "isolatedModules": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   }

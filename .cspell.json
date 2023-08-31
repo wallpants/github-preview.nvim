@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "version": "0.2",
-  "dictionaries": ["typescript", "html", "npm"],
+  "dictionaries": ["typescript", "html", "node", "npm"],
   "ignoreWords": [
     "automagically",
     "clientrc",
@@ -12,6 +12,7 @@
     "gualcasas",
     "istextorbinary",
     "langual",
+    "lgserver",
     "neovim",
     "nvim",
     "tailwindcss",

@@ -57,8 +57,6 @@ async function main() {
     });
 }
 
-try {
-    await main();
-} catch (err) {
+main().catch((err) => {
     console.log(err);
-}
+});
