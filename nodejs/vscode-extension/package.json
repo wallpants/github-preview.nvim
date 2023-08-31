@@ -14,10 +14,10 @@
     ]
   },
   "scripts": {
+    "dev": "dotenv -e ../../.env.dev -- ncc build src/index.ts -w -s",
+    "build": "ncc build src/index.ts",
     "lint": "eslint src --ext ts --report-unused-disable-directives --max-warnings 0",
-    "format": "prettier --write \"src/**/*.{ts}\"",
-    "watch": "ncc build -w src/index.ts -s",
-    "build": "ncc build src/index.ts"
+    "format": "prettier --write \"src/**/*.{ts}\""
   },
   "devDependencies": {
     "@types/vscode": "^1.81.0",

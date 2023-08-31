@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "dotenv -e ../../.env.dev -- tsx watch src/index.ts",
-    "build": "rm -rf dist && ncc build src/index.ts -m -e neovim -e winston",
+    "build": "rm -rf dist && tsc --noEmit && ncc build src/index.ts -m -e neovim -e winston",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts}\""
   },
