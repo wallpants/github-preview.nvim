@@ -56,6 +56,9 @@ importers:
       vscode-languageserver-textdocument:
         specifier: ^1.0.8
         version: 1.0.8
+      winston:
+        specifier: ^3.10.0
+        version: 3.10.0
     devDependencies:
       '@vercel/ncc':
         specifier: ^0.36.1
@@ -4584,6 +4587,23 @@ packages:
       logform: 2.5.1
       readable-stream: 3.6.2
       triple-beam: 1.4.1
+    dev: false
+
+  /winston@3.10.0:
+    resolution: {integrity: sha512-nT6SIDaE9B7ZRO0u3UvdrimG0HkB7dSTAgInQnNR2SOPJ4bvq5q79+pXLftKmP52lJGW15+H5MCK0nM9D3KB/g==}
+    engines: {node: '>= 12.0.0'}
+    dependencies:
+      '@colors/colors': 1.5.0
+      '@dabh/diagnostics': 2.0.3
+      async: 3.2.4
+      is-stream: 2.0.1
+      logform: 2.5.1
+      one-time: 1.0.0
+      readable-stream: 3.6.2
+      safe-stable-stringify: 2.4.3
+      stack-trace: 0.0.10
+      triple-beam: 1.4.1
+      winston-transport: 4.5.0
     dev: false
 
   /winston@3.3.3:
