@@ -33,7 +33,7 @@ console.log("hello world");
 import { common, createStarryNight } from "@wooorm/starry-night";
 
 TypeScript JavaScript ASDF jk T
-TypeScript JavaScript ASDFASDF 
+TypeScript JavaScript
 const starryNight = await createStarryNight(common, {
     getOnigurumaUrlFetch() {
         return new URL("/file.wasm", window.location.href);
