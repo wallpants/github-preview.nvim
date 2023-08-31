@@ -15,8 +15,9 @@ const IS_DEV = Boolean(VITE_GP_PORT);
 
 async function killExisting(port: number) {
     try {
-        // we check for PORT for dev env
-        await fetch(`http://localhost:${port}`, { method: "POST" });
+        // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/60924
+        // @ts-expect-error fetch is not defined it @types/node
+        await fetch(`http://localhost:${port}`, { method: "POST" }); // eslint-disable-line
         console.log("innocent server killed");
     } catch (err) {
         console.log("no server to kill");

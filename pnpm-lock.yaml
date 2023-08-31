@@ -114,9 +114,9 @@ importers:
       dotenv-cli:
         specifier: ^7.3.0
         version: 7.3.0
-      esno:
-        specifier: ^0.17.0
-        version: 0.17.0
+      tsx:
+        specifier: ^3.12.7
+        version: 3.12.7
 
   nodejs/web:
     dependencies:
@@ -2341,13 +2341,6 @@ packages:
       text-table: 0.2.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /esno@0.17.0:
-    resolution: {integrity: sha512-w78cQGlptQfsBYfootUCitsKS+MD74uR5L6kNsvwVkJsfzEepIafbvWsx2xK4rcFP4IUftt4F6J8EhagUxX+Bg==}
-    hasBin: true
-    dependencies:
-      tsx: 3.12.7
     dev: true
 
   /espree@9.6.1:
