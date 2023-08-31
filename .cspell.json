@@ -4,6 +4,7 @@
   "dictionaries": ["typescript", "html", "npm"],
   "ignoreWords": [
     "automagically",
+    "clientrc",
     "clsx",
     "consts",
     "esno",

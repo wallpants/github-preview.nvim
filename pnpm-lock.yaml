@@ -8,9 +8,6 @@ importers:
 
   .:
     devDependencies:
-      '@types/eslint':
-        specifier: 8.44.2
-        version: 8.44.2
       '@typescript-eslint/eslint-plugin':
         specifier: 6.3.0
         version: 6.3.0(@typescript-eslint/parser@6.3.0)(eslint@8.48.0)(typescript@5.1.6)
@@ -48,6 +45,19 @@ importers:
         specifier: 5.1.6
         version: 5.1.6
 
+  nodejs/langual:
+    dependencies:
+      vscode-languageserver:
+        specifier: ^8.1.0
+        version: 8.1.0
+      vscode-languageserver-textdocument:
+        specifier: ^1.0.8
+        version: 1.0.8
+    devDependencies:
+      '@vercel/ncc':
+        specifier: ^0.36.1
+        version: 0.36.1
+
   nodejs/server:
     dependencies:
       globby:
@@ -84,15 +94,9 @@ importers:
         specifier: ^8.13.0
         version: 8.13.0
     devDependencies:
-      '@types/eslint':
-        specifier: 8.44.2
-        version: 8.44.2
       '@types/lodash-es':
         specifier: ^4.17.8
         version: 4.17.8
-      '@types/node':
-        specifier: ^20.5.7
-        version: 20.5.7
       '@types/opener':
         specifier: ^1.4.0
         version: 1.4.0
@@ -102,12 +106,6 @@ importers:
       '@types/ws':
         specifier: ^8.5.5
         version: 8.5.5
-      '@typescript-eslint/eslint-plugin':
-        specifier: 6.3.0
-        version: 6.3.0(@typescript-eslint/parser@6.3.0)(eslint@8.48.0)(typescript@5.1.6)
-      '@typescript-eslint/parser':
-        specifier: 6.3.0
-        version: 6.3.0(eslint@8.48.0)(typescript@5.1.6)
       '@vercel/ncc':
         specifier: ^0.36.1
         version: 0.36.1
@@ -117,6 +115,25 @@ importers:
       tsx:
         specifier: ^3.12.7
         version: 3.12.7
+
+  nodejs/vscode-extension:
+    dependencies:
+      '@vercel/ncc':
+        specifier: ^0.36.1
+        version: 0.36.1
+      vscode-languageclient:
+        specifier: ^8.1.0
+        version: 8.1.0
+      zod:
+        specifier: ^3.22.2
+        version: 3.22.2
+    devDependencies:
+      '@types/vscode':
+        specifier: ^1.81.0
+        version: 1.81.0
+      dotenv-cli:
+        specifier: ^7.3.0
+        version: 7.3.0
 
   nodejs/web:
     dependencies:
@@ -1074,17 +1091,6 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
 
-  /@types/eslint@8.44.2:
-    resolution: {integrity: sha512-sdPRb9K6iL5XZOmBubg8yiFp5yS/JdUDQsq5e6h95km91MCYMuvp7mh1fjPEYUhvHepKpZOjnEaMBR4PxjWDzg==}
-    dependencies:
-      '@types/estree': 1.0.1
-      '@types/json-schema': 7.0.12
-    dev: true
-
-  /@types/estree@1.0.1:
-    resolution: {integrity: sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==}
-    dev: true
-
   /@types/hast@2.3.5:
     resolution: {integrity: sha512-SvQi0L/lNpThgPoleH53cdjB3y9zpLlVjRbqB3rH8hx1jiRSBGAhyjV3H+URFjNVRqt2EdYNrbZE5IsGlNfpRg==}
     dependencies:
@@ -1185,6 +1191,10 @@ packages:
   /@types/unist@3.0.0:
     resolution: {integrity: sha512-MFETx3tbTjE7Uk6vvnWINA/1iJ7LuMdO4fcq8UfF0pRbj01aGLduVvQcRyswuACJdpnHgg8E3rQLhaRdNEJS0w==}
     dev: false
+
+  /@types/vscode@1.81.0:
+    resolution: {integrity: sha512-YIaCwpT+O2E7WOMq0eCgBEABE++SX3Yl/O02GoMIF2DO3qAtvw7m6BXFYsxnc6XyzwZgh6/s/UG78LSSombl2w==}
+    dev: true
 
   /@types/ws@8.5.5:
     resolution: {integrity: sha512-lwhs8hktwxSjf9UaZ9tG5M03PGogvFaH8gUgLNbN9HKIg0dvv6q+gkSuJ8HN4/VbyxkuLzCjlN7GquQ0gUJfIg==}
@@ -1331,7 +1341,6 @@ packages:
   /@vercel/ncc@0.36.1:
     resolution: {integrity: sha512-S4cL7Taa9yb5qbv+6wLgiKVZ03Qfkc4jGRuiUQMQ8HGBD5pcNRnHeYM33zBvJE4/zJGjJJ8GScB+WmTsn9mORw==}
     hasBin: true
-    dev: true
 
   /@vitejs/plugin-react@4.0.4(vite@4.4.9):
     resolution: {integrity: sha512-7wU921ABnNYkETiMaZy7XqpueMnpu5VxvVps13MjmCo+utBdD79sZzrApHawHtVX66cCJQQTXFcjH0y9dSUK8g==}
@@ -3286,6 +3295,13 @@ packages:
     dependencies:
       brace-expansion: 1.1.11
 
+  /minimatch@5.1.6:
+    resolution: {integrity: sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==}
+    engines: {node: '>=10'}
+    dependencies:
+      brace-expansion: 2.0.1
+    dev: false
+
   /minimatch@9.0.3:
     resolution: {integrity: sha512-RHiac9mvaRw0x3AYRgDC1CxAP7HTcNrrECeA8YYJeWnpo+2Q5CegtZjaotWTWxDG3UeGA1coE05iH1mPjT/2mg==}
     engines: {node: '>=16 || 14 >=14.17'}
@@ -4442,9 +4458,40 @@ packages:
       fsevents: 2.3.3
     dev: true
 
+  /vscode-jsonrpc@8.1.0:
+    resolution: {integrity: sha512-6TDy/abTQk+zDGYazgbIPc+4JoXdwC8NHU9Pbn4UJP1fehUyZmM4RHp5IthX7A6L5KS30PRui+j+tbbMMMafdw==}
+    engines: {node: '>=14.0.0'}
+    dev: false
+
+  /vscode-languageclient@8.1.0:
+    resolution: {integrity: sha512-GL4QdbYUF/XxQlAsvYWZRV3V34kOkpRlvV60/72ghHfsYFnS/v2MANZ9P6sHmxFcZKOse8O+L9G7Czg0NUWing==}
+    engines: {vscode: ^1.67.0}
+    dependencies:
+      minimatch: 5.1.6
+      semver: 7.5.4
+      vscode-languageserver-protocol: 3.17.3
+    dev: false
+
+  /vscode-languageserver-protocol@3.17.3:
+    resolution: {integrity: sha512-924/h0AqsMtA5yK22GgMtCYiMdCOtWTSGgUOkgEDX+wk2b0x4sAfLiO4NxBxqbiVtz7K7/1/RgVrVI0NClZwqA==}
+    dependencies:
+      vscode-jsonrpc: 8.1.0
+      vscode-languageserver-types: 3.17.3
+    dev: false
+
   /vscode-languageserver-textdocument@1.0.8:
     resolution: {integrity: sha512-1bonkGqQs5/fxGT5UchTgjGVnfysL0O8v1AYMBjqTbWQTFn721zaPGDYFkOKtfDgFiSgXM3KwaG3FMGfW4Ed9Q==}
-    dev: true
+
+  /vscode-languageserver-types@3.17.3:
+    resolution: {integrity: sha512-SYU4z1dL0PyIMd4Vj8YOqFvHu7Hz/enbWtpfnVbJHU4Nd1YNYx8u0ennumc6h48GQNeOLxmwySmnADouT/AuZA==}
+    dev: false
+
+  /vscode-languageserver@8.1.0:
+    resolution: {integrity: sha512-eUt8f1z2N2IEUDBsKaNapkz7jl5QpskN2Y0G01T/ItMxBxw1fJwvtySGB9QMecatne8jFIWJGWI61dWjyTLQsw==}
+    hasBin: true
+    dependencies:
+      vscode-languageserver-protocol: 3.17.3
+    dev: false
 
   /vscode-oniguruma@1.7.0:
     resolution: {integrity: sha512-L9WMGRfrjOhgHSdOYgCt/yRMsXzLDJSL7BPrOZt73gU0iWO4mpqzqQzOz5srxqTvMBaR0XZTSrVWo4j55Rc6cA==}
@@ -4605,6 +4652,10 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
+
+  /zod@3.22.2:
+    resolution: {integrity: sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==}
+    dev: false
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}

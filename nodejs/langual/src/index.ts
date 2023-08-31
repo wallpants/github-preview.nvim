@@ -63,10 +63,10 @@ connection.onInitialize((params: InitializeParams) => {
     return result;
 });
 
-connection.onInitialized(() => {
+connection.onInitialized(async () => {
     if (hasConfigurationCapability) {
         // Register for all configuration changes.
-        connection.client.register(
+        await connection.client.register(
             DidChangeConfigurationNotification.type,
             undefined,
         );
@@ -97,6 +97,7 @@ connection.onDidChangeConfiguration((change) => {
         // Reset all cached document settings
         documentSettings.clear();
     } else {
+        // eslint-disable-next-line
         globalSettings = (change.settings.languageServerExample ||
             defaultSettings) as ExampleSettings;
     }
@@ -127,8 +128,8 @@ documents.onDidClose((e) => {
 
 // The content of a text document has changed. This event is emitted
 // when the text document first opened or when its content has changed.
-documents.onDidChangeContent((change) => {
-    validateTextDocument(change.document);
+documents.onDidChangeContent(async (change) => {
+    await validateTextDocument(change.document);
 });
 
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
@@ -178,7 +179,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
     }
 
     // Send the computed diagnostics to VSCode.
-    connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+    await connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
 connection.onDidChangeWatchedFiles((_change) => {
