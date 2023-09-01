@@ -7,11 +7,12 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "vi": "dotenv -e .env.dev nvim",
+    "vi": "dotenv nvim",
     "format": "turbo run format",
     "clean": "turbo run clean && rm -rf node_modules",
     "dev": "turbo run dev",
-    "print": "tail -F -n 0 gualberto.logs",
+    "bridge:logs": "dotenv -- bash -c 'tail -F -n 0 \"$BRIDGE_LOG_STREAM\"'",
+    "server:logs": "dotenv -- bash -c 'tail -F -n 0 \"$SERVER_LOG_STREAM\"'",
     "spell:check": "pnpm cspell ** --no-progress",
     "lint": "pnpm spell:check && turbo run lint",
     "build": "turbo run build"
