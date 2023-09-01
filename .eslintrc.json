@@ -12,7 +12,7 @@
     "plugin:@typescript-eslint/stylistic-type-checked"
   ],
   "plugins": ["eslint-plugin-tsdoc", "import"],
-  "ignorePatterns": ["dist"],
+  "ignorePatterns": ["dist", "lsp-archive"],
   "rules": {
     "tsdoc/syntax": "warn",
     "@typescript-eslint/no-misused-promises": [
