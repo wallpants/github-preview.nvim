@@ -1,8 +1,8 @@
 export interface CursorMove {
-    cursorLine: number;
-    contentLen: number;
-    winHeight: number;
-    winLine: number;
+    cursor_line: number;
+    content_len: number;
+    win_height: number;
+    win_line: number;
     sync_scroll_type: "middle" | "top" | "relative";
 }
 

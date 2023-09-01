@@ -6,7 +6,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist && rm -rf node_modules",
-    "build": "rm -rf dist && tsc --noEmit && ncc build src/index.ts -m",
+    "build": "rm -rf dist && tsc --noEmit && ncc build src/index.ts -m -e winston",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts}\""
   },
@@ -19,6 +19,7 @@
     "istextorbinary": "^6.0.0",
     "lodash-es": "^4.17.21",
     "minimatch": "^9.0.3",
+    "node-ipc": "^11.1.0",
     "opener": "^1.5.2",
     "reconnecting-websocket": "^4.4.0",
     "serve-handler": "^6.1.5",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.8",
+    "@types/node-ipc": "^9.2.0",
     "@types/opener": "^1.4.0",
     "@types/serve-handler": "^6.1.1",
     "@types/ws": "^8.5.5",

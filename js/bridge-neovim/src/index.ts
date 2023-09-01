@@ -11,7 +11,7 @@ ipc.config.id = IPC_CLIENT_ID;
 
 export const EDITOR_EVENTS = [
     "markdown-preview-content-change",
-    "markdown-preview-cursor-pos",
+    "markdown-preview-cursor-move",
 ] as const;
 
 const logger = createLogger(winston, ENV.BRIDGE_LOG_STREAM, ENV.LOG_LEVEL);

@@ -39,7 +39,7 @@ M.setup = function(opts)
 
 		vim.api.nvim_create_autocmd({ "CursorMovedI", "CursorMoved", "CursorHoldI", "CursorHold" }, {
 			callback = function(args)
-				vim.rpcnotify(0, "markdown-preview-cursor-pos", args, { gualberto = "casas" })
+				vim.rpcnotify(0, "markdown-preview-cursor-move", args, { gualberto = "casas" })
 			end,
 		})
 
