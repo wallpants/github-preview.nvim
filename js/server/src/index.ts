@@ -10,7 +10,7 @@ import { onWssConnection } from "./on-wss-connection";
 import { PluginPropsSchema } from "./types";
 import { findRepoRoot } from "./utils";
 
-const socket = ENV.NVIM_LISTEN_ADDRESS ?? process.argv[2];
+const socket = ENV.NVIM;
 const IS_DEV = Boolean(ENV.VITE_GP_PORT);
 
 async function killExisting(port: number) {
@@ -28,10 +28,7 @@ async function main() {
     if (!socket) throw Error("missing socket");
     const nvim = attach({ socket });
 
-    const props = parse(
-        PluginPropsSchema,
-        await nvim.getVar("markdown_preview_props"),
-    );
+    const props = parse(PluginPropsSchema, await nvim.getVar("markdown_preview_props"));
     const PORT = Number(ENV.VITE_GP_PORT ?? props.port);
     await killExisting(PORT);
     await nvim.lua('print("starting MarkdownPreview server")');
@@ -46,10 +43,7 @@ async function main() {
     httpServer.on("request", onHttpRequest({ nvim, httpServer, props }));
 
     const wsServer = new WebSocketServer({ server: httpServer });
-    wsServer.on(
-        "connection",
-        onWssConnection({ nvim, httpServer, root, props }),
-    );
+    wsServer.on("connection", onWssConnection({ nvim, httpServer, root, props }));
 
     !IS_DEV && opener(`http://localhost:${PORT}`);
     httpServer.listen(PORT, () => {

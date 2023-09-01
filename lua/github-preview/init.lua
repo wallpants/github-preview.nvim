@@ -6,6 +6,7 @@ local M = {}
 
 ---@type opts
 M.default_opts = {
+	dev = false,
 	port = 4002,
 	log_output = Types.LOG_OUTPUT.none,
 	scroll_debounce_ms = 250,
@@ -32,27 +33,34 @@ M.setup = function(opts)
 
 		vim.api.nvim_create_autocmd({ "TextChangedI", "TextChanged" }, {
 			callback = function(args)
-				vim.rpcnotify(0, "markdown-preview-text-changed", args)
+				vim.rpcnotify(0, "markdown-preview-content-change", args)
 			end,
 		})
 
 		vim.api.nvim_create_autocmd({ "CursorMovedI", "CursorMoved", "CursorHoldI", "CursorHold" }, {
 			callback = function(args)
-				vim.rpcnotify(0, "markdown-preview-cursor-moved", args)
+				vim.rpcnotify(0, "markdown-preview-cursor-pos", args, { gualberto = "casas" })
 			end,
 		})
 
-		vim.api.nvim_create_autocmd({ "BufDelete" }, {
-			callback = function(args)
-				vim.rpcnotify(0, "markdown-preview-buffer-delete", args)
-			end,
-		})
+		-- vim.api.nvim_create_autocmd({ "BufDelete" }, {
+		-- 	callback = function(args)
+		-- 		vim.rpcnotify(0, "markdown-preview-buffer-delete", args)
+		-- 	end,
+		-- })
 
-		local shell_command = "node " .. Utils.plugin_root .. "js/server/dist/index.js " .. Utils.nvim_socket
+		local cmd = opts.dev and "tsx watch " or "node " .. Utils.plugin_root
+		-- local gualberto_path = opts.dev and "js/gualberto/src/index.ts " or "js/gualberto/dist/index.js"
+		local bridge_path = opts.dev and "js/bridge-neovim/src/index.ts" or "js/bridge-neovim/dist/index.js"
+		-- local server_path = opts.dev and "js/server/src/index.ts " or "js/server/dist/index.js"
 
-		vim.fn.jobstart(shell_command, {
-			on_stdout = Utils.log(opts.log_output, "stdout"),
-		})
+		-- local start_gualberto_cmd = cmd .. gualberto_path
+		local start_bridge_cmd = cmd .. bridge_path
+		-- local start_server_cmd = cmd .. server_path
+
+		-- vim.fn.jobstart(start_gualberto_cmd)
+		vim.fn.jobstart(start_bridge_cmd)
+		-- vim.fn.jobstart(start_server_cmd)
 	end
 
 	vim.api.nvim_create_user_command("GithubPreview", start_server, {})

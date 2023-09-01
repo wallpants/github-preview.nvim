@@ -24,6 +24,7 @@ M.LOG_OUTPUT = {
 ---@field sync_scroll_type sync_scroll_type
 
 ---@class opts
+---@field dev boolean
 ---@field port number
 ---@field log_output log_output
 ---@field scroll_debounce_ms number

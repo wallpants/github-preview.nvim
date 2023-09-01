@@ -73,6 +73,34 @@ importers:
         specifier: ^0.36.1
         version: 0.36.1
 
+  js/gualberto:
+    dependencies:
+      minimatch:
+        specifier: ^9.0.3
+        version: 9.0.3
+      neovim:
+        specifier: ^4.10.1
+        version: 4.10.1
+      node-ipc:
+        specifier: ^11.1.0
+        version: 11.1.0
+      valibot:
+        specifier: ^0.13.1
+        version: 0.13.1
+      winston:
+        specifier: 3.3.3
+        version: 3.3.3
+    devDependencies:
+      '@types/node':
+        specifier: ^20.5.7
+        version: 20.5.7
+      '@types/node-ipc':
+        specifier: ^9.2.0
+        version: 9.2.0
+      '@vercel/ncc':
+        specifier: ^0.36.1
+        version: 0.36.1
+
   js/server:
     dependencies:
       globby:
