@@ -18,6 +18,9 @@ ipc.connectTo("world", function () {
         ipc.log("got a message from world : ", data);
     });
 
-    // @ts-expect-error asdf
-    console.log(ipc.of["world"]?.destroy);
+    ipc.of["world"]?.on("destroy", (...args) => {
+        console.log("GUALBERTO");
+        // eslint-disable-next-line
+        console.log(...args);
+    });
 });

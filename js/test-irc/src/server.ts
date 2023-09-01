@@ -13,6 +13,7 @@ ipc.serve(function () {
             id: ipc.config.id,
             message: data.message + " world!",
         });
+        ipc.server.stop();
     });
 });
 

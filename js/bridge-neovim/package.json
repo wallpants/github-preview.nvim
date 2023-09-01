@@ -6,7 +6,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist && rm -rf node_modules",
-    "dev": "dotenv -e ../../.env.dev -- tsx watch src/index.ts",
+    "dev": "ncc build src/index.ts -w -s",
     "build": "rm -rf dist && tsc --noEmit && ncc build src/index.ts -m",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts}\""
@@ -14,13 +14,13 @@
   "dependencies": {
     "minimatch": "^9.0.3",
     "neovim": "^4.10.1",
+    "node-ipc": "^11.1.0",
     "valibot": "^0.13.1",
     "winston": "3.3.3"
   },
   "devDependencies": {
     "@types/node": "^20.5.7",
-    "@vercel/ncc": "^0.36.1",
-    "dotenv-cli": "^7.3.0",
-    "tsx": "^3.12.7"
+    "@types/node-ipc": "^9.2.0",
+    "@vercel/ncc": "^0.36.1"
   }
 }

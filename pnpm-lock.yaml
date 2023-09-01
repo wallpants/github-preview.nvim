@@ -53,6 +53,9 @@ importers:
       neovim:
         specifier: ^4.10.1
         version: 4.10.1
+      node-ipc:
+        specifier: ^11.1.0
+        version: 11.1.0
       valibot:
         specifier: ^0.13.1
         version: 0.13.1
@@ -63,15 +66,12 @@ importers:
       '@types/node':
         specifier: ^20.5.7
         version: 20.5.7
+      '@types/node-ipc':
+        specifier: ^9.2.0
+        version: 9.2.0
       '@vercel/ncc':
         specifier: ^0.36.1
         version: 0.36.1
-      dotenv-cli:
-        specifier: ^7.3.0
-        version: 7.3.0
-      tsx:
-        specifier: ^3.12.7
-        version: 3.12.8
 
   js/server:
     dependencies:
