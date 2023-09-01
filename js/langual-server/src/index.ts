@@ -38,7 +38,6 @@ connection.onInitialize((params: InitializeParams) => {
     };
 
     logger.debug(initializationOptions);
-    logger.info(initializationOptions);
 
     const capabilities = params.capabilities;
 

@@ -2,18 +2,35 @@ import { createWriteStream } from "node:fs";
 import winston from "winston";
 import { ENV } from "../../env";
 
+// ENV vars are set by neovim after we start
+// neovim with "pnpm vi" at project root
+const stream =
+    ENV.LSP_SERVER_STREAM && createWriteStream(ENV.LSP_SERVER_STREAM);
+
 export const logger = winston.createLogger({
     level: ENV.LSP_LOG_LEVEL ?? "silly",
-    transports: [
-        ENV.LSP_SERVER_STREAM
-            ? new winston.transports.Stream({
-                  stream: createWriteStream(ENV.LSP_SERVER_STREAM),
+    transports: stream
+        ? [
+              new winston.transports.Stream({
+                  stream,
                   format: winston.format.combine(
                       winston.format.colorize(),
-                      winston.format.cli(),
+                      winston.format.timestamp({ format: "HH:mm:ss" }),
+                      winston.format.printf(
+                          (info) => `${info.level} ${info["timestamp"]}`,
+                      ),
                   ),
-              })
-            : // at least one transport is required
-              new winston.transports.Console({ silent: true }),
-    ],
+              }),
+              new winston.transports.Stream({
+                  stream,
+                  format: winston.format.combine(
+                      winston.format.prettyPrint({
+                          colorize: true,
+                          depth: 4,
+                      }),
+                  ),
+              }),
+          ]
+        : // at least one transport is required
+          new winston.transports.Console({ silent: true }),
 });
