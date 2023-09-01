@@ -1,40 +1,34 @@
-// cspell:ignore abuf amatch autocommand
-import {
-    array,
-    boolean,
-    literal,
-    number,
-    object,
-    string,
-    union,
-    type Output,
-} from "valibot";
+export interface Entry {
+    relativeToRoot: string;
+    type: "file" | "dir";
+}
 
-export const PluginPropsSchema = object({
-    port: number(),
-    log_output: union([literal("none"), literal("file"), literal("print")]),
-    cwd: string(),
-    scroll_debounce_ms: number(),
-    disable_sync_scroll: boolean(),
-    ignore_buffer_patterns: array(string()),
-    sync_scroll_type: union([
-        literal("middle"),
-        literal("top"),
-        literal("relative"),
-    ]),
-});
+export interface EntryContent {
+    markdown: string;
+    fileExt: string;
+}
 
-export type PluginProps = Output<typeof PluginPropsSchema>;
+export type CurrentEntry = Entry & {
+    content?: EntryContent;
+};
 
-export interface NeovimNotificationArg {
-    /** autocommand id */
-    id: number;
-    /** expanded value of <amatch> */
-    match: string;
-    /** expanded value of <abuf> */
-    buf: number;
-    /** absolute filepath */
-    file: string;
-    /** name of the triggered event */
-    event: string;
+export interface WsBrowserMessage {
+    currentBrowserEntry: Entry;
+}
+
+export interface CursorMove {
+    cursor_line: number;
+    content_len: number;
+    win_height: number;
+    win_line: number;
+    sync_scroll_type: "middle" | "top" | "relative";
+}
+
+export interface WsServerMessage {
+    root: string;
+    currentEntry: CurrentEntry;
+    repoName?: string;
+    cursorMove?: CursorMove;
+    goodbye?: true;
+    entries?: Entry[];
 }
