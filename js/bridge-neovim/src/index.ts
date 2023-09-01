@@ -1,9 +1,10 @@
 import { attach } from "neovim";
 import ipc from "node-ipc";
 import { parse } from "valibot";
+import winston from "winston";
 import { IPC_CLIENT_ID } from "../../consts";
 import { ENV } from "../../env";
-import { logger } from "./logger";
+import { createLogger } from "../../logger";
 import { PluginPropsSchema, type NeovimNotificationArg } from "./types";
 
 ipc.config.id = IPC_CLIENT_ID;
@@ -12,6 +13,8 @@ export const EDITOR_EVENTS = [
     "markdown-preview-content-change",
     "markdown-preview-cursor-pos",
 ] as const;
+
+const logger = createLogger(winston, ENV.BRIDGE_LOG_STREAM, ENV.LOG_LEVEL);
 
 async function main() {
     if (!ENV.NVIM) throw Error("missing socket");
@@ -24,7 +27,7 @@ async function main() {
     for (const event of EDITOR_EVENTS) await nvim.subscribe(event);
     nvim.on(
         "notification",
-        (event: (typeof EDITOR_EVENTS)[number], args: NeovimNotificationArg[], last) => {
+        (event: (typeof EDITOR_EVENTS)[number], args: [NeovimNotificationArg], last) => {
             logger.info("notification event: ", event);
             logger.info("notification args: ", args);
             logger.info("notification last: ", last);

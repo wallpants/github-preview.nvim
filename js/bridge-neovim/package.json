@@ -6,7 +6,6 @@
   },
   "scripts": {
     "clean": "rm -rf dist && rm -rf node_modules",
-    "dev": "ncc build src/index.ts -w -s",
     "build": "rm -rf dist && tsc --noEmit && ncc build src/index.ts -m",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts}\""
