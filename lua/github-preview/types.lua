@@ -8,9 +8,11 @@ M.SYNC_SCROLL_TYPE = {
 	relative = "relative",
 }
 
+-- github-preview/js/server/src/types.ts
 ---@class plugin_config
 ---@field port number
 ---@field root string
+---@field init_file_path string
 ---@field scroll_debounce_ms number
 ---@field disable_sync_scroll boolean
 ---@field ignore_buffer_patterns string[]

@@ -6,7 +6,6 @@ import winston from "winston";
 import { ENV } from "../../env";
 import { createLogger } from "../../logger";
 import { IPC_CLIENT_ID, IPC_EVENTS, IPC_SERVER_ID } from "../../server/src/consts";
-// import type { ContentChange } from "../../server/src/types";
 
 const logger = createLogger(winston, ENV.BRIDGE_LOG_STREAM, ENV.LOG_LEVEL);
 
@@ -14,7 +13,6 @@ ipc.config.id = IPC_CLIENT_ID;
 ipc.config.logger = (log) => logger.verbose("IPC LOG", log);
 
 const updateConfigEvent: (typeof IPC_EVENTS)[number] = "github-preview-update-config";
-// const contentChangeEvent: (typeof IPC_EVENTS)[number] = "github-preview-content-change";
 
 async function main() {
     if (!ENV.NVIM) {
@@ -22,7 +20,8 @@ async function main() {
         return;
     }
 
-    // Spawn server. Some connection attempts might happen before the server boots up
+    // Spawn server
+    // Some connection attempts might happen before the server boots up
     const serverPath = `${__dirname}/../../server/src/index.ts`;
     spawn("tsx", ["watch", normalize(serverPath)]);
 
@@ -37,20 +36,13 @@ async function main() {
         }
 
         socket.on("connect", async () => {
+            // as soon as we connect, we send config to server
             socket.emit(updateConfigEvent, config);
 
-            // get initial content to populate webapp
-            // const buffer = await nvim.buffer;
-            // const contentChange: ContentChange = {
-            //     abs_file_path: await buffer.name,
-            //     content: (await buffer.lines).join("\n"),
-            // };
-            // ipc.of[IPC_SERVER_ID]?.emit(contentChangeEvent, contentChange);
-
             for (const event of IPC_EVENTS) await nvim.subscribe(event);
-            // Here we forward nvim notifications. It so happens
-            // that nvim notification names match the server's
-            // and so does the notification payload type
+            // nvim notifications are forwarded as they are.
+            // It so happens that nvim notification names match
+            // the server's notification names and payload structure
             nvim.on("notification", (event: string, args: unknown[]) => {
                 socket.emit(event, args[0]);
             });
@@ -58,4 +50,4 @@ async function main() {
     });
 }
 
-main().catch((err) => logger.error("BOUNDARY ERROR: ", err));
+main().catch((err) => logger.error("BOUNDARY ERROR", err));

@@ -15,14 +15,8 @@
   "ignorePatterns": ["dist"],
   "rules": {
     "tsdoc/syntax": "warn",
-    "@typescript-eslint/no-misused-promises": [
-      "error",
-      { "checksVoidReturn": false }
-    ],
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      { "argsIgnorePattern": "^_" }
-    ],
+    "@typescript-eslint/no-misused-promises": ["error", { "checksVoidReturn": false }],
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       { "prefer": "type-imports", "fixStyle": "inline-type-imports" }

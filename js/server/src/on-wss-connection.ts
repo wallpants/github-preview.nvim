@@ -22,14 +22,20 @@ interface Args {
 }
 
 const browserState = {
+    root: "",
     repoName: "",
-    relativeToRoot: "",
+    currentAbsPath: "",
 };
 
 export function onWssConnection({ props, ipc }: Args) {
+    browserState.root = props.root;
     const repoName = getRepoName(props.root);
 
     return async (ws: WebSocket) => {
+        const initialMessage: WsServerMessage = {
+            repoName: repoName,
+        };
+
         const wsSend = (m: WsServerMessage) => {
             ws.send(JSON.stringify(m));
         };

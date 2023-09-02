@@ -111,7 +111,8 @@ export async function getDirEntries({
 
 // eslint-disable-next-line
 export function devSafeParse(logger: typeof winston, schema: ObjectSchema<any>, data: unknown) {
+    // we validate payloads only in dev to avoid affecting performance in prod
     if (!ENV.IS_DEV) return;
     const parsed = safeParse(schema, data);
-    if (!parsed.success) logger.error("PARSE ERROR: ", parsed);
+    if (!parsed.success) logger.error("PARSE ERROR", parsed);
 }

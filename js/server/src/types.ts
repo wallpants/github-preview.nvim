@@ -42,8 +42,16 @@ export interface WsServerMessage {
 }
 
 export const PluginPropsSchema = object({
+    /**
+     * port to host the http/ws server "localhost:\{port\}"
+     * @default
+     * 4002
+     * */
     port: number(),
+    /** path where ".git" dir was found. no trailing "/" */
     root: string(),
+    /** current file when plugin was loaded */
+    init_abs_file_path: string(),
     scroll_debounce_ms: number(),
     disable_sync_scroll: boolean(),
     ignore_buffer_patterns: array(string()),

@@ -19,7 +19,7 @@ ipc.config.logger = (log) => logger.verbose("IPC LOG", log);
 function main() {
     ipc.serve(function () {
         const updateConfig: (typeof IPC_EVENTS)[number] = "github-preview-update-config";
-        // updateConfig event is the first thing we send when we open the connection
+        // updateConfig event is first thing sent when connection opens
         ipc.server.on(updateConfig, function (props: PluginProps, _socket: Socket) {
             devSafeParse(logger, PluginPropsSchema, props);
             logger.verbose(updateConfig, props);
@@ -45,5 +45,5 @@ function main() {
 try {
     main();
 } catch (err) {
-    logger.error("BOUNDARY ERROR: ", err);
+    logger.error("BOUNDARY ERROR", err);
 }
