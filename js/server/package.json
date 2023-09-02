@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.8",
+    "@types/node": "^20.5.7",
     "@types/node-ipc": "^9.2.0",
     "@types/opener": "^1.4.0",
     "@types/serve-handler": "^6.1.1",

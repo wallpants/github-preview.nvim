@@ -1,21 +1,17 @@
 import { array, boolean, literal, number, object, string, union, type Output } from "valibot";
 
-export interface Entry {
-    relativeToRoot: string;
-    type: "file" | "dir";
-}
-
 export interface EntryContent {
     markdown: string;
     fileExt: string;
 }
 
-export interface CurrentEntry extends Entry {
-    content?: EntryContent;
+export interface CurrentEntry {
+    absPath: string;
+    content?: EntryContent | undefined;
 }
 
 export interface WsBrowserMessage {
-    currentBrowserEntry: Entry;
+    currentBrowserPath: string;
 }
 
 export const CursorMoveSchema = object({
@@ -38,23 +34,29 @@ export interface WsServerMessage {
     repoName?: string;
     cursorMove?: CursorMove;
     goodbye?: true;
-    entries?: Entry[];
+    entries?: string[];
 }
 
-export const PluginPropsSchema = object({
+export const PluginConfigSchema = object({
     /**
      * port to host the http/ws server "localhost:\{port\}"
      * @default
      * 4002
      * */
     port: number(),
-    /** path where ".git" dir was found. no trailing "/" */
+    /**
+     * dir path where ".git" dir was found
+     * */
     root: string(),
-    /** current file when plugin was loaded */
-    init_abs_file_path: string(),
+    /**
+     * current path when plugin was loaded
+     * if no buffer was loaded when plugin started, path is dir and ends with "/"
+     * otherwise path looks something like "/Users/.../README.md"
+     * */
+    init_path: string(),
     scroll_debounce_ms: number(),
     disable_sync_scroll: boolean(),
     ignore_buffer_patterns: array(string()),
     sync_scroll_type: union([literal("middle"), literal("top"), literal("relative")]),
 });
-export type PluginProps = Output<typeof PluginPropsSchema>;
+export type PluginConfig = Output<typeof PluginConfigSchema>;

@@ -1,11 +1,10 @@
 // cspell:ignore readdirSync
 import { globby } from "globby";
-import { readFileSync, readdirSync, statSync } from "node:fs";
-import { dirname, relative, resolve } from "node:path";
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import { safeParse, type ObjectSchema } from "valibot";
 import type winston from "winston";
 import { ENV } from "../../env";
-import { type Entry } from "./types";
 
 /** Takes a string and wraps it inside a markdown
  * codeblock using file extension as language
@@ -26,30 +25,6 @@ export function textToMarkdown({
     return fileExt === ".md" ? text : "```" + fileExt + `\n${text}`;
 }
 
-const MAX_ATTEMPTS = 30;
-let attempt = 0;
-export function findRepoRoot(cwd: string): string | null {
-    do {
-        attempt += 1;
-        try {
-            const paths = readdirSync(cwd);
-            for (const path of paths) {
-                const absolute = `${cwd}/${path}`;
-                const pathStats = statSync(absolute);
-                if (pathStats.isDirectory() && path === ".git") {
-                    return cwd + "/";
-                }
-            }
-            cwd = dirname(cwd);
-        } catch (e) {
-            // TODO: throw error, implement better logging
-            console.log("error: ", e);
-            return null;
-        }
-    } while (![".", "/"].includes(cwd) && attempt < MAX_ATTEMPTS);
-    return null;
-}
-
 export function getRepoName(root: string): string {
     const gitConfig = readFileSync(resolve(root, ".git/config")).toString();
     const lines = gitConfig.split("\n");
@@ -68,20 +43,16 @@ export function getRepoName(root: string): string {
 }
 
 // TODO This seems convoluted
-export async function getDirEntries({
-    root,
-    relativeDir,
-}: {
-    root: string;
-    relativeDir: string;
-}): Promise<Entry[]> {
-    const resolved = resolve(root, relativeDir);
+export async function getEntries(currentAbsPath: string): Promise<string[]> {
+    const currentDir = currentAbsPath.endsWith("/") ? currentAbsPath : dirname(currentAbsPath);
     const paths = await globby("*", {
-        cwd: resolved,
-        onlyFiles: false,
-        gitignore: true,
-        objectMode: true,
+        cwd: currentDir,
         dot: true,
+        absolute: true,
+        gitignore: true,
+        onlyFiles: false,
+        objectMode: true,
+        markDirectories: true,
     });
 
     const dirs: string[] = [];
@@ -96,17 +67,7 @@ export async function getDirEntries({
     dirs.sort();
     files.sort();
 
-    const relativePath = relative(root, resolved);
-    const dirEntries: Entry[] = dirs.map((d) => ({
-        relativeToRoot: relativePath ? `${relativePath}/${d}` : d,
-        type: "dir",
-    }));
-    const fileEntries: Entry[] = files.map((f) => ({
-        relativeToRoot: relativePath ? `${relativePath}/${f}` : f,
-        type: "file",
-    }));
-
-    return dirEntries.concat(fileEntries);
+    return dirs.concat(files);
 }
 
 // eslint-disable-next-line
