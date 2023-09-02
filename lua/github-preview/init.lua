@@ -1,4 +1,4 @@
--- cspell:ignore autocmd rpcnotify jobstart getcwd getinfo fnamemodify winline
+-- cspell:ignore autocmd rpcnotify jobstart finddir getinfo fnamemodify winline
 local Types = require("github-preview.types")
 
 local M = {}
@@ -31,10 +31,20 @@ M.setup = function(opts)
 	})
 
 	local function start_server()
+		-- should look like "/Users/.../github-preview"
+		local root = vim.fn.finddir(".git", ";")
+
+		if root == "" then
+			error("root dir with .git not found")
+		else
+			-- if found, path is made absolute & has "/.git/" removed
+			root = vim.fn.fnamemodify(root, ":p:h:h")
+		end
+
 		---@type plugin_config
 		vim.g.github_preview_config = {
 			port = opts.port,
-			root = vim.fn.getcwd(),
+			root = root,
 			scroll_debounce_ms = opts.scroll_debounce_ms,
 			disable_sync_scroll = false,
 			ignore_buffer_patterns = opts.ignore_buffer_patterns,
@@ -70,7 +80,6 @@ M.setup = function(opts)
 					content_len = #content,
 					win_height = vim.api.nvim_win_get_height(0),
 					win_line = vim.fn.winline(),
-					sync_scroll_type = opts.sync_scroll_type,
 				}
 				vim.rpcnotify(0, "github-preview-cursor-move", cursor_move)
 			end,

@@ -26,7 +26,6 @@
   "workspace.library": [
     "~/.local/share/nvim/lazy/neodev.nvim/types/stable",
     "~/Projects/nvim-plugins/github-preview.nvim/lua",
-    "/usr/local/Cellar/neovim/0.9.1/share/nvim/runtime/lua",
-    "${3rd}/luv/library"
+    "/usr/local/Cellar/neovim/0.9.1/share/nvim/runtime/lua"
   ]
 }

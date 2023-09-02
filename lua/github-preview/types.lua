@@ -29,12 +29,11 @@ M.SYNC_SCROLL_TYPE = {
 ---@field abs_file_path string
 
 ---@class cursor_move
+---@field abs_file_path string
 ---@field cursor_line number
 ---@field content_len number
 ---@field win_height number
 ---@field win_line number
----@field sync_scroll_type sync_scroll_type
----@field abs_file_path string
 
 ---@class autocmd_arg
 -- autocommand id

@@ -19,12 +19,11 @@ export interface WsBrowserMessage {
 }
 
 export const CursorMoveSchema = object({
+    abs_file_path: string(),
     cursor_line: number(),
     content_len: number(),
     win_height: number(),
     win_line: number(),
-    sync_scroll_type: union([literal("middle"), literal("top"), literal("relative")]),
-    abs_file_path: string(),
 });
 export type CursorMove = Output<typeof CursorMoveSchema>;
 
