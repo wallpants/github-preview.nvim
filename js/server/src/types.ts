@@ -24,6 +24,7 @@ export const CursorMoveSchema = object({
     win_height: number(),
     win_line: number(),
     sync_scroll_type: union([literal("middle"), literal("top"), literal("relative")]),
+    abs_file_path: string(),
 });
 export type CursorMove = Output<typeof CursorMoveSchema>;
 
@@ -34,8 +35,7 @@ export const ContentChangeSchema = object({
 export type ContentChange = Output<typeof ContentChangeSchema>;
 
 export interface WsServerMessage {
-    root: string;
-    currentEntry: CurrentEntry;
+    currentEntry?: CurrentEntry;
     repoName?: string;
     cursorMove?: CursorMove;
     goodbye?: true;

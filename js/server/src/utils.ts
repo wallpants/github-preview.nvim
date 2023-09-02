@@ -2,6 +2,9 @@
 import { globby } from "globby";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
+import { safeParse, type ObjectSchema } from "valibot";
+import type winston from "winston";
+import { ENV } from "../../env";
 import { type Entry } from "./types";
 
 /** Takes a string and wraps it inside a markdown
@@ -104,4 +107,11 @@ export async function getDirEntries({
     }));
 
     return dirEntries.concat(fileEntries);
+}
+
+// eslint-disable-next-line
+export function devSafeParse(logger: typeof winston, schema: ObjectSchema<any>, data: unknown) {
+    if (!ENV.IS_DEV) return;
+    const parsed = safeParse(schema, data);
+    if (!parsed.success) logger.error("PARSE ERROR: ", parsed);
 }
