@@ -20,10 +20,10 @@
     "version": "LuaJIT",
     "pathStrict": true
   },
-    "workspace.library": [
-        "/Users/gualcasas/.local/share/nvim/lazy/neodev.nvim/types/stable",
-        "/usr/local/Cellar/neovim/0.9.1/share/nvim/runtime/lua",
-        "/Users/gualcasas/Projects/nvim-plugins/github-preview.nvim/lua",
-        "${3rd}/luv/library"
-    ]
+  "workspace.library": [
+    "/home/gualcasas/.local/share/nvim/lazy/neodev.nvim/types/stable",
+    "/usr/share/nvim/runtime/lua",
+    "/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/lua",
+    "${3rd}/luv/library"
+  ]
 }

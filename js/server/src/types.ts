@@ -29,6 +29,7 @@ export type CursorMove = Output<typeof CursorMoveSchema>;
 
 export const ContentChangeSchema = object({
     content: string(),
+    abs_file_path: string(),
 });
 export type ContentChange = Output<typeof ContentChangeSchema>;
 
@@ -43,9 +44,10 @@ export interface WsServerMessage {
 
 export const PluginPropsSchema = object({
     port: number(),
-    cwd: string(),
+    root: string(),
     scroll_debounce_ms: number(),
     disable_sync_scroll: boolean(),
     ignore_buffer_patterns: array(string()),
     sync_scroll_type: union([literal("middle"), literal("top"), literal("relative")]),
 });
+export type PluginProps = Output<typeof PluginPropsSchema>;

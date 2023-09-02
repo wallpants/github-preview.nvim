@@ -18,6 +18,13 @@ export function createLogger(
     const stream = createWriteStream(streamPath);
 
     return winston.createLogger({
+        // error: 0,
+        // warn: 1,
+        // info: 2,
+        // http: 3,
+        // verbose: 4,
+        // debug: 5,
+        // silly: 6
         level: logLevel ?? "silly",
         transports: [
             new winston.transports.Stream({

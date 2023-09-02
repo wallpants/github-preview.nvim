@@ -34,7 +34,7 @@ M.setup = function(opts)
 		---@type plugin_config
 		vim.g.github_preview_config = {
 			port = opts.port,
-			cwd = vim.fn.getcwd(),
+			root = vim.fn.getcwd(),
 			scroll_debounce_ms = opts.scroll_debounce_ms,
 			disable_sync_scroll = false,
 			ignore_buffer_patterns = opts.ignore_buffer_patterns,
@@ -42,25 +42,37 @@ M.setup = function(opts)
 		}
 
 		vim.api.nvim_create_autocmd({ "TextChangedI", "TextChanged" }, {
+			---@param arg autocmd_arg
 			callback = function(arg)
-				vim.rpcnotify(0, "github-preview-content-change", arg)
+				local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
+				local content = table.concat(lines, "\n")
+
+				---@type content_change
+				local content_change = {
+					abs_file_path = arg.file,
+					content = content,
+				}
+				vim.rpcnotify(0, "github-preview-content-change", content_change)
 			end,
 		})
 
 		vim.api.nvim_create_autocmd({ "CursorMovedI", "CursorMoved", "CursorHoldI", "CursorHold" }, {
+			---@param arg autocmd_arg
 			callback = function(arg)
 				local cursor = vim.api.nvim_win_get_cursor(0)
 				local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
+				local content = table.concat(lines, "\n")
 
 				---@type cursor_move
 				local cursor_move = {
-					cursor_line = cursor[0],
-					content_len = #table.concat(lines, "\n"),
+					abs_file_path = arg.file,
+					cursor_line = cursor[1],
+					content_len = #content,
 					win_height = vim.api.nvim_win_get_height(0),
 					win_line = vim.fn.winline(),
 					sync_scroll_type = opts.sync_scroll_type,
 				}
-				vim.rpcnotify(0, "github-preview-cursor-move", arg, cursor_move)
+				vim.rpcnotify(0, "github-preview-cursor-move", cursor_move)
 			end,
 		})
 
