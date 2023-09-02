@@ -4,14 +4,8 @@ import { dirname, extname, relative } from "node:path";
 import { type WebSocket } from "ws";
 import { type CurrentEntry, type WsServerMessage } from "../../types";
 import { onBrowserMessage } from "./on-browser-message";
-import { onNvimNotification } from "./on-nvim-notification";
 import { type PluginProps } from "./types";
-import {
-    getCursorMove,
-    getDirEntries,
-    getRepoName,
-    textToMarkdown,
-} from "./utils";
+import { getCursorMove, getDirEntries, getRepoName, textToMarkdown } from "./utils";
 
 interface Args {
     nvim: NeovimClient;
@@ -58,9 +52,9 @@ export function onWssConnection({ nvim, httpServer, root, props }: Args) {
 
         ws.on("message", onBrowserMessage({ root, wsSend }));
 
-        nvim.on(
-            "notification",
-            onNvimNotification({ nvim, httpServer, root, props, wsSend }),
-        );
+        // nvim.on(
+        //     "notification",
+        //     onNvimNotification({ nvim, httpServer, root, props, wsSend }),
+        // );
     };
 }

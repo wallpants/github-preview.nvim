@@ -1,3 +1,5 @@
+import { literal, number, object, string, union, type Output } from "valibot";
+
 export interface Entry {
     relativeToRoot: string;
     type: "file" | "dir";
@@ -8,21 +10,27 @@ export interface EntryContent {
     fileExt: string;
 }
 
-export type CurrentEntry = Entry & {
+export interface CurrentEntry extends Entry {
     content?: EntryContent;
-};
+}
 
 export interface WsBrowserMessage {
     currentBrowserEntry: Entry;
 }
 
-export interface CursorMove {
-    cursor_line: number;
-    content_len: number;
-    win_height: number;
-    win_line: number;
-    sync_scroll_type: "middle" | "top" | "relative";
-}
+export const CursorMoveSchema = object({
+    cursor_line: number(),
+    content_len: number(),
+    win_height: number(),
+    win_line: number(),
+    sync_scroll_type: union([literal("middle"), literal("top"), literal("relative")]),
+});
+export type CursorMove = Output<typeof CursorMoveSchema>;
+
+export const ContentChangeSchema = object({
+    content: string(),
+});
+export type ContentChange = Output<typeof ContentChangeSchema>;
 
 export interface WsServerMessage {
     root: string;
@@ -32,3 +40,13 @@ export interface WsServerMessage {
     goodbye?: true;
     entries?: Entry[];
 }
+
+export type IpcEvent =
+    | {
+          name: "content-change";
+          payload: ContentChange;
+      }
+    | {
+          name: "cursor-move";
+          payload: CursorMove;
+      };

@@ -10,26 +10,33 @@
 import ipc from "node-ipc";
 import { type Socket } from "node:net";
 import winston from "winston";
-import { IPC_EVENT, IPC_SERVER_ID } from "../../consts";
 import { ENV } from "../../env";
 import { createLogger } from "../../logger";
+import { IPC_SERVER_ID, type IPC_EVENTS } from "./consts";
 import { type CursorMove } from "./types";
 
 const logger = createLogger(winston, ENV.SERVER_LOG_STREAM, ENV.LOG_LEVEL);
 
 ipc.config.id = IPC_SERVER_ID;
 ipc.config.retry = 1500;
-ipc.config.maxConnections = 1;
+// ipc.config.maxConnections = 1;
 
 ipc.serve(function () {
-    ipc.server.on(IPC_EVENT.CURSOR_MOVE, function (data: CursorMove, _socket: Socket) {
-        logger.warn(IPC_EVENT.CURSOR_MOVE, data);
-        // ipc.server.emit(socket, IPC_EVENT.HELLO, {
-        //     id: ipc.config.id,
-        //     message: data.message + " world!",
-        // });
-        // ipc.server.stop();
+    const cursorMove: (typeof IPC_EVENTS)[number] = "github-preview-cursor-move";
+    ipc.server.on(cursorMove, function (data: CursorMove, _socket: Socket) {
+        logger.warn(cursorMove, data);
     });
+
+    const contentChange: (typeof IPC_EVENTS)[number] = "github-preview-content-change";
+    ipc.server.on(contentChange, function (data: CursorMove, _socket: Socket) {
+        logger.warn(contentChange, data);
+    });
+
+    // ipc.server.emit(socket, IPC_EVENT.HELLO, {
+    //     id: ipc.config.id,
+    //     message: data.message + " world!",
+    // });
+    // ipc.server.stop();
 });
 
 ipc.server.start();

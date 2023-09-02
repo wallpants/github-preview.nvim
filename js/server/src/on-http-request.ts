@@ -1,18 +1,12 @@
 import { type NeovimClient } from "neovim";
-import {
-    type IncomingMessage,
-    type Server,
-    type ServerResponse,
-} from "node:http";
+import { type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { resolve } from "node:path";
 import handler from "serve-handler";
 import { RPC_EVENTS } from "./on-nvim-notification";
-import { type PluginProps } from "./types";
 
 interface Args {
     nvim: NeovimClient;
     httpServer: Server;
-    props: PluginProps;
 }
 
 export function onHttpRequest({ nvim, httpServer }: Args) {

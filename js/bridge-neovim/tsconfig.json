@@ -1,4 +1,4 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src", "../consts.ts", "../env.ts", "../logger.ts"]
+  "include": ["src", "../env.ts", "../logger.ts", "../server/src/consts.ts"]
 }

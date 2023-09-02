@@ -3,9 +3,7 @@ import { minimatch } from "minimatch";
 import { type NeovimClient } from "neovim";
 import { type Server } from "node:http";
 import { extname, relative } from "node:path";
-import { type CurrentEntry, type WsServerMessage } from "../../types";
-import { type NeovimNotificationArg, type PluginProps } from "./types";
-import { getCursorMove, textToMarkdown } from "./utils";
+import { textToMarkdown } from "./utils";
 
 export const RPC_EVENTS = [
     "markdown-preview-text-changed",
@@ -33,10 +31,7 @@ export function onNvimNotification({
         trailing: true,
     });
 
-    return async (
-        event: (typeof RPC_EVENTS)[number],
-        [arg]: NeovimNotificationArg[],
-    ) => {
+    return async (event: (typeof RPC_EVENTS)[number], [arg]: NeovimNotificationArg[]) => {
         if (!arg?.file) return; // arg.file is "" on telescope buffers
 
         // TODO: implement browser auto close

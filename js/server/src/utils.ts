@@ -1,10 +1,8 @@
-// cspell:ignore winline readdirSync
+// cspell:ignore readdirSync
 import { globby } from "globby";
-import { type NeovimClient } from "neovim";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
-import { type CursorMove, type Entry } from "../../types";
-import { type PluginProps } from "./types";
+import { type Entry } from "./types";
 
 /** Takes a string and wraps it inside a markdown
  * codeblock using file extension as language
@@ -23,25 +21,6 @@ export function textToMarkdown({
     fileExt: string;
 }) {
     return fileExt === ".md" ? text : "```" + fileExt + `\n${text}`;
-}
-
-export async function getCursorMove(
-    nvim: NeovimClient,
-    props: PluginProps,
-    contentLen: number,
-): Promise<CursorMove> {
-    const currentWindow = await nvim.window;
-    const winLine = Number(await nvim.call("winline"));
-    const winHeight = await currentWindow.height;
-    const [cursorLine] = await currentWindow.cursor;
-    return {
-        cursorLine,
-        // TODO: would buffer.length work here?
-        contentLen,
-        winHeight,
-        winLine,
-        sync_scroll_type: props.sync_scroll_type,
-    };
 }
 
 const MAX_ATTEMPTS = 30;

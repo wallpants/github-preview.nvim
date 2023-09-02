@@ -2,7 +2,7 @@ import { isBinary } from "istextorbinary";
 import { readFileSync } from "node:fs";
 import { dirname, extname, normalize } from "node:path";
 import { type RawData } from "ws";
-import { type WsBrowserMessage, type WsServerMessage } from "../../types";
+import { type WsBrowserMessage, type WsServerMessage } from "./types";
 import { getDirEntries, textToMarkdown } from "./utils";
 
 interface Args {
@@ -22,8 +22,7 @@ export function onBrowserMessage({ root, wsSend }: Args) {
          * normalize converts "./src/.." to "./"
          **/
         const relativeToRoot = normalize(_relative);
-        const relativeDir =
-            type === "dir" ? relativeToRoot : dirname(relativeToRoot);
+        const relativeDir = type === "dir" ? relativeToRoot : dirname(relativeToRoot);
 
         const entries = await getDirEntries({ relativeDir, root });
 

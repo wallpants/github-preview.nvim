@@ -3,7 +3,7 @@ export const ENV = {
     VITE_GP_PORT: process.env["VITE_GP_PORT"],
 
     // logs
-    LOG_LEVEL: process.env["LSP_LOG_LEVEL"],
+    LOG_LEVEL: process.env["LOG_LEVEL"],
     SERVER_LOG_STREAM: process.env["SERVER_LOG_STREAM"],
     BRIDGE_LOG_STREAM: process.env["BRIDGE_LOG_STREAM"],
 
