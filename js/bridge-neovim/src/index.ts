@@ -10,7 +10,7 @@ import { IPC_CLIENT_ID, IPC_EVENTS, IPC_SERVER_ID } from "../../server/src/const
 const logger = createLogger(winston, ENV.BRIDGE_LOG_STREAM, ENV.LOG_LEVEL);
 
 ipc.config.id = IPC_CLIENT_ID;
-ipc.config.logger = (log) => logger.verbose("IPC LOG", log);
+ipc.config.logger = (log) => logger.verbose(log);
 
 const updateConfigEvent: (typeof IPC_EVENTS)[number] = "github-preview-update-config";
 

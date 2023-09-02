@@ -11,17 +11,14 @@ interface Args {
 }
 
 const browserState = {
-    root: "",
-    repoName: "",
-    currentAbsPath: "",
-    currentEntries: "",
+    currentPath: "",
 };
 
 export function onWssConnection({ props }: Args) {
     return async (ws: WebSocket) => {
-        const wsSend = (m: WsServerMessage) => {
+        function wsSend(m: WsServerMessage) {
             ws.send(JSON.stringify(m));
-        };
+        }
 
         const isDir = props.init_path.endsWith("/");
         let content: EntryContent | undefined;
@@ -40,6 +37,7 @@ export function onWssConnection({ props }: Args) {
 
         const repoName = getRepoName(props.root);
         const initialMessage: WsServerMessage = {
+            root: props.root,
             repoName: repoName,
             entries: await getEntries(props.init_path),
             currentEntry: {
@@ -48,10 +46,8 @@ export function onWssConnection({ props }: Args) {
             },
         };
 
-        browserState.root = props.root;
-        browserState.repoName = repoName;
-        browserState.currentAbsPath = props.init_path;
         wsSend(initialMessage);
+        browserState.currentPath = props.init_path;
 
         // const contentChangeEvent: (typeof IPC_EVENTS)[number] = "github-preview-content-change";
         // ipc.server.on(contentChangeEvent, async (contentChange: ContentChange, _socket: Socket) => {

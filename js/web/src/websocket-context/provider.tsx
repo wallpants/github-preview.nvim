@@ -1,15 +1,13 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { type WsBrowserMessage } from "../../../server/src/types";
-import { VITE_GP_PORT } from "../../env";
+import { ENV } from "../../env";
 import { Banner } from "../components/banner";
 import { type WsServerMessage } from "../types";
 import { websocketContext, type MessageHandler, type Status } from "./context";
 
-console.log("VITE_GP_PORT: ", VITE_GP_PORT);
-
 // we check for PORT for dev env
-const url = "ws://" + (VITE_GP_PORT ? `localhost:${VITE_GP_PORT}` : window.location.host);
+const url = "ws://" + (ENV.VITE_GP_PORT ? `localhost:${ENV.VITE_GP_PORT}` : window.location.host);
 const ws = new ReconnectingWebSocket(url, [], {
     maxReconnectionDelay: 3000,
 });
@@ -32,6 +30,7 @@ export const WebsocketProvider = ({ children }: Props) => {
         };
         ws.onmessage = (event) => {
             const message = JSON.parse(String(event.data)) as WsServerMessage;
+            if (ENV.VITE_GP_PORT) console.log("received:", message);
             if (message.goodbye) window.close();
             messageHandlers.forEach((handler) => handler(message));
         };

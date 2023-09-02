@@ -30,6 +30,7 @@ export const ContentChangeSchema = object({
 export type ContentChange = Output<typeof ContentChangeSchema>;
 
 export interface WsServerMessage {
+    root: string;
     currentEntry?: CurrentEntry;
     repoName?: string;
     cursorMove?: CursorMove;

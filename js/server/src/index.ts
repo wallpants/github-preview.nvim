@@ -14,7 +14,7 @@ import { devSafeParse } from "./utils";
 ipc.config.id = IPC_SERVER_ID;
 ipc.config.retry = 1500;
 ipc.config.maxConnections = 1;
-ipc.config.logger = (log) => logger.verbose("IPC LOG", log);
+ipc.config.logger = (log) => logger.verbose(log);
 
 function main() {
     ipc.serve(function () {
