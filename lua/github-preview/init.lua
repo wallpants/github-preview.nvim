@@ -84,10 +84,6 @@ M.setup = function(opts)
 		local start_bridge_cmd = base_cmd .. bridge_path
 
 		vim.fn.jobstart(start_bridge_cmd)
-		-- on_exit = M.log,
-		-- on_stderr = M.log,
-		-- on_stdout = M.log,
-		-- })
 	end
 
 	vim.api.nvim_create_user_command("GithubPreview", start_server, {})

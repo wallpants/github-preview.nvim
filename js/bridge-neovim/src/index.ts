@@ -17,7 +17,10 @@ const updateConfigEvent: (typeof IPC_EVENTS)[number] = "github-preview-update-co
 // const contentChangeEvent: (typeof IPC_EVENTS)[number] = "github-preview-content-change";
 
 async function main() {
-    if (!ENV.NVIM) throw Error("missing socket");
+    if (!ENV.NVIM) {
+        logger.error("missing NVIM socket");
+        return;
+    }
 
     // Spawn server. Some connection attempts might happen before the server boots up
     const serverPath = `${__dirname}/../../server/src/index.ts`;
@@ -27,8 +30,14 @@ async function main() {
     const config = await nvim.getVar("github_preview_config");
 
     ipc.connectTo(IPC_SERVER_ID, () => {
-        ipc.of[IPC_SERVER_ID]?.on("connect", async () => {
-            ipc.of[IPC_SERVER_ID]?.emit(updateConfigEvent, config);
+        const socket = ipc.of[IPC_SERVER_ID];
+        if (!socket) {
+            logger.error("missing ipc socket");
+            return;
+        }
+
+        socket.on("connect", async () => {
+            socket.emit(updateConfigEvent, config);
 
             // get initial content to populate webapp
             // const buffer = await nvim.buffer;
@@ -41,9 +50,9 @@ async function main() {
             for (const event of IPC_EVENTS) await nvim.subscribe(event);
             // Here we forward nvim notifications. It so happens
             // that nvim notification names match the server's
-            // and so does the notification payload
+            // and so does the notification payload type
             nvim.on("notification", (event: string, args: unknown[]) => {
-                ipc.of[IPC_SERVER_ID]?.emit(event, args[0]);
+                socket.emit(event, args[0]);
             });
         });
     });
