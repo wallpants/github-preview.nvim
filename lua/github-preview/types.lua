@@ -7,7 +7,7 @@ M.SYNC_SCROLL_TYPE = {
 	relative = "relative",
 }
 
----@class plugin_props
+---@class plugin_config
 ---@field port number
 ---@field cwd string
 ---@field scroll_debounce_ms number

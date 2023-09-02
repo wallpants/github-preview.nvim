@@ -1,4 +1,4 @@
-import { literal, number, object, string, union, type Output } from "valibot";
+import { array, boolean, literal, number, object, string, union, type Output } from "valibot";
 
 export interface Entry {
     relativeToRoot: string;
@@ -41,12 +41,11 @@ export interface WsServerMessage {
     entries?: Entry[];
 }
 
-export type IpcEvent =
-    | {
-          name: "content-change";
-          payload: ContentChange;
-      }
-    | {
-          name: "cursor-move";
-          payload: CursorMove;
-      };
+export const PluginPropsSchema = object({
+    port: number(),
+    cwd: string(),
+    scroll_debounce_ms: number(),
+    disable_sync_scroll: boolean(),
+    ignore_buffer_patterns: array(string()),
+    sync_scroll_type: union([literal("middle"), literal("top"), literal("relative")]),
+});

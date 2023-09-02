@@ -50,7 +50,7 @@ const starryNight = await createStarryNight(common, {
 3. Start vite dev server and then something else
 
 ```bash
-markdown-preview/: $ pnpm web:dev
+github-preview/: $ pnpm web:dev
 ```
 
 we need to know

@@ -31,6 +31,7 @@ export function createLogger(
             new winston.transports.Stream({
                 stream,
                 format: winston.format.combine(
+                    winston.format.errors({ stack: true }),
                     winston.format.prettyPrint({
                         colorize: true,
                         depth: 4,

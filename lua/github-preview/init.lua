@@ -31,8 +31,8 @@ M.setup = function(opts)
 	})
 
 	local function start_server()
-		---@type plugin_props
-		vim.g.markdown_preview_props = {
+		---@type plugin_config
+		vim.g.github_preview_config = {
 			port = opts.port,
 			cwd = vim.fn.getcwd(),
 			scroll_debounce_ms = opts.scroll_debounce_ms,
@@ -75,6 +75,7 @@ M.setup = function(opts)
 		-- on_exit = M.log,
 		-- on_stderr = M.log,
 		-- on_stdout = M.log,
+		-- })
 	end
 
 	vim.api.nvim_create_user_command("GithubPreview", start_server, {})

@@ -5,12 +5,6 @@ import { type Server } from "node:http";
 import { extname, relative } from "node:path";
 import { textToMarkdown } from "./utils";
 
-export const RPC_EVENTS = [
-    "markdown-preview-text-changed",
-    "markdown-preview-cursor-moved",
-    "markdown-preview-buffer-delete",
-] as const;
-
 interface Args {
     nvim: NeovimClient;
     httpServer: Server;
