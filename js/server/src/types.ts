@@ -1,4 +1,4 @@
-import { array, boolean, literal, number, object, string, union, type Output } from "valibot";
+import { boolean, literal, number, object, string, union, type Output } from "valibot";
 
 export interface EntryContent {
     markdown: string;
@@ -31,7 +31,7 @@ export type ContentChange = Output<typeof ContentChangeSchema>;
 
 export interface WsServerMessage {
     root: string;
-    currentEntry?: CurrentEntry;
+    currentEntry?: CurrentEntry | undefined;
     repoName?: string;
     cursorMove?: CursorMove;
     goodbye?: true;
@@ -57,7 +57,6 @@ export const PluginConfigSchema = object({
     init_path: string(),
     scroll_debounce_ms: number(),
     disable_sync_scroll: boolean(),
-    ignore_buffer_patterns: array(string()),
     sync_scroll_type: union([literal("middle"), literal("top"), literal("relative")]),
 });
 export type PluginConfig = Output<typeof PluginConfigSchema>;

@@ -1,9 +1,8 @@
 import type ipc from "node-ipc";
-import { readFileSync } from "node:fs";
-import { extname } from "node:path";
+import { basename } from "node:path";
 import { type WebSocket } from "ws";
-import { type EntryContent, type PluginConfig, type WsServerMessage } from "./types";
-import { getEntries, getRepoName, textToMarkdown } from "./utils";
+import { type PluginConfig, type WsServerMessage } from "./types";
+import { getEntries, getRepoName, makeCurrentEntry } from "./utils";
 
 interface Args {
     props: PluginConfig;
@@ -20,30 +19,21 @@ export function onWssConnection({ props }: Args) {
             ws.send(JSON.stringify(m));
         }
 
-        const isDir = props.init_path.endsWith("/");
-        let content: EntryContent | undefined;
+        const absPath = props.init_path;
+        const entries = await getEntries(absPath);
+        let currentEntry = makeCurrentEntry(absPath);
 
-        if (!isDir) {
-            const text = readFileSync(props.init_path).toString();
-            const fileExt = extname(props.init_path);
-            const markdown = textToMarkdown({ text, fileExt });
-            content = {
-                fileExt,
-                markdown,
-            };
-        } else {
-            // TODO(gualcasas): search for base README.md if we're in a dir
+        if (!currentEntry) {
+            // search for README.md in current dir
+            const readmePath = entries.find((e) => basename(e).toLowerCase() === "readme.md");
+            if (readmePath) currentEntry = makeCurrentEntry(readmePath);
         }
 
-        const repoName = getRepoName(props.root);
         const initialMessage: WsServerMessage = {
             root: props.root,
-            repoName: repoName,
-            entries: await getEntries(props.init_path),
-            currentEntry: {
-                absPath: props.init_path,
-                content,
-            },
+            repoName: getRepoName(props.root),
+            entries,
+            currentEntry,
         };
 
         wsSend(initialMessage);

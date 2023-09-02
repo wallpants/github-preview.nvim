@@ -1,10 +1,11 @@
 // cspell:ignore readdirSync
 import { globby } from "globby";
 import { readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { dirname, extname, resolve } from "node:path";
 import { safeParse, type ObjectSchema } from "valibot";
 import type winston from "winston";
 import { ENV } from "../../env";
+import { type CurrentEntry } from "./types";
 
 /** Takes a string and wraps it inside a markdown
  * codeblock using file extension as language
@@ -14,14 +15,7 @@ import { ENV } from "../../env";
  * textToMarkdown({text, fileExt: "ts"});
  * ```
  */
-export function textToMarkdown({
-    text,
-    fileExt,
-}: {
-    /** some def */
-    text: string;
-    fileExt: string;
-}) {
+export function textToMarkdown({ text, fileExt }: { text: string; fileExt: string }) {
     return fileExt === ".md" ? text : "```" + fileExt + `\n${text}`;
 }
 
@@ -42,7 +36,6 @@ export function getRepoName(root: string): string {
     return repoName;
 }
 
-// TODO This seems convoluted
 export async function getEntries(currentAbsPath: string): Promise<string[]> {
     const currentDir = currentAbsPath.endsWith("/") ? currentAbsPath : dirname(currentAbsPath);
     const paths = await globby("*", {
@@ -51,7 +44,6 @@ export async function getEntries(currentAbsPath: string): Promise<string[]> {
         absolute: true,
         gitignore: true,
         onlyFiles: false,
-        objectMode: true,
         markDirectories: true,
     });
 
@@ -59,9 +51,9 @@ export async function getEntries(currentAbsPath: string): Promise<string[]> {
     const files: string[] = [];
 
     for (const path of paths) {
-        if (path.dirent.isDirectory()) {
-            if (path.name !== ".git") dirs.push(path.name);
-        } else files.push(path.name);
+        if (path.endsWith("/")) {
+            if (!path.endsWith(".git/")) dirs.push(path);
+        } else files.push(path);
     }
 
     dirs.sort();
@@ -70,10 +62,21 @@ export async function getEntries(currentAbsPath: string): Promise<string[]> {
     return dirs.concat(files);
 }
 
+export function makeCurrentEntry(absPath: string): CurrentEntry | undefined {
+    if (absPath.endsWith("/")) return;
+    const text = readFileSync(absPath).toString();
+    const fileExt = extname(absPath);
+    const markdown = textToMarkdown({ text, fileExt });
+    return {
+        content: { fileExt, markdown },
+        absPath,
+    };
+}
+
 // eslint-disable-next-line
 export function devSafeParse(logger: typeof winston, schema: ObjectSchema<any>, data: unknown) {
     // we validate payloads only in dev to avoid affecting performance in prod
-    if (!ENV.IS_DEV) return;
+    if (!ENV.GP_IS_DEV) return;
     const parsed = safeParse(schema, data);
     if (!parsed.success) logger.error("PARSE ERROR", parsed);
 }

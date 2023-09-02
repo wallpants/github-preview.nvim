@@ -40,8 +40,8 @@ export const Explorer = () => {
                 {segments}
             </Container>
             <Container>
-                {(segments.length > 1 || currentEntry?.absPath.endsWith("/")) && (
-                    <EntryComponent absPath={currentEntry?.absPath ?? ""} />
+                {currentEntry?.absPath.endsWith("/") && (
+                    <EntryComponent absPath={currentEntry.absPath} />
                 )}
                 {entries.map((entry) => (
                     <EntryComponent key={entry} absPath={entry} />

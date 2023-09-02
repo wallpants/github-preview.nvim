@@ -18,7 +18,18 @@ export const EntryComponent = ({ absPath }: { absPath: string }) => {
         wsSend({ currentBrowserPath: absPath });
     }
 
-    const name = absPath.split("/").pop();
+    const split = absPath.split("/");
+    let name = split.pop();
+
+    if (!name) {
+        /* if `absPath` was a dir "/.../some_dir/"
+         *  "/.../some_dir/".split("/") => ["...", "some_dir", ""]
+         * meaning `name` would be ""
+         *
+         * we pop again to get dirname
+         */
+        name = split.pop();
+    }
 
     return (
         <div
