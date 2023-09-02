@@ -21,6 +21,15 @@ M.default_opts = {
 M.setup = function(opts)
 	opts = vim.tbl_deep_extend("keep", opts, M.default_opts)
 
+	vim.validate({
+		dev = { opts.dev, "boolean" },
+		port = { opts.port, "number" },
+		scroll_debounce_ms = { opts.scroll_debounce_ms, "number" },
+		disable_sync_scroll = { opts.disable_sync_scroll, "boolean" },
+		ignore_buffer_patterns = { opts.ignore_buffer_patterns, "table" },
+		sync_scroll_type = { opts.sync_scroll_type, "string" },
+	})
+
 	local function start_server()
 		---@type plugin_props
 		vim.g.markdown_preview_props = {
