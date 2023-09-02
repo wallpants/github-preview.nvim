@@ -1,9 +1,6 @@
 import { createBrowserHistory } from "history";
 import { useContext, useEffect, type ReactNode } from "react";
-import {
-    websocketContext,
-    type MessageHandler,
-} from "../websocket-context/context";
+import { websocketContext, type MessageHandler } from "../websocket-context/context";
 import { routerContext } from "./context";
 
 const history = createBrowserHistory();
@@ -17,14 +14,10 @@ export const RouterProvider = ({ children }: Props) => {
 
     useEffect(() => {
         const messageHandler: MessageHandler = (message) => {
-            history.push("/" + message.currentEntry.relativeToRoot);
+            history.push("/" + (message.currentEntry?.absPath ?? ""));
         };
         addMessageHandler("ws-router", messageHandler);
     }, [addMessageHandler]);
 
-    return (
-        <routerContext.Provider value={history}>
-            {children}
-        </routerContext.Provider>
-    );
+    return <routerContext.Provider value={history}>{children}</routerContext.Provider>;
 };

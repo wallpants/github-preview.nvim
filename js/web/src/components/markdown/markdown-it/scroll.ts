@@ -1,7 +1,8 @@
 /*
  * https://github.com/iamcco/markdown-preview.nvim/blob/master/app/pages/scroll.js
  */
-import { type CursorMove } from "../../../../../types";
+
+import { type CursorMove } from "../../../types";
 
 export const EXPLORER_ELE_ID = "explorer-ele-id";
 
@@ -50,51 +51,42 @@ function topOrBottom(line: number, len: number) {
 
 function relativeScroll(line: number, ratio: number, len: number) {
     let offsetTop = 0;
-    const lineEle: HTMLElement | null = document.querySelector(
-        `[data-source-line="${line}"]`,
-    );
+    const lineEle: HTMLElement | null = document.querySelector(`[data-source-line="${line}"]`);
     if (lineEle) {
         offsetTop = lineEle.offsetTop;
     } else {
         const pre = getPreLineOffsetTop(line);
         const next = getNextLineOffsetTop(line, len);
-        offsetTop =
-            pre[1] +
-            ((next[1] - pre[1]) * (line - pre[0])) / (next[0] - pre[0]);
+        offsetTop = pre[1] + ((next[1] - pre[1]) * (line - pre[0])) / (next[0] - pre[0]);
     }
     scroll(offsetTop - document.documentElement.clientHeight * ratio);
 }
 
 export const scrollFnMap = {
-    relative: function ({
-        cursorLine,
-        contentLen,
-        winLine,
-        winHeight,
-    }: CursorMove) {
-        const line = cursorLine - 1;
-        const ratio = winLine / winHeight;
-        if (line === 0 || line === contentLen - 1) {
-            topOrBottom(line, contentLen);
+    relative: function ({ cursor_line, content_len, win_line, win_height }: CursorMove) {
+        const line = cursor_line - 1;
+        const ratio = win_line / win_height;
+        if (line === 0 || line === content_len - 1) {
+            topOrBottom(line, content_len);
         } else {
-            relativeScroll(line, ratio, contentLen);
+            relativeScroll(line, ratio, content_len);
         }
     },
-    middle: function ({ cursorLine, contentLen }: CursorMove) {
-        const line = cursorLine - 1;
-        if (line === 0 || line === contentLen - 1) {
-            topOrBottom(line, contentLen);
+    middle: function ({ cursor_line, content_len }: CursorMove) {
+        const line = cursor_line - 1;
+        if (line === 0 || line === content_len - 1) {
+            topOrBottom(line, content_len);
         } else {
-            relativeScroll(line, 0.5, contentLen);
+            relativeScroll(line, 0.5, content_len);
         }
     },
-    top: function ({ cursorLine, winLine, contentLen }: CursorMove) {
-        let line = cursorLine - 1;
-        if (line === 0 || line === contentLen - 1) {
-            topOrBottom(line, contentLen);
+    top: function ({ cursor_line, win_line, content_len }: CursorMove) {
+        let line = cursor_line - 1;
+        if (line === 0 || line === content_len - 1) {
+            topOrBottom(line, content_len);
         } else {
-            line = cursorLine - winLine;
-            relativeScroll(line, 0, contentLen);
+            line = cursor_line - win_line;
+            relativeScroll(line, 0, content_len);
         }
     },
 };

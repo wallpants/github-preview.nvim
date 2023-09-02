@@ -1,9 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { type CurrentEntry, type Entry } from "../../../../types";
-import {
-    websocketContext,
-    type MessageHandler,
-} from "../../websocket-context/context";
+import { type CurrentEntry } from "../../types";
+import { websocketContext, type MessageHandler } from "../../websocket-context/context";
 import { Container } from "../container";
 import { EXPLORER_ELE_ID } from "../markdown/markdown-it/scroll";
 import { ThemePicker } from "../theme-select";
@@ -11,7 +8,7 @@ import { EntryComponent } from "./entry";
 
 export const Explorer = () => {
     const { addMessageHandler } = useContext(websocketContext);
-    const [entries, setEntries] = useState<Entry[]>([]);
+    const [entries, setEntries] = useState<string[]>([]);
     const [currentEntry, setCurrentEntry] = useState<CurrentEntry>();
     const [repoName, setRepoName] = useState<string>("");
 
@@ -24,7 +21,7 @@ export const Explorer = () => {
         addMessageHandler("explorer", messageHandler);
     }, [addMessageHandler]);
 
-    const segments = currentEntry?.relativeToRoot.split("/") ?? [];
+    const segments = currentEntry?.absPath.split("/") ?? [];
     const [username, repo] = repoName.split("/");
 
     return (
@@ -43,18 +40,11 @@ export const Explorer = () => {
                 {segments}
             </Container>
             <Container>
-                {(segments.length > 1 || currentEntry?.type === "dir") && (
-                    <EntryComponent
-                        relativeToRoot={currentEntry?.relativeToRoot + "/.."}
-                        type="dir"
-                    />
+                {(segments.length > 1 || currentEntry?.absPath.endsWith("/")) && (
+                    <EntryComponent absPath={currentEntry?.absPath ?? ""} />
                 )}
-                {entries.map(({ relativeToRoot, type }) => (
-                    <EntryComponent
-                        key={relativeToRoot}
-                        relativeToRoot={relativeToRoot}
-                        type={type}
-                    />
+                {entries.map((entry) => (
+                    <EntryComponent key={entry} absPath={entry} />
                 ))}
             </Container>
         </div>

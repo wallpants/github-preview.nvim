@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { type WsBrowserMessage, type WsServerMessage } from "../../../types";
+import { type WsBrowserMessage, type WsServerMessage } from "../types";
 
 export type Status = "online" | "reconnecting";
 export type MessageHandler = (message: WsServerMessage) => void | Promise<void>;

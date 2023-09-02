@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { type Entry } from "../../../../types";
 import { cn } from "../../lib/styles";
 import { websocketContext } from "../../websocket-context/context";
 import { DirIcon } from "./dir-icon";
@@ -12,14 +11,14 @@ const IconMap = {
     file: <FileIcon className={iconClassName} />,
 };
 
-export const EntryComponent = ({ type, relativeToRoot }: Entry) => {
+export const EntryComponent = ({ absPath }: { absPath: string }) => {
     const { wsSend } = useContext(websocketContext);
 
     function requestEntries() {
-        wsSend({ currentBrowserEntry: { relativeToRoot, type } });
+        wsSend({ currentBrowserPath: absPath });
     }
 
-    const name = relativeToRoot.split("/").pop();
+    const name = absPath.split("/").pop();
 
     return (
         <div
@@ -29,7 +28,7 @@ export const EntryComponent = ({ type, relativeToRoot }: Entry) => {
                 "border-github-border-default hover:bg-github-canvas-subtle",
             )}
         >
-            {IconMap[type]}
+            {IconMap[absPath.endsWith("/") ? "dir" : "file"]}
             <span className="text-sm group-hover:text-github-accent-fg group-hover:underline">
                 {name}
             </span>

@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { type WsBrowserMessage, type WsServerMessage } from "../../../types";
+import { type WsBrowserMessage } from "../../../server/src/types";
 import { VITE_GP_PORT } from "../../env";
 import { Banner } from "../components/banner";
+import { type WsServerMessage } from "../types";
 import { websocketContext, type MessageHandler, type Status } from "./context";
 
 console.log("VITE_GP_PORT: ", VITE_GP_PORT);
 
 // we check for PORT for dev env
-const url =
-    "ws://" +
-    (VITE_GP_PORT ? `localhost:${VITE_GP_PORT}` : window.location.host);
+const url = "ws://" + (VITE_GP_PORT ? `localhost:${VITE_GP_PORT}` : window.location.host);
 const ws = new ReconnectingWebSocket(url, [], {
     maxReconnectionDelay: 3000,
 });
@@ -42,21 +41,16 @@ export const WebsocketProvider = ({ children }: Props) => {
         };
     }, []);
 
-    const addMessageHandler = useCallback(
-        (key: string, handler: MessageHandler) => {
-            messageHandlers.set(key, handler);
-        },
-        [],
-    );
+    const addMessageHandler = useCallback((key: string, handler: MessageHandler) => {
+        messageHandlers.set(key, handler);
+    }, []);
 
     const wsSend = useCallback((message: WsBrowserMessage) => {
         ws.send(JSON.stringify(message));
     }, []);
 
     return (
-        <websocketContext.Provider
-            value={{ wsSend, addMessageHandler, status }}
-        >
+        <websocketContext.Provider value={{ wsSend, addMessageHandler, status }}>
             <Banner className="z-50" />
             {children}
         </websocketContext.Provider>
