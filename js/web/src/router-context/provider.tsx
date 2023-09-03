@@ -16,7 +16,7 @@ export const RouterProvider = ({ children }: Props) => {
         const messageHandler: MessageHandler = (message) => {
             if (message.currentEntry) {
                 const relative = message.currentEntry.absPath.replace(message.root, "");
-                history.push(relative);
+                history.push("/" + relative);
             }
         };
         addMessageHandler("ws-router", messageHandler);

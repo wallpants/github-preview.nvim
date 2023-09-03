@@ -16,6 +16,23 @@ M.default_opts = {
     sync_scroll_type = Types.SYNC_SCROLL_TYPE.middle,
 }
 
+---@param ignore_buffer_patterns string[]
+---@param buffer_name string
+---@return boolean
+local function shouldIgnoreBuffer(ignore_buffer_patterns, buffer_name)
+    if buffer_name == "" then
+        return true
+    end
+
+    for i = #ignore_buffer_patterns, 1, -1 do
+        if string.match(buffer_name, ignore_buffer_patterns[i]) then
+            return true
+        end
+    end
+
+    return false
+end
+
 ---@param opts nvim_plugin_opts
 M.setup = function(opts)
     opts = vim.tbl_deep_extend("keep", opts, M.default_opts)
@@ -63,7 +80,11 @@ M.setup = function(opts)
                     abs_file_path = arg.file,
                     content = content,
                 }
-                vim.rpcnotify(0, "github-preview-content-change", content_change)
+
+                -- TODO(gualcasas) maybe filter with autocmd pattern instead of manually
+                if not shouldIgnoreBuffer(opts.ignore_buffer_patterns, arg.file) then
+                    vim.rpcnotify(0, "github-preview-content-change", content_change)
+                end
             end,
         })
 
@@ -82,7 +103,11 @@ M.setup = function(opts)
                     win_height = vim.api.nvim_win_get_height(0),
                     win_line = vim.fn.winline(),
                 }
-                vim.rpcnotify(0, "github-preview-cursor-move", cursor_move)
+
+                -- TODO(gualcasas) maybe filter with autocmd pattern instead of manually
+                if not shouldIgnoreBuffer(opts.ignore_buffer_patterns, arg.file) then
+                    vim.rpcnotify(0, "github-preview-cursor-move", cursor_move)
+                end
             end,
         })
 

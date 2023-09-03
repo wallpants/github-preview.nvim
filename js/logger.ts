@@ -1,7 +1,7 @@
 /* eslint-disable */
 // cspell:ignore twinston
 import { createWriteStream } from "node:fs";
-import twinston from "./server/node_modules/winston";
+import type twinston from "./server/node_modules/winston";
 
 export function createLogger(
     winston: any,
