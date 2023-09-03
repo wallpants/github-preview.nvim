@@ -11,23 +11,18 @@ const IconMap = {
     file: <FileIcon className={iconClassName} />,
 };
 
-export const EntryComponent = ({ absPath }: { absPath: string }) => {
+export const EntryComponent = ({ absPath, isParent }: { absPath: string; isParent?: boolean }) => {
     const { wsSend } = useContext(websocketContext);
 
     function requestEntries() {
         wsSend({ currentBrowserPath: absPath });
     }
 
+    const isDir = absPath.endsWith("/");
     const split = absPath.split("/");
     let name = split.pop();
-
-    if (!name) {
-        /* if `absPath` was a dir "/.../some_dir/"
-         *  "/.../some_dir/".split("/") => ["...", "some_dir", ""]
-         * meaning `name` would be ""
-         *
-         * we pop again to get dirname
-         */
+    if (isDir) {
+        // dirs include an empty string as last element after split("/")
         name = split.pop();
     }
 
@@ -39,9 +34,9 @@ export const EntryComponent = ({ absPath }: { absPath: string }) => {
                 "border-github-border-default hover:bg-github-canvas-subtle",
             )}
         >
-            {IconMap[absPath.endsWith("/") ? "dir" : "file"]}
+            {IconMap[isDir ? "dir" : "file"]}
             <span className="text-sm group-hover:text-github-accent-fg group-hover:underline">
-                {name}
+                {isParent ? ".." : name}
             </span>
         </div>
     );

@@ -52,7 +52,7 @@ M.setup = function(opts)
         if root == "" or root == "/" then
             error("root dir with .git not found")
         else
-            -- if found, path is made absolute & has "/.git/" removed
+            -- if found, path is made absolute & has "/.git/" popped
             root = vim.fn.fnamemodify(root, ":p:h:h") .. "/"
         end
 
