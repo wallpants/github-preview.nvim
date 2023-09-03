@@ -1,28 +1,15 @@
-import type _ipc from "node-ipc";
 import { type Socket } from "node:net";
 import { parse } from "valibot";
 import { ENV } from "../../../env";
 import { type IPC_EVENTS } from "../consts";
 import { logger } from "../logger";
-import {
-    CursorMoveSchema,
-    type BrowserState,
-    type CursorMove,
-    type PluginConfig,
-    type WsServerMessage,
-} from "../types";
+import { CursorMoveSchema, type CursorMove } from "../types";
 import { getEntries, makeCurrentEntry } from "../utils";
+import { type HandlerArgs } from "./on-content-change";
 
 const EVENT: (typeof IPC_EVENTS)[number] = "github-preview-cursor-move";
 
-interface Args {
-    config: PluginConfig;
-    ipc: typeof _ipc;
-    browserState: BrowserState;
-    wsSend: (m: WsServerMessage) => void;
-}
-
-export function registerOnCursorMove({ config, ipc, browserState, wsSend }: Args) {
+export function registerOnCursorMove({ config, ipc, browserState, wsSend }: HandlerArgs) {
     ipc.server.on(EVENT, async (cursorMove: CursorMove, _socket: Socket) => {
         try {
             ENV.GP_IS_DEV && parse(CursorMoveSchema, cursorMove);

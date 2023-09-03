@@ -15,14 +15,14 @@ import { getEntries, makeCurrentEntry } from "../utils";
 
 const EVENT: (typeof IPC_EVENTS)[number] = "github-preview-content-change";
 
-interface Args {
+export interface HandlerArgs {
     config: PluginConfig;
     ipc: typeof _ipc;
     browserState: BrowserState;
     wsSend: (m: WsServerMessage) => void;
 }
 
-export function registerOnContentChange({ config, ipc, browserState, wsSend }: Args) {
+export function registerOnContentChange({ config, ipc, browserState, wsSend }: HandlerArgs) {
     ipc.server.on(EVENT, async (contentChange: ContentChange, _socket: Socket) => {
         try {
             ENV.GP_IS_DEV && parse(ContentChangeSchema, contentChange);
