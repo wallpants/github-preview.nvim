@@ -1,0 +1,55 @@
+import type ipc from "node-ipc";
+import { basename } from "node:path";
+import { type WebSocket } from "ws";
+import { type BrowserState, type PluginConfig, type WsServerMessage } from "../types";
+import { getEntries, getRepoName, makeCurrentEntry } from "../utils";
+import { registerOnContentChange } from "./on-content-change";
+import { registerOnCursorMove } from "./on-cursor-move";
+
+interface Args {
+    config: PluginConfig;
+    ipc: typeof ipc;
+}
+
+const browserState: BrowserState = {
+    currentEntry: "",
+};
+
+export function onWssConnection({ config, ipc }: Args) {
+    return async (ws: WebSocket) => {
+        function wsSend(m: WsServerMessage) {
+            ws.send(JSON.stringify(m));
+        }
+
+        const absPath = config.init_path;
+        const initEntries = await getEntries(browserState, absPath);
+        let initCurrentEntry = makeCurrentEntry({ absPath });
+
+        if (!initCurrentEntry) {
+            // search for README.md in current dir
+            const readmePath = initEntries?.find((e) => basename(e).toLowerCase() === "readme.md");
+            if (readmePath) initCurrentEntry = makeCurrentEntry({ absPath: readmePath });
+        }
+
+        const initialMessage: WsServerMessage = {
+            root: config.root,
+            repoName: getRepoName(config.root),
+            entries: initEntries,
+            currentEntry: initCurrentEntry,
+        };
+
+        wsSend(initialMessage);
+        browserState.currentEntry = initialMessage.currentEntry?.absPath ?? "";
+
+        const handlerArgs = {
+            config,
+            ipc,
+            browserState,
+            wsSend,
+        };
+        registerOnContentChange(handlerArgs);
+        registerOnCursorMove(handlerArgs);
+
+        // ws.on("message", onBrowserMessage({ root: props.root, wsSend }));
+    };
+}

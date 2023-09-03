@@ -1,11 +1,8 @@
 // cspell:ignore readdirSync
 import { globby } from "globby";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, extname, resolve } from "node:path";
-import { safeParse, type ObjectSchema } from "valibot";
-import type winston from "winston";
-import { ENV } from "../../env";
-import { type CurrentEntry } from "./types";
+import { type BrowserState, type CurrentEntry } from "./types";
 
 /** Takes a string and wraps it inside a markdown
  * codeblock using file extension as language
@@ -36,7 +33,12 @@ export function getRepoName(root: string): string {
     return repoName;
 }
 
-export async function getEntries(currentAbsPath: string): Promise<string[]> {
+export async function getEntries(
+    browserState: BrowserState,
+    currentAbsPath: string,
+): Promise<string[] | undefined> {
+    if (browserState.currentEntry === currentAbsPath) return Promise.resolve(undefined);
+
     const currentDir = currentAbsPath.endsWith("/") ? currentAbsPath : dirname(currentAbsPath);
     const paths = await globby("*", {
         cwd: currentDir,
@@ -62,21 +64,20 @@ export async function getEntries(currentAbsPath: string): Promise<string[]> {
     return dirs.concat(files);
 }
 
-export function makeCurrentEntry(absPath: string): CurrentEntry | undefined {
+export function makeCurrentEntry({
+    absPath,
+    content,
+}: {
+    absPath: string;
+    content?: string;
+}): CurrentEntry | undefined {
     if (absPath.endsWith("/")) return;
-    const text = readFileSync(absPath).toString();
+
+    const text = content ?? (existsSync(absPath) ? readFileSync(absPath).toString() : "");
     const fileExt = extname(absPath);
     const markdown = textToMarkdown({ text, fileExt });
     return {
         content: { fileExt, markdown },
         absPath,
     };
-}
-
-// eslint-disable-next-line
-export function devSafeParse(logger: typeof winston, schema: ObjectSchema<any>, data: unknown) {
-    // we validate payloads only in dev to avoid affecting performance in prod
-    if (!ENV.GP_IS_DEV) return;
-    const parsed = safeParse(schema, data);
-    if (!parsed.success) logger.error("PARSE ERROR", parsed);
 }

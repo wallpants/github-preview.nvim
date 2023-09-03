@@ -67,7 +67,7 @@ M.setup = function(opts)
             end,
         })
 
-        vim.api.nvim_create_autocmd({ "CursorMovedI", "CursorMoved", "CursorHoldI", "CursorHold" }, {
+        vim.api.nvim_create_autocmd({ "CursorHoldI", "CursorHold" }, {
             ---@param arg autocmd_arg
             callback = function(arg)
                 local cursor = vim.api.nvim_win_get_cursor(0)

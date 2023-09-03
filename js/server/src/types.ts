@@ -35,7 +35,7 @@ export interface WsServerMessage {
     repoName?: string;
     cursorMove?: CursorMove;
     goodbye?: true;
-    entries?: string[];
+    entries?: string[] | undefined;
 }
 
 export const PluginConfigSchema = object({
@@ -60,3 +60,7 @@ export const PluginConfigSchema = object({
     sync_scroll_type: union([literal("middle"), literal("top"), literal("relative")]),
 });
 export type PluginConfig = Output<typeof PluginConfigSchema>;
+
+export interface BrowserState {
+    currentEntry: string;
+}
