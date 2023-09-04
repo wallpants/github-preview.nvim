@@ -1,2 +1,2 @@
-import { all as languages } from "@wooorm/starry-night";
+import { common as languages } from "@wooorm/starry-night";
 export default languages;

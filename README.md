@@ -1,5 +1,6 @@
 # my name is
 
+-   [] what happens if we have a running instance and try running another?
 -   [] webapp should send hello message on connection
 -   [x] make PORT configurable
 -   [x] improve css (https://github.com/sindresorhus/github-markdown-css)

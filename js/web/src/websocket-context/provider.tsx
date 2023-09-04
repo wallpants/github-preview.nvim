@@ -6,30 +6,34 @@ import { type WsBrowserRequest, type WsServerMessage } from "../types";
 import { websocketContext, type MessageHandler, type Status } from "./context";
 
 // we check for PORT for dev env
-const url = "ws://" + (ENV.VITE_GP_PORT ? `localhost:${ENV.VITE_GP_PORT}` : window.location.host);
+const url = "ws://" + (ENV.IS_DEV ? `localhost:${ENV.VITE_GP_PORT}` : window.location.host);
 const ws = new ReconnectingWebSocket(url, [], {
     maxReconnectionDelay: 3000,
+    // start websocket in CLOSED state, call `.reconnect()` to connect
+    startClosed: true,
 });
 
 const messageHandlers = new Map<string, MessageHandler>();
 
 export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
-    const [status, setStatus] = useState<Status>("online");
+    const [status, setStatus] = useState<Status>("offline");
 
     const wsRequest = useCallback((message: WsBrowserRequest) => {
+        if (ENV.IS_DEV) console.log(`requesting '${message.type}':`, message);
         ws.send(JSON.stringify(message));
     }, []);
 
     useEffect(() => {
         ws.onopen = () => {
             setStatus("online");
+            wsRequest({ type: "init" });
         };
         ws.onclose = () => {
             setStatus("reconnecting");
         };
         ws.onmessage = (event) => {
             const message = JSON.parse(String(event.data)) as WsServerMessage;
-            if (ENV.VITE_GP_PORT) console.log("received:", message);
+            if (ENV.IS_DEV) console.log("received:", message);
             if (message.goodbye) window.close();
             messageHandlers.forEach((handler) => {
                 handler(message);
@@ -43,6 +47,13 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
 
     const addMessageHandler = useCallback((key: string, handler: MessageHandler) => {
         messageHandlers.set(key, handler);
+    }, []);
+
+    useEffect(() => {
+        // we connect in useEffect hook, to wait for children components
+        // to have rendered and registered their onWsMessageHandlers
+        if (ENV.IS_DEV) console.log("connecting websocket");
+        ws.reconnect();
     }, []);
 
     return (

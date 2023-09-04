@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { ENV } from "../../../env";
 import { cn } from "../../styles";
 import { websocketContext, type MessageHandler } from "../../websocket-context/context";
 import { Container } from "../container";
@@ -28,7 +29,6 @@ function textToMarkdown({ text, fileExt }: { text: string; fileExt: string }) {
 export const Markdown = ({ className }: { className?: string }) => {
     const [fileName, setFileName] = useState<string>();
     const [fileExt, setFileExt] = useState<string>();
-    const [hasContent, setHasContent] = useState(false);
     const { addMessageHandler } = useContext(websocketContext);
 
     useEffect(() => {
@@ -40,7 +40,6 @@ export const Markdown = ({ className }: { className?: string }) => {
             const fileExt = fileName?.split(".").pop();
             setFileName(fileName);
             setFileExt(fileExt);
-            setHasContent(Boolean(message.content));
 
             const markdown = textToMarkdown({
                 text: message.content ?? "",
@@ -53,10 +52,9 @@ export const Markdown = ({ className }: { className?: string }) => {
             }
         };
 
+        if (ENV.IS_DEV) console.log("adding markdown messageHandler");
         addMessageHandler("markdown", messageHandler);
     }, [addMessageHandler]);
-
-    if (!hasContent) return null;
 
     return (
         <Container className={className}>

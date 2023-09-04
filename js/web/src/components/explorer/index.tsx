@@ -1,5 +1,6 @@
 import { createBrowserHistory } from "history";
 import { useContext, useEffect, useState } from "react";
+import { ENV } from "../../../env";
 import { websocketContext, type MessageHandler } from "../../websocket-context/context";
 import { Container } from "../container";
 import { EXPLORER_ELE_ID } from "../markdown/markdown-it/scroll";
@@ -25,14 +26,12 @@ export const Explorer = () => {
             if (root) setRoot(root);
         };
 
+        if (ENV.IS_DEV) console.log("adding explorer messageHandler");
         addMessageHandler("explorer", messageHandler);
     }, [addMessageHandler, wsRequest]);
 
     useEffect(() => {
-        if (!root || !currentPath) {
-            wsRequest({ type: "init" });
-            return;
-        }
+        if (!root || !currentPath) return;
 
         const relative = currentPath.slice(root.length);
         history.push("/" + relative);

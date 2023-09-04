@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { type WsBrowserRequest, type WsServerMessage } from "../types";
 
-export type Status = "online" | "reconnecting";
+export type Status = "offline" | "online" | "reconnecting";
 export type MessageHandler = (message: WsServerMessage) => void;
 export type AddMessageHandler = (key: string, handler: MessageHandler) => void;
 
