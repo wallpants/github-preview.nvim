@@ -18,17 +18,13 @@ export function onWssConnection({ ipc }: Args) {
             ws.send(JSON.stringify(m));
         }
 
-        try {
-            logger.verbose("onWssConnection", { browserState });
-            ws.on("message", onBrowserRequest(wsSend));
+        logger.verbose("onWssConnection", { browserState });
+        ws.on("message", onBrowserRequest(wsSend));
 
-            const CURSOR_MOVE: (typeof IPC_EVENTS)[number] = "github-preview-cursor-move";
-            ipc.server.on(CURSOR_MOVE, onEditorCursorMove(wsSend));
+        const CURSOR_MOVE: (typeof IPC_EVENTS)[number] = "github-preview-cursor-move";
+        ipc.server.on(CURSOR_MOVE, onEditorCursorMove(wsSend));
 
-            const CONTENT_CHANGE: (typeof IPC_EVENTS)[number] = "github-preview-content-change";
-            ipc.server.on(CONTENT_CHANGE, onEditorContentChange(wsSend));
-        } catch (err) {
-            logger.error("onWssConnection ERROR", err);
-        }
+        const CONTENT_CHANGE: (typeof IPC_EVENTS)[number] = "github-preview-content-change";
+        ipc.server.on(CONTENT_CHANGE, onEditorContentChange(wsSend));
     };
 }

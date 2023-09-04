@@ -17,44 +17,34 @@ ipc.config.id = IPC_SERVER_ID;
 ipc.config.retry = 1500;
 ipc.config.logger = (log) => logger.debug(log);
 
-function main() {
-    ipc.serve(function () {
-        const updateConfig: (typeof IPC_EVENTS)[number] = "github-preview-init";
-        // updateConfig event is first thing sent by client when connection opens
-        ipc.server.on(updateConfig, async (init: PluginInit, _socket: Socket) => {
-            try {
-                ENV.GP_IS_DEV && parse(PluginInitSchema, init);
-                logger.verbose(updateConfig, { init });
+ipc.serve(function () {
+    const updateConfig: (typeof IPC_EVENTS)[number] = "github-preview-init";
+    // updateConfig event is first thing sent by client when connection opens
+    ipc.server.on(updateConfig, (init: PluginInit, _socket: Socket) => {
+        (async () => {
+            ENV.GP_IS_DEV && parse(PluginInitSchema, init);
+            logger.verbose(updateConfig, { init });
 
-                browserState.root = init.root;
-                browserState.repoName = getRepoName();
-                browserState.entries = await getEntries();
-                browserState.currentPath = init.path;
-                browserState.content = init.content;
+            browserState.root = init.root;
+            browserState.repoName = getRepoName();
+            browserState.entries = await getEntries();
+            browserState.currentPath = init.path;
+            browserState.content = init.content;
 
-                const httpServer = createServer();
-                httpServer.on("request", onHttpRequest);
+            const httpServer = createServer();
+            httpServer.on("request", onHttpRequest);
 
-                const wsServer = new WebSocketServer({ server: httpServer });
-                wsServer.on("connection", onWssConnection({ ipc }));
+            const wsServer = new WebSocketServer({ server: httpServer });
+            wsServer.on("connection", onWssConnection({ ipc }));
 
-                const PORT = ENV.VITE_GP_PORT ?? init.port;
+            const PORT = ENV.VITE_GP_PORT ?? init.port;
 
-                httpServer.listen(PORT, () => {
-                    logger.verbose(`Server is listening on port ${PORT}`);
-                    !ENV.GP_IS_DEV && opener(`http://localhost:${PORT}`);
-                });
-            } catch (err) {
-                logger.error("updateConfigEventHandler ERROR", err);
-            }
-        });
+            httpServer.listen(PORT, () => {
+                logger.verbose(`Server is listening on port ${PORT}`);
+                !ENV.GP_IS_DEV && opener(`http://localhost:${PORT}`);
+            });
+        })().catch((e) => logger.error("onUpdateConfig ERROR", e));
     });
+});
 
-    ipc.server.start();
-}
-
-try {
-    main();
-} catch (err) {
-    logger.error("BOUNDARY ERROR", err);
-}
+ipc.server.start();

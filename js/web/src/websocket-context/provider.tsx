@@ -31,7 +31,9 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
             const message = JSON.parse(String(event.data)) as WsServerMessage;
             if (ENV.VITE_GP_PORT) console.log("received:", message);
             if (message.goodbye) window.close();
-            messageHandlers.forEach((handler) => handler(message));
+            messageHandlers.forEach((handler) => {
+                handler(message);
+            });
         };
 
         return () => {

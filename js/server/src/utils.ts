@@ -4,7 +4,6 @@ import { isText } from "istextorbinary";
 import { existsSync, readFileSync } from "node:fs";
 import { basename, dirname, resolve } from "node:path";
 import { browserState } from "./browser-state";
-import { type CurrentEntry } from "./types";
 
 export function getRepoName(): string {
     const gitConfig = readFileSync(resolve(browserState.root, ".git/config")).toString();
@@ -50,7 +49,7 @@ export async function getEntries(): Promise<string[]> {
     return dirs.concat(files);
 }
 
-export function getCurrentEntry(): CurrentEntry {
+export function getContent(): string | undefined {
     const isDir = browserState.currentPath.endsWith("/");
 
     if (isDir) {
@@ -62,11 +61,5 @@ export function getCurrentEntry(): CurrentEntry {
     }
 
     const isTextFile = existsSync(browserState.currentPath) && isText(browserState.currentPath);
-
-    const currentEntry: CurrentEntry = {
-        absPath: browserState.currentPath,
-        content: isTextFile ? readFileSync(browserState.currentPath).toString() : undefined,
-    };
-
-    return currentEntry;
+    return isTextFile ? readFileSync(browserState.currentPath).toString() : undefined;
 }

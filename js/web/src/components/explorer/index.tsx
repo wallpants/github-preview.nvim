@@ -37,6 +37,8 @@ export const Explorer = () => {
         const relative = currentPath.slice(root.length);
         history.push("/" + relative);
 
+        wsRequest({ type: "getEntry", currentPath });
+
         const segments = relative.split("/");
         if (segments.length) {
             segments.pop();

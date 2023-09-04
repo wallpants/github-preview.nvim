@@ -5,12 +5,7 @@ export type BrowserState = {
     repoName: string;
     entries: string[];
     currentPath: string;
-    content: string;
-};
-
-export type CurrentEntry = {
-    absPath: string;
-    content?: string | undefined;
+    content: string | undefined;
 };
 
 export const CursorMoveSchema = object({
@@ -65,10 +60,6 @@ export type WsBrowserRequest =
           type: "init";
       }
     | {
-          type: "getEntries";
-          absPath?: string;
-      }
-    | {
           type: "getEntry";
-          absPath: string;
+          currentPath: string;
       };

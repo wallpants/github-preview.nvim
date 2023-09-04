@@ -1,20 +1,9 @@
-import { type BrowserState, type WsServerMessage } from "./types";
-import { getEntries } from "./utils";
+import { type BrowserState } from "./types";
 
 export const browserState: BrowserState = {
     root: "",
     repoName: "",
     entries: [],
     currentPath: "",
-    content: "",
+    content: undefined,
 };
-
-export async function updateCurrentPath(absPath: string): Promise<WsServerMessage> {
-    browserState.currentPath = absPath;
-    browserState.entries = await getEntries();
-
-    return {
-        currentPath: browserState.currentPath,
-        entries: browserState.entries,
-    };
-}

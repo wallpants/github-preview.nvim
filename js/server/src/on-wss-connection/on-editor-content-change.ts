@@ -1,7 +1,7 @@
 import { type Socket } from "node:net";
 import { parse } from "valibot";
 import { ENV } from "../../../env";
-import { browserState, updateCurrentPath } from "../browser-state";
+import { browserState } from "../browser-state";
 import { type IPC_EVENTS } from "../consts";
 import { logger } from "../logger";
 import {
@@ -10,26 +10,30 @@ import {
     type WsSend,
     type WsServerMessage,
 } from "../types";
+import { getEntries } from "../utils";
 
 const EVENT: (typeof IPC_EVENTS)[number] = "github-preview-content-change";
 
 export function onEditorContentChange(wsSend: WsSend) {
-    return async (contentChange: ContentChange, _socket: Socket) => {
-        try {
+    return (contentChange: ContentChange, _socket: Socket) => {
+        (async () => {
             ENV.GP_IS_DEV && parse(ContentChangeSchema, contentChange);
             logger.verbose(EVENT, { contentChange });
 
+            const message: WsServerMessage = {};
+
+            if (browserState.currentPath !== contentChange.abs_path) {
+                browserState.currentPath = contentChange.abs_path;
+                browserState.entries = await getEntries();
+
+                message.currentPath = browserState.currentPath;
+                message.entries = browserState.entries;
+            }
+
             browserState.content = contentChange.content;
-
-            let message: WsServerMessage = {};
-            if (browserState.currentPath !== contentChange.abs_path)
-                message = await updateCurrentPath(contentChange.abs_path);
-
-            message.content = contentChange.content;
+            message.content = browserState.content;
 
             wsSend(message);
-        } catch (err) {
-            logger.error("contentChangeEventHandler ERROR", err);
-        }
+        })().catch((e) => logger.error("onEditorContentChange ERROR", e));
     };
 }

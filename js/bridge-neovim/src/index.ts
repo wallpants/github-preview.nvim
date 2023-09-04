@@ -35,11 +35,12 @@ async function main() {
             return;
         }
 
-        socket.on("connect", async () => {
+        socket.on("connect", () => {
             // as soon as we connect, we send config to server
             socket.emit(initEvent, init);
 
-            for (const event of IPC_EVENTS) await nvim.subscribe(event);
+            for (const event of IPC_EVENTS)
+                nvim.subscribe(event).catch((e) => logger.error("nvim.subscribe ERROR", e));
             // nvim notifications are forwarded as they are.
             // It so happens that nvim notification names match
             // the server's notification names and payload structure
