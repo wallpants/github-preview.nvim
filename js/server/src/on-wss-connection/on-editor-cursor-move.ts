@@ -19,11 +19,11 @@ export function onEditorCursorMove(wsSend: WsSend) {
             if (browserState.currentPath !== cursorMove.abs_path) {
                 browserState.currentPath = cursorMove.abs_path;
                 browserState.entries = await getEntries();
+                browserState.content = getContent();
 
                 message.currentPath = browserState.currentPath;
                 message.entries = browserState.entries;
-
-                browserState.content = getContent();
+                message.content = browserState.content;
             }
 
             message.cursorMove = cursorMove;

@@ -84,6 +84,9 @@ importers:
       globby:
         specifier: ^13.2.2
         version: 13.2.2
+      is-image:
+        specifier: ^4.0.0
+        version: 4.0.0
       istextorbinary:
         specifier: ^6.0.0
         version: 6.0.0
@@ -2994,6 +2997,11 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       is-extglob: 2.1.1
+
+  /is-image@4.0.0:
+    resolution: {integrity: sha512-GaEydOss69aTWNUH0EczOLH7WhNeEjf61fqU4pxUZE7+s86T2X3tEtolOkQ8mI5esdsNHl68ogD9h4cUWSSMog==}
+    engines: {node: '>=16'}
+    dev: false
 
   /is-map@2.0.2:
     resolution: {integrity: sha512-cOZFQQozTha1f4MxLFzlgKYPTyj26picdZTx82hbc/Xf4K/tZOOXSCkMvU4pKioRXGDLJRn0GM7Upe7kR721yg==}

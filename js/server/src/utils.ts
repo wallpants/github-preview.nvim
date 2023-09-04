@@ -1,9 +1,11 @@
 // cspell:ignore readdirSync
+// import checkIsImage from 'is-image';
 import { globby } from "globby";
 import { isText } from "istextorbinary";
 import { existsSync, readFileSync } from "node:fs";
 import { basename, dirname, resolve } from "node:path";
 import { browserState } from "./browser-state";
+import { type BrowserState } from "./types";
 
 export function getRepoName(): string {
     const gitConfig = readFileSync(resolve(browserState.root, ".git/config")).toString();
@@ -49,18 +51,33 @@ export async function getEntries(): Promise<string[]> {
     return dirs.concat(files);
 }
 
-export function getContent(): string | null {
-    const isDir = browserState.currentPath.endsWith("/");
+export function getContent(): BrowserState["content"] {
+    if (!existsSync(browserState.currentPath)) return null;
 
+    const isDir = browserState.currentPath.endsWith("/");
     if (isDir) {
         // search for readme.md
         const readmePath = browserState.entries.find(
             (e) => basename(e).toLowerCase() === "readme.md",
         );
-        if (!readmePath) return null;
-        browserState.currentPath = readmePath;
+        if (readmePath) browserState.currentPath = readmePath;
     }
 
-    if (!existsSync(browserState.currentPath) || !isText(browserState.currentPath)) return null;
-    return readFileSync(browserState.currentPath).toString();
+    if (isText(browserState.currentPath)) {
+        return readFileSync(browserState.currentPath).toString();
+    }
+
+    return null;
+
+    // const isImage = checkIsImage(browserState.currentPath)
+    // if (isImage) {
+    //     return {
+    //         content: null,
+    //         image: {
+    //             buffer: img,
+    //             ext: isImage.ext,
+    //             mime: isImage.mime,
+    //         },
+    //     };
+    // }
 }

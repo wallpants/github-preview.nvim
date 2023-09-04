@@ -25,10 +25,10 @@ function textToMarkdown({ text, fileExt }: { text: string; fileExt: string }) {
     return fileExt === "md" ? text : "```" + fileExt + `\n${text}`;
 }
 
-// TODO(gualcasas): move logic around, this component would rerender a lot
 export const Markdown = ({ className }: { className?: string }) => {
     const [fileName, setFileName] = useState<string>();
     const [fileExt, setFileExt] = useState<string>();
+    const [hasContent, setHasContent] = useState(false);
     const { addMessageHandler } = useContext(websocketContext);
 
     useEffect(() => {
@@ -40,12 +40,16 @@ export const Markdown = ({ className }: { className?: string }) => {
             const fileExt = fileName?.split(".").pop();
             setFileName(fileName);
             setFileExt(fileExt);
+            setHasContent(Boolean(message.content));
 
-            const markdown = textToMarkdown({
-                text: message.content ?? "",
-                fileExt: fileName?.split(".").pop() ?? "",
-            });
-            contentElement.innerHTML = markdownToHtml(markdown);
+            if (message.content === null) contentElement.innerHTML = "";
+            if (message.content) {
+                const markdown = textToMarkdown({
+                    text: message.content,
+                    fileExt: fileName?.split(".").pop() ?? "",
+                });
+                contentElement.innerHTML = markdownToHtml(markdown);
+            }
 
             if (message.cursorMove) {
                 scrollFnMap[options.scroll](message.cursorMove);
@@ -57,7 +61,7 @@ export const Markdown = ({ className }: { className?: string }) => {
     }, [addMessageHandler]);
 
     return (
-        <Container className={className}>
+        <Container className={cn(!hasContent && "hidden", className)}>
             <p className="!mb-0 p-4 text-sm font-semibold">{fileName}</p>
             <div
                 id={ELEMENT_ID}

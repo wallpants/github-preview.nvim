@@ -22,6 +22,7 @@ export function onBrowserRequest(wsSend: WsSend) {
                 browserState.currentPath = browserRequest.currentPath;
                 browserState.entries = await getEntries();
                 browserState.content = getContent();
+
                 const message: WsServerMessage = {
                     currentPath: browserState.currentPath,
                     entries: browserState.entries,
