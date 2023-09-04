@@ -1,5 +1,6 @@
 # my name is
 
+-   [] webapp should send hello message on connection
 -   [x] make PORT configurable
 -   [x] improve css (https://github.com/sindresorhus/github-markdown-css)
     -   [] close browser tab on buffer delete

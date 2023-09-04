@@ -20,9 +20,7 @@ export const Explorer = () => {
             if (currentEntry) {
                 const isDir = currentEntry.absPath.endsWith("/");
                 const relative = currentEntry.absPath.slice(root.length);
-                console.log("relative: ", relative);
                 const segments = relative.split("/");
-                console.log("segments: ", segments);
                 if (segments.length) {
                     if (isDir) {
                         // dirs include an empty string as last element after split("/")
@@ -30,9 +28,7 @@ export const Explorer = () => {
                     }
                     segments.pop();
                     segments.push(""); // this adds trailing slash with join below
-                    console.log("segments: ", segments);
                     const parent = root + segments.join("/");
-                    console.log("parent: ", parent);
                     setParent(parent);
                 }
             }

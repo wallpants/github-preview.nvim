@@ -2,6 +2,7 @@
 import { globby } from "globby";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, extname, resolve } from "node:path";
+import { logger } from "./logger";
 import { type BrowserState, type CurrentEntry } from "./types";
 
 /** Takes a string and wraps it inside a markdown
@@ -46,7 +47,7 @@ export async function getEntries({
 
     const relativePath = absPath.slice(root.length);
     const currentDir = relativePath.endsWith("/") ? relativePath : dirname(relativePath) + "/";
-    console.log("currentDir: ", currentDir);
+    logger.info({ currentDir });
     const paths = await globby(currentDir + "*", {
         cwd: root,
         dot: true,

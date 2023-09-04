@@ -25,6 +25,7 @@ export function onWssConnection({ config, ipc }: Args) {
         }
 
         try {
+            logger.info("onWssConnection");
             const absPath = config.init_path;
             const initEntries = await getEntries({
                 root: config.root,

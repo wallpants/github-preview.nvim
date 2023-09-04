@@ -33,7 +33,7 @@ function main() {
                 const PORT = ENV.VITE_GP_PORT ?? config.port;
 
                 httpServer.listen(PORT, () => {
-                    console.log(`Server is listening on port ${PORT}`);
+                    logger.verbose(`Server is listening on port ${PORT}`);
                     !ENV.GP_IS_DEV && opener(`http://localhost:${PORT}`);
                 });
             } catch (err) {
