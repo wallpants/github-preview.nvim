@@ -1,5 +1,6 @@
 # my name is
 
+-   [] webapp logs "received" on production
 -   [] add "ping" request, kill processes after a while of inactivity
 -   [] what happens if we have a running instance and try running another?
 -   [] webapp should send hello message on connection

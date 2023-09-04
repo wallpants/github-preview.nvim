@@ -11,7 +11,7 @@ import { logger } from "./logger";
 import { onHttpRequest } from "./on-http-request";
 import { onWssConnection } from "./on-wss-connection";
 import { PluginInitSchema, type PluginInit } from "./types";
-import { getEntries, getRepoName } from "./utils";
+import { getContent, getEntries, getRepoName } from "./utils";
 
 ipc.config.id = IPC_SERVER_ID;
 ipc.config.retry = 1500;
@@ -29,7 +29,8 @@ ipc.serve(function () {
             browserState.repoName = getRepoName();
             browserState.entries = await getEntries();
             browserState.currentPath = init.path;
-            browserState.content = init.content;
+            const isDir = init.path.endsWith("/");
+            browserState.content = isDir ? getContent() : init.content;
 
             const httpServer = createServer();
             httpServer.on("request", onHttpRequest);
