@@ -39,13 +39,10 @@ export const Explorer = () => {
         const segments = relative.split("/");
         if (segments.length > 1) {
             segments.pop();
-
-            // dirs include an empty string as last element after split("/")
-            if (relative.endsWith("/")) segments.pop();
-
-            // `push` adds trailing slash with join below
-            segments.push("");
-            const parent = root + segments.join("/");
+            segments.pop();
+            let parent = root + segments.join("/");
+            // parent is always a dir, must end with "/"
+            if (!parent.endsWith("/")) parent += "/";
             setParent(parent);
         } else setParent(undefined);
         // eslint-disable-next-line
