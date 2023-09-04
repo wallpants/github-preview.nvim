@@ -61,6 +61,7 @@ export function getContent(): BrowserState["content"] {
             (e) => basename(e).toLowerCase() === "readme.md",
         );
         if (readmePath) browserState.currentPath = readmePath;
+        else return null;
     }
 
     if (isText(browserState.currentPath)) {

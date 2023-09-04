@@ -1,5 +1,6 @@
 # my name is
 
+-   [] when cd .. on webapp, if we're looking at a file, file is closed instead of going to parent
 -   [] webapp logs "received" on production
 -   [] add "ping" request, kill processes after a while of inactivity
 -   [] what happens if we have a running instance and try running another?
