@@ -12,9 +12,9 @@ const ws = new ReconnectingWebSocket(url, [], {
     maxReconnectionDelay: 3000,
 });
 
-interface Props {
+type Props = {
     children: ReactNode;
-}
+};
 
 const messageHandlers = new Map<string, MessageHandler>();
 

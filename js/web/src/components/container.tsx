@@ -1,17 +1,13 @@
 import { type ReactNode } from "react";
 import { cn } from "../lib/styles";
 
-interface Props {
+type Props = {
     children?: ReactNode[] | ReactNode;
     className?: string;
     markdownElementId?: string;
-}
+};
 
-export const Container = ({
-    className,
-    children,
-    markdownElementId,
-}: Props) => {
+export const Container = ({ className, children, markdownElementId }: Props) => {
     return (
         <div
             id={markdownElementId}

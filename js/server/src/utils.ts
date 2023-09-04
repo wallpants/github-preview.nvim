@@ -33,15 +33,22 @@ export function getRepoName(root: string): string {
     return repoName;
 }
 
-export async function getEntries(
-    browserState: BrowserState,
-    currentAbsPath: string,
-): Promise<string[] | undefined> {
-    if (browserState.currentEntry === currentAbsPath) return Promise.resolve(undefined);
+export async function getEntries({
+    root,
+    browserState,
+    absPath,
+}: {
+    root: string;
+    browserState: BrowserState;
+    absPath: string;
+}): Promise<string[] | undefined> {
+    if (browserState.currentEntry === absPath) return Promise.resolve(undefined);
 
-    const currentDir = currentAbsPath.endsWith("/") ? currentAbsPath : dirname(currentAbsPath);
-    const paths = await globby("*", {
-        cwd: currentDir,
+    const relativePath = absPath.slice(root.length);
+    const currentDir = relativePath.endsWith("/") ? relativePath : dirname(relativePath) + "/";
+    console.log("currentDir: ", currentDir);
+    const paths = await globby(currentDir + "*", {
+        cwd: root,
         dot: true,
         absolute: true,
         gitignore: true,
@@ -70,8 +77,8 @@ export function makeCurrentEntry({
 }: {
     absPath: string;
     content?: string;
-}): CurrentEntry | undefined {
-    if (absPath.endsWith("/")) return;
+}): CurrentEntry {
+    if (absPath.endsWith("/")) return { absPath };
 
     const text = content ?? (existsSync(absPath) ? readFileSync(absPath).toString() : "");
     const fileExt = extname(absPath);

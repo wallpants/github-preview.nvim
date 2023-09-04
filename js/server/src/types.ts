@@ -1,18 +1,18 @@
 import { boolean, literal, number, object, string, union, type Output } from "valibot";
 
-export interface EntryContent {
+export type EntryContent = {
     markdown: string;
     fileExt: string;
-}
+};
 
-export interface CurrentEntry {
+export type CurrentEntry = {
     absPath: string;
     content?: EntryContent | undefined;
-}
+};
 
-export interface WsBrowserMessage {
+export type WsBrowserMessage = {
     currentBrowserPath: string;
-}
+};
 
 export const CursorMoveSchema = object({
     abs_file_path: string(),
@@ -29,14 +29,14 @@ export const ContentChangeSchema = object({
 });
 export type ContentChange = Output<typeof ContentChangeSchema>;
 
-export interface WsServerMessage {
+export type WsServerMessage = {
     root: string;
     currentEntry?: CurrentEntry | undefined;
     repoName?: string;
     cursorMove?: CursorMove;
     goodbye?: true;
     entries?: string[] | undefined;
-}
+};
 
 export const PluginConfigSchema = object({
     /**
@@ -61,6 +61,6 @@ export const PluginConfigSchema = object({
 });
 export type PluginConfig = Output<typeof PluginConfigSchema>;
 
-export interface BrowserState {
+export type BrowserState = {
     currentEntry: string;
-}
+};

@@ -2,16 +2,17 @@ import type ipc from "node-ipc";
 import { basename } from "node:path";
 import { type WebSocket } from "ws";
 import { logger } from "../logger";
+import { onBrowserMessage } from "../on-browser-message";
 import { type BrowserState, type PluginConfig, type WsServerMessage } from "../types";
 import { getEntries, getRepoName, makeCurrentEntry } from "../utils";
 import { initMessage } from "./init-message";
 import { registerOnContentChange } from "./on-content-change";
 import { registerOnCursorMove } from "./on-cursor-move";
 
-interface Args {
+type Args = {
     config: PluginConfig;
     ipc: typeof ipc;
-}
+};
 
 const browserState: BrowserState = {
     currentEntry: "",
@@ -25,10 +26,14 @@ export function onWssConnection({ config, ipc }: Args) {
 
         try {
             const absPath = config.init_path;
-            const initEntries = await getEntries(browserState, absPath);
+            const initEntries = await getEntries({
+                root: config.root,
+                browserState,
+                absPath,
+            });
             let initCurrentEntry = makeCurrentEntry({ absPath });
 
-            if (!initCurrentEntry) {
+            if (!initCurrentEntry.content) {
                 // search for README.md in current dir
                 const readmePath = initEntries?.find(
                     (e) => basename(e).toLowerCase() === "readme.md",
@@ -51,9 +56,9 @@ export function onWssConnection({ config, ipc }: Args) {
             registerOnContentChange(handlerArgs);
             registerOnCursorMove(handlerArgs);
 
-            // ws.on("message", onBrowserMessage({ root: props.root, wsSend }));
+            ws.on("message", onBrowserMessage({ root: config.root, browserState, wsSend }));
         } catch (err) {
-            logger.error("onWssConnection ERROR");
+            logger.error("onWssConnection ERROR", err);
         }
     };
 }

@@ -13,7 +13,7 @@ export function registerOnCursorMove({ config, ipc, browserState, wsSend }: Hand
     ipc.server.on(EVENT, async (cursorMove: CursorMove, _socket: Socket) => {
         try {
             ENV.GP_IS_DEV && parse(CursorMoveSchema, cursorMove);
-            logger.verbose(EVENT, cursorMove);
+            logger.verbose(EVENT, { cursorMove });
 
             if (!cursorMove.abs_file_path) return;
 
@@ -26,7 +26,11 @@ export function registerOnCursorMove({ config, ipc, browserState, wsSend }: Hand
                 root: config.root,
                 cursorMove,
                 currentEntry,
-                entries: await getEntries(browserState, cursorMove.abs_file_path),
+                entries: await getEntries({
+                    browserState,
+                    root: config.root,
+                    absPath: cursorMove.abs_file_path,
+                }),
             });
         } catch (err) {
             logger.error("cursorMoveEventHandler ERROR", err);

@@ -15,24 +15,28 @@ import { getEntries, makeCurrentEntry } from "../utils";
 
 const EVENT: (typeof IPC_EVENTS)[number] = "github-preview-content-change";
 
-export interface HandlerArgs {
+export type HandlerArgs = {
     config: PluginConfig;
     ipc: typeof _ipc;
     browserState: BrowserState;
     wsSend: (m: WsServerMessage) => void;
-}
+};
 
 export function registerOnContentChange({ config, ipc, browserState, wsSend }: HandlerArgs) {
     ipc.server.on(EVENT, async (contentChange: ContentChange, _socket: Socket) => {
         try {
             ENV.GP_IS_DEV && parse(ContentChangeSchema, contentChange);
-            logger.verbose(EVENT, contentChange);
+            logger.verbose(EVENT, { contentChange });
 
             if (!contentChange.abs_file_path) return;
 
             const message: WsServerMessage = {
                 root: config.root,
-                entries: await getEntries(browserState, contentChange.abs_file_path),
+                entries: await getEntries({
+                    browserState,
+                    root: config.root,
+                    absPath: contentChange.abs_file_path,
+                }),
                 currentEntry: makeCurrentEntry({
                     absPath: contentChange.abs_file_path,
                     content: contentChange.content,

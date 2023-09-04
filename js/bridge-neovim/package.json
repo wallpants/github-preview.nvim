@@ -6,7 +6,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist && rm -rf node_modules",
-    "build": "rm -rf dist && tsc --noEmit && ncc build src/index.ts -m -e neovim -e winston",
+    "build": "rm -rf dist && tsc && ncc build src/index.ts -m -e neovim",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts}\""
   },

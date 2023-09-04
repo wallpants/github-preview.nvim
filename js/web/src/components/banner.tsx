@@ -3,14 +3,12 @@ import { cn } from "../lib/styles";
 import { websocketContext } from "../websocket-context/context";
 import { Container } from "./container";
 
-interface Props {
+type Props = {
     className?: string;
-}
+};
 
 export const Banner = ({ className }: Props) => {
     const { status } = useContext(websocketContext);
-
-    // if (status !== "reconnecting") return null;
 
     return (
         <Container

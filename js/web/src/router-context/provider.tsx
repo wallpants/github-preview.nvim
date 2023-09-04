@@ -5,9 +5,9 @@ import { routerContext } from "./context";
 
 const history = createBrowserHistory();
 
-interface Props {
+type Props = {
     children: ReactNode;
-}
+};
 
 export const RouterProvider = ({ children }: Props) => {
     const { addMessageHandler } = useContext(websocketContext);

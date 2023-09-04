@@ -5,9 +5,9 @@ import { Container } from "../container";
 import { markdownToHtml } from "./markdown-it";
 import { scrollFnMap } from "./markdown-it/scroll";
 
-interface Props {
+type Props = {
     className?: string;
-}
+};
 
 const ELEMENT_ID = "markdown-content";
 

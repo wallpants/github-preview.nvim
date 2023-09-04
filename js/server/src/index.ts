@@ -22,7 +22,7 @@ function main() {
         ipc.server.on(updateConfig, function (config: PluginConfig, _socket: Socket) {
             try {
                 ENV.GP_IS_DEV && parse(PluginConfigSchema, config);
-                logger.verbose(updateConfig, config);
+                logger.verbose(updateConfig, { config });
 
                 const httpServer = createServer();
                 httpServer.on("request", onHttpRequest);

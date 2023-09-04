@@ -5,6 +5,7 @@
     "module": "CommonJS",
     "target": "ES2020",
     "strict": true,
+    "noEmit": true,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
     "exactOptionalPropertyTypes": true,

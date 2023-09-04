@@ -1,8 +1,8 @@
 import { cn } from "../../lib/styles";
 
-interface Props {
+type Props = {
     className?: string;
-}
+};
 
 export const FileIcon = ({ className }: Props) => (
     <svg
