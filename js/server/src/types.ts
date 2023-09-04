@@ -1,17 +1,8 @@
 import { boolean, literal, number, object, string, union, type Output } from "valibot";
 
-export type EntryContent = {
-    markdown: string;
-    fileExt: string;
-};
-
 export type CurrentEntry = {
     absPath: string;
-    content?: EntryContent | undefined;
-};
-
-export type WsBrowserMessage = {
-    currentBrowserPath: string;
+    content?: string;
 };
 
 export const CursorMoveSchema = object({
@@ -29,16 +20,19 @@ export const ContentChangeSchema = object({
 });
 export type ContentChange = Output<typeof ContentChangeSchema>;
 
-export type WsServerMessage = {
+export type BrowserState = {
     root: string;
-    currentEntry?: CurrentEntry | undefined;
+    entries: string[];
+    currentEntry: CurrentEntry;
+};
+
+export type WsServerMessage = Partial<BrowserState> & {
     repoName?: string;
     cursorMove?: CursorMove;
     goodbye?: true;
-    entries?: string[] | undefined;
 };
 
-export const PluginConfigSchema = object({
+export const PluginInitSchema = object({
     /**
      * port to host the http/ws server "localhost:\{port\}"
      * @default
@@ -54,13 +48,23 @@ export const PluginConfigSchema = object({
      * if no buffer was loaded when plugin started, path is dir and ends with "/"
      * otherwise path looks something like "/Users/.../README.md"
      * */
-    init_path: string(),
+    path: string(),
+    content: string(),
     scroll_debounce_ms: number(),
     disable_sync_scroll: boolean(),
     sync_scroll_type: union([literal("middle"), literal("top"), literal("relative")]),
 });
-export type PluginConfig = Output<typeof PluginConfigSchema>;
+export type PluginInit = Output<typeof PluginInitSchema>;
 
-export type BrowserState = {
-    currentEntry: string;
-};
+export type WsBrowserRequest =
+    | {
+          type: "init";
+      }
+    | {
+          type: "getEntries";
+          absPath?: string;
+      }
+    | {
+          type: "getEntry";
+          absPath: string;
+      };

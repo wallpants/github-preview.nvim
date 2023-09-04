@@ -1,9 +1,8 @@
 // cspell:ignore readdirSync
 import { globby } from "globby";
-import { existsSync, readFileSync } from "node:fs";
-import { dirname, extname, resolve } from "node:path";
-import { logger } from "./logger";
-import { type BrowserState, type CurrentEntry } from "./types";
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { type BrowserState } from "./types";
 
 /** Takes a string and wraps it inside a markdown
  * codeblock using file extension as language
@@ -17,7 +16,7 @@ export function textToMarkdown({ text, fileExt }: { text: string; fileExt: strin
     return fileExt === ".md" ? text : "```" + fileExt + `\n${text}`;
 }
 
-export function getRepoName(root: string): string {
+export function getRepoName({ root }: BrowserState): string {
     const gitConfig = readFileSync(resolve(root, ".git/config")).toString();
     const lines = gitConfig.split("\n");
     let repoName = "no-repo-name";
@@ -34,22 +33,11 @@ export function getRepoName(root: string): string {
     return repoName;
 }
 
-export async function getEntries({
-    root,
-    browserState,
-    absPath,
-}: {
-    root: string;
-    browserState: BrowserState;
-    absPath: string;
-}): Promise<string[] | undefined> {
-    if (browserState.currentEntry === absPath) return Promise.resolve(undefined);
-
-    const relativePath = absPath.slice(root.length);
+export async function getEntries(browserState: BrowserState): Promise<string[]> {
+    const relativePath = browserState.currentEntry.absPath.slice(browserState.root.length);
     const currentDir = relativePath.endsWith("/") ? relativePath : dirname(relativePath) + "/";
-    logger.info({ currentDir });
     const paths = await globby(currentDir + "*", {
-        cwd: root,
+        cwd: browserState.root,
         dot: true,
         absolute: true,
         gitignore: true,
@@ -72,20 +60,39 @@ export async function getEntries({
     return dirs.concat(files);
 }
 
-export function makeCurrentEntry({
-    absPath,
-    content,
-}: {
-    absPath: string;
-    content?: string;
-}): CurrentEntry {
-    if (absPath.endsWith("/")) return { absPath };
+// export async function getCurrentEntries(
+//     browserState: BrowserState,
+// ): Promise<{ entries: string[]; currentEntry: CurrentEntry }> {
+//     const entries = await getEntries(browserState);
 
-    const text = content ?? (existsSync(absPath) ? readFileSync(absPath).toString() : "");
-    const fileExt = extname(absPath);
-    const markdown = textToMarkdown({ text, fileExt });
-    return {
-        content: { fileExt, markdown },
-        absPath,
-    };
-}
+//     const isDir = browserState.currentEntry.absPath.endsWith("/");
+
+//     if (isDir) {
+//         // search for readme.md
+//         const readmePath = entries.find((e) => basename(e).toLowerCase() === "readme.md");
+//         if (readmePath) browserState.currentEntry.absPath = readmePath;
+//     }
+
+//     const isTextFile =
+//         existsSync(browserState.currentEntry.absPath) &&
+//         !isBinary(browserState.currentEntry.absPath);
+//     const text = isTextFile && readFileSync(browserState.currentEntry.absPath).toString();
+//     const fileExt = extname(browserState.currentEntry.absPath);
+//     const markdown = text && textToMarkdown({ text, fileExt });
+
+//     const currentEntry: CurrentEntry = {
+//         absPath: browserState.currentEntry.absPath,
+//     };
+
+//     if (markdown) {
+//         currentEntry.content = {
+//             markdown,
+//             fileExt,
+//         };
+//     }
+
+//     return {
+//         entries,
+//         currentEntry,
+//     };
+// }

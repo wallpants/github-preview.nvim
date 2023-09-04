@@ -1,6 +1,4 @@
-import { useContext } from "react";
 import { cn } from "../../lib/styles";
-import { websocketContext } from "../../websocket-context/context";
 import { DirIcon } from "./dir-icon";
 import { FileIcon } from "./file-icon";
 
@@ -11,13 +9,13 @@ const IconMap = {
     file: <FileIcon className={iconClassName} />,
 };
 
-export const EntryComponent = ({ absPath, isParent }: { absPath: string; isParent?: boolean }) => {
-    const { wsSend } = useContext(websocketContext);
+type Props = {
+    absPath: string;
+    isParent?: boolean;
+    setCurrentAbsPath: (p: string) => void;
+};
 
-    function requestEntries() {
-        wsSend({ currentBrowserPath: absPath });
-    }
-
+export const EntryComponent = ({ absPath, isParent, setCurrentAbsPath }: Props) => {
     const isDir = absPath.endsWith("/");
     const split = absPath.split("/");
     let name = split.pop();
@@ -26,9 +24,13 @@ export const EntryComponent = ({ absPath, isParent }: { absPath: string; isParen
         name = split.pop();
     }
 
+    function handleClick() {
+        setCurrentAbsPath(absPath);
+    }
+
     return (
         <div
-            onClick={requestEntries}
+            onClick={handleClick}
             className={cn(
                 "group flex h-[38px] cursor-pointer items-center border-t px-4 first:border-t-0",
                 "border-github-border-default hover:bg-github-canvas-subtle",

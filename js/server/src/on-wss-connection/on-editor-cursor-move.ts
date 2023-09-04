@@ -3,14 +3,23 @@ import { parse } from "valibot";
 import { ENV } from "../../../env";
 import { type IPC_EVENTS } from "../consts";
 import { logger } from "../logger";
-import { CursorMoveSchema, type CursorMove } from "../types";
-import { getEntries, makeCurrentEntry } from "../utils";
-import { type HandlerArgs } from "./on-content-change";
+import {
+    CursorMoveSchema,
+    type BrowserState,
+    type CursorMove,
+    type WsServerMessage,
+} from "../types";
+import { getEntries } from "../utils";
 
 const EVENT: (typeof IPC_EVENTS)[number] = "github-preview-cursor-move";
 
-export function registerOnCursorMove({ config, ipc, browserState, wsSend }: HandlerArgs) {
-    ipc.server.on(EVENT, async (cursorMove: CursorMove, _socket: Socket) => {
+type Args = {
+    browserState: BrowserState;
+    wsSend: (m: WsServerMessage) => void;
+};
+
+export function onEditorCursorMove({ browserState, wsSend }: Args) {
+    return (cursorMove: CursorMove, _socket: Socket) => {
         try {
             ENV.GP_IS_DEV && parse(CursorMoveSchema, cursorMove);
             logger.verbose(EVENT, { cursorMove });
@@ -18,7 +27,7 @@ export function registerOnCursorMove({ config, ipc, browserState, wsSend }: Hand
             if (!cursorMove.abs_file_path) return;
 
             const currentEntry =
-                cursorMove.abs_file_path !== browserState.currentEntry
+                cursorMove.abs_file_path !== browserState.currentEntry.absPath
                     ? makeCurrentEntry({ absPath: cursorMove.abs_file_path })
                     : undefined;
 
@@ -35,5 +44,5 @@ export function registerOnCursorMove({ config, ipc, browserState, wsSend }: Hand
         } catch (err) {
             logger.error("cursorMoveEventHandler ERROR", err);
         }
-    });
+    };
 }

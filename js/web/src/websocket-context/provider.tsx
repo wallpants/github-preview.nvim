@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { type WsBrowserMessage } from "../../../server/src/types";
 import { ENV } from "../../env";
 import { Banner } from "../components/banner";
-import { type WsServerMessage } from "../types";
+import { type WsBrowserRequest, type WsServerMessage } from "../types";
 import { websocketContext, type MessageHandler, type Status } from "./context";
 
 // we check for PORT for dev env
@@ -44,12 +43,12 @@ export const WebsocketProvider = ({ children }: Props) => {
         messageHandlers.set(key, handler);
     }, []);
 
-    const wsSend = useCallback((message: WsBrowserMessage) => {
+    const wsRequest = useCallback((message: WsBrowserRequest) => {
         ws.send(JSON.stringify(message));
     }, []);
 
     return (
-        <websocketContext.Provider value={{ wsSend, addMessageHandler, status }}>
+        <websocketContext.Provider value={{ wsRequest, addMessageHandler, status }}>
             <Banner className="z-50" />
             {children}
         </websocketContext.Provider>

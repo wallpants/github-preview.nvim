@@ -9,10 +9,11 @@ M.SYNC_SCROLL_TYPE = {
 }
 
 -- github-preview/js/server/src/types.ts
----@class plugin_config
+---@class plugin_init
 ---@field port number
 ---@field root string
----@field init_path string
+---@field path string
+---@field content string
 ---@field scroll_debounce_ms number
 ---@field disable_sync_scroll boolean
 ---@field sync_scroll_type sync_scroll_type

@@ -56,14 +56,17 @@ M.setup = function(opts)
             root = vim.fn.fnamemodify(root, ":p:h:h") .. "/"
         end
 
-        local buffer = vim.api.nvim_buf_get_name(0)
-        local init_path = vim.fn.fnamemodify(buffer, ":p")
+        local buffer_name = vim.api.nvim_buf_get_name(0)
+        local init_path = vim.fn.fnamemodify(buffer_name, ":p")
+        local init_lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
+        local init_content = table.concat(init_lines, "\n")
 
         ---@type plugin_config
         vim.g.github_preview_config = {
             port = opts.port,
             root = root,
             init_path = init_path,
+            init_content = init_content,
             scroll_debounce_ms = opts.scroll_debounce_ms,
             disable_sync_scroll = false,
             sync_scroll_type = Types.SYNC_SCROLL_TYPE.middle,

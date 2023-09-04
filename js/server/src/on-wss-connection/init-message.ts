@@ -3,7 +3,7 @@ import { type WsServerMessage } from "../types";
 import { getEntries, getRepoName, makeCurrentEntry } from "../utils";
 import { type HandlerArgs } from "./on-content-change";
 
-export async function initMessage({ config, browserState, wsSend }: HandlerArgs) {
+export async function initMessage({ browserState, wsSend }: HandlerArgs) {
     const absPath = config.init_path;
     const initEntries = await getEntries({ browserState, absPath, root: config.root });
     let initCurrentEntry = makeCurrentEntry({ absPath });
@@ -22,5 +22,5 @@ export async function initMessage({ config, browserState, wsSend }: HandlerArgs)
     };
 
     wsSend(initialMessage);
-    browserState.currentEntry = initialMessage.currentEntry?.absPath ?? "";
+    browserState.currentEntry = initialMessage.currentEntry.absPath ?? "";
 }

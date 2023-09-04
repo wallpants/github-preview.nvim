@@ -1,6 +1,6 @@
 export type {
     CurrentEntry,
     CursorMove,
-    WsBrowserMessage,
+    WsBrowserRequest,
     WsServerMessage,
 } from "../../server/src/types";

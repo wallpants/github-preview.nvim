@@ -1,63 +1,48 @@
 import type ipc from "node-ipc";
-import { basename } from "node:path";
 import { type WebSocket } from "ws";
+import { type IPC_EVENTS } from "../consts";
 import { logger } from "../logger";
-import { onBrowserMessage } from "../on-browser-message";
-import { type BrowserState, type PluginConfig, type WsServerMessage } from "../types";
-import { getEntries, getRepoName, makeCurrentEntry } from "../utils";
-import { initMessage } from "./init-message";
-import { registerOnContentChange } from "./on-content-change";
-import { registerOnCursorMove } from "./on-cursor-move";
+import { onBrowserRequest } from "../on-browser-request";
+import { type BrowserState, type PluginInit, type WsServerMessage } from "../types";
+import { getEntries } from "../utils";
+import { onEditorContentChange } from "./on-editor-content-change";
+import { onEditorCursorMove } from "./on-editor-cursor-move";
 
 type Args = {
-    config: PluginConfig;
+    init: PluginInit;
     ipc: typeof ipc;
 };
 
 const browserState: BrowserState = {
-    currentEntry: "",
+    root: "",
+    entries: [],
+    currentEntry: {
+        absPath: "",
+    },
 };
 
-export function onWssConnection({ config, ipc }: Args) {
+export function onWssConnection({ init, ipc }: Args) {
     return async (ws: WebSocket) => {
         function wsSend(m: WsServerMessage) {
             ws.send(JSON.stringify(m));
         }
 
         try {
-            logger.info("onWssConnection");
-            const absPath = config.init_path;
-            const initEntries = await getEntries({
-                root: config.root,
-                browserState,
-                absPath,
-            });
-            let initCurrentEntry = makeCurrentEntry({ absPath });
-
-            if (!initCurrentEntry.content) {
-                // search for README.md in current dir
-                const readmePath = initEntries?.find(
-                    (e) => basename(e).toLowerCase() === "readme.md",
-                );
-                if (readmePath) initCurrentEntry = makeCurrentEntry({ absPath: readmePath });
-            }
-
-            const initialMessage: WsServerMessage = {
-                root: config.root,
-                repoName: getRepoName(config.root),
-                entries: initEntries,
-                currentEntry: initCurrentEntry,
+            browserState.root = init.root;
+            browserState.entries = await getEntries(browserState);
+            browserState.currentEntry = {
+                absPath: init.path,
+                content: init.content,
             };
 
-            wsSend(initialMessage);
-            browserState.currentEntry = initialMessage.currentEntry?.absPath ?? "";
+            logger.info("onWssConnection", { browserState });
+            ws.on("message", onBrowserRequest({ browserState, wsSend }));
 
-            const handlerArgs = { config, ipc, browserState, wsSend };
-            void initMessage(handlerArgs);
-            registerOnContentChange(handlerArgs);
-            registerOnCursorMove(handlerArgs);
+            const CURSOR_MOVE: (typeof IPC_EVENTS)[number] = "github-preview-cursor-move";
+            ipc.server.on(CURSOR_MOVE, onEditorCursorMove({ browserState, wsSend }));
 
-            ws.on("message", onBrowserMessage({ root: config.root, browserState, wsSend }));
+            const CONTENT_CHANGE: (typeof IPC_EVENTS)[number] = "github-preview-content-change";
+            ipc.server.on(CONTENT_CHANGE, onEditorContentChange({ browserState, wsSend }));
         } catch (err) {
             logger.error("onWssConnection ERROR", err);
         }
