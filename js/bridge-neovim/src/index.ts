@@ -22,8 +22,8 @@ async function main() {
 
     // Spawn server
     // Some connection attempts might happen before the server boots up
-    const serverPath = `${__dirname}/../../server/src/index.ts`;
-    spawn("tsx", ["watch", normalize(serverPath)]);
+    if (ENV.GP_IS_DEV) spawn("tsx", ["watch", normalize(`${__dirname}/../../server/src/index.ts`)]);
+    else spawn("node", [normalize(`${__dirname}/../../server/dist/index.js`)]);
 
     const nvim = attach({ socket: ENV.NVIM });
     const init = await nvim.getVar("github_preview_init");

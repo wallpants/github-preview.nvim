@@ -21,7 +21,7 @@ const options = {
  * ```
  */
 function textToMarkdown({ text, fileExt }: { text: string; fileExt: string }) {
-    return fileExt === ".md" ? text : "```" + fileExt + `\n${text}`;
+    return fileExt === "md" ? text : "```" + fileExt + `\n${text}`;
 }
 
 type Props = {
@@ -38,11 +38,17 @@ export const Markdown = ({ className }: Props) => {
             const contentElement = document.getElementById(ELEMENT_ID);
             if (!contentElement) return;
 
-            if (message.currentEntry?.content) {
-                setFileExt(message.currentEntry.content.fileExt);
-                const filename = message.currentEntry.absPath.split("/").pop();
-                setFileName(filename);
-                contentElement.innerHTML = markdownToHtml(message.currentEntry.content.markdown);
+            const fileName = message.currentPath?.split("/").pop();
+            const fileExt = fileName?.split(".").pop();
+            setFileName(fileName);
+            setFileExt(fileExt);
+
+            if (message.content) {
+                const markdown = textToMarkdown({
+                    text: message.content,
+                    fileExt: fileName?.split(".").pop() ?? "",
+                });
+                contentElement.innerHTML = markdownToHtml(markdown);
             }
 
             if (message.cursorMove) {
@@ -58,7 +64,7 @@ export const Markdown = ({ className }: Props) => {
             <p className="!mb-0 p-4 text-sm font-semibold">{fileName}</p>
             <div
                 id={ELEMENT_ID}
-                className={cn("[&>div>pre]:!mb-0", fileExt === ".md" && "p-11", "pt-0")}
+                className={cn("[&>div>pre]:!mb-0", fileExt === "md" && "p-11", "pt-0")}
             />
         </Container>
     );

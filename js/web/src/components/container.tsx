@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { cn } from "../lib/styles";
+import { cn } from "../styles";
 
 type Props = {
     children?: ReactNode[] | ReactNode;

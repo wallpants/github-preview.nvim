@@ -3,10 +3,11 @@ import { globby } from "globby";
 import { isText } from "istextorbinary";
 import { existsSync, readFileSync } from "node:fs";
 import { basename, dirname, resolve } from "node:path";
-import { type BrowserState, type CurrentEntry } from "./types";
+import { browserState } from "./browser-state";
+import { type CurrentEntry } from "./types";
 
-export function getRepoName({ root }: BrowserState): string {
-    const gitConfig = readFileSync(resolve(root, ".git/config")).toString();
+export function getRepoName(): string {
+    const gitConfig = readFileSync(resolve(browserState.root, ".git/config")).toString();
     const lines = gitConfig.split("\n");
     let repoName = "no-repo-name";
 
@@ -22,8 +23,8 @@ export function getRepoName({ root }: BrowserState): string {
     return repoName;
 }
 
-export async function getEntries(browserState: BrowserState): Promise<string[]> {
-    const relativePath = browserState.currentEntry.absPath.slice(browserState.root.length);
+export async function getEntries(): Promise<string[]> {
+    const relativePath = browserState.currentPath.slice(browserState.root.length);
     const currentDir = relativePath.endsWith("/") ? relativePath : dirname(relativePath) + "/";
     const paths = await globby(currentDir + "*", {
         cwd: browserState.root,
@@ -49,25 +50,22 @@ export async function getEntries(browserState: BrowserState): Promise<string[]> 
     return dirs.concat(files);
 }
 
-export function getCurrentEntry(browserState: BrowserState): CurrentEntry {
-    const isDir = browserState.currentEntry.absPath.endsWith("/");
+export function getCurrentEntry(): CurrentEntry {
+    const isDir = browserState.currentPath.endsWith("/");
 
     if (isDir) {
         // search for readme.md
         const readmePath = browserState.entries.find(
             (e) => basename(e).toLowerCase() === "readme.md",
         );
-        if (readmePath) browserState.currentEntry.absPath = readmePath;
+        if (readmePath) browserState.currentPath = readmePath;
     }
 
-    const isTextFile =
-        existsSync(browserState.currentEntry.absPath) && isText(browserState.currentEntry.absPath);
+    const isTextFile = existsSync(browserState.currentPath) && isText(browserState.currentPath);
 
     const currentEntry: CurrentEntry = {
-        absPath: browserState.currentEntry.absPath,
-        content: isTextFile
-            ? readFileSync(browserState.currentEntry.absPath).toString()
-            : undefined,
+        absPath: browserState.currentPath,
+        content: isTextFile ? readFileSync(browserState.currentPath).toString() : undefined,
     };
 
     return currentEntry;

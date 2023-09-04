@@ -1,54 +1,25 @@
-import { type Socket } from "node:net";
 import { parse } from "valibot";
 import { ENV } from "../../../env";
+import { browserState, updateCurrentPath } from "../browser-state";
 import { type IPC_EVENTS } from "../consts";
 import { logger } from "../logger";
-import {
-    CursorMoveSchema,
-    type BrowserState,
-    type CursorMove,
-    type WsServerMessage,
-} from "../types";
-import { getCurrentEntry, getEntries } from "../utils";
+import { CursorMoveSchema, type CursorMove, type WsSend, type WsServerMessage } from "../types";
 
 const EVENT: (typeof IPC_EVENTS)[number] = "github-preview-cursor-move";
 
-type Args = {
-    browserState: BrowserState;
-    wsSend: (m: WsServerMessage) => void;
-};
-
-export function onEditorCursorMove({ browserState, wsSend }: Args) {
-    return async (cursorMove: CursorMove, _socket: Socket) => {
+export function onEditorCursorMove(wsSend: WsSend) {
+    return async (cursorMove: CursorMove) => {
         try {
             ENV.GP_IS_DEV && parse(CursorMoveSchema, cursorMove);
             logger.verbose(EVENT, { cursorMove });
 
-            if (!cursorMove.abs_path) return;
+            let message: WsServerMessage = {};
+            if (browserState.currentPath !== cursorMove.abs_path)
+                message = await updateCurrentPath(cursorMove.abs_path);
 
-            if (cursorMove.abs_path !== browserState.currentEntry.absPath) {
-                browserState.entries = await getEntries(browserState);
-                // we update currentEntry.absPath, because that's what we use
-                // in `getCurrentEntry` to make the entry
-                browserState.currentEntry.absPath = cursorMove.abs_path;
-                browserState.currentEntry = getCurrentEntry(browserState);
-            }
+            message.cursorMove = cursorMove;
 
-            const currentEntry =
-                cursorMove.abs_path !== browserState.currentEntry.absPath
-                    ? makeCurrentEntry({ absPath: cursorMove.abs_file_path })
-                    : undefined;
-
-            wsSend({
-                root: config.root,
-                cursorMove,
-                currentEntry,
-                entries: await getEntries({
-                    browserState,
-                    root: config.root,
-                    absPath: cursorMove.abs_file_path,
-                }),
-            });
+            wsSend(message);
         } catch (err) {
             logger.error("cursorMoveEventHandler ERROR", err);
         }

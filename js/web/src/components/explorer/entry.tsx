@@ -1,4 +1,4 @@
-import { cn } from "../../lib/styles";
+import { cn } from "../../styles";
 import { DirIcon } from "./dir-icon";
 import { FileIcon } from "./file-icon";
 
@@ -12,10 +12,10 @@ const IconMap = {
 type Props = {
     absPath: string;
     isParent?: boolean;
-    setCurrentAbsPath: (p: string) => void;
+    setCurrentPath: (p: string) => void;
 };
 
-export const EntryComponent = ({ absPath, isParent, setCurrentAbsPath }: Props) => {
+export const EntryComponent = ({ absPath, isParent, setCurrentPath }: Props) => {
     const isDir = absPath.endsWith("/");
     const split = absPath.split("/");
     let name = split.pop();
@@ -25,7 +25,7 @@ export const EntryComponent = ({ absPath, isParent, setCurrentAbsPath }: Props) 
     }
 
     function handleClick() {
-        setCurrentAbsPath(absPath);
+        setCurrentPath(absPath);
     }
 
     return (

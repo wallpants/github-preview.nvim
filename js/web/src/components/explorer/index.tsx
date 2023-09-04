@@ -1,3 +1,4 @@
+import { createBrowserHistory } from "history";
 import { useContext, useEffect, useState } from "react";
 import { websocketContext, type MessageHandler } from "../../websocket-context/context";
 import { Container } from "../container";
@@ -5,40 +6,47 @@ import { EXPLORER_ELE_ID } from "../markdown/markdown-it/scroll";
 import { ThemePicker } from "../theme-select";
 import { EntryComponent } from "./entry";
 
+const history = createBrowserHistory();
+
 export const Explorer = () => {
     const { wsRequest, addMessageHandler } = useContext(websocketContext);
     const [entries, setEntries] = useState<string[]>([]);
     const [parent, setParent] = useState<string>();
-    const [currentAbsPath, setCurrentAbsPath] = useState<string>();
+    const [root, setRoot] = useState<string>();
+    const [currentPath, setCurrentPath] = useState<string>();
     const [repoName, setRepoName] = useState<string>();
 
     useEffect(() => {
         const messageHandler: MessageHandler = (message) => {
-            const { root, repoName, entries, currentEntry } = message;
+            const { root, repoName, entries, currentPath } = message;
+            if (currentPath) setCurrentPath(currentPath);
             if (repoName) setRepoName(repoName);
             if (entries) setEntries(entries);
-
-            const relative = currentEntry.absPath.slice(root.length);
-            const isDir = relative.endsWith("/");
-            const segments = relative.split("/");
-            if (segments.length) {
-                segments.pop();
-
-                // dirs include an empty string as last element after split("/")
-                if (isDir) segments.pop();
-
-                segments.push(""); // this adds trailing slash with join below
-                const parent = root + segments.join("/");
-                setParent(parent);
-            }
+            if (root) setRoot(root);
         };
 
         addMessageHandler("explorer", messageHandler);
     }, [addMessageHandler, wsRequest]);
 
     useEffect(() => {
-        wsRequest({ type: "getEntries", absPath: currentAbsPath });
-    }, [currentAbsPath, wsRequest]);
+        if (!root || !currentPath) {
+            wsRequest({ type: "init" });
+            return;
+        }
+
+        const relative = currentPath.slice(root.length);
+        history.push("/" + relative);
+
+        const segments = relative.split("/");
+        if (segments.length) {
+            segments.pop();
+            // const isDir = relative.endsWith("/");
+            // if (isDir) segments.pop(); // dirs include an empty string as last element after split("/")
+            // segments.push(""); // this adds trailing slash with join below
+            const parent = root + segments.join("/");
+            setParent(parent);
+        }
+    }, [root, currentPath, wsRequest]);
 
     const [username, repo] = repoName?.split("/") ?? "";
 
@@ -58,18 +66,10 @@ export const Explorer = () => {
             </Container>
             <Container>
                 {parent && (
-                    <EntryComponent
-                        absPath={parent}
-                        setCurrentAbsPath={setCurrentAbsPath}
-                        isParent
-                    />
+                    <EntryComponent absPath={parent} setCurrentPath={setCurrentPath} isParent />
                 )}
                 {entries.map((entry) => (
-                    <EntryComponent
-                        key={entry}
-                        absPath={entry}
-                        setCurrentAbsPath={setCurrentAbsPath}
-                    />
+                    <EntryComponent key={entry} absPath={entry} setCurrentPath={setCurrentPath} />
                 ))}
             </Container>
         </div>

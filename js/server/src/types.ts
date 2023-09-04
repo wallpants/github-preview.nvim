@@ -1,5 +1,13 @@
 import { boolean, literal, number, object, string, union, type Output } from "valibot";
 
+export type BrowserState = {
+    root: string;
+    repoName: string;
+    entries: string[];
+    currentPath: string;
+    content: string;
+};
+
 export type CurrentEntry = {
     absPath: string;
     content?: string | undefined;
@@ -20,17 +28,13 @@ export const ContentChangeSchema = object({
 });
 export type ContentChange = Output<typeof ContentChangeSchema>;
 
-export type BrowserState = {
-    root: string;
-    entries: string[];
-    currentEntry: CurrentEntry;
-};
-
 export type WsServerMessage = Partial<BrowserState> & {
     repoName?: string;
     cursorMove?: CursorMove;
     goodbye?: true;
 };
+
+export type WsSend = (m: WsServerMessage) => void;
 
 export const PluginInitSchema = object({
     /**

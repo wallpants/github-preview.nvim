@@ -11,14 +11,14 @@ const ws = new ReconnectingWebSocket(url, [], {
     maxReconnectionDelay: 3000,
 });
 
-type Props = {
-    children: ReactNode;
-};
-
 const messageHandlers = new Map<string, MessageHandler>();
 
-export const WebsocketProvider = ({ children }: Props) => {
+export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
     const [status, setStatus] = useState<Status>("online");
+
+    const wsRequest = useCallback((message: WsBrowserRequest) => {
+        ws.send(JSON.stringify(message));
+    }, []);
 
     useEffect(() => {
         ws.onopen = () => {
@@ -37,14 +37,10 @@ export const WebsocketProvider = ({ children }: Props) => {
         return () => {
             messageHandlers.clear();
         };
-    }, []);
+    }, [wsRequest]);
 
     const addMessageHandler = useCallback((key: string, handler: MessageHandler) => {
         messageHandlers.set(key, handler);
-    }, []);
-
-    const wsRequest = useCallback((message: WsBrowserRequest) => {
-        ws.send(JSON.stringify(message));
     }, []);
 
     return (
