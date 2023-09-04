@@ -61,12 +61,12 @@ M.setup = function(opts)
         local init_lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
         local init_content = table.concat(init_lines, "\n")
 
-        ---@type plugin_config
-        vim.g.github_preview_config = {
+        ---@type plugin_init
+        vim.g.github_preview_init = {
             port = opts.port,
             root = root,
-            init_path = init_path,
-            init_content = init_content,
+            path = init_path,
+            content = init_content,
             scroll_debounce_ms = opts.scroll_debounce_ms,
             disable_sync_scroll = false,
             sync_scroll_type = Types.SYNC_SCROLL_TYPE.middle,
@@ -80,7 +80,7 @@ M.setup = function(opts)
 
                 ---@type content_change
                 local content_change = {
-                    abs_file_path = arg.file,
+                    abs_path = arg.file,
                     content = content,
                 }
 
@@ -100,7 +100,7 @@ M.setup = function(opts)
 
                 ---@type cursor_move
                 local cursor_move = {
-                    abs_file_path = arg.file,
+                    abs_path = arg.file,
                     cursor_line = cursor[1],
                     content_len = #content,
                     win_height = vim.api.nvim_win_get_height(0),

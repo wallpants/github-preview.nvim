@@ -12,7 +12,7 @@ const logger = createLogger(winston, ENV.BRIDGE_LOG_STREAM, ENV.LOG_LEVEL);
 ipc.config.id = IPC_CLIENT_ID;
 ipc.config.logger = (log) => logger.debug(log);
 
-const updateConfigEvent: (typeof IPC_EVENTS)[number] = "github-preview-update-config";
+const initEvent: (typeof IPC_EVENTS)[number] = "github-preview-init";
 
 async function main() {
     if (!ENV.NVIM) {
@@ -26,7 +26,7 @@ async function main() {
     spawn("tsx", ["watch", normalize(serverPath)]);
 
     const nvim = attach({ socket: ENV.NVIM });
-    const config = await nvim.getVar("github_preview_config");
+    const init = await nvim.getVar("github_preview_init");
 
     ipc.connectTo(IPC_SERVER_ID, () => {
         const socket = ipc.of[IPC_SERVER_ID];
@@ -37,7 +37,7 @@ async function main() {
 
         socket.on("connect", async () => {
             // as soon as we connect, we send config to server
-            socket.emit(updateConfigEvent, config);
+            socket.emit(initEvent, init);
 
             for (const event of IPC_EVENTS) await nvim.subscribe(event);
             // nvim notifications are forwarded as they are.

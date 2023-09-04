@@ -27,10 +27,10 @@ M.SYNC_SCROLL_TYPE = {
 
 ---@class content_change
 ---@field content string
----@field abs_file_path string
+---@field abs_path string
 
 ---@class cursor_move
----@field abs_file_path string
+---@field abs_path string
 ---@field cursor_line number
 ---@field content_len number
 ---@field win_height number

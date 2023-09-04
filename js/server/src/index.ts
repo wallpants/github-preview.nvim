@@ -9,7 +9,7 @@ import { IPC_SERVER_ID, type IPC_EVENTS } from "./consts";
 import { logger } from "./logger";
 import { onHttpRequest } from "./on-http-request";
 import { onWssConnection } from "./on-wss-connection";
-import { PluginConfigSchema, type PluginConfig } from "./types";
+import { PluginInitSchema, type PluginInit } from "./types";
 
 ipc.config.id = IPC_SERVER_ID;
 ipc.config.retry = 1500;
@@ -17,20 +17,20 @@ ipc.config.logger = (log) => logger.debug(log);
 
 function main() {
     ipc.serve(function () {
-        const updateConfig: (typeof IPC_EVENTS)[number] = "github-preview-update-config";
+        const updateConfig: (typeof IPC_EVENTS)[number] = "github-preview-init";
         // updateConfig event is first thing sent by client when connection opens
-        ipc.server.on(updateConfig, function (config: PluginConfig, _socket: Socket) {
+        ipc.server.on(updateConfig, function (init: PluginInit, _socket: Socket) {
             try {
-                ENV.GP_IS_DEV && parse(PluginConfigSchema, config);
-                logger.verbose(updateConfig, { config });
+                ENV.GP_IS_DEV && parse(PluginInitSchema, init);
+                logger.verbose(updateConfig, { init });
 
                 const httpServer = createServer();
                 httpServer.on("request", onHttpRequest);
 
                 const wsServer = new WebSocketServer({ server: httpServer });
-                wsServer.on("connection", onWssConnection({ config, ipc }));
+                wsServer.on("connection", onWssConnection({ init, ipc }));
 
-                const PORT = ENV.VITE_GP_PORT ?? config.port;
+                const PORT = ENV.VITE_GP_PORT ?? init.port;
 
                 httpServer.listen(PORT, () => {
                     logger.verbose(`Server is listening on port ${PORT}`);

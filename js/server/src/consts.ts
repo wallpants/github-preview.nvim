@@ -1,5 +1,5 @@
 export const IPC_EVENTS = [
-    "github-preview-update-config",
+    "github-preview-init",
     "github-preview-cursor-move",
     "github-preview-content-change",
 ] as const;

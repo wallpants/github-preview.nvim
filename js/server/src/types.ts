@@ -2,11 +2,11 @@ import { boolean, literal, number, object, string, union, type Output } from "va
 
 export type CurrentEntry = {
     absPath: string;
-    content?: string;
+    content?: string | undefined;
 };
 
 export const CursorMoveSchema = object({
-    abs_file_path: string(),
+    abs_path: string(),
     cursor_line: number(),
     content_len: number(),
     win_height: number(),
@@ -16,7 +16,7 @@ export type CursorMove = Output<typeof CursorMoveSchema>;
 
 export const ContentChangeSchema = object({
     content: string(),
-    abs_file_path: string(),
+    abs_path: string(),
 });
 export type ContentChange = Output<typeof ContentChangeSchema>;
 

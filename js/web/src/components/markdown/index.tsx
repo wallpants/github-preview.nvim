@@ -1,13 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { cn } from "../../lib/styles";
+import { cn } from "../../styles";
 import { websocketContext, type MessageHandler } from "../../websocket-context/context";
 import { Container } from "../container";
 import { markdownToHtml } from "./markdown-it";
 import { scrollFnMap } from "./markdown-it/scroll";
-
-type Props = {
-    className?: string;
-};
 
 const ELEMENT_ID = "markdown-content";
 
@@ -15,6 +11,22 @@ const ELEMENT_ID = "markdown-content";
 const options = {
     scroll: "middle",
 } as const;
+
+/** Takes a string and wraps it inside a markdown
+ * codeblock using file extension as language
+ *
+ * @example
+ * ```
+ * textToMarkdown({text, fileExt: "ts"});
+ * ```
+ */
+function textToMarkdown({ text, fileExt }: { text: string; fileExt: string }) {
+    return fileExt === ".md" ? text : "```" + fileExt + `\n${text}`;
+}
+
+type Props = {
+    className?: string;
+};
 
 export const Markdown = ({ className }: Props) => {
     const [fileName, setFileName] = useState<string>();

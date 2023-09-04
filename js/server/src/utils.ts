@@ -1,20 +1,9 @@
 // cspell:ignore readdirSync
 import { globby } from "globby";
-import { readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { type BrowserState } from "./types";
-
-/** Takes a string and wraps it inside a markdown
- * codeblock using file extension as language
- *
- * @example
- * ```
- * textToMarkdown({text, fileExt: "ts"});
- * ```
- */
-export function textToMarkdown({ text, fileExt }: { text: string; fileExt: string }) {
-    return fileExt === ".md" ? text : "```" + fileExt + `\n${text}`;
-}
+import { isText } from "istextorbinary";
+import { existsSync, readFileSync } from "node:fs";
+import { basename, dirname, resolve } from "node:path";
+import { type BrowserState, type CurrentEntry } from "./types";
 
 export function getRepoName({ root }: BrowserState): string {
     const gitConfig = readFileSync(resolve(root, ".git/config")).toString();
@@ -60,39 +49,26 @@ export async function getEntries(browserState: BrowserState): Promise<string[]> 
     return dirs.concat(files);
 }
 
-// export async function getCurrentEntries(
-//     browserState: BrowserState,
-// ): Promise<{ entries: string[]; currentEntry: CurrentEntry }> {
-//     const entries = await getEntries(browserState);
+export function getCurrentEntry(browserState: BrowserState): CurrentEntry {
+    const isDir = browserState.currentEntry.absPath.endsWith("/");
 
-//     const isDir = browserState.currentEntry.absPath.endsWith("/");
+    if (isDir) {
+        // search for readme.md
+        const readmePath = browserState.entries.find(
+            (e) => basename(e).toLowerCase() === "readme.md",
+        );
+        if (readmePath) browserState.currentEntry.absPath = readmePath;
+    }
 
-//     if (isDir) {
-//         // search for readme.md
-//         const readmePath = entries.find((e) => basename(e).toLowerCase() === "readme.md");
-//         if (readmePath) browserState.currentEntry.absPath = readmePath;
-//     }
+    const isTextFile =
+        existsSync(browserState.currentEntry.absPath) && isText(browserState.currentEntry.absPath);
 
-//     const isTextFile =
-//         existsSync(browserState.currentEntry.absPath) &&
-//         !isBinary(browserState.currentEntry.absPath);
-//     const text = isTextFile && readFileSync(browserState.currentEntry.absPath).toString();
-//     const fileExt = extname(browserState.currentEntry.absPath);
-//     const markdown = text && textToMarkdown({ text, fileExt });
+    const currentEntry: CurrentEntry = {
+        absPath: browserState.currentEntry.absPath,
+        content: isTextFile
+            ? readFileSync(browserState.currentEntry.absPath).toString()
+            : undefined,
+    };
 
-//     const currentEntry: CurrentEntry = {
-//         absPath: browserState.currentEntry.absPath,
-//     };
-
-//     if (markdown) {
-//         currentEntry.content = {
-//             markdown,
-//             fileExt,
-//         };
-//     }
-
-//     return {
-//         entries,
-//         currentEntry,
-//     };
-// }
+    return currentEntry;
+}
