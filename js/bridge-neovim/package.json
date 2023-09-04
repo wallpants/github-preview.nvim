@@ -13,7 +13,7 @@
   "dependencies": {
     "minimatch": "^9.0.3",
     "neovim": "^4.10.1",
-    "node-ipc": "^11.1.0",
+    "node-ipc": "npm:@achrinza/node-ipc",
     "valibot": "^0.13.1",
     "winston": "3.3.3"
   },

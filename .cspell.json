@@ -3,6 +3,7 @@
   "version": "0.2",
   "dictionaries": ["typescript", "html", "node", "npm"],
   "ignoreWords": [
+    "achrinza",
     "automagically",
     "clientrc",
     "clsx",

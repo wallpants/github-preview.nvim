@@ -19,7 +19,7 @@
     "istextorbinary": "^6.0.0",
     "lodash-es": "^4.17.21",
     "minimatch": "^9.0.3",
-    "node-ipc": "^11.1.0",
+    "node-ipc": "npm:@achrinza/node-ipc",
     "opener": "^1.5.2",
     "reconnecting-websocket": "^4.4.0",
     "serve-handler": "^6.1.5",
