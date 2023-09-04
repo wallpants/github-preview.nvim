@@ -5,7 +5,7 @@ export type BrowserState = {
     repoName: string;
     entries: string[];
     currentPath: string;
-    content: string | undefined;
+    content: string | null;
 };
 
 export const CursorMoveSchema = object({

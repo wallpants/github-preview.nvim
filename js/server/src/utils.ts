@@ -49,7 +49,7 @@ export async function getEntries(): Promise<string[]> {
     return dirs.concat(files);
 }
 
-export function getContent(): string | undefined {
+export function getContent(): string | null {
     const isDir = browserState.currentPath.endsWith("/");
 
     if (isDir) {
@@ -57,9 +57,10 @@ export function getContent(): string | undefined {
         const readmePath = browserState.entries.find(
             (e) => basename(e).toLowerCase() === "readme.md",
         );
-        if (readmePath) browserState.currentPath = readmePath;
+        if (!readmePath) return null;
+        browserState.currentPath = readmePath;
     }
 
-    const isTextFile = existsSync(browserState.currentPath) && isText(browserState.currentPath);
-    return isTextFile ? readFileSync(browserState.currentPath).toString() : undefined;
+    if (!existsSync(browserState.currentPath) || !isText(browserState.currentPath)) return null;
+    return readFileSync(browserState.currentPath).toString();
 }

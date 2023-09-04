@@ -5,5 +5,5 @@ export const browserState: BrowserState = {
     repoName: "",
     entries: [],
     currentPath: "",
-    content: undefined,
+    content: null,
 };

@@ -24,13 +24,11 @@ function textToMarkdown({ text, fileExt }: { text: string; fileExt: string }) {
     return fileExt === "md" ? text : "```" + fileExt + `\n${text}`;
 }
 
-type Props = {
-    className?: string;
-};
-
-export const Markdown = ({ className }: Props) => {
+// TODO(gualcasas): move logic around, this component would rerender a lot
+export const Markdown = ({ className }: { className?: string }) => {
     const [fileName, setFileName] = useState<string>();
     const [fileExt, setFileExt] = useState<string>();
+    const [hasContent, setHasContent] = useState(false);
     const { addMessageHandler } = useContext(websocketContext);
 
     useEffect(() => {
@@ -42,14 +40,13 @@ export const Markdown = ({ className }: Props) => {
             const fileExt = fileName?.split(".").pop();
             setFileName(fileName);
             setFileExt(fileExt);
+            setHasContent(Boolean(message.content));
 
-            if (message.content) {
-                const markdown = textToMarkdown({
-                    text: message.content,
-                    fileExt: fileName?.split(".").pop() ?? "",
-                });
-                contentElement.innerHTML = markdownToHtml(markdown);
-            }
+            const markdown = textToMarkdown({
+                text: message.content ?? "",
+                fileExt: fileName?.split(".").pop() ?? "",
+            });
+            contentElement.innerHTML = markdownToHtml(markdown);
 
             if (message.cursorMove) {
                 scrollFnMap[options.scroll](message.cursorMove);
@@ -58,6 +55,8 @@ export const Markdown = ({ className }: Props) => {
 
         addMessageHandler("markdown", messageHandler);
     }, [addMessageHandler]);
+
+    if (!hasContent) return null;
 
     return (
         <Container className={className}>

@@ -12,10 +12,13 @@ export function onBrowserRequest(wsSend: WsSend) {
 
             if (browserRequest.type === "init") {
                 const message: WsServerMessage = browserState;
+                logger.verbose("onBrowserRequest.init RESPONSE", message);
                 wsSend(message);
             }
 
             if (browserRequest.type === "getEntry") {
+                if (browserState.currentPath === browserRequest.currentPath) return;
+
                 browserState.currentPath = browserRequest.currentPath;
                 browserState.entries = await getEntries();
                 browserState.content = getContent();
@@ -24,6 +27,7 @@ export function onBrowserRequest(wsSend: WsSend) {
                     entries: browserState.entries,
                     content: browserState.content,
                 };
+                logger.verbose("onBrowserRequest.getEntry RESPONSE", message);
                 wsSend(message);
             }
         })().catch((e) => logger.error("onBrowserRequest ERROR", e));
