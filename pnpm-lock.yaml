@@ -75,6 +75,9 @@ importers:
       '@vercel/ncc':
         specifier: ^0.36.1
         version: 0.36.1
+      tsx:
+        specifier: ^3.12.7
+        version: 3.12.8
 
   js/server:
     dependencies:

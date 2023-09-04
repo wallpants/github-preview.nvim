@@ -119,11 +119,18 @@ M.setup = function(opts)
 
         local is_dev = os.getenv("GP_IS_DEV")
 
-        local base_cmd = (is_dev and "tsx watch " or "node ") .. plugin_root
-        local bridge_path = is_dev and "js/bridge-neovim/src/index.ts" or "js/bridge-neovim/dist/index.js"
-        local start_bridge_cmd = base_cmd .. bridge_path
+        local dev_cmd = "pnpm tsx watch src/index.ts"
+        local cmd = is_dev and dev_cmd or "node dist/index.js"
 
-        vim.fn.jobstart(start_bridge_cmd)
+        vim.fn.jobstart(cmd, {
+            cwd = plugin_root .. "js/bridge-neovim",
+            stderr_buffered = false,
+            stdout_buffered = false,
+            stdin = "null",
+            -- on_exit = M.log,
+            -- on_stdout = M.log,
+            -- on_stderr = M.log,
+        })
     end
 
     vim.api.nvim_create_user_command("GithubPreview", start_server, {})

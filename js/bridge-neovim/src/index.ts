@@ -20,10 +20,17 @@ async function main() {
         return;
     }
 
-    // Spawn server
-    // Some connection attempts might happen before the server boots up
-    if (ENV.GP_IS_DEV) spawn("tsx", ["watch", normalize(`${__dirname}/../../server/src/index.ts`)]);
-    else spawn("node", [normalize(`${__dirname}/../../server/dist/index.js`)]);
+    // Spawn server. Some connection attempts might happen before the server boots up
+    if (ENV.GP_IS_DEV) {
+        spawn("pnpm", ["tsx", "watch", "src/index.ts"], {
+            // set cwd, so we can use the project's tsx
+            cwd: normalize(`${__dirname}/../../server`),
+            stdio: "ignore",
+        });
+    } else
+        spawn("node", [normalize(`${__dirname}/../../server/dist/index.js`)], {
+            stdio: "ignore",
+        });
 
     const nvim = attach({ socket: ENV.NVIM });
     const init = await nvim.getVar("github_preview_init");
