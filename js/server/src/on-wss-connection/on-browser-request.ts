@@ -8,11 +8,11 @@ export function onBrowserRequest(wsSend: WsSend) {
     return (data: RawData) => {
         (async () => {
             const browserRequest = JSON.parse(String(data)) as WsBrowserRequest;
-            logger.verbose("onBrowserRequest", { browserRequest });
+            logger.verbose(`onBrowserRequest.${browserRequest.type} REQUEST`, { browserRequest });
 
             if (browserRequest.type === "init") {
                 const message: WsServerMessage = browserState;
-                logger.verbose("onBrowserRequest.init RESPONSE", message);
+                logger.verbose(`onBrowserRequest.${browserRequest.type} RESPONSE`, message);
                 wsSend(message);
             }
 
@@ -27,7 +27,7 @@ export function onBrowserRequest(wsSend: WsSend) {
                     entries: browserState.entries,
                     content: browserState.content,
                 };
-                logger.verbose("onBrowserRequest.getEntry RESPONSE", message);
+                logger.verbose(`onBrowserRequest.${browserRequest.type} RESPONSE`, message);
                 wsSend(message);
             }
         })().catch((e) => logger.error("onBrowserRequest ERROR", e));

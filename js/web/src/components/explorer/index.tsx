@@ -36,18 +36,25 @@ export const Explorer = () => {
         const relative = currentPath.slice(root.length);
         history.push("/" + relative);
 
-        wsRequest({ type: "getEntry", currentPath });
-
         const segments = relative.split("/");
-        if (segments.length) {
+        if (segments.length > 1) {
             segments.pop();
-            const isDir = relative.endsWith("/");
-            if (isDir) segments.pop(); // dirs include an empty string as last element after split("/")
-            segments.push(""); // this adds trailing slash with join below
+
+            // dirs include an empty string as last element after split("/")
+            if (relative.endsWith("/")) segments.pop();
+
+            // `push` adds trailing slash with join below
+            segments.push("");
             const parent = root + segments.join("/");
             setParent(parent);
-        }
-    }, [root, currentPath, wsRequest]);
+        } else setParent(undefined);
+        // eslint-disable-next-line
+    }, [entries]);
+
+    function navigate(path: string) {
+        setCurrentPath(path);
+        wsRequest({ type: "getEntry", currentPath: path });
+    }
 
     const [username, repo] = repoName?.split("/") ?? "";
 
@@ -66,11 +73,9 @@ export const Explorer = () => {
                 </div>
             </Container>
             <Container>
-                {parent && (
-                    <EntryComponent absPath={parent} setCurrentPath={setCurrentPath} isParent />
-                )}
+                {parent && <EntryComponent absPath={parent} navigate={navigate} isParent />}
                 {entries.map((entry) => (
-                    <EntryComponent key={entry} absPath={entry} setCurrentPath={setCurrentPath} />
+                    <EntryComponent key={entry} absPath={entry} navigate={navigate} />
                 ))}
             </Container>
         </div>

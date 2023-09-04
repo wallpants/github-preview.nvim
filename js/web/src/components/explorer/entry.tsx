@@ -12,10 +12,10 @@ const IconMap = {
 type Props = {
     absPath: string;
     isParent?: boolean;
-    setCurrentPath: (p: string) => void;
+    navigate: (p: string) => void;
 };
 
-export const EntryComponent = ({ absPath, isParent, setCurrentPath }: Props) => {
+export const EntryComponent = ({ absPath, isParent, navigate }: Props) => {
     const isDir = absPath.endsWith("/");
     const split = absPath.split("/");
     let name = split.pop();
@@ -25,7 +25,7 @@ export const EntryComponent = ({ absPath, isParent, setCurrentPath }: Props) => 
     }
 
     function handleClick() {
-        setCurrentPath(absPath);
+        navigate(absPath);
     }
 
     return (
