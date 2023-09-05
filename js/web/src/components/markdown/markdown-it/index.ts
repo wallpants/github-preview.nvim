@@ -4,9 +4,10 @@ import markdownIt from "markdown-it";
 import languages from "../../../languages";
 import copyBlockPlugin from "./copy-block";
 import { starryNightGutter } from "./gutter";
-import injectLinenumbersPlugin from "./linenumbers";
+import { injectLineNumbersPlugin } from "./line-numbers";
 import localImage from "./local-image";
 import relativeLinks from "./relative-links";
+import { testPlugin } from "./test-plugin";
 
 const starryNight = await createStarryNight(languages);
 
@@ -22,26 +23,23 @@ export function markdownToHtml(markdown: string) {
                     className: scope
                         ? [
                               "highlight",
-                              "highlight-" +
-                                  scope
-                                      .replace(/^source\./, "")
-                                      .replace(/\./g, "-"),
+                              "highlight-" + scope.replace(/^source\./, "").replace(/\./g, "-"),
                           ]
                         : undefined,
                 },
                 // eslint-disable-next-line
                 // @ts-ignore
                 children: scope
-                    ? starryNightGutter(starryNight.highlight(value, scope))
-                          .children
+                    ? starryNightGutter(starryNight.highlight(value, scope)).children
                     : [{ type: "text", value }],
             });
         },
     })
         .use(copyBlockPlugin)
         .use(localImage)
-        .use(injectLinenumbersPlugin)
-        .use(relativeLinks);
+        .use(injectLineNumbersPlugin)
+        .use(relativeLinks)
+        .use(testPlugin);
 
     return markdownItInstance.render(markdown);
 }

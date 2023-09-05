@@ -13,7 +13,7 @@ M.default_opts = {
     scroll_debounce_ms = 250,
     disable_sync_scroll = false,
     ignore_buffer_patterns = { "NvimTree_*" },
-    sync_scroll_type = Types.SYNC_SCROLL_TYPE.middle,
+    sync_scroll_type = Types.SYNC_SCROLL_TYPE.top,
 }
 
 ---@param ignore_buffer_patterns string[]
@@ -68,8 +68,8 @@ M.setup = function(opts)
             path = init_path,
             content = init_content,
             scroll_debounce_ms = opts.scroll_debounce_ms,
-            disable_sync_scroll = false,
-            sync_scroll_type = Types.SYNC_SCROLL_TYPE.middle,
+            disable_sync_scroll = opts.disable_sync_scroll,
+            sync_scroll_type = opts.sync_scroll_type,
         }
 
         vim.api.nvim_create_autocmd({ "TextChangedI", "TextChanged" }, {
@@ -94,17 +94,12 @@ M.setup = function(opts)
         vim.api.nvim_create_autocmd({ "CursorHoldI", "CursorHold" }, {
             ---@param arg autocmd_arg
             callback = function(arg)
-                local cursor = vim.api.nvim_win_get_cursor(0)
-                local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
-                local content = table.concat(lines, "\n")
+                local cursor_line = vim.api.nvim_win_get_cursor(0)[1] - 1
 
                 ---@type cursor_move
                 local cursor_move = {
                     abs_path = arg.file,
-                    cursor_line = cursor[1],
-                    content_len = #content,
-                    win_height = vim.api.nvim_win_get_height(0),
-                    win_line = vim.fn.winline(),
+                    cursor_line = cursor_line,
                 }
 
                 -- TODO(gualcasas) maybe filter with autocmd pattern instead of manually

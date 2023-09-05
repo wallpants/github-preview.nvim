@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "clean": "rm -rf dist && rm -rf node_modules",
-    "vite:dev": "vite --port \"$GP_WEBAPP_DEV_SERVER_PORT\"",
+    "vite:dev": "vite --port \"$GP_WEBAPP_DEV_SERVER_PORT\" --open",
     "dev": "dotenv -e ../../.env -- pnpm vite:dev",
     "build": "rm -rf dist && tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

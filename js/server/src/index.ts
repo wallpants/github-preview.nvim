@@ -30,9 +30,10 @@ ipc.serve(function () {
             logger.verbose(updateConfig, { init });
 
             browserState.root = init.root;
-            browserState.repoName = getRepoName();
-            browserState.entries = await getEntries();
             browserState.currentPath = init.path;
+            browserState.syncScrollType = init.sync_scroll_type;
+            browserState.entries = await getEntries();
+            browserState.repoName = getRepoName();
             const isDir = init.path.endsWith("/");
             browserState.content = isDir ? getContent() : init.content;
 
@@ -46,8 +47,7 @@ ipc.serve(function () {
 
             httpServer.listen(PORT, () => {
                 logger.verbose(`Server is listening on port ${PORT}`);
-                if (ENV.VITE_GP_IS_DEV) opener(`http://localhost:${ENV.GP_WEBAPP_DEV_SERVER_PORT}`);
-                else opener(`http://localhost:${PORT}`);
+                if (!ENV.VITE_GP_IS_DEV) opener(`http://localhost:${PORT}`);
             });
         })().catch((e) => logger.error("onUpdateConfig ERROR", e));
     });

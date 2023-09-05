@@ -22,18 +22,16 @@ export function onEditorContentChange(wsSend: WsSend) {
 
             const message: WsServerMessage = {
                 currentPath: contentChange.abs_path,
+                content: contentChange.content,
             };
 
             if (browserState.currentPath !== contentChange.abs_path) {
                 browserState.currentPath = contentChange.abs_path;
+                browserState.content = contentChange.content;
                 browserState.entries = await getEntries();
 
-                message.currentPath = browserState.currentPath;
                 message.entries = browserState.entries;
             }
-
-            browserState.content = contentChange.content;
-            message.content = browserState.content;
 
             wsSend(message);
         })().catch((e) => logger.error("onEditorContentChange ERROR", e));

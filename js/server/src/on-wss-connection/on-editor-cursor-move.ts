@@ -23,7 +23,6 @@ export function onEditorCursorMove(wsSend: WsSend) {
                 browserState.entries = await getEntries();
                 browserState.content = getContent();
 
-                message.currentPath = browserState.currentPath;
                 message.entries = browserState.entries;
                 message.content = browserState.content;
             }

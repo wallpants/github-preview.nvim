@@ -19,10 +19,7 @@ export const EntryComponent = ({ absPath, isParent, navigate }: Props) => {
     const isDir = absPath.endsWith("/");
     const split = absPath.split("/");
     let name = split.pop();
-    if (isDir) {
-        // dirs include an empty string as last element after split("/")
-        name = split.pop();
-    }
+    if (isDir) name = split.pop();
 
     function handleClick() {
         navigate(absPath);

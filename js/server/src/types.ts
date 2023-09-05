@@ -6,14 +6,12 @@ export type BrowserState = {
     entries: string[];
     currentPath: string;
     content: null | string;
+    syncScrollType: SyncScrollType;
 };
 
 export const CursorMoveSchema = object({
     abs_path: string(),
     cursor_line: number(),
-    content_len: number(),
-    win_height: number(),
-    win_line: number(),
 });
 export type CursorMove = Output<typeof CursorMoveSchema>;
 
@@ -23,15 +21,22 @@ export const ContentChangeSchema = object({
 });
 export type ContentChange = Output<typeof ContentChangeSchema>;
 
-export type WsServerMessage = Partial<BrowserState> &
-    // "currentPath" required
-    Pick<BrowserState, "currentPath"> & {
-        repoName?: string;
-        cursorMove?: CursorMove;
-        goodbye?: true;
-    };
+export type WsServerMessage = Partial<BrowserState> & {
+    repoName?: string;
+    cursorMove?: CursorMove;
+    goodbye?: true;
+};
 
 export type WsSend = (m: WsServerMessage) => void;
+
+const SyncScrollTypeSchema = union([
+    literal("top"),
+    literal("middle"),
+    literal("bottom"),
+    literal("off"),
+]);
+
+export type SyncScrollType = Output<typeof SyncScrollTypeSchema>;
 
 export const PluginInitSchema = object({
     /** port to host the http/ws server "localhost:\{port\}" */
@@ -47,7 +52,7 @@ export const PluginInitSchema = object({
     content: string(),
     scroll_debounce_ms: number(),
     disable_sync_scroll: boolean(),
-    sync_scroll_type: union([literal("top"), literal("middle"), literal("bottom")]),
+    sync_scroll_type: SyncScrollTypeSchema,
 });
 export type PluginInit = Output<typeof PluginInitSchema>;
 

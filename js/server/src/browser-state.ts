@@ -6,4 +6,5 @@ export const browserState: BrowserState = {
     entries: [],
     currentPath: "",
     content: null,
+    syncScrollType: "off",
 };
