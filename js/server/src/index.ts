@@ -17,9 +17,13 @@ ipc.config.id = IPC_SERVER_ID;
 ipc.config.retry = 1500;
 ipc.config.logger = (log) => logger.debug(log);
 
+logger.verbose({ ipc_server_config: ipc.config });
 ipc.serve(function () {
     const updateConfig: (typeof IPC_EVENTS)[number] = "github-preview-init";
     // updateConfig event is first thing sent by client when connection opens
+    ipc.server.on("python-event", (data: { gualberto: "casas" }) => {
+        logger.verbose("python-event", { data });
+    });
     ipc.server.on(updateConfig, (init: PluginInit, _socket: Socket) => {
         (async () => {
             ENV.GP_IS_DEV && parse(PluginInitSchema, init);
