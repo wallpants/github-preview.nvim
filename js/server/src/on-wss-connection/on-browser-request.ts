@@ -17,7 +17,13 @@ export function onBrowserRequest(wsSend: WsSend) {
             }
 
             if (browserRequest.type === "getEntry") {
-                if (browserState.currentPath === browserRequest.currentPath) return;
+                if (
+                    browserState.currentPath === browserRequest.currentPath ||
+                    // don't send files outside of root
+                    browserRequest.currentPath.length < browserState.root.length
+                ) {
+                    return;
+                }
 
                 browserState.currentPath = browserRequest.currentPath;
                 browserState.entries = await getEntries();
