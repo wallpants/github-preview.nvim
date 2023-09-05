@@ -37,13 +37,20 @@ export const Markdown = ({ className }: { className?: string }) => {
             if (!contentElement) return;
 
             const fileName = message.currentPath?.split("/").pop();
-            const fileExt = fileName?.split(".").pop();
-            setFileName(fileName);
-            setFileExt(fileExt);
-            setHasContent(Boolean(message.content));
 
-            if (message.content === null) contentElement.innerHTML = "";
+            if (message.currentPath) {
+                const fileExt = fileName?.split(".").pop();
+                setFileName(fileName);
+                setFileExt(fileExt);
+            }
+
+            if (message.content === null) {
+                setHasContent(false);
+                contentElement.innerHTML = "";
+            }
+
             if (message.content) {
+                setHasContent(true);
                 const markdown = textToMarkdown({
                     text: message.content,
                     fileExt: fileName?.split(".").pop() ?? "",
@@ -59,6 +66,8 @@ export const Markdown = ({ className }: { className?: string }) => {
         if (ENV.IS_DEV) console.log("adding markdown messageHandler");
         addMessageHandler("markdown", messageHandler);
     }, [addMessageHandler]);
+
+    console.log("rerender");
 
     return (
         <Container className={cn(!hasContent && "hidden", className)}>

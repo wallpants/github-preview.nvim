@@ -1,5 +1,6 @@
 # my name is
 
+-   [] we lose syntax on content change
 -   [] when cd .. on webapp, if we're looking at a file, file is closed instead of going to parent
 -   [] webapp logs "received" on production
 -   [] add "ping" request, kill processes after a while of inactivity
