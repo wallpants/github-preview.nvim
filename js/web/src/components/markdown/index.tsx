@@ -53,7 +53,7 @@ export const Markdown = ({ className }: { className?: string }) => {
                 setHasContent(true);
                 const markdown = textToMarkdown({
                     text: message.content,
-                    fileExt: fileName?.split(".").pop() ?? "",
+                    fileExt: fileName?.split(".").pop() ?? fileExt ?? "",
                 });
                 contentElement.innerHTML = markdownToHtml(markdown);
             }
@@ -65,6 +65,7 @@ export const Markdown = ({ className }: { className?: string }) => {
 
         if (ENV.IS_DEV) console.log("adding markdown messageHandler");
         addMessageHandler("markdown", messageHandler);
+        // eslint-disable-next-line
     }, [addMessageHandler]);
 
     console.log("rerender");
