@@ -3,9 +3,9 @@ local M = {}
 
 ---@enum sync_scroll_type
 M.SYNC_SCROLL_TYPE = {
-    middle = "middle",
     top = "top",
-    relative = "relative",
+    middle = "middle",
+    bottom = "bottom",
 }
 
 -- github-preview/js/server/src/types.ts

@@ -47,7 +47,7 @@ export const PluginInitSchema = object({
     content: string(),
     scroll_debounce_ms: number(),
     disable_sync_scroll: boolean(),
-    sync_scroll_type: union([literal("middle"), literal("top"), literal("relative")]),
+    sync_scroll_type: union([literal("top"), literal("middle"), literal("bottom")]),
 });
 export type PluginInit = Output<typeof PluginInitSchema>;
 

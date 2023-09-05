@@ -56,7 +56,7 @@ export const Markdown = ({ className }: { className?: string }) => {
             }
         };
 
-        if (ENV.IS_VITE_DEV) console.log("adding markdown messageHandler");
+        if (ENV.VITE_GP_IS_DEV) console.log("adding markdown messageHandler");
         addMessageHandler("markdown", messageHandler);
     }, [addMessageHandler]);
 

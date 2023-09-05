@@ -17,7 +17,7 @@ const EVENT: (typeof IPC_EVENTS)[number] = "github-preview-content-change";
 export function onEditorContentChange(wsSend: WsSend) {
     return (contentChange: ContentChange, _socket: Socket) => {
         (async () => {
-            ENV.GP_IS_DEV && parse(ContentChangeSchema, contentChange);
+            ENV.VITE_GP_IS_DEV && parse(ContentChangeSchema, contentChange);
             logger.verbose(EVENT, { contentChange });
 
             const message: WsServerMessage = {

@@ -26,7 +26,7 @@ export const Explorer = () => {
             if (root) setRoot(root);
         };
 
-        if (ENV.IS_VITE_DEV) console.log("adding explorer messageHandler");
+        if (ENV.VITE_GP_IS_DEV) console.log("adding explorer messageHandler");
         addMessageHandler("explorer", messageHandler);
     }, [addMessageHandler, wsRequest]);
 

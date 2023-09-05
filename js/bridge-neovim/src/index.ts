@@ -21,7 +21,7 @@ async function main() {
     }
 
     // Spawn server. Some connection attempts might happen before the server boots up
-    if (ENV.GP_IS_DEV) {
+    if (ENV.VITE_GP_IS_DEV) {
         spawn("pnpm", ["tsx", "watch", "src/index.ts"], {
             // set cwd, so we can use the project's tsx
             cwd: normalize(`${__dirname}/../../server`),

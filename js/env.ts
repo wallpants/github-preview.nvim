@@ -1,5 +1,5 @@
 export const ENV = {
-    GP_IS_DEV: process.env["GP_IS_DEV"],
+    VITE_GP_IS_DEV: process.env["VITE_GP_IS_DEV"],
     VITE_GP_WS_PORT: process.env["VITE_GP_WS_PORT"],
     GP_WEBAPP_DEV_SERVER_PORT: process.env["GP_WEBAPP_DEV_SERVER_PORT"],
 

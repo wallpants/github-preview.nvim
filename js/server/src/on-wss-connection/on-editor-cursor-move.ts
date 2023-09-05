@@ -11,7 +11,7 @@ const EVENT: (typeof IPC_EVENTS)[number] = "github-preview-cursor-move";
 export function onEditorCursorMove(wsSend: WsSend) {
     return (cursorMove: CursorMove) => {
         (async () => {
-            ENV.GP_IS_DEV && parse(CursorMoveSchema, cursorMove);
+            ENV.VITE_GP_IS_DEV && parse(CursorMoveSchema, cursorMove);
             logger.verbose(EVENT, { cursorMove });
 
             const message: WsServerMessage = {
