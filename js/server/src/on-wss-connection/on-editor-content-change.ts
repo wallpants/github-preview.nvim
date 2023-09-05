@@ -20,7 +20,9 @@ export function onEditorContentChange(wsSend: WsSend) {
             ENV.GP_IS_DEV && parse(ContentChangeSchema, contentChange);
             logger.verbose(EVENT, { contentChange });
 
-            const message: WsServerMessage = {};
+            const message: WsServerMessage = {
+                currentPath: contentChange.abs_path,
+            };
 
             if (browserState.currentPath !== contentChange.abs_path) {
                 browserState.currentPath = contentChange.abs_path;

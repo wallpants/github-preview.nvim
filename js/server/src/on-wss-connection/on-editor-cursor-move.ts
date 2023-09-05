@@ -14,7 +14,9 @@ export function onEditorCursorMove(wsSend: WsSend) {
             ENV.GP_IS_DEV && parse(CursorMoveSchema, cursorMove);
             logger.verbose(EVENT, { cursorMove });
 
-            const message: WsServerMessage = {};
+            const message: WsServerMessage = {
+                currentPath: cursorMove.abs_path,
+            };
 
             if (browserState.currentPath !== cursorMove.abs_path) {
                 browserState.currentPath = cursorMove.abs_path;

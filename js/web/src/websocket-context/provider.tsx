@@ -6,7 +6,7 @@ import { type WsBrowserRequest, type WsServerMessage } from "../types";
 import { websocketContext, type MessageHandler, type Status } from "./context";
 
 // we check for PORT for dev env
-const url = "ws://" + (ENV.IS_DEV ? `localhost:${ENV.VITE_GP_PORT}` : window.location.host);
+const url = "ws://" + (ENV.IS_VITE_DEV ? `localhost:${ENV.VITE_GP_WS_PORT}` : window.location.host);
 const ws = new ReconnectingWebSocket(url, [], {
     maxReconnectionDelay: 3000,
     // start websocket in CLOSED state, call `.reconnect()` to connect
@@ -19,7 +19,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
     const [status, setStatus] = useState<Status>("offline");
 
     const wsRequest = useCallback((message: WsBrowserRequest) => {
-        if (ENV.IS_DEV) console.log(`requesting '${message.type}':`, message);
+        if (ENV.IS_VITE_DEV) console.log(`requesting '${message.type}':`, message);
         ws.send(JSON.stringify(message));
     }, []);
 
@@ -33,7 +33,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
         };
         ws.onmessage = (event) => {
             const message = JSON.parse(String(event.data)) as WsServerMessage;
-            if (ENV.IS_DEV) console.log("received:", message);
+            if (ENV.IS_VITE_DEV) console.log("received:", message);
             if (message.goodbye) window.close();
             messageHandlers.forEach((handler) => {
                 handler(message);
@@ -52,7 +52,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         // we connect in useEffect hook, to wait for children components
         // to have rendered and registered their onWsMessageHandlers
-        if (ENV.IS_DEV) console.log("connecting websocket");
+        if (ENV.IS_VITE_DEV) console.log("connecting websocket");
         ws.reconnect();
     }, []);
 

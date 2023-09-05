@@ -11,12 +11,12 @@
     "format": "turbo run format",
     "clean": "turbo run clean && rm -rf node_modules",
     "dev": "turbo run dev",
-    "bridge:logs": "dotenv -- bash -c 'tail -F -n 0 \"$BRIDGE_LOG_STREAM\"'",
-    "server:logs": "dotenv -- bash -c 'tail -F -n 0 \"$SERVER_LOG_STREAM\"'",
+    "bridge:logs": "dotenv -- bash -c 'tail -F -n 0 \"$GP_BRIDGE_LOG_STREAM\"'",
+    "server:logs": "dotenv -- bash -c 'tail -F -n 0 \"$GP_SERVER_LOG_STREAM\"'",
     "spell:check": "pnpm cspell ** --no-progress",
     "lint": "pnpm spell:check && turbo run lint",
     "build": "turbo run build",
-    "bdsm": "pnpm lint --force && pnpm build --force"
+    "force": "pnpm lint --force && pnpm build --force"
   },
   "devDependencies": {
     "@microsoft/tsdoc-config": "^0.16.2",

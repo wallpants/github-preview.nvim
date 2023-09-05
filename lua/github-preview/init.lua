@@ -9,7 +9,7 @@ end
 
 ---@type nvim_plugin_opts
 M.default_opts = {
-    port = 4002,
+    port = 6049,
     scroll_debounce_ms = 250,
     disable_sync_scroll = false,
     ignore_buffer_patterns = { "NvimTree_*" },

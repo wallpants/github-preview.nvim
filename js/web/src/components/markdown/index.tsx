@@ -21,13 +21,13 @@ const options = {
  * textToMarkdown({text, fileExt: "ts"});
  * ```
  */
-function textToMarkdown({ text, fileExt }: { text: string; fileExt: string }) {
-    return fileExt === "md" ? text : "```" + fileExt + `\n${text}`;
+function textToMarkdown({ text, fileExt }: { text: string; fileExt: string | undefined }) {
+    const fallbackExt = fileExt ?? "sh";
+    return fallbackExt === "md" ? text : "```" + fallbackExt + `\n${text}`;
 }
 
 export const Markdown = ({ className }: { className?: string }) => {
     const [fileName, setFileName] = useState<string>();
-    const [fileExt, setFileExt] = useState<string>();
     const [hasContent, setHasContent] = useState(false);
     const { addMessageHandler } = useContext(websocketContext);
 
@@ -36,25 +36,18 @@ export const Markdown = ({ className }: { className?: string }) => {
             const contentElement = document.getElementById(ELEMENT_ID);
             if (!contentElement) return;
 
-            const fileName = message.currentPath?.split("/").pop();
+            const fileName = message.currentPath.split("/").pop();
+            if (!fileName) throw Error("fileName missing");
+            setFileName(fileName);
 
-            if (message.currentPath) {
-                const fileExt = fileName?.split(".").pop();
-                setFileName(fileName);
-                setFileExt(fileExt);
-            }
+            const fileExt = fileName.split(".").pop();
 
             if (message.content === null) {
                 setHasContent(false);
                 contentElement.innerHTML = "";
-            }
-
-            if (message.content) {
+            } else if (message.content) {
                 setHasContent(true);
-                const markdown = textToMarkdown({
-                    text: message.content,
-                    fileExt: fileName?.split(".").pop() ?? fileExt ?? "",
-                });
+                const markdown = textToMarkdown({ text: message.content, fileExt });
                 contentElement.innerHTML = markdownToHtml(markdown);
             }
 
@@ -63,12 +56,11 @@ export const Markdown = ({ className }: { className?: string }) => {
             }
         };
 
-        if (ENV.IS_DEV) console.log("adding markdown messageHandler");
+        if (ENV.IS_VITE_DEV) console.log("adding markdown messageHandler");
         addMessageHandler("markdown", messageHandler);
-        // eslint-disable-next-line
     }, [addMessageHandler]);
 
-    console.log("rerender");
+    const fileExt = fileName?.split(".").pop();
 
     return (
         <Container className={cn(!hasContent && "hidden", className)}>

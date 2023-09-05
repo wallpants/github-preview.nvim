@@ -42,11 +42,12 @@ ipc.serve(function () {
             const wsServer = new WebSocketServer({ server: httpServer });
             wsServer.on("connection", onWssConnection({ ipc }));
 
-            const PORT = ENV.VITE_GP_PORT ?? init.port;
+            const PORT = ENV.VITE_GP_WS_PORT ?? init.port;
 
             httpServer.listen(PORT, () => {
                 logger.verbose(`Server is listening on port ${PORT}`);
-                !ENV.GP_IS_DEV && opener(`http://localhost:${PORT}`);
+                if (ENV.GP_IS_DEV) opener(`http://localhost:${ENV.GP_WEBAPP_DEV_SERVER_PORT}`);
+                else opener(`http://localhost:${PORT}`);
             });
         })().catch((e) => logger.error("onUpdateConfig ERROR", e));
     });

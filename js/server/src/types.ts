@@ -23,24 +23,20 @@ export const ContentChangeSchema = object({
 });
 export type ContentChange = Output<typeof ContentChangeSchema>;
 
-export type WsServerMessage = Partial<BrowserState> & {
-    repoName?: string;
-    cursorMove?: CursorMove;
-    goodbye?: true;
-};
+export type WsServerMessage = Partial<BrowserState> &
+    // "currentPath" required
+    Pick<BrowserState, "currentPath"> & {
+        repoName?: string;
+        cursorMove?: CursorMove;
+        goodbye?: true;
+    };
 
 export type WsSend = (m: WsServerMessage) => void;
 
 export const PluginInitSchema = object({
-    /**
-     * port to host the http/ws server "localhost:\{port\}"
-     * @default
-     * 4002
-     * */
+    /** port to host the http/ws server "localhost:\{port\}" */
     port: number(),
-    /**
-     * dir path where ".git" dir was found
-     * */
+    /** dir path where ".git" dir was found */
     root: string(),
     /**
      * current path when plugin was loaded

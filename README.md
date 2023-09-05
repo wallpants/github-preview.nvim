@@ -1,7 +1,8 @@
-# my name is
+# my name is adf
 
 -   [] we lose syntax on content change
--   [] when cd .. on webapp, if we're looking at a file, file is closed instead of going to parent
+-   [x] when cd .. on webapp, if a file is currently open it stays open after the "cd ..", file should be closed
+-   [x] when cd .. on webapp, if we're looking at a file, file is closed instead of going to parent
 -   [] webapp logs "received" on production
 -   [] add "ping" request, kill processes after a while of inactivity
 -   [] what happens if we have a running instance and try running another?
@@ -25,7 +26,7 @@
 
 ![Alt text](https://www.digitalocean.com/_next/static/media/intro-to-cloud.d49bc5f7.jpeg)
 
-what if I type and then
+what if I type and then gualberto
 
 ```ts
 console.log("hello world");
@@ -47,28 +48,14 @@ const starryNight = await createStarryNight(common, {
 });
 ```
 
-![some tag](local.jpeg)
+and we cna type
 
 ## Vite Development
 
-1. Open markdown file in neovim and run `:MarkdownPreview` to start server
+1. Open markdown file in neovim and run `:GithubPreview` to start server
 2. Close browser tab that was opened by previous
 3. Start vite dev server and then something else
 
 ```bash
 github-preview/: $ pnpm web:dev
 ```
-
-we need to know
-
-something else
-
-something else
-
-something else
-
-something else
-
-something else
-
-something else
