@@ -23,6 +23,7 @@
     "tailwindcss",
     "tsdoc",
     "valibot",
+    "wegucci",
     "wooorm"
   ],
   "ignorePaths": ["node_modules", "dist", "pnpm-lock.yaml", "*.svg", "*.log"]
