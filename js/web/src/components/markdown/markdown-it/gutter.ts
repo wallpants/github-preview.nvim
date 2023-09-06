@@ -35,8 +35,6 @@ export function starryNightGutter(tree: Root) {
 
                 // Add a line, and the eol.
                 lineNumber += 1;
-                console.log("index: ", index);
-                console.log("lineNumber: ", lineNumber);
                 replacement.push(createLine(line, lineNumber), {
                     type: "text",
                     value: match[0],
@@ -63,8 +61,6 @@ export function starryNightGutter(tree: Root) {
 
     if (line.length > 0) {
         lineNumber += 1;
-        console.log("index: ", index);
-        console.log("lineNumber: ", lineNumber);
         replacement.push(createLine(line, lineNumber));
     }
 

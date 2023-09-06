@@ -38,8 +38,13 @@ export const Markdown = ({ className }: { className?: string }) => {
                     fileExt,
                 });
 
-                // className={cn("[&>div>pre]:!mb-0", fileExt === "md" && "p-11", "pt-0")}
-                if (fileExt === "md") contentElement.style.setProperty("padding", "44px");
+                if (fileExt === "md") {
+                    contentElement.style.setProperty("padding", "44px");
+                } else {
+                    contentElement.style.setProperty("padding", "0px");
+                    // remove margin-bottom added by github-styles if rendering only code
+                    contentElement.style.setProperty("margin-bottom", "-16px");
+                }
 
                 contentElement.innerHTML = markdownToHtml(markdown);
             }
@@ -58,11 +63,7 @@ export const Markdown = ({ className }: { className?: string }) => {
     return (
         <Container className={className}>
             <p className="!mb-0 p-4 text-sm font-semibold">{fileName}</p>
-            {/* TODO(gualcasas)
-             * I believe the [&>div>pre] selector y causing issues
-             * with the markdown rendering
-             */}
-            <div id={ELEMENT_ID} className="[&>div>pre]:!mb-0 pt-0" />
+            <div id={ELEMENT_ID} />
         </Container>
     );
 };

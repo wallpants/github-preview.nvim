@@ -14,7 +14,12 @@ const starryNight = await createStarryNight(languages);
 export function markdownToHtml(markdown: string) {
     const markdownItInstance = markdownIt({
         highlight(value, lang) {
-            const scope = starryNight.flagToScope(lang);
+            const scope = starryNight.flagToScope(lang) ?? "";
+
+            // eslint-disable-next-line
+            const gutterChildren: any[] = starryNightGutter(
+                starryNight.highlight(value, scope),
+            ).children;
 
             return toHtml({
                 type: "element",
@@ -28,10 +33,7 @@ export function markdownToHtml(markdown: string) {
                         : undefined,
                 },
                 // eslint-disable-next-line
-                // @ts-ignore
-                children: scope
-                    ? starryNightGutter(starryNight.highlight(value, scope)).children
-                    : [{ type: "text", value }],
+                children: scope ? gutterChildren : [{ type: "text", value }],
             });
         },
     })

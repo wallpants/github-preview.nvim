@@ -1,5 +1,6 @@
 # my name is adf
 
+-   [] if root is not found, server should start in single file mode
 -   [] does cmd+shift+r clear localStorage? is the webapp being cached? does it happen both in dev and prod?
 -   [x] we lose syntax on content change
 -   [x] when cd .. on webapp, if a file is currently open it stays open after the "cd ..", file should be closed
