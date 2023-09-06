@@ -1,4 +1,4 @@
-import "./github-styles.css";
+import "./github-styles.scss";
 
 import React from "react";
 import ReactDOM from "react-dom/client";

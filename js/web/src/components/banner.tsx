@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { cn } from "../styles";
+import { cn } from "../utils";
 import { websocketContext } from "../websocket-context/context";
 import { Container } from "./container";
 
