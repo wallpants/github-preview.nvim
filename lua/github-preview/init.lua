@@ -50,6 +50,7 @@ M.setup = function(opts)
         local root = vim.fn.finddir(".git", ";")
 
         if root == "" or root == "/" then
+            -- TODO(gualcasas) if no root is found, launch in single file mode
             error("root dir with .git not found")
         else
             -- if found, path is made absolute & has "/.git/" popped

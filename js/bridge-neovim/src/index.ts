@@ -12,7 +12,7 @@ const logger = createLogger(winston, ENV.GP_BRIDGE_LOG_STREAM, ENV.GP_LOG_LEVEL)
 ipc.config.id = IPC_CLIENT_ID;
 ipc.config.logger = (log) => logger.debug(log);
 
-const initEvent: (typeof IPC_EVENTS)[number] = "github-preview-init";
+const INIT_EVENT: (typeof IPC_EVENTS)[number] = "github-preview-init";
 
 async function main() {
     if (!ENV.NVIM) {
@@ -44,7 +44,7 @@ async function main() {
 
         socket.on("connect", () => {
             // as soon as we connect, we send config to server
-            socket.emit(initEvent, init);
+            socket.emit(INIT_EVENT, init);
 
             for (const event of IPC_EVENTS)
                 nvim.subscribe(event).catch((e) => logger.error("nvim.subscribe ERROR", e));

@@ -1,7 +1,3 @@
-// cspell:ignore xlink
-/*
- * https://github.com/DCsunset/markdown-it-code-copy/blob/master/index.js
- */
 import type MarkdownIt from "markdown-it";
 import { type RenderRule } from "markdown-it/lib/renderer";
 
