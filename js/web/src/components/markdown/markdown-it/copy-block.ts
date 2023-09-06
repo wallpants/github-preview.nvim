@@ -1,3 +1,4 @@
+// cspell:ignore xlink
 /*
  * https://github.com/DCsunset/markdown-it-code-copy/blob/master/index.js
  */
@@ -19,16 +20,13 @@ clipboard.on("success", function (e) {
 });
 
 function renderCode(origRule: RenderRule): RenderRule {
-    return function (...args) {
+    return (...args) => {
         const [tokens, idx] = args;
-        const content = tokens[idx].content
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&lt;");
+        const content = tokens[idx].content.replace(/"/g, "&quot;").replace(/'/g, "&lt;");
         const origRendered = origRule(...args);
 
         if (content.length === 0) return origRendered;
 
-        // cspell:ignore xlink
         return `
 <div style="position: relative">
 	${origRendered}
@@ -47,11 +45,7 @@ function renderCode(origRule: RenderRule): RenderRule {
 
 export default function copyBlockPlugin(md: MarkdownIt) {
     const { code_block, fence } = md.renderer.rules;
-    if (code_block) {
-        md.renderer.rules.code_block = renderCode(code_block);
-    }
 
-    if (fence) {
-        md.renderer.rules.fence = renderCode(fence);
-    }
+    if (code_block) md.renderer.rules.code_block = renderCode(code_block);
+    if (fence) md.renderer.rules.fence = renderCode(fence);
 }
