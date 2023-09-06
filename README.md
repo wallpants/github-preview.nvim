@@ -1,6 +1,6 @@
 # my name is adf
 
--   [] does cmd+shift+r clear localstorage? is the webapp being cached? does it happen both in dev and prod?
+-   [] does cmd+shift+r clear localStorage? is the webapp being cached? does it happen both in dev and prod?
 -   [x] we lose syntax on content change
 -   [x] when cd .. on webapp, if a file is currently open it stays open after the "cd ..", file should be closed
 -   [x] when cd .. on webapp, if we're looking at a file, file is closed instead of going to parent
