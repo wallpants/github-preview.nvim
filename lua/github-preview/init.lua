@@ -1,6 +1,4 @@
 -- cspell:ignore autocmd rpcnotify jobstart finddir getinfo fnamemodify winline getenv
-local Types = require("github-preview.types")
-
 local M = {}
 
 M.log = function(_, data)
@@ -13,7 +11,7 @@ M.default_opts = {
     scroll_debounce_ms = 250,
     disable_sync_scroll = false,
     ignore_buffer_patterns = { "NvimTree_*" },
-    sync_scroll_type = Types.SYNC_SCROLL_TYPE.top,
+    sync_scroll_enabled = true,
 }
 
 ---@param ignore_buffer_patterns string[]
@@ -42,7 +40,7 @@ M.setup = function(opts)
         scroll_debounce_ms = { opts.scroll_debounce_ms, "number" },
         disable_sync_scroll = { opts.disable_sync_scroll, "boolean" },
         ignore_buffer_patterns = { opts.ignore_buffer_patterns, "table" },
-        sync_scroll_type = { opts.sync_scroll_type, "string" },
+        sync_scroll_enabled = { opts.sync_scroll_enabled, "boolean" },
     })
 
     local function start_server()
@@ -70,7 +68,7 @@ M.setup = function(opts)
             content = init_content,
             scroll_debounce_ms = opts.scroll_debounce_ms,
             disable_sync_scroll = opts.disable_sync_scroll,
-            sync_scroll_type = opts.sync_scroll_type,
+            sync_scroll_enabled = opts.sync_scroll_enabled,
         }
 
         vim.api.nvim_create_autocmd({ "TextChangedI", "TextChanged" }, {

@@ -1,8 +1,8 @@
-import { type PluginInit } from "../../../../../server/src/types";
+import { type CursorMove } from "../../../../../server/src/types";
 
 export const EXPLORER_ELE_ID = "explorer-ele-id";
 
-export function getScrollElements() {
+export function getScrollOffsets() {
     const elements = document.querySelectorAll("[data-source-line]");
     const offsets: number[] = [];
 
@@ -41,23 +41,11 @@ export function getScrollElements() {
     return offsets;
 }
 
-export const scrollFnMap: Record<
-    PluginInit["sync_scroll_type"],
-    ({ cursor_line }: { cursor_line: number }, offsets: number[]) => void
-> = {
-    top: function ({ cursor_line }, offsets) {
-        let offset = offsets[cursor_line];
-        // eslint-disable-next-line
-        while (offset === undefined) {
-            offset = offsets[--cursor_line];
-        }
-        window.scrollTo({ top: offset, behavior: "smooth" });
-    },
-    middle: function (args) {
-        console.log('called scroll["middle"]: ', args);
-    },
-    bottom: function (args) {
-        console.log('called scroll["bottom"]: ', args);
-    },
-    off: () => null,
-};
+export function scroll({ cursor_line }: CursorMove, offsets: number[]) {
+    let offset = offsets[cursor_line];
+    // eslint-disable-next-line
+    while (offset === undefined) {
+        offset = offsets[--cursor_line];
+    }
+    window.scrollTo({ top: offset, behavior: "smooth" });
+}

@@ -4,7 +4,7 @@ import { getFileExt, getFileName } from "../../utils";
 import { websocketContext, type MessageHandler } from "../../websocket-context/context";
 import { Container } from "../container";
 import { markdownToHtml } from "./markdown-it";
-import { getScrollElements, scrollFnMap } from "./markdown-it/scroll";
+import { getScrollOffsets, scroll } from "./markdown-it/scroll";
 
 const ELEMENT_ID = "markdown-content";
 
@@ -25,7 +25,7 @@ export const Markdown = ({ className }: { className?: string }) => {
     const { addMessageHandler, currentPath } = useContext(websocketContext);
 
     useEffect(() => {
-        const messageHandler: MessageHandler = (message, fileName, syncScrollType) => {
+        const messageHandler: MessageHandler = (message, fileName, syncScrollEnabled) => {
             const contentElement = document.getElementById(ELEMENT_ID);
             if (!contentElement) return;
 
@@ -50,9 +50,9 @@ export const Markdown = ({ className }: { className?: string }) => {
                 contentElement.innerHTML = markdownToHtml(markdown);
             }
 
-            if (message.cursorMove && syncScrollType && syncScrollType !== "off") {
-                if (!offsets.current) offsets.current = getScrollElements();
-                scrollFnMap[syncScrollType](message.cursorMove, offsets.current);
+            if (message.cursorMove && syncScrollEnabled) {
+                if (!offsets.current) offsets.current = getScrollOffsets();
+                scroll(message.cursorMove, offsets.current);
             } else {
                 offsets.current = null;
             }

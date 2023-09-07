@@ -31,7 +31,7 @@ ipc.serve(function () {
 
             browserState.root = init.root;
             browserState.currentPath = init.path;
-            browserState.syncScrollType = init.sync_scroll_type;
+            browserState.syncScrollEnabled = init.sync_scroll_enabled;
             browserState.entries = await getEntries();
             browserState.repoName = getRepoName();
             const isDir = init.path.endsWith("/");

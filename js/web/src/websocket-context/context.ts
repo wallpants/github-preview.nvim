@@ -1,12 +1,12 @@
 import { createContext } from "react";
-import { type BrowserState, type SyncScrollType } from "../../../server/src/types";
+import { type BrowserState } from "../../../server/src/types";
 import { type WsServerMessage } from "../types";
 
 export type Status = "offline" | "online" | "reconnecting";
 export type MessageHandler = (
     message: WsServerMessage,
     fileName: string | undefined,
-    syncScrollType: SyncScrollType | undefined,
+    syncScrollEnabled: boolean | undefined,
 ) => void;
 export type AddMessageHandler = (key: string, handler: MessageHandler) => void;
 

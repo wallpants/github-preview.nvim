@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { ENV } from "../../env";
 import { Banner } from "../components/banner";
-import { type SyncScrollType, type WsBrowserRequest, type WsServerMessage } from "../types";
+import { type WsBrowserRequest, type WsServerMessage } from "../types";
 import { getFileName } from "../utils";
 import { websocketContext, type MessageHandler, type Status } from "./context";
 
@@ -25,7 +25,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
     const [repoName, setRepoName] = useState<string>();
     const [status, setStatus] = useState<Status>("offline");
     const [currentPath, setCurrentPath] = useState<string>();
-    const [syncScrollType, setSyncScrollType] = useState<SyncScrollType>();
+    const [syncScrollEnabled, setSyncScrollEnabled] = useState<boolean>();
 
     useEffect(() => {
         // we connect in useEffect hook, to wait for children components
@@ -57,7 +57,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
             if (message.root) setRoot(message.root);
             if (message.entries) setEntries(message.entries);
             if (message.repoName) setRepoName(message.repoName);
-            if (message.syncScrollType) setSyncScrollType(message.syncScrollType);
+            if (message.syncScrollEnabled) setSyncScrollEnabled(message.syncScrollEnabled);
             if (message.currentPath) {
                 setCurrentPath(message.currentPath);
 
@@ -72,10 +72,10 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
 
             const fileName = getFileName(message.currentPath ?? currentPath);
             messageHandlers.forEach((handler) => {
-                handler(message, fileName, syncScrollType);
+                handler(message, fileName, syncScrollEnabled);
             });
         };
-    }, [wsRequest, currentPath, root, syncScrollType]);
+    }, [wsRequest, currentPath, root, syncScrollEnabled]);
 
     const addMessageHandler = useCallback((key: string, handler: MessageHandler) => {
         messageHandlers.set(key, handler);
