@@ -7,9 +7,9 @@ function addRule(ogRenderRule?: RenderRule): RenderRule {
         if (line !== undefined) {
             tokens[idx].attrSet("data-source-line", String(line));
 
-            const endLine = tokens[idx].map?.[1];
+            let endLine = tokens[idx].map?.[1];
             if (endLine && endLine > line + 1) {
-                tokens[idx].attrSet("data-source-line-end", String(endLine));
+                tokens[idx].attrSet("data-source-line-end", String(--endLine));
             }
         }
 
@@ -20,7 +20,7 @@ function addRule(ogRenderRule?: RenderRule): RenderRule {
     };
 }
 
-export function injectSourceLines(md: MarkdownIt) {
+export function sourceLineNumbers(md: MarkdownIt) {
     const rules = ["fence", "paragraph_open", "heading_open", "list_item_open", "table_open"];
 
     rules.forEach((rule) => {

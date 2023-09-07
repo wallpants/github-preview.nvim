@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { ENV } from "../../../env";
 import { getFileExt, getFileName } from "../../utils";
 import { websocketContext, type MessageHandler } from "../../websocket-context/context";
@@ -21,8 +21,8 @@ function textToMarkdown({ text, fileExt }: { text: string; fileExt: string | und
 }
 
 export const Markdown = ({ className }: { className?: string }) => {
+    const offsets = useRef<number[] | null>(null);
     const { addMessageHandler, currentPath } = useContext(websocketContext);
-    const [elements, setElements] = useState<NodeListOf<Element>>();
 
     useEffect(() => {
         const messageHandler: MessageHandler = (message, fileName, syncScrollType) => {
@@ -34,8 +34,6 @@ export const Markdown = ({ className }: { className?: string }) => {
             if (message.content === null || !fileName) {
                 contentElement.innerHTML = "";
             } else if (message.content) {
-                setElements(undefined);
-
                 const markdown = textToMarkdown({
                     text: message.content,
                     fileExt,
@@ -52,19 +50,17 @@ export const Markdown = ({ className }: { className?: string }) => {
                 contentElement.innerHTML = markdownToHtml(markdown);
             }
 
-            if (message.cursorMove && syncScrollType) {
-                let scrollElements = elements;
-                if (!scrollElements) {
-                    scrollElements = getScrollElements();
-                    setElements(scrollElements);
-                }
-                scrollFnMap[syncScrollType](message.cursorMove, scrollElements);
+            if (message.cursorMove && syncScrollType && syncScrollType !== "off") {
+                if (!offsets.current) offsets.current = getScrollElements();
+                scrollFnMap[syncScrollType](message.cursorMove, offsets.current);
+            } else {
+                offsets.current = null;
             }
         };
 
         if (ENV.VITE_GP_IS_DEV) console.log("adding markdown messageHandler");
         addMessageHandler("markdown", messageHandler);
-    }, [addMessageHandler, elements]);
+    }, [addMessageHandler]);
 
     const fileName = getFileName(currentPath);
 

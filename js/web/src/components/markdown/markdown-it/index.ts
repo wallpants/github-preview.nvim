@@ -3,7 +3,7 @@ import markdownIt from "markdown-it";
 // import languages from "../../../languages";
 import highlightjs from "markdown-it-highlightjs";
 import copyBlockPlugin from "./copy-block";
-import { injectSourceLines } from "./inject-source-lines";
+import { sourceLineNumbers } from "./source-line-numbers";
 // import localImage from "./local-image";
 // import relativeLinks from "./relative-links";
 
@@ -12,7 +12,7 @@ export function markdownToHtml(markdown: string) {
         // .use(localImage)
         // .use(relativeLinks)
         .use(highlightjs)
-        .use(injectSourceLines)
+        .use(sourceLineNumbers)
         .use(copyBlockPlugin);
 
     return miInstance.render(markdown);
