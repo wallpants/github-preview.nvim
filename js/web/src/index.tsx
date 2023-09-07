@@ -1,9 +1,8 @@
-import "./github-styles.scss";
-
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { App } from "./App";
-import "./index.css";
+import { Explorer } from "./components/explorer";
+import { Markdown } from "./components/markdown";
+import "./index.scss";
 import { WebsocketProvider } from "./websocket-context/provider";
 
 const root = document.getElementById("root");
@@ -12,7 +11,10 @@ if (root) {
     ReactDOM.createRoot(root).render(
         <React.StrictMode>
             <WebsocketProvider>
-                <App />
+                <div className={"relative h-full w-full p-8"}>
+                    <Explorer />
+                    <Markdown />
+                </div>
             </WebsocketProvider>
         </React.StrictMode>,
     );

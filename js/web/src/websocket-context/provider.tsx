@@ -59,13 +59,15 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
             if (message.repoName) setRepoName(message.repoName);
             if (message.syncScrollType) setSyncScrollType(message.syncScrollType);
             if (message.currentPath) {
-                // root must either already be in state
+                setCurrentPath(message.currentPath);
+
+                // "root" must either already be in state
                 // or it must be present in the current message
                 const safeRoot = message.root ?? root;
                 if (!safeRoot) throw Error("root missing");
+
                 const relative = message.currentPath.slice(safeRoot.length);
                 history.push("/" + relative);
-                setCurrentPath(message.currentPath);
             }
 
             const fileName = getFileName(message.currentPath ?? currentPath);
