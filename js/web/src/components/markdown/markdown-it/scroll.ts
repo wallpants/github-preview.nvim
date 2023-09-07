@@ -7,22 +7,25 @@ export function getScrollOffsets() {
     const elements: NodeListOf<HTMLElement> = document.querySelectorAll("[data-source-line]");
     const offsets: number[] = [];
 
-    let offsetTop = 0;
+    // let offsetTop = 0;
     let offsetAcc = 0;
     let currLine = 0;
 
     elements.forEach((element) => {
-        if (!offsetTop) {
-            offsetTop = element.offsetTop;
-            console.log("offsetTop: ", offsetTop);
-            offsetAcc += offsetTop;
-        }
+        // if (!offsetTop) {
+        //     offsetTop = element.offsetTop;
+        //     console.log("offsetTop: ", offsetTop);
+        //     offsetAcc += offsetTop;
+        // }
 
         const elemStartAttr = element.getAttribute("data-source-line");
         if (!elemStartAttr) return;
         const elemStartLine = Number(elemStartAttr);
 
-        while (currLine !== elemStartLine) {
+        while (currLine < elemStartLine) {
+            console.log("currLine: ", currLine);
+            console.log("elemStartLine: ", elemStartLine);
+            console.log("offsets: ", offsets);
             offsets[currLine++] = offsetAcc;
         }
 
@@ -39,13 +42,15 @@ export function getScrollOffsets() {
         }
         const elemEndLine = Number(elemEndAttr);
 
+        console.log("scrollHeight: ", scrollHeight);
         const averageOffset = Math.floor(scrollHeight / (elemEndLine - elemStartLine));
-        while (currLine !== elemEndLine) {
-            offsets[currLine++] = offsetAcc;
+        while (currLine < elemEndLine) {
             offsetAcc += averageOffset;
+            offsets[currLine++] = offsetAcc;
         }
     });
 
+    console.log("offsets: ", offsets);
     return offsets;
 }
 

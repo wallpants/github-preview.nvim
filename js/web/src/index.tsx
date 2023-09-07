@@ -10,7 +10,8 @@ if (root) {
     ReactDOM.createRoot(root).render(
         <React.StrictMode>
             <WebsocketProvider>
-                <div className={"relative h-full w-full p-8"}>
+                {/* <div className={"relative h-full w-full p-8"}> */}
+                <div className={"relative h-full w-full"}>
                     {/* <Explorer /> */}
                     <Markdown />
                 </div>
