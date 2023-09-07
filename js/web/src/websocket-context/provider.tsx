@@ -1,25 +1,41 @@
 import { createBrowserHistory } from "history";
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { ENV } from "../../env";
 import { Banner } from "../components/banner";
+import { markdownToHtml } from "../components/markdown/markdown-it";
+import { getScrollOffsets, scroll } from "../components/markdown/markdown-it/scroll";
 import { type WsBrowserRequest, type WsServerMessage } from "../types";
-import { getFileName } from "../utils";
-import { websocketContext, type MessageHandler, type Status } from "./context";
+import { getFileExt, getFileName } from "../utils";
+import { websocketContext, type Status } from "./context";
+
+export const MARKDOWN_ELEMENT_ID = "markdown-element-id";
 
 const URL =
     "ws://" + (ENV.VITE_GP_IS_DEV ? `localhost:${ENV.VITE_GP_WS_PORT}` : window.location.host);
 
 const ws = new ReconnectingWebSocket(URL, [], {
-    maxReconnectionDelay: 3000,
+    maxReconnectionDelay: 1500,
     // start websocket in CLOSED state, call `.reconnect()` to connect
     startClosed: true,
 });
 
 const history = createBrowserHistory();
-const messageHandlers = new Map<string, MessageHandler>();
+
+/** Takes a string and wraps it inside a markdown
+ * codeblock using file extension as language
+ *
+ * @example
+ * ```
+ * textToMarkdown({text, fileExt: "ts"});
+ * ```
+ */
+function textToMarkdown({ text, fileExt }: { text: string; fileExt: string | undefined }) {
+    return fileExt === "md" ? text : "```" + fileExt + `\n${text}`;
+}
 
 export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
+    const offsets = useRef<number[] | null>(null);
     const [root, setRoot] = useState<string>();
     const [entries, setEntries] = useState<string[]>();
     const [repoName, setRepoName] = useState<string>();
@@ -70,16 +86,43 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 history.push("/" + relative);
             }
 
-            const fileName = getFileName(message.currentPath ?? currentPath);
-            messageHandlers.forEach((handler) => {
-                handler(message, fileName, syncScrollEnabled);
-            });
+            const safeCurrentPath = message.currentPath ?? currentPath;
+            if (!safeCurrentPath) throw Error("currentPath missing");
+
+            const fileName = getFileName(safeCurrentPath);
+            const markdownElement = document.getElementById(MARKDOWN_ELEMENT_ID);
+
+            if (message.content === null || !fileName) {
+                offsets.current = null; // if content changes, existing offsets become outdated
+                if (markdownElement) markdownElement.innerHTML = "";
+            }
+
+            if (message.content) {
+                offsets.current = null; // if content changes, existing offsets become outdated
+                if (!markdownElement) return;
+                const fileExt = getFileExt(fileName);
+                const markdown = textToMarkdown({
+                    text: message.content,
+                    fileExt,
+                });
+
+                if (fileExt === "md") {
+                    markdownElement.style.setProperty("padding", "44px");
+                } else {
+                    markdownElement.style.setProperty("padding", "0px");
+                    // remove margin-bottom added by github-styles if rendering only code
+                    markdownElement.style.setProperty("margin-bottom", "-16px");
+                }
+
+                markdownElement.innerHTML = markdownToHtml(markdown);
+            }
+
+            if (message.cursorMove && syncScrollEnabled) {
+                if (!offsets.current) offsets.current = getScrollOffsets();
+                scroll(message.cursorMove, offsets.current);
+            }
         };
     }, [wsRequest, currentPath, root, syncScrollEnabled]);
-
-    const addMessageHandler = useCallback((key: string, handler: MessageHandler) => {
-        messageHandlers.set(key, handler);
-    }, []);
 
     const navigate = useCallback(
         (path: string) => {
@@ -97,7 +140,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 repoName,
                 navigate,
                 currentPath,
-                addMessageHandler,
+                syncScrollEnabled,
             }}
         >
             <Banner className="z-50" />
