@@ -4,7 +4,7 @@ import { getFileExt, getFileName } from "../../utils";
 import { websocketContext, type MessageHandler } from "../../websocket-context/context";
 import { Container } from "../container";
 import { markdownToHtml } from "./markdown-it";
-import { getScrollOffsets, scroll } from "./markdown-it/scroll";
+import { SCROLL_INDICATOR, getScrollOffsets, scroll } from "./markdown-it/scroll";
 
 const ELEMENT_ID = "markdown-content";
 
@@ -68,6 +68,7 @@ export const Markdown = ({ className }: { className?: string }) => {
         <Container className={className}>
             <p className="!mb-0 p-4 text-sm font-semibold">{fileName}</p>
             <div id={ELEMENT_ID} />
+            <div id={SCROLL_INDICATOR} className="absolute w-full h-20 bg-orange-500/25" />
         </Container>
     );
 };

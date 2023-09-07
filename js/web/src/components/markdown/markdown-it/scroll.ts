@@ -1,15 +1,23 @@
 import { type CursorMove } from "../../../../../server/src/types";
 
 export const EXPLORER_ELE_ID = "explorer-ele-id";
+export const SCROLL_INDICATOR = "scroll-indicator-id";
 
 export function getScrollOffsets() {
-    const elements = document.querySelectorAll("[data-source-line]");
+    const elements: NodeListOf<HTMLElement> = document.querySelectorAll("[data-source-line]");
     const offsets: number[] = [];
 
+    let offsetTop = 0;
     let offsetAcc = 0;
     let currLine = 0;
 
     elements.forEach((element) => {
+        if (!offsetTop) {
+            offsetTop = element.offsetTop;
+            console.log("offsetTop: ", offsetTop);
+            offsetAcc += offsetTop;
+        }
+
         const elemStartAttr = element.getAttribute("data-source-line");
         if (!elemStartAttr) return;
         const elemStartLine = Number(elemStartAttr);
@@ -47,5 +55,7 @@ export function scroll({ cursor_line }: CursorMove, offsets: number[]) {
     while (offset === undefined) {
         offset = offsets[--cursor_line];
     }
+    const element = document.getElementById(SCROLL_INDICATOR);
+    if (element) element.style.setProperty("top", `${offset}px`);
     window.scrollTo({ top: offset, behavior: "smooth" });
 }
