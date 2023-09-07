@@ -6,6 +6,17 @@ import { type PluginInit } from "../../../../../server/src/types";
 
 export const EXPLORER_ELE_ID = "explorer-ele-id";
 
+export function getScrollElements() {
+    const elements = document.querySelectorAll("[data-source-line]");
+    elements.forEach((element) => {
+        const sourceLine = element.getAttribute("data-source-line");
+        const sourceLineEnd = element.getAttribute("data-source-line-end");
+        console.log("sourceLine: ", sourceLine);
+        console.log("sourceLineEnd: ", sourceLineEnd);
+    });
+    return elements;
+}
+
 /** binary search */
 export function findClosestLine(arr: number[], target: number): number {
     if (arr.length === 0) {
@@ -102,7 +113,7 @@ export function findClosestLine(arr: number[], target: number): number {
 
 export const scrollFnMap: Record<
     PluginInit["sync_scroll_type"],
-    ({ cursor_line }: { cursor_line: number }, fileExt: string | undefined) => void
+    ({ cursor_line }: { cursor_line: number }, elements: NodeListOf<Element>) => void
 > = {
     top: function ({ cursor_line }, fileExt) {
         // const elements = document.querySelectorAll("[data-source-line]");

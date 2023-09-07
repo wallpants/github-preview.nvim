@@ -1,10 +1,10 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ENV } from "../../../env";
 import { getFileExt, getFileName } from "../../utils";
 import { websocketContext, type MessageHandler } from "../../websocket-context/context";
 import { Container } from "../container";
 import { markdownToHtml } from "./markdown-it";
-import { scrollFnMap } from "./markdown-it/scroll";
+import { getScrollElements, scrollFnMap } from "./markdown-it/scroll";
 
 const ELEMENT_ID = "markdown-content";
 
@@ -22,6 +22,7 @@ function textToMarkdown({ text, fileExt }: { text: string; fileExt: string | und
 
 export const Markdown = ({ className }: { className?: string }) => {
     const { addMessageHandler, currentPath } = useContext(websocketContext);
+    const [elements, setElements] = useState<NodeListOf<Element>>();
 
     useEffect(() => {
         const messageHandler: MessageHandler = (message, fileName, syncScrollType) => {
@@ -33,6 +34,8 @@ export const Markdown = ({ className }: { className?: string }) => {
             if (message.content === null || !fileName) {
                 contentElement.innerHTML = "";
             } else if (message.content) {
+                setElements(undefined);
+
                 const markdown = textToMarkdown({
                     text: message.content,
                     fileExt,
@@ -50,13 +53,18 @@ export const Markdown = ({ className }: { className?: string }) => {
             }
 
             if (message.cursorMove && syncScrollType) {
-                scrollFnMap[syncScrollType](message.cursorMove, fileExt);
+                let scrollElements = elements;
+                if (!scrollElements) {
+                    scrollElements = getScrollElements();
+                    setElements(scrollElements);
+                }
+                scrollFnMap[syncScrollType](message.cursorMove, scrollElements);
             }
         };
 
         if (ENV.VITE_GP_IS_DEV) console.log("adding markdown messageHandler");
         addMessageHandler("markdown", messageHandler);
-    }, [addMessageHandler]);
+    }, [addMessageHandler, elements]);
 
     const fileName = getFileName(currentPath);
 
