@@ -3,14 +3,13 @@ import { type RenderRule } from "markdown-it/lib/renderer";
 
 function addRule(ogRenderRule?: RenderRule): RenderRule {
     return (tokens, idx, options, env, slf) => {
-        let line = tokens[idx].map?.[0];
+        const line = tokens[idx].map?.[0];
         if (line !== undefined) {
-            ++line; // editor lines start at index 1
             tokens[idx].attrSet("data-source-line", String(line));
 
             let endLine = tokens[idx].map?.[1];
             if (endLine) {
-                ++endLine;
+                endLine--;
                 if (endLine > line + 1) {
                     tokens[idx].attrSet("data-source-line-end", String(endLine));
                 }

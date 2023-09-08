@@ -35,7 +35,10 @@ function textToMarkdown({ text, fileExt }: { text: string; fileExt: string | und
 }
 
 export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
-    const offsets = useRef<number[] | null>(null);
+    const offsets = useRef<{
+        markdownTopOffset: number;
+        sourceLineOffsets: number[];
+    } | null>(null);
     const [root, setRoot] = useState<string>();
     const [entries, setEntries] = useState<string[]>();
     const [repoName, setRepoName] = useState<string>();

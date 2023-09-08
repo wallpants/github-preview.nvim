@@ -94,11 +94,12 @@ M.setup = function(opts)
             ---@param arg autocmd_arg
             callback = function(arg)
                 local cursor_line = vim.api.nvim_win_get_cursor(0)[1]
+                local zero_indexed_row = cursor_line - 1
 
                 ---@type cursor_move
                 local cursor_move = {
                     abs_path = arg.file,
-                    cursor_line = cursor_line,
+                    cursor_line = zero_indexed_row,
                 }
 
                 -- TODO(gualcasas) maybe filter with autocmd pattern instead of manually

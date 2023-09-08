@@ -10,8 +10,8 @@ export const Container = ({ className, children }: Props) => {
     return (
         <div
             className={cn(
-                "mx-auto relative my-0 mb-6 box-border overflow-hidden rounded border",
-                "min-h-[38px] min-w-[200px] max-w-[980px]",
+                "mx-auto my-0 mb-6 box-border overflow-hidden rounded border",
+                "relative min-h-[38px] min-w-[200px] max-w-[980px]",
                 "border-github-border-default bg-github-canvas-default",
                 className,
             )}

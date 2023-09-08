@@ -1,32 +1,30 @@
 import { type CursorMove } from "../../../../../server/src/types";
+import { MARKDOWN_ELEMENT_ID } from "../../../websocket-context/provider";
 
-export const EXPLORER_ELE_ID = "explorer-ele-id";
 export const SCROLL_INDICATOR = "scroll-indicator-id";
 
-export function getScrollOffsets() {
-    const elements: NodeListOf<HTMLElement> = document.querySelectorAll("[data-source-line]");
-    const offsets: number[] = [];
+export type Offsets = {
+    markdownTopOffset: number;
+    sourceLineOffsets: number[];
+};
 
-    // let offsetTop = 0;
+export function getScrollOffsets(): Offsets {
+    const markdownElement = document.getElementById(MARKDOWN_ELEMENT_ID);
+    if (!markdownElement) throw Error("markdownElement missing");
+
+    const elements: NodeListOf<HTMLElement> = document.querySelectorAll("[data-source-line]");
+    const sourceLineOffsets: number[] = [];
+
     let offsetAcc = 0;
     let currLine = 0;
 
     elements.forEach((element) => {
-        // if (!offsetTop) {
-        //     offsetTop = element.offsetTop;
-        //     console.log("offsetTop: ", offsetTop);
-        //     offsetAcc += offsetTop;
-        // }
-
         const elemStartAttr = element.getAttribute("data-source-line");
         if (!elemStartAttr) return;
         const elemStartLine = Number(elemStartAttr);
 
         while (currLine < elemStartLine) {
-            console.log("currLine: ", currLine);
-            console.log("elemStartLine: ", elemStartLine);
-            console.log("offsets: ", offsets);
-            offsets[currLine++] = offsetAcc;
+            sourceLineOffsets[currLine++] = offsetAcc;
         }
 
         // <code> tags return a scrollHeight of 0
@@ -36,31 +34,38 @@ export function getScrollOffsets() {
 
         const elemEndAttr = element.getAttribute("data-source-line-end");
         if (!elemEndAttr) {
+            // TODO(gualcasas): maybe set offset to element.offsetTop directly
+            // if present, and only use the accumulator to calculate offset
+            // when rendering code
+            sourceLineOffsets[currLine++] = offsetAcc;
             offsetAcc += scrollHeight;
-            offsets[currLine++] = offsetAcc;
             return;
         }
         const elemEndLine = Number(elemEndAttr);
 
-        console.log("scrollHeight: ", scrollHeight);
         const averageOffset = Math.floor(scrollHeight / (elemEndLine - elemStartLine));
         while (currLine < elemEndLine) {
+            sourceLineOffsets[currLine++] = offsetAcc;
             offsetAcc += averageOffset;
-            offsets[currLine++] = offsetAcc;
         }
     });
 
-    console.log("offsets: ", offsets);
-    return offsets;
+    return {
+        markdownTopOffset: document.body.offsetHeight - markdownElement.offsetHeight,
+        sourceLineOffsets,
+    };
 }
 
-export function scroll({ cursor_line }: CursorMove, offsets: number[]) {
-    let offset = offsets[cursor_line];
-    // eslint-disable-next-line
-    while (offset === undefined) {
-        offset = offsets[--cursor_line];
-    }
+export function scroll(
+    { cursor_line }: CursorMove,
+    { markdownTopOffset, sourceLineOffsets }: Offsets,
+) {
+    const offset = sourceLineOffsets[cursor_line];
+    // while (offset === undefined) {
+    //     offset = sourceLineOffsets[--cursor_line];
+    // }
     const element = document.getElementById(SCROLL_INDICATOR);
     if (element) element.style.setProperty("top", `${offset}px`);
-    window.scrollTo({ top: offset, behavior: "smooth" });
+
+    window.scrollTo({ top: offset + markdownTopOffset, behavior: "smooth" });
 }

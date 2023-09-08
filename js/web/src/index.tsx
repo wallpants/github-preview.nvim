@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Explorer } from "./components/explorer";
 import { Markdown } from "./components/markdown";
 import "./index.scss";
 import { WebsocketProvider } from "./websocket-context/provider";
@@ -10,9 +11,8 @@ if (root) {
     ReactDOM.createRoot(root).render(
         <React.StrictMode>
             <WebsocketProvider>
-                {/* <div className={"relative h-full w-full p-8"}> */}
-                <div className={"relative h-full w-full"}>
-                    {/* <Explorer /> */}
+                <div className={"relative h-full w-full p-8 pb-0"}>
+                    <Explorer />
                     <Markdown />
                 </div>
             </WebsocketProvider>

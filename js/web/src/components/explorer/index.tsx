@@ -1,7 +1,6 @@
 import { useContext, useMemo } from "react";
 import { websocketContext } from "../../websocket-context/context";
 import { Container } from "../container";
-import { EXPLORER_ELE_ID } from "../markdown/markdown-it/scroll";
 import { ThemePicker } from "../theme-select";
 import { EntryComponent } from "./entry";
 
@@ -29,7 +28,7 @@ export const Explorer = () => {
     const [username, repo] = repoName?.split("/") ?? "";
 
     return (
-        <div id={EXPLORER_ELE_ID}>
+        <div>
             <Container className="border-none">
                 <ThemePicker />
                 <div className="flex">
