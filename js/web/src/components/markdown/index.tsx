@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { cn, getFileName } from "../../utils";
+import { getFileName } from "../../utils";
 import { websocketContext } from "../../websocket-context/context";
 import { MARKDOWN_ELEMENT_ID } from "../../websocket-context/provider";
 import { Container } from "../container";
@@ -7,20 +7,20 @@ import { SCROLL_INDICATOR } from "./markdown-it/scroll";
 
 const FILENAME_HEIGHT = 52;
 
-export const Markdown = ({ className }: { className?: string }) => {
+export const Markdown = () => {
     const { state } = useContext(websocketContext);
 
     const fileName = getFileName(state.current?.currentPath);
 
     return (
-        <Container className={cn(className, "!p-0")}>
+        <Container>
             <p
                 className="!mb-0 p-4 text-sm font-semibold z-20 relative bg-github-canvas-default"
                 style={{ height: FILENAME_HEIGHT }}
             >
                 {fileName}
             </p>
-            <div id={MARKDOWN_ELEMENT_ID} className="relative" />
+            <div id={MARKDOWN_ELEMENT_ID} className="relative -my-4" />
             <div
                 id={SCROLL_INDICATOR}
                 style={{ marginTop: FILENAME_HEIGHT }}

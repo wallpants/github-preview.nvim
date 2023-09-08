@@ -79,8 +79,8 @@ export function getScrollOffsets(): Offsets {
             if (prevElement) {
                 const prevAttrs = getAttrs(prevElement);
                 const prevEleBottom = prevAttrs.offsetTop + prevAttrs.clientHeight;
-                const offsetToExtrapolate = offsetTop - prevEleBottom;
-                perLine = Math.floor(offsetToExtrapolate / (elemStartLine - currLine));
+                const offsetToInterpolate = offsetTop - prevEleBottom;
+                perLine = offsetToInterpolate / (elemStartLine - currLine);
                 acc = prevEleBottom;
             }
 
@@ -95,13 +95,16 @@ export function getScrollOffsets(): Offsets {
             return;
         }
 
-        const perLine = Math.floor(scrollHeight / (elemEndLine - elemStartLine));
         let acc = offsetTop;
-        while (currLine < elemEndLine) {
+        const perLine = scrollHeight / (elemEndLine - elemStartLine);
+        while (currLine <= elemEndLine) {
             sourceLineOffsets[currLine++] = [acc, element];
             acc += perLine;
         }
     });
+
+    // const isCode = elements.length === 1 && elements[0]?.tagName === "CODE";
+    // if (isCode) sourceLineOffsets.shift();
 
     return {
         markdownTopOffset: document.body.offsetHeight - markdownElement.offsetHeight,
