@@ -18,10 +18,12 @@ clipboard.on("success", function (e) {
 function renderCode(origRule: RenderRule): RenderRule {
     return (...args) => {
         const [tokens, idx] = args;
-        const content = tokens[idx].content.replace(/"/g, "&quot;").replace(/'/g, "&lt;");
+        const content = tokens[idx]?.content
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&lt;");
         const origRendered = origRule(...args);
 
-        if (content.length === 0) return origRendered;
+        if (content?.length === 0) return origRendered;
 
         return `
 <div class="copy-button-container">

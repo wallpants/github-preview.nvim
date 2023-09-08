@@ -6,9 +6,7 @@ type Selected = Theme | "system";
 const local = localStorage.getItem("override") as Theme | null;
 
 function getSystemTheme(): Theme {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
 export function ThemePicker() {
@@ -21,7 +19,7 @@ export function ThemePicker() {
     useEffect(() => {
         function handleThemeChange(theme: Theme) {
             const rootHtml = document.getElementsByTagName("html")[0];
-            rootHtml.className = `github-styles ${theme}`;
+            if (rootHtml) rootHtml.className = `github-styles ${theme}`;
         }
 
         handleThemeChange(theme);

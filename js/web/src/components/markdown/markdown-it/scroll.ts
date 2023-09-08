@@ -10,18 +10,14 @@ export type Offsets = {
 
 type Returns = {
     offsetTop: number;
-    clientHeight: number;
     scrollHeight: number;
+    clientHeight: number;
     elemStartLine: number;
     elemEndLine: number | undefined;
-    offsetToExtrapolate: number;
 };
 
-function getAttrs(elements: HTMLElement[], index: number): Returns {
-    const element = elements[index];
-    if (!element) throw Error("invalid element index");
-
-    const { tagName, parentElement, offsetTop, clientHeight, scrollHeight } = element;
+function getAttrs(element: HTMLElement): Returns {
+    const { tagName, parentElement, offsetTop, scrollHeight, clientHeight } = element;
     const startLineAttr = element.getAttribute("data-source-line");
     const endLineAttr = element.getAttribute("data-source-line-end");
 
@@ -33,7 +29,6 @@ function getAttrs(elements: HTMLElement[], index: number): Returns {
         clientHeight,
         elemStartLine: Number(startLineAttr),
         elemEndLine: endLineAttr ? Number(endLineAttr) : undefined,
-        offsetToExtrapolate: 0,
     };
 
     if (tagName === "CODE") {
@@ -41,8 +36,8 @@ function getAttrs(elements: HTMLElement[], index: number): Returns {
         // <code> tags return a scrollHeight of 0 && offsetTop is a bit off
         if (!parentElement) throw Error("<code> element parent not found");
         result.offsetTop = parentElement.offsetTop;
-        result.clientHeight = parentElement.clientHeight;
         result.scrollHeight = parentElement.scrollHeight;
+        result.clientHeight = parentElement.clientHeight;
     }
 
     return result;
@@ -56,11 +51,10 @@ export function getScrollOffsets(): Offsets {
         document.querySelectorAll("[data-source-line]");
     const sourceLineOffsets: [number, HTMLElement][] = [];
 
-    let lastOffset = 0;
     let currLine = 0;
 
     elements.forEach((element, index) => {
-        const { elemStartLine, elemEndLine, scrollHeight, offsetTop } = getAttrs(element);
+        const { elemStartLine, elemEndLine, offsetTop, scrollHeight } = getAttrs(element);
 
         /* sometimes currLine will go past the next element's startLine.
          * this happens when we have something like this:
@@ -78,34 +72,36 @@ export function getScrollOffsets(): Offsets {
         while (currLine > elemStartLine) currLine--;
 
         if (currLine < elemStartLine) {
+            let acc = 0;
+            let perLine = 0;
+
             const prevElement = elements[index - 1];
-            const prevAttrs = prevElement && getAttrs(prevElement);
-            const emptySpace =
-                prevAttrs &&
-                Math.max(0, offsetTop - (prevAttrs.offsetTop + prevAttrs.clientHeight));
-            const perLine = emptySpace ? emptySpace / (elemStartLine - currLine) : 0;
+            if (prevElement) {
+                const prevAttrs = getAttrs(prevElement);
+                const prevEleBottom = prevAttrs.offsetTop + prevAttrs.clientHeight;
+                const offsetToExtrapolate = offsetTop - prevEleBottom;
+                perLine = Math.floor(offsetToExtrapolate / (elemStartLine - currLine));
+                acc = prevEleBottom;
+            }
 
             while (currLine < elemStartLine) {
-                lastOffset += perLine;
-                sourceLineOffsets[currLine++] = [lastOffset, element];
+                sourceLineOffsets[currLine++] = [acc, element];
+                acc += perLine;
             }
         }
 
-        lastOffset = offsetTop;
-
         if (!elemEndLine) {
-            sourceLineOffsets[currLine++] = [lastOffset, element];
+            sourceLineOffsets[currLine++] = [offsetTop, element];
             return;
         }
 
-        const averageOffset = Math.floor(scrollHeight / (elemEndLine - elemStartLine));
+        const perLine = Math.floor(scrollHeight / (elemEndLine - elemStartLine));
+        let acc = offsetTop;
         while (currLine < elemEndLine) {
-            sourceLineOffsets[currLine++] = [lastOffset, element];
-            lastOffset += averageOffset;
+            sourceLineOffsets[currLine++] = [acc, element];
+            acc += perLine;
         }
     });
-
-    // console.log("offsets: ", sourceLineOffsets);
 
     return {
         markdownTopOffset: document.body.offsetHeight - markdownElement.offsetHeight,

@@ -6,7 +6,7 @@ import { type RenderRule } from "markdown-it/lib/renderer";
 import { LOCAL_FILE_ROUTE } from "../../../../../consts";
 
 const resolveHtmlImage: RenderRule = (tokens, idx) => {
-    let content = tokens[idx].content || "";
+    let content = tokens[idx]?.content ?? "";
 
     content = content.replace(
         /<img\s+([^>]*?)src\s*=\s*(["'])([^\2>]+?)\2([^>]*)>/gm,
@@ -24,9 +24,9 @@ const resolveHtmlImage: RenderRule = (tokens, idx) => {
 };
 
 const resolveImage: RenderRule = (tokens, idx) => {
-    const src = tokens[idx].attrs?.[0][1] ?? "";
-    const alt = tokens[idx].content;
-    const resAttrs = tokens[idx].attrs
+    const src = tokens[idx]?.attrs?.[0]?.[1] ?? "";
+    const alt = tokens[idx]?.content;
+    const resAttrs = tokens[idx]?.attrs
         ?.slice(2)
         .reduce((pre, cur) => `${pre} ${cur[0]}=${cur[1]}`, "");
     if (/^(http|\/\/|data:)/.test(src)) {
