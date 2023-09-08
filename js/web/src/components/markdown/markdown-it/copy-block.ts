@@ -24,17 +24,15 @@ function renderCode(origRule: RenderRule): RenderRule {
         if (content.length === 0) return origRendered;
 
         return `
-<div style="position: relative">
-	${origRendered}
-    <div class="copy-button-container">
-        <button class="markdown-it-copy-block" data-clipboard-text="${content}">
-            <svg>
-                <use xlink:href="/copy.svg#copy-svg"></use>
-            </svg>
-        </button>
-        <span class="copied">copied</span>
-    </div>
+<div class="copy-button-container">
+    <button class="markdown-it-copy-block" data-clipboard-text="${content}">
+        <svg>
+            <use xlink:href="/copy.svg#copy-svg"></use>
+        </svg>
+    </button>
+    <span class="copied">copied</span>
 </div>
+${origRendered}
 `;
     };
 }

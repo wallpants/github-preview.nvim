@@ -12,8 +12,6 @@ export const Markdown = ({ className }: { className?: string }) => {
 
     const fileName = getFileName(state.current?.currentPath);
 
-    console.log("rerender");
-
     return (
         <Container className={cn(className, "!p-0")}>
             <p
@@ -22,11 +20,11 @@ export const Markdown = ({ className }: { className?: string }) => {
             >
                 {fileName}
             </p>
-            <div id={MARKDOWN_ELEMENT_ID} />
+            <div id={MARKDOWN_ELEMENT_ID} className="relative" />
             <div
                 id={SCROLL_INDICATOR}
                 style={{ marginTop: FILENAME_HEIGHT }}
-                className="absolute pointer-events-none z-0 w-full h-20 -translate-y-5 bg-orange-500/20"
+                className="absolute pointer-events-none z-0 w-full h-20 -translate-y-6 bg-orange-500/20"
             />
         </Container>
     );

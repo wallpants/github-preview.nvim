@@ -37,7 +37,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
     const state = useRef<Partial<BrowserState>>({});
     const offsets = useRef<{
         markdownTopOffset: number;
-        sourceLineOffsets: number[];
+        sourceLineOffsets: [number, HTMLElement][];
     } | null>(null);
     const [tick, setTick] = useState(0);
     const [isConnected, setIsConnected] = useState(false);

@@ -25,8 +25,6 @@ export const Explorer = () => {
         return parent;
     }, [state]);
 
-    console.log("rerender");
-
     const [username, repo] = state.current?.repoName?.split("/") ?? "";
 
     return (
