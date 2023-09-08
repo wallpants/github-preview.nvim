@@ -8,6 +8,46 @@ export type Offsets = {
     sourceLineOffsets: [number, HTMLElement][];
 };
 
+type Returns = {
+    offsetTop: number;
+    clientHeight: number;
+    scrollHeight: number;
+    elemStartLine: number;
+    elemEndLine: number | undefined;
+    offsetToExtrapolate: number;
+};
+
+function getAttrs(elements: HTMLElement[], index: number): Returns {
+    const element = elements[index];
+    if (!element) throw Error("invalid element index");
+
+    const { tagName, parentElement, offsetTop, clientHeight, scrollHeight } = element;
+    const startLineAttr = element.getAttribute("data-source-line");
+    const endLineAttr = element.getAttribute("data-source-line-end");
+
+    if (!startLineAttr) throw Error("startLineAttr missing");
+
+    const result: Returns = {
+        offsetTop,
+        scrollHeight,
+        clientHeight,
+        elemStartLine: Number(startLineAttr),
+        elemEndLine: endLineAttr ? Number(endLineAttr) : undefined,
+        offsetToExtrapolate: 0,
+    };
+
+    if (tagName === "CODE") {
+        // we get the data from the <pre> tag surrounding the <code>
+        // <code> tags return a scrollHeight of 0 && offsetTop is a bit off
+        if (!parentElement) throw Error("<code> element parent not found");
+        result.offsetTop = parentElement.offsetTop;
+        result.clientHeight = parentElement.clientHeight;
+        result.scrollHeight = parentElement.scrollHeight;
+    }
+
+    return result;
+}
+
 export function getScrollOffsets(): Offsets {
     const markdownElement = document.getElementById(MARKDOWN_ELEMENT_ID);
     if (!markdownElement) throw Error("markdownElement missing");
@@ -20,11 +60,7 @@ export function getScrollOffsets(): Offsets {
     let currLine = 0;
 
     elements.forEach((element, index) => {
-        console.log("-----------------------------------------------");
-        console.log("element: ", element);
-        const elemStartAttr = element.getAttribute("data-source-line");
-        if (!elemStartAttr) return;
-        const elemStartLine = Number(elemStartAttr);
+        const { elemStartLine, elemEndLine, scrollHeight, offsetTop } = getAttrs(element);
 
         /* sometimes currLine will go past the next element's startLine.
          * this happens when we have something like this:
@@ -43,56 +79,33 @@ export function getScrollOffsets(): Offsets {
 
         if (currLine < elemStartLine) {
             const prevElement = elements[index - 1];
+            const prevAttrs = prevElement && getAttrs(prevElement);
             const emptySpace =
-                prevElement &&
-                Math.max(
-                    0,
-                    element.offsetTop -
-                        (prevElement.offsetTop + prevElement.clientHeight),
-                );
+                prevAttrs &&
+                Math.max(0, offsetTop - (prevAttrs.offsetTop + prevAttrs.clientHeight));
             const perLine = emptySpace ? emptySpace / (elemStartLine - currLine) : 0;
 
             while (currLine < elemStartLine) {
                 lastOffset += perLine;
-                // console.log("first while");
-                // console.log("line: ", currLine);
-                // console.log("offsetTop: ", last);
-                // console.log("------------------");
                 sourceLineOffsets[currLine++] = [lastOffset, element];
             }
         }
 
-        lastOffset = element.offsetTop;
+        lastOffset = offsetTop;
 
-        const elemEndAttr = element.getAttribute("data-source-line-end");
-        if (!elemEndAttr) {
-            // console.log("no elemEndAttr");
-            // console.log("line: ", currLine);
-            // console.log("offsetTop: ", last);
-            // console.log("------------------");
+        if (!elemEndLine) {
             sourceLineOffsets[currLine++] = [lastOffset, element];
             return;
         }
-        const elemEndLine = Number(elemEndAttr);
-
-        // <code> tags return a scrollHeight of 0
-        const scrollHeight =
-            element.tagName === "CODE"
-                ? element.parentElement?.scrollHeight
-                : element.scrollHeight;
-        if (scrollHeight === undefined)
-            throw Error("scrollHeight could not be determined");
 
         const averageOffset = Math.floor(scrollHeight / (elemEndLine - elemStartLine));
         while (currLine < elemEndLine) {
-            console.log("last while");
-            console.log("line: ", currLine);
-            console.log("offsetTop: ", lastOffset);
-            console.log("------------------");
             sourceLineOffsets[currLine++] = [lastOffset, element];
             lastOffset += averageOffset;
         }
     });
+
+    // console.log("offsets: ", sourceLineOffsets);
 
     return {
         markdownTopOffset: document.body.offsetHeight - markdownElement.offsetHeight,

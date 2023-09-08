@@ -23,6 +23,7 @@ asdf
 -   [x] why isn't vite automagically loading .env.dev file?
 -   [x] fix scroll so it doesn't take explorer into consideration when calculating offset
 -   [] scroll doesn't work with code files (non .md)
+-   [] current path shouldn't be required in WsServerMessage
 -   [] add bottom margin to allow scrolling when markdown content too short
 -   [] github renders html within markdown [see here](https://github.com/microsoft/vscode-extension-samples), **VS Code Extension Samples** doesn't render well in github-preview
 
