@@ -5,12 +5,12 @@ import { ThemePicker } from "../theme-select";
 import { EntryComponent } from "./entry";
 
 export const Explorer = () => {
-    const { navigate, root, currentPath, repoName, entries } = useContext(websocketContext);
+    const { navigate, state } = useContext(websocketContext);
 
     const parent = useMemo(() => {
-        if (!root || !currentPath) return;
+        if (!state.current?.root || !state.current.currentPath) return;
 
-        const relative = currentPath.slice(root.length);
+        const relative = state.current.currentPath.slice(state.current.root.length);
         const segments = relative.split("/");
 
         if (segments.length <= 1) return;
@@ -18,14 +18,16 @@ export const Explorer = () => {
         segments.pop();
         segments.pop();
 
-        let parent = root + segments.join("/");
+        let parent = state.current.root + segments.join("/");
 
         // parent is always a dir, must end with "/"
         if (!parent.endsWith("/")) parent += "/";
         return parent;
-    }, [root, currentPath]);
+    }, [state]);
 
-    const [username, repo] = repoName?.split("/") ?? "";
+    console.log("rerender");
+
+    const [username, repo] = state.current?.repoName?.split("/") ?? "";
 
     return (
         <div>
@@ -42,8 +44,10 @@ export const Explorer = () => {
                 </div>
             </Container>
             <Container>
-                {parent && <EntryComponent absPath={parent} navigate={navigate} isParent />}
-                {entries?.map((entry) => (
+                {parent && (
+                    <EntryComponent absPath={parent} navigate={navigate} isParent />
+                )}
+                {state.current?.entries?.map((entry) => (
                     <EntryComponent key={entry} absPath={entry} navigate={navigate} />
                 ))}
             </Container>

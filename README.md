@@ -52,7 +52,7 @@ const starryNight = await createStarryNight(common, {
 });
 ```
 
-and we cna type
+and we can type and this thing doesn't rerender
 
 ## Vite Development
 

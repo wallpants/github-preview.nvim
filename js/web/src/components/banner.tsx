@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const Banner = ({ className }: Props) => {
-    const { status } = useContext(websocketContext);
+    const { isConnected } = useContext(websocketContext);
 
     return (
         <Container
@@ -21,7 +21,7 @@ export const Banner = ({ className }: Props) => {
         >
             <div className="absolute inset-0 flex items-center bg-github-attention-subtle px-4">
                 <span className="mr-2 font-semibold">Banner</span>
-                {status}
+                {isConnected ? "connected" : "trying to connect"}
             </div>
         </Container>
     );

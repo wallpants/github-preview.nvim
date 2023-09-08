@@ -8,9 +8,11 @@ import { SCROLL_INDICATOR } from "./markdown-it/scroll";
 const FILENAME_HEIGHT = 52;
 
 export const Markdown = ({ className }: { className?: string }) => {
-    const { currentPath } = useContext(websocketContext);
+    const { state } = useContext(websocketContext);
 
-    const fileName = getFileName(currentPath);
+    const fileName = getFileName(state.current?.currentPath);
+
+    console.log("rerender");
 
     return (
         <Container className={cn(className, "!p-0")}>
@@ -24,7 +26,7 @@ export const Markdown = ({ className }: { className?: string }) => {
             <div
                 id={SCROLL_INDICATOR}
                 style={{ marginTop: FILENAME_HEIGHT }}
-                className="absolute pointer-events-none z-0 w-full h-20 -translate-y-9 bg-orange-500/20"
+                className="absolute pointer-events-none z-0 w-full h-20 -translate-y-5 bg-orange-500/20"
             />
         </Container>
     );
