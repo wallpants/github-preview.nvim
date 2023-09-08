@@ -8,10 +8,10 @@ export const websocketContext = createContext<{
     isConnected: boolean;
     navigate: (path: string) => void;
     state: RefObject<Partial<BrowserState>>;
-    tick: number;
+    tick: boolean;
 }>({
     isConnected: false,
     navigate: () => null,
     state: createRef(),
-    tick: 0,
+    tick: false,
 });

@@ -16,47 +16,83 @@ export function getScrollOffsets(): Offsets {
         document.querySelectorAll("[data-source-line]");
     const sourceLineOffsets: [number, HTMLElement][] = [];
 
-    let last = 0;
+    let lastOffset = 0;
     let currLine = 0;
 
-    elements.forEach((element) => {
+    elements.forEach((element, index) => {
+        console.log("-----------------------------------------------");
         console.log("element: ", element);
         const elemStartAttr = element.getAttribute("data-source-line");
         if (!elemStartAttr) return;
         const elemStartLine = Number(elemStartAttr);
 
-        while (currLine <= elemStartLine) {
-            console.log("line: ", currLine);
-            console.log("offsetTop: ", last);
-            sourceLineOffsets[currLine++] = [last, element];
+        /* sometimes currLine will go past the next element's startLine.
+         * this happens when we have something like this:
+         *
+         * <li data-source-line="14" data-source-line-end="16">
+         *      Hello from list item
+         *      <ul>
+         *          <li data-source-line="15">hello from nested list item</li>
+         *      </ul>
+         * </li>
+         *
+         * when processing the outer <li>, currLine will go up to 16,
+         * and then when we process the inner <li>, currLine will
+         * be greater than currLine */
+        while (currLine > elemStartLine) currLine--;
+
+        if (currLine < elemStartLine) {
+            const prevElement = elements[index - 1];
+            const emptySpace =
+                prevElement &&
+                Math.max(
+                    0,
+                    element.offsetTop -
+                        (prevElement.offsetTop + prevElement.clientHeight),
+                );
+            const perLine = emptySpace ? emptySpace / (elemStartLine - currLine) : 0;
+
+            while (currLine < elemStartLine) {
+                lastOffset += perLine;
+                // console.log("first while");
+                // console.log("line: ", currLine);
+                // console.log("offsetTop: ", last);
+                // console.log("------------------");
+                sourceLineOffsets[currLine++] = [lastOffset, element];
+            }
         }
+
+        lastOffset = element.offsetTop;
 
         const elemEndAttr = element.getAttribute("data-source-line-end");
         if (!elemEndAttr) {
-            sourceLineOffsets[currLine++] = [element.offsetTop, element];
-            last = element.offsetTop;
+            // console.log("no elemEndAttr");
+            // console.log("line: ", currLine);
+            // console.log("offsetTop: ", last);
+            // console.log("------------------");
+            sourceLineOffsets[currLine++] = [lastOffset, element];
             return;
         }
         const elemEndLine = Number(elemEndAttr);
 
-        // TODO(gualcasas) test if this is still true
         // <code> tags return a scrollHeight of 0
         const scrollHeight =
             element.tagName === "CODE"
                 ? element.parentElement?.scrollHeight
                 : element.scrollHeight;
-        if (scrollHeight === undefined) return;
+        if (scrollHeight === undefined)
+            throw Error("scrollHeight could not be determined");
 
         const averageOffset = Math.floor(scrollHeight / (elemEndLine - elemStartLine));
         while (currLine < elemEndLine) {
-            last += averageOffset;
+            console.log("last while");
             console.log("line: ", currLine);
-            console.log("offsetTop: ", last);
-            sourceLineOffsets[currLine++] = [last, element];
+            console.log("offsetTop: ", lastOffset);
+            console.log("------------------");
+            sourceLineOffsets[currLine++] = [lastOffset, element];
+            lastOffset += averageOffset;
         }
     });
-
-    // console.log("offsets: ", sourceLineOffsets);
 
     return {
         markdownTopOffset: document.body.offsetHeight - markdownElement.offsetHeight,
@@ -64,17 +100,13 @@ export function getScrollOffsets(): Offsets {
     };
 }
 
-export function scroll(
-    { cursor_line }: CursorMove,
-    { markdownTopOffset, sourceLineOffsets }: Offsets,
-) {
-    let offset = sourceLineOffsets[cursor_line];
-    // eslint-disable-next-line
-    while (offset === undefined) {
-        offset = sourceLineOffsets[--cursor_line];
-    }
+export function scroll({ cursor_line }: CursorMove, { sourceLineOffsets }: Offsets) {
+    const offset = sourceLineOffsets[cursor_line];
     const element = document.getElementById(SCROLL_INDICATOR);
-    if (element) element.style.setProperty("top", `${offset[0]}px`);
+    if (element) {
+        if (!offset) throw Error(`offset for line ${cursor_line} missing`);
+        element.style.setProperty("top", `${offset[0]}px`);
+    }
 
-    window.scrollTo({ top: offset[0] + markdownTopOffset, behavior: "smooth" });
+    // window.scrollTo({ top: offset[0] + markdownTopOffset, behavior: "smooth" });
 }

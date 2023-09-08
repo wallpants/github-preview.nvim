@@ -4,6 +4,7 @@
     "es2020": true
   },
   "extends": [
+    "../../.eslintrc.json",
     "plugin:react-hooks/recommended",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime"
@@ -14,9 +15,6 @@
   "plugins": ["react-refresh"],
   "ignorePatterns": ["dist", "postcss.config.cjs", "vite.config.ts"],
   "rules": {
-    "react-refresh/only-export-components": [
-      "warn",
-      { "allowConstantExport": true }
-    ]
+    "react-refresh/only-export-components": ["warn", { "allowConstantExport": true }]
   }
 }

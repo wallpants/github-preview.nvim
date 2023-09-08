@@ -39,7 +39,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
         markdownTopOffset: number;
         sourceLineOffsets: [number, HTMLElement][];
     } | null>(null);
-    const [tick, setTick] = useState(0);
+    const [tick, setTick] = useState(false);
     const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
@@ -87,7 +87,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
             if (currentPath) {
                 if (state.current.currentPath !== currentPath) {
                     state.current.currentPath = currentPath;
-                    setTick((tick) => tick + 1);
+                    setTick((tick) => !tick);
                 }
 
                 if (!state.current.root) throw Error("root missing");

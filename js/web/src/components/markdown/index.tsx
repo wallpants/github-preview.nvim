@@ -24,7 +24,7 @@ export const Markdown = ({ className }: { className?: string }) => {
             <div
                 id={SCROLL_INDICATOR}
                 style={{ marginTop: FILENAME_HEIGHT }}
-                className="absolute pointer-events-none z-0 w-full h-20 -translate-y-6 bg-orange-500/20"
+                className="absolute pointer-events-none z-0 w-full h-10 bg-orange-500/20"
             />
         </Container>
     );
