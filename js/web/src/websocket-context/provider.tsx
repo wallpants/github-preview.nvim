@@ -117,7 +117,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 } else {
                     markdownElement.style.setProperty("padding", "0px");
                     // remove margin-bottom added by github-styles if rendering only code
-                    // markdownElement.style.setProperty("margin-bottom", "-16px");
+                    markdownElement.style.setProperty("margin-bottom", "-16px");
                 }
 
                 markdownElement.innerHTML = markdownToHtml(markdown);

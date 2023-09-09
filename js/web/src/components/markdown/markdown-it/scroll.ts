@@ -52,6 +52,7 @@ export function getScrollOffsets(): Offsets {
     const sourceLineOffsets: [number, HTMLElement][] = [];
 
     let currLine = 0;
+    const isCode = elements.length === 1 && elements[0]?.tagName === "CODE";
 
     elements.forEach((element, index) => {
         const { elemStartLine, elemEndLine, offsetTop, scrollHeight } = getAttrs(element);
@@ -95,16 +96,29 @@ export function getScrollOffsets(): Offsets {
             return;
         }
 
+        let height = scrollHeight;
+
+        if (isCode) {
+            // is rendering code only, the margin messes up with
+            // the offset calculations
+            height -= 18;
+        }
+
+        const perLine = height / (elemEndLine - elemStartLine);
+
         let acc = offsetTop;
-        const perLine = scrollHeight / (elemEndLine - elemStartLine);
         while (currLine <= elemEndLine) {
             sourceLineOffsets[currLine++] = [acc, element];
             acc += perLine;
         }
     });
 
-    // const isCode = elements.length === 1 && elements[0]?.tagName === "CODE";
-    // if (isCode) sourceLineOffsets.shift();
+    if (isCode) {
+        //     // remove the fence line
+        //     // ```ts    <= we remove that line
+        //     endLine--;
+        sourceLineOffsets.shift();
+    }
 
     return {
         markdownTopOffset: document.body.offsetHeight - markdownElement.offsetHeight,

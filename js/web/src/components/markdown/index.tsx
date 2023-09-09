@@ -5,8 +5,6 @@ import { MARKDOWN_ELEMENT_ID } from "../../websocket-context/provider";
 import { Container } from "../container";
 import { SCROLL_INDICATOR } from "./markdown-it/scroll";
 
-const FILENAME_HEIGHT = 52;
-
 export const Markdown = () => {
     const { state } = useContext(websocketContext);
 
@@ -14,16 +12,12 @@ export const Markdown = () => {
 
     return (
         <Container>
-            <p
-                className="!mb-0 p-4 text-sm font-semibold z-20 relative bg-github-canvas-default"
-                style={{ height: FILENAME_HEIGHT }}
-            >
+            <p className="!mb-0 p-4 text-sm font-semibold z-20 relative bg-github-canvas-default">
                 {fileName}
             </p>
-            <div id={MARKDOWN_ELEMENT_ID} className="relative -my-4" />
+            <div id={MARKDOWN_ELEMENT_ID} className="-mt-9" />
             <div
                 id={SCROLL_INDICATOR}
-                style={{ marginTop: FILENAME_HEIGHT }}
                 className="absolute pointer-events-none z-0 w-full h-10 bg-orange-500/20"
             />
         </Container>
