@@ -7,17 +7,20 @@
   "scripts": {
     "vi": "nvim",
     "clean:neovim-bridge": "cd typescript/neovim-bridge && bun clean",
+    "clean:server": "cd typescript/server && bun clean",
     "clean:shared": "cd typescript/shared && bun clean",
-    "clean": "rm -rf node_modules && bun clean:neovim-bridge && bun clean:shared",
+    "clean": "rm -rf node_modules && bun clean:neovim-bridge && bun clean:server && bun clean:shared",
     "format:neovim-bridge": "cd typescript/neovim-bridge && bun format",
+    "format:server": "cd typescript/server && bun format",
     "format:shared": "cd typescript/shared && bun format",
-    "format": "bun format:neovim-bridge && bun format:shared",
+    "format": "bun format:neovim-bridge && bun format:server && bun format:shared",
     "lint:neovim-bridge": "cd typescript/neovim-bridge && bun lint",
+    "lint:server": "cd typescript/server && bun lint",
     "lint:shared": "cd typescript/shared && bun lint",
-    "lint": "bun lint:neovim-bridge && bun lint:shared",
+    "lint": "bun lint:neovim-bridge && bun lint:server && bun lint:shared",
     "build:neovim-bridge": "cd typescript/neovim-bridge && bun run build",
-    "build:shared": "cd typescript/shared && bun run build",
-    "build": "bun build:neovim-bridge"
+    "build:server": "cd typescript/server && bun run build",
+    "build": "bun build:neovim-bridge && bun build:server"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.3.0",

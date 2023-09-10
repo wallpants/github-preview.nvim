@@ -1,9 +1,10 @@
 {
   "name": "@gc/neovim-bridge",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "clean": "rm -rf node_modules && rm -rf dist",
-    "format": "prettier src -w",
+    "format": "prettier **.ts -w",
     "lint": "eslint src --ext ts --report-unused-disable-directives --max-warnings 0",
     "dev": "bun --hot run src/index.ts",
     "build": "rm -rf dist && bun build src/index.ts --outdir dist --target node --minify --external neovim"

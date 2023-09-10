@@ -1,9 +1,10 @@
 {
   "name": "@gc/shared",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "clean": "rm -rf node_modules",
-    "format": "prettier *.ts -w",
+    "format": "prettier **.ts -w",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0"
   }
 }
