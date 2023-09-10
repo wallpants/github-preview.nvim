@@ -8,10 +8,10 @@
   },
   "extends": [
     "eslint:recommended",
+    "plugin:import/recommended",
     "plugin:@typescript-eslint/strict-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked"
   ],
-  "plugins": ["import"],
   "ignorePatterns": ["dist"],
   "rules": {
     "@typescript-eslint/consistent-type-definitions": ["error", "type"],
