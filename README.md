@@ -2,6 +2,8 @@ asdf
 
 # my name is casas medina
 
+-   [] send goodbye messsage from browser when closing tab to close server
+-   [] in neovim bridge check if unix server is running before starting a new one
 -   [] add winston back
 -   [] when running the plugin with no buffers open (searching for readme.md), readme.md is rendered as code and not as markdown
 -   [] after refreshing browser everything's fucked up
