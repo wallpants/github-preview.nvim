@@ -25,7 +25,7 @@ export type BrowserState = {
     entries: string[];
     currentPath: string;
     content: null | string;
-    syncScrollEnabled: boolean;
+    disableSyncScroll: boolean;
 };
 
 export type WsServerMessage = Partial<BrowserState> & {
