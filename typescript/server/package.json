@@ -6,8 +6,8 @@
     "clean": "rm -rf node_modules && rm -rf dist",
     "format": "prettier **.ts -w",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
-    "dev": "bun --hot run src/index.ts",
-    "build": "rm -rf dist && bun build src/index.ts --outdir dist --target node --minify"
+    "dev": "bun --watch run src/index.ts",
+    "start": "NODE_ENV=production; bun run src/index.ts"
   },
   "dependencies": {
     "globby": "^13.2.2",

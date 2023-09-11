@@ -33,6 +33,6 @@ export async function onContentChange(
         message.entries = browserState.entries;
     }
 
-    logger.verbose("content-change", { message });
+    logger.verbose("content-change", message);
     unixSocket.data?.webServer?.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 }

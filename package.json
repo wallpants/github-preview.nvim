@@ -23,11 +23,7 @@
     "lint:server": "cd typescript/server && bun lint",
     "lint:shared": "cd typescript/shared && bun lint",
     "lint:web": "cd typescript/web && bun lint",
-    "lint": "bun lint:neovim-bridge && bun lint:server && bun lint:shared && bun lint:web",
-    "build:neovim-bridge": "cd typescript/neovim-bridge && bun run build",
-    "build:server": "cd typescript/server && bun run build",
-    "build:web": "cd typescript/web && bun run build",
-    "build": "bun build:neovim-bridge && bun build:server && bun build:web"
+    "lint": "bun lint:neovim-bridge && bun lint:server && bun lint:shared && bun lint:web"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.3.0",

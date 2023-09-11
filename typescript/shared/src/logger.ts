@@ -15,14 +15,14 @@ export function createLogger(streamPath: string | undefined) {
     return winston.createLogger({
         level: ENV.GP_LOG_LEVEL ?? "verbose",
         transports: [
-            // new winston.transports.Stream({
-            //     stream,
-            //     format: winston.format.combine(
-            //         winston.format.colorize(),
-            //         winston.format.timestamp({ format: "HH:mm:ss" }),
-            //         winston.format.printf((info) => `${info.level} ${info["timestamp"]}`),
-            //     ),
-            // }),
+            new winston.transports.Stream({
+                stream,
+                format: winston.format.combine(
+                    winston.format.colorize(),
+                    winston.format.timestamp({ format: "HH:mm:ss" }),
+                    winston.format.printf((info) => `${info.level} ${info["timestamp"]}`),
+                ),
+            }),
             new winston.transports.Stream({
                 stream,
                 format: winston.format.combine(

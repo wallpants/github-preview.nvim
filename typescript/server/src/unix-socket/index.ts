@@ -5,6 +5,7 @@ import { onCursorMove } from "./on-cursor-move";
 import { onInit } from "./on-init";
 import { type UnixSocketMetadata } from "./types";
 
+// TODO(gualcasas): close webserver when unix socket disconnects
 export function startUnixSocket() {
     logger.verbose("starting unix socket");
 
@@ -13,13 +14,12 @@ export function startUnixSocket() {
         socket: {
             async data(unixSocket, rawEvent) {
                 const event = JSON.parse(rawEvent.toString()) as SocketEvent;
-                logger.verbose({ event });
+                logger.verbose("unixSocket event received", event);
 
                 if (event.type === "github-preview-init") await onInit(unixSocket, event.data);
 
                 const browserState = unixSocket.data?.browserState;
                 if (!browserState) return;
-                logger.verbose({ browserState });
 
                 if (event.type === "github-preview-cursor-move")
                     await onCursorMove(unixSocket, event.data);

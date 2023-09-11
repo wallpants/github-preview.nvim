@@ -33,6 +33,6 @@ export async function onCursorMove(unixSocket: Socket<UnixSocketMetadata>, curso
         message.content = browserState.content;
     }
 
-    logger.verbose("content-change", { message });
+    logger.verbose("content-change", message);
     unixSocket.data?.webServer?.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 }

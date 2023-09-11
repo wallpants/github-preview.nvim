@@ -106,7 +106,7 @@ M.setup = function(opts)
 		local plugin_root = vim.fn.fnamemodify(__filename, ":p:h:h:h") .. "/"
 
 		local is_dev = os.getenv("VITE_GP_WS_PORT") and true or false
-		local cmd = is_dev and "bun dev" or "node dist/index.js"
+		local cmd = is_dev and "bun dev" or "bun start"
 
 		vim.fn.jobstart(cmd, {
 			cwd = plugin_root .. "typescript/neovim-bridge",
