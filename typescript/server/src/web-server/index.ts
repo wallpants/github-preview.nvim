@@ -14,6 +14,7 @@ export function startWebServer(
 ): Server {
     const browserState = unixSocket.data?.browserState;
     if (!browserState) throw Error("browserState missing");
+
     logger.verbose("starting http server", { init });
     logger.verbose("browserState: ", { browserState });
 

@@ -2,6 +2,27 @@ asdf
 
 # my name is casas medina
 
+-   [] according to logs, there's a content-change event that's being received by the server on cursor move
+
+```sh
+verbose 14:54:39
+{ type: 'github-preview-cursor-move',
+  data:
+   { cursor_line: 4,
+     abs_path: '/Users/gualcasas/Projects/nvim-plugins/github-preview.nvim/README.md' },
+  level: 'verbose',
+  message: 'unixSocket event received' }
+verbose 14:54:39
+{ currentPath: '/Users/gualcasas/Projects/nvim-plugins/github-preview.nvim/README.md',
+  cursorMoveLine: 4,
+  level: 'verbose',
+  message: 'content-change' }
+```
+
+-   [] scroll indicator does not go up to the first line on readme.md
+-   [] do not use vite js api, go back to serve-handler, it's boots way faster
+-   [] do use vite js api for dev
+-   [] update @gp/shared package.json export's to bun, now that we're staying with bun
 -   [] send goodbye messsage from browser when closing tab to close server
 -   [] in neovim bridge check if unix server is running before starting a new one
 -   [] add winston back

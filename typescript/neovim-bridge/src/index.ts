@@ -22,28 +22,35 @@ if (!ENV.NVIM) {
     throw Error("missing NVIM socket");
 }
 
-if (ENV.IS_DEV) {
-    Bun.spawn(["bun", "dev"], {
-        cwd: normalize(`${import.meta.dir}/../../server`),
-        stdio: [null, null, null],
-    });
-} else {
-    Bun.spawn(["bun", "start"], {
-        cwd: normalize(`${import.meta.dir}/../../server`),
-        stdio: [null, null, null],
-    });
-}
-
 const nvim = attach({ socket: ENV.NVIM });
 const init = (await nvim.getVar("github_preview_init")) as PluginInit;
 
 let client: Socket | undefined;
 
 const MAX_ATTEMPTS = 20;
-let attempt = 0;
+let attempt = 1;
+let serverInitialized = false;
 
-while (attempt < MAX_ATTEMPTS && (!client || ["closing", "closed"].includes(client.readyState))) {
+function initializeServer() {
+    if (ENV.IS_DEV) {
+        Bun.spawn(["bun", "dev"], {
+            cwd: normalize(`${import.meta.dir}/../../server`),
+            stdio: [null, null, null],
+        });
+    } else {
+        Bun.spawn(["bun", "start"], {
+            cwd: normalize(`${import.meta.dir}/../../server`),
+            stdio: [null, null, null],
+        });
+    }
+}
+
+while (attempt <= MAX_ATTEMPTS && (!client || ["closing", "closed"].includes(client.readyState))) {
     try {
+        /* Attempt to connect to server.
+         * The server may be either uninitialized OR
+         * initialized by a previous lauch of github-preview
+         */
         logger.verbose(`attempting to connect # ${attempt++}/${MAX_ATTEMPTS}`);
         client = await Bun.connect({
             unix: GP_UNIX_SOCKET_PATH,
@@ -55,9 +62,10 @@ while (attempt < MAX_ATTEMPTS && (!client || ["closing", "closed"].includes(clie
 
                     for (const event of EVENT_NAMES) await nvim.subscribe(event);
 
-                    // nvim notifications are forwarded as they are.
-                    // It so happens that nvim notification names match
-                    // the server's notification names and payload structure
+                    /* nvim notifications are forwarded as they are.
+                     * It so happens that nvim notification names match
+                     * the server's notification names and payload structure
+                     */
                     nvim.on("notification", (event: string, [arg]: unknown[]) => {
                         socket.write(JSON.stringify({ type: event, data: arg }));
                     });
@@ -70,8 +78,14 @@ while (attempt < MAX_ATTEMPTS && (!client || ["closing", "closed"].includes(clie
                 },
             },
         });
+        serverInitialized = true;
     } catch (err) {
         logger.verbose("failed to connect");
+        if (!serverInitialized) {
+            logger.verbose("starting server");
+            initializeServer();
+            serverInitialized = true;
+        }
         await Bun.sleep(100);
     }
 }

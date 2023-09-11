@@ -1,12 +1,19 @@
 import { ENV, PluginInitSchema, type PluginInit } from "@gp/shared";
 import { type Socket } from "bun";
+import opener from "opener";
 import { parse } from "valibot";
 import { getContent, getEntries, getRepoName } from "../utils";
 import { startWebServer } from "../web-server";
 import { type UnixSocketMetadata } from "./types";
 
-export async function onInit(unixSocket: Socket<UnixSocketMetadata>, init: PluginInit) {
-    ENV.IS_DEV && parse(PluginInitSchema, init);
+let PORT: number | undefined;
+
+export async function onInit(unixSocket: Socket<UnixSocketMetadata>, _init: PluginInit) {
+    ENV.IS_DEV && parse(PluginInitSchema, _init);
+
+    // We start a new httpServer per unixSocket connection and increment port
+    if (!PORT) PORT = _init.port;
+    const init: PluginInit = { ..._init, port: PORT++ };
 
     const entries = await getEntries({
         root: init.root,
@@ -25,6 +32,8 @@ export async function onInit(unixSocket: Socket<UnixSocketMetadata>, init: Plugi
     };
 
     unixSocket.data.webServer = startWebServer(init, unixSocket);
+    if (!ENV.IS_DEV) opener(`http://localhost:${init.port}`);
+
     // const wsServer = new WebSocketServer({ server: httpServer });
     // wsServer.on("connection", onWssConnection({ ipc, init }));
 
