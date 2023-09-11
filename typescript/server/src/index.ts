@@ -6,13 +6,9 @@ import {
     type WsServerMessage,
 } from "@gp/shared";
 import { parse } from "valibot";
-import {
-    EDITOR_EVENTS_TOPIC,
-    createHttpServer,
-    type UnixSocketMetadata,
-} from "./create-http-server";
 import { ENV } from "./env";
 import { getContent, getEntries, getRepoName } from "./utils";
+import { EDITOR_EVENTS_TOPIC, createWebServer, type UnixSocketMetadata } from "./web-server";
 
 Bun.listen<UnixSocketMetadata | undefined>({
     unix: GP_UNIX_SOCKET_PATH,
@@ -31,7 +27,7 @@ Bun.listen<UnixSocketMetadata | undefined>({
                 });
 
                 unixSocket.data = {
-                    webServer: createHttpServer(init, unixSocket),
+                    webServer: createWebServer(init, unixSocket),
                     browserState: {
                         root: init.root,
                         repoName: getRepoName({ root: init.root }),
