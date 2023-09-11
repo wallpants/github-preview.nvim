@@ -1,3 +1,4 @@
+export const LOCAL_FILE_ROUTE = "";
 export const EVENT_NAMES = [
     "github-preview-init",
     "github-preview-cursor-move",
