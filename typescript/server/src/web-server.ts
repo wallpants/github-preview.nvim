@@ -10,7 +10,7 @@ import { getContent, getEntries } from "./utils";
 
 export type UnixSocketMetadata = {
     browserState: BrowserState;
-    webServer: Server;
+    webServer?: Server;
 };
 
 export const EDITOR_EVENTS_TOPIC = "editor-events";
@@ -20,10 +20,9 @@ export function createWebServer(
     unixSocket: Socket<UnixSocketMetadata | undefined>,
 ): Server {
     const browserState = unixSocket.data?.browserState;
+    if (!browserState) throw Error("browserState missing");
     console.debug("starting http server", init);
     console.log("browserState: ", browserState);
-
-    if (!browserState) throw Error("browserState missing");
 
     return Bun.serve({
         port: init.port,

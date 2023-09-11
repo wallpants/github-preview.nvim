@@ -17,7 +17,7 @@ Bun.listen<UnixSocketMetadata | undefined>({
             const event = JSON.parse(rawEvent.toString()) as SocketEvent;
             console.debug(event);
 
-            if (event.type === "init") {
+            if (event.type === "github-preview-init") {
                 const init = event.data;
                 ENV.IS_DEV && parse(PluginInitSchema, init);
 
@@ -27,7 +27,6 @@ Bun.listen<UnixSocketMetadata | undefined>({
                 });
 
                 unixSocket.data = {
-                    webServer: createWebServer(init, unixSocket),
                     browserState: {
                         root: init.root,
                         repoName: getRepoName({ root: init.root }),
@@ -37,6 +36,8 @@ Bun.listen<UnixSocketMetadata | undefined>({
                         disableSyncScroll: init.disable_sync_scroll,
                     },
                 };
+
+                unixSocket.data.webServer = createWebServer(init, unixSocket);
 
                 // const wsServer = new WebSocketServer({ server: httpServer });
                 // wsServer.on("connection", onWssConnection({ ipc, init }));
@@ -49,13 +50,14 @@ Bun.listen<UnixSocketMetadata | undefined>({
                 // });
             }
 
-            if (!unixSocket.data) return;
+            const browserState = unixSocket.data?.browserState;
+            if (!browserState) return;
 
-            function wsSend(w: WsServerMessage) {
-                unixSocket.data?.webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(w));
+            function wsSend(m: WsServerMessage) {
+                unixSocket.data?.webServer?.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(m));
             }
 
-            if (event.type === "cursor-move") {
+            if (event.type === "github-preview-cursor-move") {
                 const cursorMove = event.data;
                 ENV.IS_DEV && parse(CursorMoveSchema, cursorMove);
 
@@ -63,19 +65,19 @@ Bun.listen<UnixSocketMetadata | undefined>({
                     currentPath: cursorMove.abs_path,
                 };
 
-                if (unixSocket.data.browserState.currentPath !== cursorMove.abs_path) {
-                    unixSocket.data.browserState.currentPath = cursorMove.abs_path;
-                    unixSocket.data.browserState.entries = await getEntries({
-                        root: unixSocket.data.browserState.root,
+                if (browserState.currentPath !== cursorMove.abs_path) {
+                    browserState.currentPath = cursorMove.abs_path;
+                    browserState.entries = await getEntries({
+                        root: browserState.root,
                         currentPath: cursorMove.abs_path,
                     });
-                    unixSocket.data.browserState.content = getContent({
-                        entries: unixSocket.data.browserState.entries,
+                    browserState.content = getContent({
+                        entries: browserState.entries,
                         currentPath: cursorMove.abs_path,
                     });
 
-                    message.entries = unixSocket.data.browserState.entries;
-                    message.content = unixSocket.data.browserState.content;
+                    message.entries = browserState.entries;
+                    message.content = browserState.content;
                 }
 
                 message.cursorMove = cursorMove;

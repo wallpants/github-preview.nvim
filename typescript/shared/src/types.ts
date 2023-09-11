@@ -7,15 +7,15 @@ export type ContentChange = Output<typeof ContentChangeSchema>;
 
 export type SocketEvent =
     | {
-          type: "init";
+          type: "github-preview-init";
           data: PluginInit;
       }
     | {
-          type: "cursor-move";
+          type: "github-preview-cursor-move";
           data: CursorMove;
       }
     | {
-          type: "content-change";
+          type: "github-preview-content-change";
           data: ContentChange;
       };
 

@@ -1,9 +1,14 @@
-import { EVENT_NAMES, GP_UNIX_SOCKET_PATH, type PluginInit, type SocketEvent } from "@gp/shared";
+import { GP_UNIX_SOCKET_PATH, type PluginInit, type SocketEvent } from "@gp/shared";
 import { attach } from "neovim";
 import { normalize } from "node:path";
 
 const SOCKET = process.env["NVIM"];
 const IS_DEV = Boolean(process.env["VITE_GP_WS_PORT"]);
+const EVENT_NAMES: SocketEvent["type"][] = [
+    "github-preview-init",
+    "github-preview-cursor-move",
+    "github-preview-content-change",
+];
 
 if (!SOCKET) throw Error("missing NVIM socket");
 
@@ -21,7 +26,7 @@ await Bun.connect({
     socket: {
         async open(socket) {
             // as soon as we connect, we send config to server
-            const initEvent: SocketEvent = { type: "init", data: init };
+            const initEvent: SocketEvent = { type: "github-preview-init", data: init };
             socket.write(JSON.stringify(initEvent));
 
             for (const event of EVENT_NAMES) await nvim.subscribe(event);
