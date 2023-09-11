@@ -13,7 +13,9 @@
     "globby": "^13.2.2",
     "istextorbinary": "^6.0.0",
     "opener": "^1.5.2",
-    "shared": "*"
+    "shared": "*",
+    "valibot": "^0.15.0",
+    "winston": "^3.10.0"
   },
   "devDependencies": {
     "@types/opener": "^1.4.1"

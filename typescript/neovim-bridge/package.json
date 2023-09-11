@@ -10,7 +10,8 @@
     "build": "rm -rf dist && bun build src/index.ts --outdir dist --target node --minify --external neovim"
   },
   "dependencies": {
-    "shared": "*"
+    "shared": "*",
+    "winston": "^3.10.0"
   },
   "devDependencies": {
     "neovim": "^4.10.1"

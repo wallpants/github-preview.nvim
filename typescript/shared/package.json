@@ -11,7 +11,11 @@
     "format": "prettier **.ts -w",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0"
   },
-  "dependencies": {
+  "peerDependencies": {
+    "valibot": "^0.15.0",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
     "valibot": "^0.15.0",
     "winston": "^3.10.0"
   }
