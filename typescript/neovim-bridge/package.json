@@ -1,5 +1,5 @@
 {
-  "name": "@gc/neovim-bridge",
+  "name": "@gp/neovim-bridge",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -10,7 +10,7 @@
     "build": "rm -rf dist && bun build src/index.ts --outdir dist --target node --minify --external neovim"
   },
   "dependencies": {
-    "@gc/shared": "*"
+    "shared": "*"
   },
   "devDependencies": {
     "neovim": "^4.10.1"
