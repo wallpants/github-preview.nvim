@@ -1,3 +1,3 @@
-import { SHARED_VAL } from "@gc/shared/consts.ts";
+import { ENV } from "@gp/shared";
 
-console.log("hello from server: ", SHARED_VAL);
+console.log("SHARED_VAL: ", ENV.IS_DEV);

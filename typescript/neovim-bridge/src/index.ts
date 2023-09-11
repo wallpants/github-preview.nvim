@@ -1,4 +1,4 @@
-import { SHARED_VAL } from "@gc/shared/consts.ts";
+import { SHARED_VAL } from "@gc/shared";
 import { attach } from "neovim";
 
 const SOCKET = process.env["NVIM"];
@@ -10,4 +10,4 @@ const nvim = attach({ socket: SOCKET });
 const init = await nvim.getVar("github_preview_init");
 console.log("init", init);
 console.log("VITE_GP_IS_DEV", VITE_GP_IS_DEV);
-console.log("SHARED_VAL", SHARED_VAL);
+console.log("SHARED_VAL: ", SHARED_VAL);

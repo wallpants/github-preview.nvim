@@ -1,5 +1,5 @@
 {
-  "name": "@gc/server",
+  "name": "@gp/server",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -10,6 +10,6 @@
     "build": "rm -rf dist && bun build src/index.ts --outdir dist --target node --minify"
   },
   "dependencies": {
-    "@gc/shared": "*"
+    "shared": "*"
   }
 }
