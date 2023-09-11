@@ -1,4 +1,3 @@
-import { type CursorMove } from "@gp/shared";
 import { MARKDOWN_ELEMENT_ID } from "../../../websocket-context/provider";
 
 export const SCROLL_INDICATOR = "scroll-indicator-id";
@@ -128,11 +127,11 @@ export function getScrollOffsets(): Offsets {
     };
 }
 
-export function scroll({ cursor_line }: CursorMove, { sourceLineOffsets }: Offsets) {
-    const offset = sourceLineOffsets[cursor_line];
+export function scroll(cursorMoveLine: number, { sourceLineOffsets }: Offsets) {
+    const offset = sourceLineOffsets[cursorMoveLine];
     const element = document.getElementById(SCROLL_INDICATOR);
     if (element) {
-        if (!offset) throw Error(`offset for line ${cursor_line} missing`);
+        if (!offset) throw Error(`offset for line ${cursorMoveLine} missing`);
         element.style.setProperty("top", `${offset[0]}px`);
     }
 

@@ -30,7 +30,7 @@ export type BrowserState = {
 
 export type WsServerMessage = Partial<BrowserState> & {
     repoName?: string;
-    cursorMove?: CursorMove;
+    cursorMoveLine?: number;
     goodbye?: true;
 };
 
