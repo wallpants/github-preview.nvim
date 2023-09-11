@@ -1,19 +1,14 @@
-import {
-    ENV,
-    EVENT_NAMES,
-    GP_UNIX_SOCKET_PATH,
-    type PluginInit,
-    type SocketEvent,
-} from "@gp/shared";
+import { EVENT_NAMES, GP_UNIX_SOCKET_PATH, type PluginInit, type SocketEvent } from "@gp/shared";
 import { attach } from "neovim";
 import { normalize } from "node:path";
 
 const SOCKET = process.env["NVIM"];
+const IS_DEV = Boolean(process.env["VITE_GP_WS_PORT"]);
 
 if (!SOCKET) throw Error("missing NVIM socket");
 
-if (!ENV.IS_DEV) {
-    Bun.spawn([normalize(`${import.meta.dir}/../../server/bin`)], {
+if (!IS_DEV) {
+    Bun.spawn(["node", normalize(`${import.meta.dir}/../../server/dist/index.js`)], {
         stdio: [null, null, null],
     });
 }

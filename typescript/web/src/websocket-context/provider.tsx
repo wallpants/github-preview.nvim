@@ -1,10 +1,11 @@
-import { ENV, type BrowserState, type WsBrowserRequest, type WsServerMessage } from "@gp/shared";
+import { type BrowserState, type WsBrowserRequest, type WsServerMessage } from "@gp/shared";
 import { createBrowserHistory } from "history";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { Banner } from "../components/banner";
 import { markdownToHtml } from "../components/markdown/markdown-it";
 import { getScrollOffsets, scroll, type Offsets } from "../components/markdown/markdown-it/scroll";
+import { ENV } from "../env";
 import { getFileExt, getFileName } from "../utils";
 import { websocketContext } from "./context";
 

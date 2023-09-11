@@ -1,6 +1,5 @@
 import {
     CursorMoveSchema,
-    ENV,
     GP_UNIX_SOCKET_PATH,
     PluginInitSchema,
     type SocketEvent,
@@ -12,6 +11,7 @@ import {
     createHttpServer,
     type UnixSocketMetadata,
 } from "./create-http-server";
+import { ENV } from "./env";
 import { getContent, getEntries, getRepoName } from "./utils";
 
 Bun.listen<UnixSocketMetadata | undefined>({
@@ -53,7 +53,7 @@ Bun.listen<UnixSocketMetadata | undefined>({
                 // });
             }
 
-            if (!unixSocket.data) throw Error("UnixSocketMetadata missing");
+            if (!unixSocket.data) return;
 
             function wsSend(w: WsServerMessage) {
                 unixSocket.data?.webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(w));
