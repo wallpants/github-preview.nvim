@@ -1,5 +1,6 @@
 import { type BrowserState, type WsServerMessage } from "@gp/shared";
 import { type ServerWebSocket } from "bun";
+import { logger } from "../logger";
 import { getContent, getEntries } from "../utils";
 
 export async function onWsGetEntry(
@@ -30,6 +31,6 @@ export async function onWsGetEntry(
         entries: browserState.entries,
         content: browserState.content,
     };
-    console.debug(`onBrowserRequest.getEntry RESPONSE`, message);
+    logger.verbose(`onBrowserRequest.getEntry RESPONSE`, message);
     webSocket.send(JSON.stringify(message));
 }

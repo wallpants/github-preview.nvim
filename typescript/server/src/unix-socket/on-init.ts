@@ -1,7 +1,6 @@
-import { PluginInitSchema, type PluginInit } from "@gp/shared";
+import { ENV, PluginInitSchema, type PluginInit } from "@gp/shared";
 import { type Socket } from "bun";
 import { parse } from "valibot";
-import { ENV } from "../env";
 import { getContent, getEntries, getRepoName } from "../utils";
 import { startWebServer } from "../web-server";
 import { type UnixSocketMetadata } from "./types";

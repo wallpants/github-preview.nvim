@@ -1,21 +1,25 @@
 import { GP_UNIX_SOCKET_PATH, type SocketEvent } from "@gp/shared";
+import { logger } from "../logger";
 import { onContentChange } from "./on-content-change";
 import { onCursorMove } from "./on-cursor-move";
 import { onInit } from "./on-init";
 import { type UnixSocketMetadata } from "./types";
 
 export function startUnixSocket() {
+    logger.verbose("starting unix socket");
+
     return Bun.listen<UnixSocketMetadata>({
         unix: GP_UNIX_SOCKET_PATH,
         socket: {
             async data(unixSocket, rawEvent) {
                 const event = JSON.parse(rawEvent.toString()) as SocketEvent;
-                console.debug(event);
+                logger.verbose({ event });
 
                 if (event.type === "github-preview-init") await onInit(unixSocket, event.data);
 
                 const browserState = unixSocket.data?.browserState;
                 if (!browserState) return;
+                logger.verbose({ browserState });
 
                 if (event.type === "github-preview-cursor-move")
                     await onCursorMove(unixSocket, event.data);
@@ -24,8 +28,7 @@ export function startUnixSocket() {
                     await onContentChange(unixSocket, event.data);
             },
             error(_socket, error) {
-                console.log("server says: error");
-                throw error;
+                logger.verbose("unixSocket ERROR", error);
             },
         },
     });

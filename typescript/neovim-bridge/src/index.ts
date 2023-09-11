@@ -1,24 +1,36 @@
-import { GP_UNIX_SOCKET_PATH, type PluginInit, type SocketEvent } from "@gp/shared";
+import {
+    ENV,
+    GP_UNIX_SOCKET_PATH,
+    createLogger,
+    type PluginInit,
+    type SocketEvent,
+} from "@gp/shared";
 import { attach } from "neovim";
 import { normalize } from "node:path";
 
-const SOCKET = process.env["NVIM"];
-const IS_DEV = Boolean(process.env["VITE_GP_WS_PORT"]);
+const logger = createLogger(ENV.GP_BRIDGE_LOG_STREAM);
+
 const EVENT_NAMES: SocketEvent["type"][] = [
     "github-preview-init",
     "github-preview-cursor-move",
     "github-preview-content-change",
 ];
 
-if (!SOCKET) throw Error("missing NVIM socket");
+if (!ENV.NVIM) throw Error("missing NVIM socket");
 
-if (!IS_DEV) {
-    Bun.spawn(["node", normalize(`${import.meta.dir}/../../server/dist/index.js`)], {
+if (ENV.IS_DEV) {
+    Bun.spawn(["bun", "dev"], {
+        cwd: normalize(`${import.meta.dir}/../../server`),
+        stdio: [null, null, null],
+    });
+} else {
+    Bun.spawn(["node", "dist/index.js"], {
+        cwd: normalize(`${import.meta.dir}/../../server`),
         stdio: [null, null, null],
     });
 }
 
-const nvim = attach({ socket: SOCKET });
+const nvim = attach({ socket: ENV.NVIM });
 const init = (await nvim.getVar("github_preview_init")) as PluginInit;
 
 await Bun.connect({
@@ -39,10 +51,10 @@ await Bun.connect({
             });
         },
         data(_socket, data) {
-            console.log("data: ", data);
+            logger.verbose("data: ", data);
         },
         connectError(_socket, _error) {
-            console.log("connection failed, maybe retry?");
+            logger.verbose("connection failed, maybe retry?");
         },
     },
 });

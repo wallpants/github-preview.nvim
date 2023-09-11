@@ -1,7 +1,7 @@
-import { CursorMoveSchema, type CursorMove, type WsServerMessage } from "@gp/shared";
+import { CursorMoveSchema, ENV, type CursorMove, type WsServerMessage } from "@gp/shared";
 import { type Socket } from "bun";
 import { parse } from "valibot";
-import { ENV } from "../env";
+import { logger } from "../logger";
 import { getContent, getEntries } from "../utils";
 import { EDITOR_EVENTS_TOPIC } from "../web-server";
 import { type UnixSocketMetadata } from "./types";
@@ -33,5 +33,6 @@ export async function onCursorMove(unixSocket: Socket<UnixSocketMetadata>, curso
         message.content = browserState.content;
     }
 
+    logger.verbose("content-change", { message });
     unixSocket.data?.webServer?.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 }

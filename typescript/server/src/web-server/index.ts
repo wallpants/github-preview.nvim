@@ -1,5 +1,6 @@
 import { type PluginInit, type WsBrowserRequest, type WsServerMessage } from "@gp/shared";
 import { type Server, type Socket } from "bun";
+import { logger } from "../logger";
 import { type UnixSocketMetadata } from "../unix-socket/types";
 import { getContent } from "../utils";
 import { onHttpRequest } from "./on-http-request";
@@ -13,8 +14,8 @@ export function startWebServer(
 ): Server {
     const browserState = unixSocket.data?.browserState;
     if (!browserState) throw Error("browserState missing");
-    console.debug("starting http server", init);
-    console.debug("browserState: ", browserState);
+    logger.verbose("starting http server", { init });
+    logger.verbose("browserState: ", { browserState });
 
     return Bun.serve({
         port: init.port,
@@ -25,7 +26,7 @@ export function startWebServer(
             },
             async message(webSocket, message: string) {
                 const browserRequest = JSON.parse(message) as WsBrowserRequest;
-                console.debug(`onBrowserRequest.${browserRequest.type} REQUEST`, {
+                logger.verbose(`onBrowserRequest.${browserRequest.type} REQUEST`, {
                     browserRequest,
                 });
 
@@ -35,7 +36,7 @@ export function startWebServer(
                         entries: browserState.entries,
                     });
                     const message: WsServerMessage = browserState;
-                    console.debug(`onBrowserRequest.${browserRequest.type} RESPONSE`, message);
+                    logger.verbose(`onBrowserRequest.${browserRequest.type} RESPONSE`, message);
                     webSocket.send(JSON.stringify(message));
                 }
 
