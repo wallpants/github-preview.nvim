@@ -20,11 +20,9 @@
     "eslint": "^8.47.0",
     "eslint-plugin-import": "^2.28.1",
     "gpshared": "*",
+    "localbunvim": "*",
     "prettier": "^3.0.2",
     "prettier-plugin-organize-imports": "^3.2.3",
     "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "bunvim": "^0.0.1"
   }
 }

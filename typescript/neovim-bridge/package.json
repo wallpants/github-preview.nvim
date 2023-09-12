@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "gpshared": "*",
+    "localbunvim": "*",
     "winston": "^3.10.0",
     "msgpackr": "^1.9.9"
   },
