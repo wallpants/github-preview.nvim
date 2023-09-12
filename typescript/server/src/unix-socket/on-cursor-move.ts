@@ -1,5 +1,5 @@
-import { CursorMoveSchema, ENV, type CursorMove, type WsServerMessage } from "@gp/shared";
 import { type Socket } from "bun";
+import { CursorMoveSchema, ENV, type CursorMove, type WsServerMessage } from "gpshared";
 import { parse } from "valibot";
 import { logger } from "../logger";
 import { getContent, getEntries } from "../utils";

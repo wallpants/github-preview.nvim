@@ -1,5 +1,5 @@
-import { type PluginInit, type WsBrowserRequest, type WsServerMessage } from "@gp/shared";
 import { type Server, type Socket } from "bun";
+import { type PluginInit, type WsBrowserRequest, type WsServerMessage } from "gpshared";
 import { logger } from "../logger";
 import { type UnixSocketMetadata } from "../unix-socket/types";
 import { getContent } from "../utils";

@@ -1,4 +1,4 @@
-import { type BrowserState, type WsServerMessage } from "@gp/shared";
+import { type BrowserState, type WsServerMessage } from "gpshared";
 import { createContext, createRef, type RefObject } from "react";
 import { type Offsets } from "../components/markdown/markdown-it/scroll";
 

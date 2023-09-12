@@ -1,4 +1,4 @@
-import { LOCAL_FILE_ROUTE } from "@gp/shared";
+import { LOCAL_FILE_ROUTE } from "gpshared";
 import type MarkdownIt from "markdown-it";
 import type Token from "markdown-it/lib/token";
 

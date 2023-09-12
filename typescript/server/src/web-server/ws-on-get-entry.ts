@@ -1,5 +1,5 @@
-import { type BrowserState, type WsServerMessage } from "@gp/shared";
 import { type ServerWebSocket } from "bun";
+import { type BrowserState, type WsServerMessage } from "gpshared";
 import { logger } from "../logger";
 import { getContent, getEntries } from "../utils";
 

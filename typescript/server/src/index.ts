@@ -1,4 +1,4 @@
-import { GP_UNIX_SOCKET_PATH, type SocketEvent } from "@gp/shared";
+import { GP_UNIX_SOCKET_PATH, type SocketEvent } from "gpshared";
 import { logger } from "./logger";
 import { onContentChange } from "./unix-socket/on-content-change";
 import { onCursorMove } from "./unix-socket/on-cursor-move";

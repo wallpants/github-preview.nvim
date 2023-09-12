@@ -1,5 +1,5 @@
-import { ContentChangeSchema, ENV, type ContentChange, type WsServerMessage } from "@gp/shared";
 import { type Socket } from "bun";
+import { ContentChangeSchema, ENV, type ContentChange, type WsServerMessage } from "gpshared";
 import { parse } from "valibot";
 import { logger } from "../logger";
 import { getEntries } from "../utils";

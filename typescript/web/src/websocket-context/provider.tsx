@@ -1,4 +1,4 @@
-import { type BrowserState, type WsBrowserRequest, type WsServerMessage } from "@gp/shared";
+import { type BrowserState, type WsBrowserRequest, type WsServerMessage } from "gpshared";
 import { createBrowserHistory } from "history";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";

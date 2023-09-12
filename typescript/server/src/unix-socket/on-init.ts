@@ -1,5 +1,5 @@
-import { ENV, PluginInitSchema, type PluginInit } from "@gp/shared";
 import { type Socket } from "bun";
+import { ENV, PluginInitSchema, type PluginInit } from "gpshared";
 import opener from "opener";
 import { parse } from "valibot";
 import { getContent, getEntries, getRepoName } from "../utils";

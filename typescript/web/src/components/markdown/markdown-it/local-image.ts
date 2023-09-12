@@ -1,7 +1,7 @@
 /*
  * https://github.com/iamcco/markdown-preview.nvim/blob/master/app/pages/image.js
  */
-import { LOCAL_FILE_ROUTE } from "@gp/shared";
+import { LOCAL_FILE_ROUTE } from "gpshared";
 import type MarkdownIt from "markdown-it";
 import { type RenderRule } from "markdown-it/lib/renderer";
 

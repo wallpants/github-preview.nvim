@@ -1,15 +1,10 @@
-import {
-    ENV,
-    GP_UNIX_SOCKET_PATH,
-    createLogger,
-    type PluginInit,
-    type SocketEvent,
-} from "@gp/shared";
 import { type Socket } from "bun";
-import { attach } from "neovim";
-import { normalize } from "node:path";
+import { ENV, type PluginInit, type SocketEvent } from "gpshared";
+import { pack, unpack } from "msgpackr";
 
-const logger = createLogger(ENV.GP_BRIDGE_LOG_STREAM);
+if (!ENV.NVIM) {
+    throw Error("missing NVIM socket");
+}
 
 const EVENT_NAMES: SocketEvent["type"][] = [
     "github-preview-init",
@@ -17,75 +12,69 @@ const EVENT_NAMES: SocketEvent["type"][] = [
     "github-preview-content-change",
 ];
 
-if (!ENV.NVIM) {
-    logger.error("missing NVIM socket");
-    throw Error("missing NVIM socket");
-}
+let msgId = 0;
 
-const nvim = attach({ socket: ENV.NVIM });
-const init = (await nvim.getVar("github_preview_init")) as PluginInit;
+const call: [type: RequestType, msgId: number, command: string, args: string[]][] = [
+    [RequestType.REQUEST, msgId++, "nvim_get_var", ["github_preview_init"]],
+];
 
-let client: Socket | undefined;
+export type NvimSocketMetadata =
+    | {
+          init: PluginInit;
+          githubPreviewConn?: Socket;
+      }
+    | undefined;
 
-const MAX_ATTEMPTS = 20;
-let attempt = 1;
-let serverInitialized = false;
+await Bun.connect<NvimSocketMetadata>({
+    unix: ENV.NVIM,
+    socket: {
+        open(nvimSocket) {
+            nvimSocket.write(
+                pack([RequestType.REQUEST, msgId++, "nvim_get_var", ["github_preview_init"]]),
+            );
+        },
+        data(_nvimSocket, data) {
+            console.log("data received: ", data);
+            const message = unpack(data) as [
+                type: RequestType,
+                resId: number,
+                error: Error | null,
+                result: unknown,
+            ];
+            console.log("message: ", message);
+            // const [, resId, , result] = message;
 
-function initializeServer() {
-    if (ENV.IS_DEV) {
-        Bun.spawn(["bun", "dev"], {
-            cwd: normalize(`${import.meta.dir}/../../server`),
-            stdio: [null, null, null],
-        });
-    } else {
-        Bun.spawn(["bun", "start"], {
-            cwd: normalize(`${import.meta.dir}/../../server`),
-            stdio: [null, null, null],
-        });
-    }
-}
+            // if (resId === 0) {
+            //     nvimSocket.data = { init: result as PluginInit };
 
-while (attempt <= MAX_ATTEMPTS && (!client || ["closing", "closed"].includes(client.readyState))) {
-    try {
-        /* Attempt to connect to server.
-         * The server may be either uninitialized OR
-         * initialized by a previous lauch of github-preview
-         */
-        logger.verbose(`attempting to connect # ${attempt++}/${MAX_ATTEMPTS}`);
-        client = await Bun.connect({
-            unix: GP_UNIX_SOCKET_PATH,
-            socket: {
-                async open(socket) {
-                    // as soon as we connect, we send config to server
-                    const initEvent: SocketEvent = { type: "github-preview-init", data: init };
-                    socket.write(JSON.stringify(initEvent));
+            //     const githubPreviewConn = await startGithubPreviewConnection(nvimSocket);
+            //     if (!githubPreviewConn) throw Error("unixClient missing");
 
-                    for (const event of EVENT_NAMES) await nvim.subscribe(event);
+            //     nvimSocket.data.githubPreviewConn = githubPreviewConn;
 
-                    /* nvim notifications are forwarded as they are.
-                     * It so happens that nvim notification names match
-                     * the server's notification names and payload structure
-                     */
-                    nvim.on("notification", (event: string, [arg]: unknown[]) => {
-                        socket.write(JSON.stringify({ type: event, data: arg }));
-                    });
-                },
-                data(_socket, data) {
-                    logger.verbose("data: ", data);
-                },
-                connectError(_socket, _error) {
-                    logger.verbose("connection failed, maybe retry?");
-                },
-            },
-        });
-        serverInitialized = true;
-    } catch (err) {
-        logger.verbose("failed to connect");
-        if (!serverInitialized) {
-            logger.verbose("starting server");
-            initializeServer();
-            serverInitialized = true;
-        }
-        await Bun.sleep(100);
-    }
-}
+            //     EVENT_NAMES.forEach((event) => {
+            //         nvimSocket.write(
+            //             pack([RequestType.REQUEST, msgId++, "nvim_subscribe", [event]]),
+            //         );
+            //     });
+            //     return;
+            // }
+        },
+        error(_socket, error) {
+            console.log("error: ", error);
+        },
+        close(_socket) {
+            console.log("connection closed");
+        },
+        end(_socket) {
+            console.log("connection closed by nvim");
+        },
+        handshake(_socket, success, authorizationError) {
+            console.log("handshake success: ", success);
+            console.log("handshake authorizationError: ", authorizationError);
+        },
+        connectError(_socket, error) {
+            console.log("connectError: ", error);
+        },
+    },
+});
