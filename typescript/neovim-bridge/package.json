@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "gpshared": "*",
-    "localbunvim": "*",
-    "winston": "^3.10.0",
-    "msgpackr": "^1.9.9"
+    "bunvim": "^0.0.2",
+    "msgpackr": "^1.9.9",
+    "winston": "^3.10.0"
   },
   "devDependencies": {
     "neovim": "^4.10.1"

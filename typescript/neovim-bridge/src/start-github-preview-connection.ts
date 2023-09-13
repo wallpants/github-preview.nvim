@@ -1,7 +1,6 @@
 import { type Socket } from "bun";
-import { ENV, GP_UNIX_SOCKET_PATH, createLogger, type SocketEvent } from "gpshared";
+import { ENV, GP_UNIX_SOCKET_PATH, PluginInit, createLogger, type SocketEvent } from "gpshared";
 import { normalize } from "node:path";
-import { type NvimSocketMetadata } from ".";
 
 const logger = createLogger(ENV.GP_BRIDGE_LOG_STREAM);
 
@@ -32,6 +31,13 @@ function initializeServer() {
         });
     }
 }
+
+type NvimSocketMetadata =
+    | {
+          init: PluginInit;
+          githubPreviewConn?: Socket;
+      }
+    | undefined;
 
 export async function startGithubPreviewConnection(nvimSocket: Socket<NvimSocketMetadata>) {
     const init = nvimSocket.data?.init;
@@ -67,12 +73,6 @@ export async function startGithubPreviewConnection(nvimSocket: Socket<NvimSocket
                         // nvim.on("notification", (event: string, [arg]: unknown[]) => {
                         //     socket.write(JSON.stringify({ type: event, data: arg }));
                         // });
-                    },
-                    data(_socket, data) {
-                        logger.verbose("data: ", data);
-                    },
-                    connectError(_socket, _error) {
-                        logger.verbose("connection failed, maybe retry?");
                     },
                 },
             });
