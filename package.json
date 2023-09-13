@@ -8,8 +8,8 @@
     "vi": "nvim",
     "web:dev": "cd typescript/web && bun dev",
     "build:web": "cd typescript/web && bun run build",
-    "logs:neovim-bridge": "tail -F -n 0 \"$GP_BRIDGE_LOG_STREAM\"",
-    "logs:server": "tail -F -n 0 \"$GP_SERVER_LOG_STREAM\"",
+    "bridge:logs": "tail -F -n 0 \"$GP_BRIDGE_LOG_STREAM\"",
+    "server:logs": "tail -F -n 0 \"$GP_SERVER_LOG_STREAM\"",
     "clean": "rm -rf node_modules && bun run typescript/recursive.ts clean",
     "format": "bun run typescript/recursive.ts format",
     "lint": "bun run typescript/recursive.ts lint"

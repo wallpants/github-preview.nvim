@@ -1,7 +1,6 @@
 import { CursorMoveSchema, ENV, type CursorMove, type WsServerMessage } from "@gp/shared";
 import { type Socket } from "bun";
 import { parse } from "valibot";
-import { logger } from "../logger.ts";
 import { getContent, getEntries } from "../utils.ts";
 import { EDITOR_EVENTS_TOPIC } from "../web-server/index.ts";
 import { type UnixSocketMetadata } from "./types.ts";
@@ -33,6 +32,5 @@ export async function onCursorMove(unixSocket: Socket<UnixSocketMetadata>, curso
         message.content = browserState.content;
     }
 
-    logger.verbose("content-change", message);
     unixSocket.data?.webServer?.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 }
