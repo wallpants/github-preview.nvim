@@ -90,15 +90,17 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
             const markdownElement = document.getElementById(MARKDOWN_ELEMENT_ID);
             if (!markdownElement) throw Error("markdownElement missing");
 
-            const fileName = getFileName(state.current.currentPath);
-            if (content === null || !fileName) {
+            if (content === null) {
                 offsets.current = null; // if content changes, existing offsets become outdated
+                state.current.content = null;
                 markdownElement.innerHTML = "";
             }
 
+            const fileName = getFileName(state.current.currentPath);
             const fileExt = getFileExt(fileName);
             if (content) {
                 offsets.current = null; // if content changes, existing offsets become outdated
+                state.current.content = content;
                 const markdown = textToMarkdown({
                     text: content,
                     fileExt,
@@ -115,7 +117,11 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 markdownElement.innerHTML = markdownToHtml(markdown);
             }
 
-            if (cursorLine !== undefined && !state.current.disableSyncScroll) {
+            if (
+                cursorLine !== undefined &&
+                !state.current.disableSyncScroll &&
+                state.current.content
+            ) {
                 if (!offsets.current) offsets.current = getScrollOffsets();
                 scroll({ cursorLine, offsets: offsets.current, fileExt });
             }

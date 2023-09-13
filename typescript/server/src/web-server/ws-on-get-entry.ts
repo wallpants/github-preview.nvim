@@ -8,11 +8,7 @@ export async function onWsGetEntry(
     browserState: BrowserState,
     requestedCurrentPath: string,
 ) {
-    const message = await updateBrowserState(
-        browserState,
-        requestedCurrentPath,
-        browserState.cursorLine,
-    );
+    const message = await updateBrowserState(browserState, requestedCurrentPath, 0);
     logger.verbose(`onBrowserRequest.getEntry RESPONSE`, message);
     webSocket.send(JSON.stringify(message));
 }

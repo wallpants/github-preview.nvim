@@ -5,12 +5,12 @@ import { ThemePicker } from "../theme-select.tsx";
 import { EntryComponent } from "./entry.tsx";
 
 export const Explorer = () => {
-    const { navigate, state } = useContext(websocketContext);
+    const { navigate, currentPath, state } = useContext(websocketContext);
 
     const parent = useMemo(() => {
-        if (!state.current?.root || !state.current.currentPath) return;
+        if (!state.current?.root || !currentPath) return;
 
-        const relative = state.current.currentPath.slice(state.current.root.length);
+        const relative = currentPath.slice(state.current.root.length);
         const segments = relative.split("/");
 
         if (segments.length <= 1) return;
@@ -23,7 +23,7 @@ export const Explorer = () => {
         // parent is always a dir, must end with "/"
         if (!parent.endsWith("/")) parent += "/";
         return parent;
-    }, [state]);
+    }, [state, currentPath]);
 
     const [username, repo] = state.current?.repoName?.split("/") ?? "";
 

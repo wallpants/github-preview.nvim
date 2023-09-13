@@ -1,5 +1,5 @@
 import { useContext, useRef } from "react";
-import { cn, getFileName } from "../../utils.ts";
+import { getFileName } from "../../utils.ts";
 import { websocketContext } from "../../websocket-context/context.ts";
 import { MARKDOWN_ELEMENT_ID } from "../../websocket-context/provider.tsx";
 import { Container } from "../container.tsx";
@@ -11,7 +11,7 @@ export const Markdown = () => {
     const cursorLineElement = useRef(
         <div
             id={CURSOR_LINE_ELEMENT_ID}
-            className={cn("absolute pointer-events-none w-full bg-orange-500/20")}
+            className="absolute pointer-events-none w-full bg-orange-500/20"
         />,
     );
 
