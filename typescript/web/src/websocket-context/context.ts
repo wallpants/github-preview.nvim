@@ -9,11 +9,11 @@ export const websocketContext = createContext<{
     navigate: (path: string) => void;
     state: RefObject<Partial<BrowserState>>;
     offsets: RefObject<Offsets>;
-    tick: boolean;
+    currentPath: string | undefined;
 }>({
     isConnected: false,
     navigate: () => null,
     state: createRef(),
     offsets: createRef(),
-    tick: false,
+    currentPath: undefined,
 });

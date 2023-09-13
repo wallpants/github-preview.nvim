@@ -19,17 +19,16 @@ verbose 14:54:39
   message: 'content-change' }
 ```
 
--   [] scroll indicator does not go up to the first line on readme.md
--   [] do not use vite js api, go back to serve-handler, it's boots way faster
--   [] do use vite js api for dev
--   [] update @gp/shared package.json export's to bun, now that we're staying with bun
+-   [x] scroll indicator does not go up to the first line on readme.md
+-   [x] do not use vite js api, go back to serve-handler, it's boots way faster
+-   [x] update @gp/shared package.json export's to bun, now that we're staying with bun
 -   [] send goodbye messsage from browser when closing tab to close server
 -   [] in neovim bridge check if unix server is running before starting a new one
--   [] add winston back
+-   [x] add winston back
 -   [] when running the plugin with no buffers open (searching for readme.md), readme.md is rendered as code and not as markdown
 -   [] after refreshing browser everything's fucked up
 -   [] if root is not found, server should start in single file mode
--   [] does cmd+shift+r clear localStorage? is the webapp being cached? does it happen both in dev and prod?
+-   [x] does cmd+shift+r clear localStorage? is the webapp being cached? does it happen both in dev and prod?
 -   [x] we lose syntax on content change
 -   [x] when cd .. on webapp, if a file is currently open it stays open after the "cd ..", file should be closed
 -   [x] when cd .. on webapp, if we're looking at a file, file is closed instead of going to parent

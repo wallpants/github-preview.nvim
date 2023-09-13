@@ -1,6 +1,6 @@
 import { MARKDOWN_ELEMENT_ID } from "../../../websocket-context/provider.tsx";
 
-export const SCROLL_INDICATOR = "scroll-indicator-id";
+export const CURSOR_LINE_ELEMENT_ID = "cursor-line-element-id";
 
 export type Offsets = {
     markdownTopOffset: number;
@@ -127,12 +127,27 @@ export function getScrollOffsets(): Offsets {
     };
 }
 
-export function scroll(cursorMoveLine: number, { sourceLineOffsets }: Offsets) {
-    const offset = sourceLineOffsets[cursorMoveLine];
-    const element = document.getElementById(SCROLL_INDICATOR);
-    if (element) {
+export function scroll({
+    cursorMoveLine,
+    offsets,
+    fileExt,
+}: {
+    cursorMoveLine: number;
+    offsets: Offsets;
+    fileExt: string | undefined;
+}) {
+    const offset = offsets.sourceLineOffsets[cursorMoveLine];
+    const cursorLineElement = document.getElementById(CURSOR_LINE_ELEMENT_ID);
+    if (cursorLineElement) {
         if (!offset) throw Error(`offset for line ${cursorMoveLine} missing`);
-        element.style.setProperty("top", `${offset[0]}px`);
+        cursorLineElement.style.setProperty("top", `${offset[0]}px`);
+        if (fileExt === "md") {
+            cursorLineElement.classList.add("h-11");
+            cursorLineElement.classList.remove("-translate-y-3", "h-9");
+        } else {
+            cursorLineElement.classList.add("-translate-y-3", "h-9");
+            cursorLineElement.classList.remove("h-11");
+        }
     }
 
     // window.scrollTo({ top: offset[0] + markdownTopOffset, behavior: "smooth" });

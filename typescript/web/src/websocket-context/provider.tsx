@@ -31,7 +31,7 @@ function textToMarkdown({ text, fileExt }: { text: string; fileExt: string | und
 export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
     const state = useRef<Partial<BrowserState>>({});
     const offsets = useRef<Offsets | null>(null);
-    const [tick, setTick] = useState(false);
+    const [currentPath, setCurrentPath] = useState<string>();
     const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
@@ -79,7 +79,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
             if (currentPath) {
                 if (state.current.currentPath !== currentPath) {
                     state.current.currentPath = currentPath;
-                    setTick((tick) => !tick);
+                    setCurrentPath(currentPath);
                 }
 
                 if (!state.current.root) throw Error("root missing");
@@ -96,9 +96,9 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 markdownElement.innerHTML = "";
             }
 
+            const fileExt = getFileExt(fileName);
             if (content) {
                 offsets.current = null; // if content changes, existing offsets become outdated
-                const fileExt = getFileExt(fileName);
                 const markdown = textToMarkdown({
                     text: content,
                     fileExt,
@@ -117,7 +117,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
 
             if (cursorMoveLine !== undefined && !state.current.disableSyncScroll) {
                 if (!offsets.current) offsets.current = getScrollOffsets();
-                scroll(cursorMoveLine, offsets.current);
+                scroll({ cursorMoveLine, offsets: offsets.current, fileExt });
             }
         };
     }, [wsRequest]);
@@ -136,7 +136,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 isConnected,
                 state,
                 offsets,
-                tick,
+                currentPath,
             }}
         >
             <Banner className="z-50" />
