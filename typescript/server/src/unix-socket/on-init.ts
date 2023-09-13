@@ -26,7 +26,11 @@ export async function onInit(unixSocket: Socket<UnixSocketMetadata>, _init: Plug
         currentPath: init.path,
     });
 
-    const { currentPath, content } = getContent({ currentPath: init.root, entries });
+    const { currentPath, content } = getContent({
+        currentPath: init.root,
+        entries,
+        newContent: init.content,
+    });
 
     unixSocket.data = {
         browserState: {
@@ -36,19 +40,10 @@ export async function onInit(unixSocket: Socket<UnixSocketMetadata>, _init: Plug
             content,
             currentPath,
             disableSyncScroll: init.disable_sync_scroll,
+            cursorLine: init.cursor_line,
         },
     };
 
     unixSocket.data.webServer = startWebServer(init, unixSocket);
     if (!ENV.IS_DEV) opener(`http://localhost:${init.port}`);
-
-    // const wsServer = new WebSocketServer({ server: httpServer });
-    // wsServer.on("connection", onWssConnection({ ipc, init }));
-
-    // const PORT = ENV.VITE_GP_IS_DEV ? ENV.VITE_GP_WS_PORT : init.port;
-
-    // httpServer.listen(PORT, () => {
-    //     logger.verbose(`Server is listening on port ${PORT}`);
-    //     if (!ENV.VITE_GP_IS_DEV) opener(`http://localhost:${PORT}`);
-    // });
 }

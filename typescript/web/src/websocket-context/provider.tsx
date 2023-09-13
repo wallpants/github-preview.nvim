@@ -67,7 +67,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 disableSyncScroll,
                 currentPath,
                 content,
-                cursorMoveLine,
+                cursorLine,
             } = message;
 
             if (goodbye) window.close();
@@ -115,9 +115,9 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 markdownElement.innerHTML = markdownToHtml(markdown);
             }
 
-            if (cursorMoveLine !== undefined && !state.current.disableSyncScroll) {
+            if (cursorLine !== undefined && !state.current.disableSyncScroll) {
                 if (!offsets.current) offsets.current = getScrollOffsets();
-                scroll({ cursorMoveLine, offsets: offsets.current, fileExt });
+                scroll({ cursorLine, offsets: offsets.current, fileExt });
             }
         };
     }, [wsRequest]);

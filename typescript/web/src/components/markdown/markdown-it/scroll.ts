@@ -128,18 +128,18 @@ export function getScrollOffsets(): Offsets {
 }
 
 export function scroll({
-    cursorMoveLine,
+    cursorLine,
     offsets,
     fileExt,
 }: {
-    cursorMoveLine: number;
+    cursorLine: number;
     offsets: Offsets;
     fileExt: string | undefined;
 }) {
-    const offset = offsets.sourceLineOffsets[cursorMoveLine];
+    const offset = offsets.sourceLineOffsets[cursorLine];
     const cursorLineElement = document.getElementById(CURSOR_LINE_ELEMENT_ID);
     if (cursorLineElement) {
-        if (!offset) throw Error(`offset for line ${cursorMoveLine} missing`);
+        if (!offset) throw Error(`offset for line ${cursorLine} missing`);
         cursorLineElement.style.setProperty("top", `${offset[0]}px`);
         if (fileExt === "md") {
             cursorLineElement.classList.add("h-11");

@@ -25,12 +25,12 @@ export type BrowserState = {
     entries: string[];
     currentPath: string;
     content: null | string;
+    cursorLine: number;
     disableSyncScroll: boolean;
 };
 
 export type WsServerMessage = Partial<BrowserState> & {
     repoName?: string;
-    cursorMoveLine?: number;
     goodbye?: true;
 };
 

@@ -1,4 +1,4 @@
-import { type BrowserState } from "@gp/shared";
+import { type BrowserState, type WsServerMessage } from "@gp/shared";
 import { globby } from "globby";
 import { isText } from "istextorbinary";
 import { existsSync, readFileSync } from "node:fs";
@@ -19,6 +19,44 @@ export function getRepoName({ root }: { root: BrowserState["root"] }): string {
         }
     }
     return repoName;
+}
+
+export async function updateBrowserState(
+    browserState: BrowserState,
+    newCurrentPath: string,
+    cursorLine: number,
+    newContent?: string,
+): Promise<WsServerMessage> {
+    browserState.cursorLine = cursorLine;
+
+    const message: WsServerMessage = {
+        cursorLine: browserState.cursorLine,
+    };
+
+    if (browserState.currentPath !== newCurrentPath) {
+        const entries = await getEntries({
+            currentPath: newCurrentPath,
+            root: browserState.root,
+        });
+        const { content, currentPath } = getContent({
+            currentPath: newCurrentPath,
+            entries: browserState.entries,
+            newContent: newContent,
+        });
+        browserState.content = content;
+        message.content = browserState.content;
+
+        browserState.currentPath = currentPath;
+        message.currentPath = browserState.currentPath;
+
+        browserState.entries = entries;
+        message.entries = browserState.entries;
+    } else if (newContent) {
+        browserState.content = newContent;
+        message.content = browserState.content;
+    }
+
+    return message;
 }
 
 export async function getEntries({
@@ -57,11 +95,14 @@ export async function getEntries({
 export function getContent({
     currentPath,
     entries,
+    newContent,
 }: {
     currentPath: BrowserState["currentPath"];
     entries: BrowserState["entries"];
+    newContent?: string | undefined;
 }): { content: BrowserState["content"]; currentPath: string } {
     if (!existsSync(currentPath)) return { content: null, currentPath };
+    if (newContent) return { content: newContent, currentPath };
 
     const isDir = currentPath.endsWith("/");
     if (isDir) {

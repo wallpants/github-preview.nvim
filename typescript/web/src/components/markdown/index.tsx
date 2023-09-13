@@ -19,7 +19,7 @@ export const Markdown = () => {
 
     return (
         <Container>
-            <p className="!mb-0 p-4 text-sm font-semibold relative bg-github-canvas-default">
+            <p className="!mb-0 p-4 text-sm font-semibold relative bg-github-canvas-default h-[52px]">
                 {fileName}
             </p>
             {markdownElement.current}
