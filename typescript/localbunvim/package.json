@@ -7,6 +7,7 @@
     "types": "./src/index.ts",
     "bun": "./src/index.ts"
   },
+  "bin": "./src/cli.ts",
   "scripts": {
     "clean": "rm -rf node_modules",
     "format": "prettier **.ts -w",

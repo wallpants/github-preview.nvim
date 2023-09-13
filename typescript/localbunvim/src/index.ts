@@ -16,7 +16,7 @@ type RPCMessage =
     | [MessageType.NOTIFY, eventName: string, args: unknown[]];
 
 export async function attach({ socket }: { socket: string }) {
-    const requestQueue: RPCMessage[] = [];
+    const messageOutQueue: RPCMessage[] = [];
     const emitter = new EventEmitter({ captureRejections: true });
 
     let notificationsHandler: OnNotificationCallback | undefined;
@@ -24,9 +24,9 @@ export async function attach({ socket }: { socket: string }) {
     let lastReqId = 0;
 
     function processRequestQueue(socket: Socket) {
-        if (!requestQueue.length || awaitingResponse) return;
+        if (!messageOutQueue.length || awaitingResponse) return;
         awaitingResponse = true;
-        socket.write(pack(requestQueue.shift()));
+        socket.write(pack(messageOutQueue.shift()));
     }
 
     const nvimSocket = await Bun.connect({
@@ -39,26 +39,28 @@ export async function attach({ socket }: { socket: string }) {
                 }
 
                 if (type === MessageType.RESPONSE) {
-                    emitter.emit(`response-${id}`, args);
+                    const [error, response] = args;
+                    emitter.emit(`response-${id}`, error, response);
                     awaitingResponse = false;
                 }
 
-                if (requestQueue.length) {
+                if (messageOutQueue.length) {
                     processRequestQueue(socket);
                 }
             },
         },
     });
 
-    function request(method: string, ...args: unknown[]) {
+    function call(method: string, ...args: unknown[]) {
         const reqId = ++lastReqId;
         const request: RPCMessage = [MessageType.REQUEST, reqId, method, args];
-        requestQueue.push(request);
-        processRequestQueue(nvimSocket);
-        return new Promise((resolve) => {
-            emitter.once(`response-${reqId}`, (args) => {
-                resolve(args);
+        return new Promise((resolve, reject) => {
+            emitter.once(`response-${reqId}`, (error, response) => {
+                if (error) reject(error);
+                resolve(response);
             });
+            messageOutQueue.push(request);
+            processRequestQueue(nvimSocket);
         });
     }
 
@@ -66,5 +68,5 @@ export async function attach({ socket }: { socket: string }) {
         notificationsHandler = callback;
     }
 
-    return { request, onNotification };
+    return { call, onNotification };
 }
