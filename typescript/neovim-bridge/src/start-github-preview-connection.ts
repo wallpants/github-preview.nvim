@@ -1,5 +1,11 @@
+import {
+    ENV,
+    GP_UNIX_SOCKET_PATH,
+    createLogger,
+    type PluginInit,
+    type SocketEvent,
+} from "@gp/shared";
 import { type Socket } from "bun";
-import { ENV, GP_UNIX_SOCKET_PATH, PluginInit, createLogger, type SocketEvent } from "gpshared";
 import { normalize } from "node:path";
 
 const logger = createLogger(ENV.GP_BRIDGE_LOG_STREAM);

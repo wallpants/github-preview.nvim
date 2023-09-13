@@ -1,10 +1,10 @@
+import { CursorMoveSchema, ENV, type CursorMove, type WsServerMessage } from "@gp/shared";
 import { type Socket } from "bun";
-import { CursorMoveSchema, ENV, type CursorMove, type WsServerMessage } from "gpshared";
 import { parse } from "valibot";
-import { logger } from "../logger";
-import { getContent, getEntries } from "../utils";
-import { EDITOR_EVENTS_TOPIC } from "../web-server";
-import { type UnixSocketMetadata } from "./types";
+import { logger } from "../logger.ts";
+import { getContent, getEntries } from "../utils.ts";
+import { EDITOR_EVENTS_TOPIC } from "../web-server/index.ts";
+import { type UnixSocketMetadata } from "./types.ts";
 
 export async function onCursorMove(unixSocket: Socket<UnixSocketMetadata>, cursorMove: CursorMove) {
     ENV.IS_DEV && parse(CursorMoveSchema, cursorMove);

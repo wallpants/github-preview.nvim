@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "@gp/server",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -13,9 +13,7 @@
     "globby": "^13.2.2",
     "istextorbinary": "^6.0.0",
     "opener": "^1.5.2",
-    "gpshared": "*",
-    "valibot": "^0.15.0",
-    "winston": "^3.10.0"
+    "@gp/shared": "workspace:*"
   },
   "devDependencies": {
     "@types/opener": "^1.4.1"

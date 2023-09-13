@@ -1,7 +1,7 @@
+import { type BrowserState, type WsServerMessage } from "@gp/shared";
 import { type ServerWebSocket } from "bun";
-import { type BrowserState, type WsServerMessage } from "gpshared";
-import { logger } from "../logger";
-import { getContent, getEntries } from "../utils";
+import { logger } from "../logger.ts";
+import { getContent, getEntries } from "../utils.ts";
 
 export async function onWsGetEntry(
     webSocket: ServerWebSocket<unknown>,

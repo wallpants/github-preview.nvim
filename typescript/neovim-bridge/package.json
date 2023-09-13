@@ -1,5 +1,5 @@
 {
-  "name": "neovim-bridge",
+  "name": "@gp/neovim-bridge",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -10,12 +10,8 @@
     "start": "NODE_ENV=production; bun run src/index.ts"
   },
   "dependencies": {
-    "gpshared": "*",
-    "bunvim": "^0.0.2",
-    "msgpackr": "^1.9.9",
-    "winston": "^3.10.0"
-  },
-  "devDependencies": {
-    "neovim": "^4.10.1"
+    "@gp/shared": "workspace:*",
+    "bunvim": "^0.0.3",
+    "msgpackr": "^1.9.9"
   }
 }

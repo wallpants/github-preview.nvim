@@ -1,8 +1,8 @@
 import { useContext, useMemo } from "react";
-import { websocketContext } from "../../websocket-context/context";
-import { Container } from "../container";
-import { ThemePicker } from "../theme-select";
-import { EntryComponent } from "./entry";
+import { websocketContext } from "../../websocket-context/context.ts";
+import { Container } from "../container.tsx";
+import { ThemePicker } from "../theme-select.tsx";
+import { EntryComponent } from "./entry.tsx";
 
 export const Explorer = () => {
     const { navigate, state } = useContext(websocketContext);

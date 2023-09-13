@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { cn } from "../utils";
-import { websocketContext } from "../websocket-context/context";
-import { Container } from "./container";
+import { cn } from "../utils.ts";
+import { websocketContext } from "../websocket-context/context.ts";
+import { Container } from "./container.tsx";
 
 type Props = {
     className?: string;

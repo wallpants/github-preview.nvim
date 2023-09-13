@@ -1,5 +1,5 @@
+import { type BrowserState } from "@gp/shared";
 import { globby } from "globby";
-import { type BrowserState } from "gpshared";
 import { isText } from "istextorbinary";
 import { existsSync, readFileSync } from "node:fs";
 import { basename, dirname, resolve } from "node:path";

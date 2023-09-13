@@ -1,5 +1,5 @@
+import { type BrowserState } from "@gp/shared";
 import { type Server } from "bun";
-import { type BrowserState } from "gpshared";
 
 export type UnixSocketMetadata =
     | {

@@ -2,8 +2,8 @@ import markdownIt from "markdown-it";
 // import { toHtml } from "hast-util-to-html";
 // import languages from "../../../languages";
 import highlightjs from "markdown-it-highlightjs";
-import copyBlockPlugin from "./copy-block";
-import { sourceLineNumbers } from "./source-line-numbers";
+import copyBlockPlugin from "./copy-block.ts";
+import { sourceLineNumbers } from "./source-line-numbers.ts";
 // import localImage from "./local-image";
 // import relativeLinks from "./relative-links";
 

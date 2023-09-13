@@ -3,9 +3,9 @@
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Markdown } from "./components/markdown";
+import { Markdown } from "./components/markdown/index.tsx";
 import "./index.scss";
-import { WebsocketProvider } from "./websocket-context/provider";
+import { WebsocketProvider } from "./websocket-context/provider.tsx";
 
 const root = document.getElementById("root");
 

@@ -1,9 +1,9 @@
-import { GP_UNIX_SOCKET_PATH, type SocketEvent } from "gpshared";
-import { logger } from "./logger";
-import { onContentChange } from "./unix-socket/on-content-change";
-import { onCursorMove } from "./unix-socket/on-cursor-move";
-import { onInit } from "./unix-socket/on-init";
-import { type UnixSocketMetadata } from "./unix-socket/types";
+import { GP_UNIX_SOCKET_PATH, type SocketEvent } from "@gp/shared";
+import { logger } from "./logger.ts";
+import { onContentChange } from "./unix-socket/on-content-change.ts";
+import { onCursorMove } from "./unix-socket/on-cursor-move.ts";
+import { onInit } from "./unix-socket/on-init.ts";
+import { type UnixSocketMetadata } from "./unix-socket/types.ts";
 
 // TODO(gualcasas): close webserver when unix socket disconnects
 logger.verbose("starting unix socket");

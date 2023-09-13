@@ -1,5 +1,5 @@
 {
-  "name": "gpshared",
+  "name": "@gp/shared",
   "version": "0.0.0",
   "type": "module",
   "exports": {
@@ -10,10 +10,6 @@
     "clean": "rm -rf node_modules",
     "format": "prettier **.ts -w",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0"
-  },
-  "peerDependencies": {
-    "valibot": "^0.15.0",
-    "winston": "^3.10.0"
   },
   "devDependencies": {
     "valibot": "^0.15.0",

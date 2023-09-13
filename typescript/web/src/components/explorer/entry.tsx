@@ -1,6 +1,6 @@
-import { cn } from "../../utils";
-import { DirIcon } from "./dir-icon";
-import { FileIcon } from "./file-icon";
+import { cn } from "../../utils.ts";
+import { DirIcon } from "./dir-icon.tsx";
+import { FileIcon } from "./file-icon.tsx";
 
 const iconClassName = "mr-3 h-5 w-5";
 

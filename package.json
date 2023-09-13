@@ -2,7 +2,7 @@
   "name": "github-preview.nvim",
   "private": true,
   "workspaces": [
-    "typescript/*",
+    "typescript/*"
   ],
   "scripts": {
     "vi": "nvim",
@@ -19,6 +19,7 @@
     "bun-types": "latest",
     "eslint": "^8.47.0",
     "eslint-plugin-import": "^2.28.1",
+    "globby": "^13.2.2",
     "prettier": "^3.0.2",
     "prettier-plugin-organize-imports": "^3.2.3",
     "typescript": "^5.2.2"

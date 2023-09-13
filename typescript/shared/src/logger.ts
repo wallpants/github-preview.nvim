@@ -1,6 +1,6 @@
 import { createWriteStream } from "node:fs";
 import winston from "winston";
-import { ENV } from "./env";
+import { ENV } from "./env.ts";
 
 export function createLogger(streamPath: string | undefined) {
     if (!streamPath) {

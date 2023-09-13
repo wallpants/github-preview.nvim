@@ -1,10 +1,10 @@
+import { type PluginInit, type WsBrowserRequest, type WsServerMessage } from "@gp/shared";
 import { type Server, type Socket } from "bun";
-import { type PluginInit, type WsBrowserRequest, type WsServerMessage } from "gpshared";
-import { logger } from "../logger";
-import { type UnixSocketMetadata } from "../unix-socket/types";
-import { getContent } from "../utils";
-import { onHttpRequest } from "./on-http-request";
-import { onWsGetEntry } from "./ws-on-get-entry";
+import { logger } from "../logger.ts";
+import { type UnixSocketMetadata } from "../unix-socket/types.ts";
+import { getContent } from "../utils.ts";
+import { onHttpRequest } from "./on-http-request.ts";
+import { onWsGetEntry } from "./ws-on-get-entry.ts";
 
 export const EDITOR_EVENTS_TOPIC = "editor-events";
 

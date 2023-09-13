@@ -1,10 +1,10 @@
+import { ENV, PluginInitSchema, type PluginInit } from "@gp/shared";
 import { type Socket } from "bun";
-import { ENV, PluginInitSchema, type PluginInit } from "gpshared";
 import opener from "opener";
 import { parse } from "valibot";
-import { getContent, getEntries, getRepoName } from "../utils";
-import { startWebServer } from "../web-server";
-import { type UnixSocketMetadata } from "./types";
+import { getContent, getEntries, getRepoName } from "../utils.ts";
+import { startWebServer } from "../web-server/index.ts";
+import { type UnixSocketMetadata } from "./types.ts";
 
 let PORT: number | undefined;
 

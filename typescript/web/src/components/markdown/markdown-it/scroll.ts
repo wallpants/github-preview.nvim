@@ -1,4 +1,4 @@
-import { MARKDOWN_ELEMENT_ID } from "../../../websocket-context/provider";
+import { MARKDOWN_ELEMENT_ID } from "../../../websocket-context/provider.tsx";
 
 export const SCROLL_INDICATOR = "scroll-indicator-id";
 

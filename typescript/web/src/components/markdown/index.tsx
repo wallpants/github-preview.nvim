@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { cn, getFileExt, getFileName } from "../../utils";
-import { websocketContext } from "../../websocket-context/context";
-import { MARKDOWN_ELEMENT_ID } from "../../websocket-context/provider";
-import { Container } from "../container";
-import { SCROLL_INDICATOR } from "./markdown-it/scroll";
+import { cn, getFileExt, getFileName } from "../../utils.ts";
+import { websocketContext } from "../../websocket-context/context.ts";
+import { MARKDOWN_ELEMENT_ID } from "../../websocket-context/provider.tsx";
+import { Container } from "../container.tsx";
+import { SCROLL_INDICATOR } from "./markdown-it/scroll.ts";
 
 export const Markdown = () => {
     const { state } = useContext(websocketContext);

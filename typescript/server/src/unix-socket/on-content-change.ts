@@ -1,10 +1,10 @@
+import { ContentChangeSchema, ENV, type ContentChange, type WsServerMessage } from "@gp/shared";
 import { type Socket } from "bun";
-import { ContentChangeSchema, ENV, type ContentChange, type WsServerMessage } from "gpshared";
 import { parse } from "valibot";
-import { logger } from "../logger";
-import { getEntries } from "../utils";
-import { EDITOR_EVENTS_TOPIC } from "../web-server";
-import { type UnixSocketMetadata } from "./types";
+import { logger } from "../logger.ts";
+import { getEntries } from "../utils.ts";
+import { EDITOR_EVENTS_TOPIC } from "../web-server/index.ts";
+import { type UnixSocketMetadata } from "./types.ts";
 
 export async function onContentChange(
     unixSocket: Socket<UnixSocketMetadata>,

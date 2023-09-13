@@ -1,4 +1,4 @@
-import { NeovimApiInfo, attach } from "bunvim";
+import { attach, type NeovimApiInfo } from "bunvim";
 
 const SOCKET = process.env["NVIM"];
 if (!SOCKET) throw Error("socket missing");
