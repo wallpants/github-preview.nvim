@@ -1,5 +1,3 @@
-// filter deprecated
-
 export const apiInfo = {
     version: {
         major: 0,
