@@ -14,6 +14,7 @@
   ],
   "ignorePatterns": ["dist"],
   "rules": {
+    "import/no-unresolved": ["error", { "ignore": "bun" }],
     "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "@typescript-eslint/consistent-type-imports": [
