@@ -2,7 +2,6 @@ import { type PluginInit, type WsBrowserRequest, type WsServerMessage } from "@g
 import { type Server, type Socket } from "bun";
 import { logger } from "../logger.ts";
 import { type UnixSocketMetadata } from "../unix-socket/types.ts";
-import { getContent } from "../utils.ts";
 import { onHttpRequest } from "./on-http-request.ts";
 import { onWsGetEntry } from "./ws-on-get-entry.ts";
 
@@ -32,10 +31,6 @@ export function startWebServer(
                 });
 
                 if (browserRequest.type === "init") {
-                    browserState.content = getContent({
-                        currentPath: browserState.currentPath,
-                        entries: browserState.entries,
-                    });
                     const message: WsServerMessage = browserState;
                     logger.verbose(`onBrowserRequest.${browserRequest.type} RESPONSE`, message);
                     webSocket.send(JSON.stringify(message));

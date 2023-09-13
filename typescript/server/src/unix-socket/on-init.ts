@@ -8,6 +8,12 @@ import { type UnixSocketMetadata } from "./types.ts";
 
 let PORT: number | undefined;
 
+// TODO(gualcasas): make a create response method, we follow the same logic pretty much
+// every time we send a message to the browser.
+//
+// Has the currentPath changed? Include the new content and entries
+// is the path a dir? look for README.md
+
 export async function onInit(unixSocket: Socket<UnixSocketMetadata>, _init: PluginInit) {
     ENV.IS_DEV && parse(PluginInitSchema, _init);
 
@@ -20,13 +26,15 @@ export async function onInit(unixSocket: Socket<UnixSocketMetadata>, _init: Plug
         currentPath: init.path,
     });
 
+    const { currentPath, content } = getContent({ currentPath: init.root, entries });
+
     unixSocket.data = {
         browserState: {
             root: init.root,
             repoName: getRepoName({ root: init.root }),
-            currentPath: init.path,
             entries: entries,
-            content: getContent({ currentPath: init.root, entries }),
+            content,
+            currentPath,
             disableSyncScroll: init.disable_sync_scroll,
         },
     };

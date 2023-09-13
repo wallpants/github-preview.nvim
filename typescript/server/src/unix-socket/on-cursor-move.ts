@@ -18,15 +18,16 @@ export async function onCursorMove(unixSocket: Socket<UnixSocketMetadata>, curso
     const currentPathChanged = browserState.currentPath !== cursorMove.abs_path;
 
     if (currentPathChanged) {
-        browserState.currentPath = cursorMove.abs_path;
         browserState.entries = await getEntries({
             root: browserState.root,
             currentPath: cursorMove.abs_path,
         });
-        browserState.content = getContent({
+        const { content, currentPath } = getContent({
             entries: browserState.entries,
             currentPath: cursorMove.abs_path,
         });
+        browserState.currentPath = currentPath;
+        browserState.content = content;
 
         message.entries = browserState.entries;
         message.content = browserState.content;

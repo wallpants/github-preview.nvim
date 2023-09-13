@@ -6,25 +6,26 @@ import { getContent, getEntries } from "../utils.ts";
 export async function onWsGetEntry(
     webSocket: ServerWebSocket<unknown>,
     browserState: BrowserState,
-    currentPath: string,
+    requestedCurrentPath: string,
 ) {
     if (
-        browserState.currentPath === currentPath ||
+        browserState.currentPath === requestedCurrentPath ||
         // don't send files outside of root
-        currentPath.length < browserState.root.length
+        requestedCurrentPath.length < browserState.root.length
     ) {
         return;
     }
 
-    browserState.currentPath = currentPath;
     browserState.entries = await getEntries({
-        currentPath: currentPath,
+        currentPath: requestedCurrentPath,
         root: browserState.root,
     });
-    browserState.content = getContent({
-        currentPath: currentPath,
+    const { content, currentPath } = getContent({
+        currentPath: requestedCurrentPath,
         entries: browserState.entries,
     });
+    browserState.currentPath = currentPath;
+    browserState.content = content;
 
     const message: WsServerMessage = {
         currentPath: browserState.currentPath,

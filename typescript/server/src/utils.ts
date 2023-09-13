@@ -60,22 +60,22 @@ export function getContent({
 }: {
     currentPath: BrowserState["currentPath"];
     entries: BrowserState["entries"];
-}): BrowserState["content"] {
-    if (!existsSync(currentPath)) return null;
+}): { content: BrowserState["content"]; currentPath: string } {
+    if (!existsSync(currentPath)) return { content: null, currentPath };
 
     const isDir = currentPath.endsWith("/");
     if (isDir) {
         // search for readme.md
         const readmePath = entries.find((e) => basename(e).toLowerCase() === "readme.md");
         if (readmePath) currentPath = readmePath;
-        else return null;
+        else return { content: null, currentPath };
     }
 
     if (isText(currentPath)) {
-        return readFileSync(currentPath).toString();
+        return { content: readFileSync(currentPath).toString(), currentPath };
     }
 
-    return null;
+    return { content: null, currentPath };
 
     // const isImage = checkIsImage(browserState.currentPath)
     // if (isImage) {

@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -rf node_modules && rm -rf dist",
     "format": "prettier **.ts -w",
-    "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
+    "lint": "tsc && eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
     "dev": "bun --watch run src/index.ts",
     "start": "NODE_ENV=production; bun run src/index.ts"
   },
