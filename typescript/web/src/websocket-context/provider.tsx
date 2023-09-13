@@ -115,7 +115,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 markdownElement.innerHTML = markdownToHtml(markdown);
             }
 
-            if (cursorMoveLine && !state.current.disableSyncScroll) {
+            if (cursorMoveLine !== undefined && !state.current.disableSyncScroll) {
                 if (!offsets.current) offsets.current = getScrollOffsets();
                 scroll(cursorMoveLine, offsets.current);
             }

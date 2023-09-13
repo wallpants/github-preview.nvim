@@ -79,7 +79,7 @@ while (attempt <= MAX_ATTEMPTS && (!client || ["closing", "closed"].includes(cli
         });
         serverInitialized = true;
     } catch (err) {
-        logger.verbose("failed to connect", err);
+        logger.verbose(err);
         if (!serverInitialized) {
             logger.verbose("starting server");
             initializeServer();

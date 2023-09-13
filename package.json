@@ -6,7 +6,7 @@
   ],
   "scripts": {
     "vi": "nvim",
-    "dev:web": "cd typescript/web && bun dev",
+    "web:dev": "cd typescript/web && bun dev",
     "build:web": "cd typescript/web && bun run build",
     "logs:neovim-bridge": "tail -F -n 0 \"$GP_BRIDGE_LOG_STREAM\"",
     "logs:server": "tail -F -n 0 \"$GP_SERVER_LOG_STREAM\"",
