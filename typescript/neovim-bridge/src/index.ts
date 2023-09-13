@@ -58,6 +58,7 @@ while (attempt <= MAX_ATTEMPTS && (!client || ["closing", "closed"].includes(cli
                         type: "github-preview-init",
                         data: init,
                     };
+                    // TODO(gualcasas) use msgpackr instead of JSON.stringify
                     socket.write(JSON.stringify(initEvent));
 
                     for (const event of EVENT_NAMES) await nvim.call("nvim_subscribe", [event]);
@@ -66,13 +67,10 @@ while (attempt <= MAX_ATTEMPTS && (!client || ["closing", "closed"].includes(cli
                      * It so happens that nvim notification names match
                      * the server's notification names and payload structure
                      */
-                    nvim.onNotification((event, args) => {
-                        console.log("event: ", event);
-                        console.log("args: ", args);
+                    nvim.onNotification((event, [arg]) => {
+                        // TODO(gualcasas) use msgpackr instead of JSON.stringify
+                        socket.write(JSON.stringify({ type: event, data: arg }));
                     });
-                    // nvim.on("notification", (event: string, [arg]: unknown[]) => {
-                    //     socket.write(JSON.stringify({ type: event, data: arg }));
-                    // });
                 },
                 data(_socket, data) {
                     logger.verbose("data received", data);
