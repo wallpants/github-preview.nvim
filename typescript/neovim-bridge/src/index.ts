@@ -74,11 +74,14 @@ while (attempt <= MAX_ATTEMPTS && (!client || ["closing", "closed"].includes(cli
                     //     socket.write(JSON.stringify({ type: event, data: arg }));
                     // });
                 },
+                data(_socket, data) {
+                    logger.verbose("data received", data);
+                },
             },
         });
         serverInitialized = true;
     } catch (err) {
-        logger.verbose("failed to connect");
+        logger.verbose("failed to connect", err);
         if (!serverInitialized) {
             logger.verbose("starting server");
             initializeServer();
