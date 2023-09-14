@@ -38,20 +38,24 @@ export async function updateBrowserState(
             currentPath: newCurrentPath,
             root: browserState.root,
         });
+
+        browserState.entries = entries;
+        message.entries = browserState.entries;
+
         const { content, currentPath } = getContent({
             currentPath: newCurrentPath,
-            entries: browserState.entries,
+            entries: entries,
             newContent: newContent,
         });
+
         browserState.content = content;
         message.content = browserState.content;
 
         browserState.currentPath = currentPath;
         message.currentPath = browserState.currentPath;
+    }
 
-        browserState.entries = entries;
-        message.entries = browserState.entries;
-    } else if (newContent) {
+    if (newContent) {
         browserState.content = newContent;
         message.content = browserState.content;
     }
