@@ -26,7 +26,7 @@ export async function onInit(unixSocket: Socket<UnixSocketMetadata>, _init: Plug
         currentPath: init.path,
     });
 
-    const { currentPath, content } = getContent({
+    const { currentPath, content, cursorLine } = getContent({
         currentPath: init.root,
         entries,
         newContent: init.content,
@@ -40,7 +40,7 @@ export async function onInit(unixSocket: Socket<UnixSocketMetadata>, _init: Plug
             content,
             currentPath,
             disableSyncScroll: init.disable_sync_scroll,
-            cursorLine: init.cursor_line,
+            cursorLine: cursorLine !== undefined ? cursorLine : init.cursor_line,
         },
     };
 

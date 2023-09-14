@@ -24,10 +24,10 @@ export function getRepoName({ root }: { root: BrowserState["root"] }): string {
 export async function updateBrowserState(
     browserState: BrowserState,
     newCurrentPath: string,
-    cursorLine: number,
-    newContent?: string,
+    newCursorLine: null | number,
+    newContent?: NonNullable<WsServerMessage["content"]>,
 ): Promise<WsServerMessage> {
-    browserState.cursorLine = cursorLine;
+    browserState.cursorLine = newCursorLine;
 
     const message: WsServerMessage = {
         cursorLine: browserState.cursorLine,
@@ -42,11 +42,16 @@ export async function updateBrowserState(
         browserState.entries = entries;
         message.entries = browserState.entries;
 
-        const { content, currentPath } = getContent({
+        const { content, currentPath, cursorLine } = getContent({
             currentPath: newCurrentPath,
             entries: entries,
             newContent: newContent,
         });
+
+        if (cursorLine !== undefined) {
+            browserState.cursorLine = cursorLine;
+            message.cursorLine = browserState.cursorLine;
+        }
 
         browserState.content = content;
         message.content = browserState.content;
@@ -104,8 +109,8 @@ export function getContent({
     currentPath: BrowserState["currentPath"];
     entries: BrowserState["entries"];
     newContent?: string | undefined;
-}): { content: BrowserState["content"]; currentPath: string } {
-    if (!existsSync(currentPath)) return { content: null, currentPath };
+}): { content: BrowserState["content"]; currentPath: string; cursorLine?: number | null } {
+    if (!existsSync(currentPath)) return { content: null, currentPath, cursorLine: null };
     if (newContent) return { content: newContent, currentPath };
 
     const isDir = currentPath.endsWith("/");
@@ -113,14 +118,14 @@ export function getContent({
         // search for readme.md
         const readmePath = entries.find((e) => basename(e).toLowerCase() === "readme.md");
         if (readmePath) currentPath = readmePath;
-        else return { content: null, currentPath };
+        else return { content: null, currentPath, cursorLine: null };
     }
 
     if (isText(currentPath)) {
-        return { content: readFileSync(currentPath).toString(), currentPath };
+        return { content: readFileSync(currentPath).toString(), currentPath, cursorLine: null };
     }
 
-    return { content: null, currentPath };
+    return { content: null, currentPath, cursorLine: null };
 
     // const isImage = checkIsImage(browserState.currentPath)
     // if (isImage) {

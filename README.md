@@ -2,6 +2,8 @@ asdf
 
 # my name is casas medina
 
+-   [ ] allow users to override markdown codeblock language per file extension
+    -   [ ] log to the console the file extension detected to make it easier for the user to know what to override
 -   [ ] if we're on root readme, and then go into a dir, scroll indicator stays in screen even though there's no content
 -   [x] if we start deep in the repo and navigate up to the root, readme.md is not automagically loaded
 -   [ ] start with no buffer open, we need to click twice on a dir to navigate, and cursorline/content is all messed up

@@ -25,7 +25,7 @@ export type BrowserState = {
     entries: string[];
     currentPath: string;
     content: null | string;
-    cursorLine: number;
+    cursorLine: null | number;
     disableSyncScroll: boolean;
 };
 

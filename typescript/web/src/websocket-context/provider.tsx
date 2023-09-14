@@ -3,7 +3,7 @@ import { createBrowserHistory } from "history";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { Banner } from "../components/banner.tsx";
-import { markdownToHtml } from "../components/markdown/markdown-it/index.ts";
+import { contentToHtml } from "../components/markdown/markdown-it/index.ts";
 import {
     getScrollOffsets,
     scroll,
@@ -23,10 +23,6 @@ const ws = new ReconnectingWebSocket(URL, [], {
 });
 
 const history = createBrowserHistory();
-
-function textToMarkdown({ text, fileExt }: { text: string; fileExt: string | undefined }) {
-    return fileExt === "md" ? text : "```" + fileExt + `\n${text}`;
-}
 
 export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
     const state = useRef<Partial<BrowserState>>({});
@@ -59,71 +55,49 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
             const message = JSON.parse(String(event.data)) as WsServerMessage;
             if (ENV.IS_DEV) console.log("received:", message);
 
-            const {
-                goodbye,
-                root,
-                entries,
-                repoName,
-                disableSyncScroll,
-                currentPath,
-                content,
-                cursorLine,
-            } = message;
+            if (message.goodbye) window.close();
+            if (message.root) state.current.root = message.root;
+            if (message.entries) state.current.entries = message.entries;
+            if (message.repoName) state.current.repoName = message.repoName;
+            if (message.disableSyncScroll)
+                state.current.disableSyncScroll = message.disableSyncScroll;
 
-            if (goodbye) window.close();
-            if (root) state.current.root = root;
-            if (entries) state.current.entries = entries;
-            if (repoName) state.current.repoName = repoName;
-            if (disableSyncScroll) state.current.disableSyncScroll = disableSyncScroll;
-
-            if (currentPath) {
-                if (state.current.currentPath !== currentPath) {
-                    state.current.currentPath = currentPath;
-                    setCurrentPath(currentPath);
+            if (message.currentPath) {
+                if (state.current.currentPath !== message.currentPath) {
+                    state.current.currentPath = message.currentPath;
+                    setCurrentPath(message.currentPath);
                 }
 
                 if (!state.current.root) throw Error("root missing");
-                const relative = currentPath.slice(state.current.root.length);
+                const relative = message.currentPath.slice(state.current.root.length);
                 history.push("/" + relative);
             }
 
             const markdownElement = document.getElementById(MARKDOWN_ELEMENT_ID);
             if (!markdownElement) throw Error("markdownElement missing");
 
-            if (content === null) {
-                offsets.current = null; // if content changes, existing offsets become outdated
-                state.current.content = null;
-                markdownElement.innerHTML = "";
-            }
-
             const fileName = getFileName(state.current.currentPath);
             const fileExt = getFileExt(fileName);
-            if (content) {
-                offsets.current = null; // if content changes, existing offsets become outdated
-                state.current.content = content;
-                const markdown = textToMarkdown({
-                    text: content,
-                    fileExt,
-                });
 
-                if (fileExt === "md") {
-                    markdownElement.style.setProperty("padding", "44px");
-                } else {
+            if (message.content === null || message.content) {
+                offsets.current = null;
+                state.current.content = message.content;
+                markdownElement.innerHTML = contentToHtml({ content: message.content, fileExt });
+
+                if (fileExt === "md") markdownElement.style.setProperty("padding", "44px");
+                else {
                     markdownElement.style.setProperty("padding", "0px");
-                    // remove margin-bottom added by github-styles if rendering only code
                     markdownElement.style.setProperty("margin-bottom", "-16px");
                 }
-
-                markdownElement.innerHTML = markdownToHtml(markdown);
             }
 
             if (
-                cursorLine !== undefined &&
-                !state.current.disableSyncScroll &&
-                state.current.content
+                message.cursorLine !== null &&
+                message.cursorLine !== undefined &&
+                !state.current.disableSyncScroll
             ) {
                 if (!offsets.current) offsets.current = getScrollOffsets();
-                scroll({ cursorLine, offsets: offsets.current, fileExt });
+                scroll({ cursorLine: message.cursorLine, offsets: offsets.current, fileExt });
             }
         };
     }, [wsRequest]);
