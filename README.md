@@ -2,6 +2,7 @@ asdf
 
 # my name is casas medina
 
+-   [] if we start deep in the repo and navigate up to the root, readme.md is not automagically loaded
 -   [] start with no buffer open, we need to click twice on a dir to navigate, and cursorline/content is all messed up
 -   [x] according to logs, there's a content-change event that's being received by the server on cursor move
 -   [x] scroll indicator does not go up to the first line on readme.md
