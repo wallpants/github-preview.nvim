@@ -1,17 +1,11 @@
-import {
-    createLogger,
-    ENV,
-    GP_UNIX_SOCKET_PATH,
-    type PluginInit,
-    type SocketEvent,
-} from "@gp/shared";
+import { createLogger, ENV, GP_UNIX_SOCKET_PATH, type PluginInit } from "@gp/shared";
 import { type Socket } from "bun";
-import { attach, type NeovimApiInfo } from "bunvim";
+import { attach } from "bunvim";
 import { normalize } from "node:path";
 
 const logger = createLogger(ENV.GP_BRIDGE_LOG_STREAM);
 
-const EVENT_NAMES: SocketEvent["type"][] = [
+const EVENT_NAMES = [
     "github-preview-init",
     "github-preview-cursor-move",
     "github-preview-content-change",
@@ -34,7 +28,10 @@ function initializeServer() {
 const SOCKET = process.env["NVIM"];
 if (!SOCKET) throw Error("socket missing");
 
-const nvim = await attach<NeovimApiInfo>({ socket: SOCKET });
+const nvim = await attach<{
+    "some-event": [{ name: string; age: number }];
+    "some-other-event": [boolean];
+}>({ socket: SOCKET });
 const init = (await nvim.call("nvim_get_var", ["github_preview_init"])) as PluginInit;
 
 const MAX_ATTEMPTS = 20;
@@ -54,7 +51,7 @@ while (attempt <= MAX_ATTEMPTS && (!client || ["closing", "closed"].includes(cli
             socket: {
                 async open(socket) {
                     // as soon as we connect, we send config to server
-                    const initEvent: SocketEvent = {
+                    const initEvent = {
                         type: "github-preview-init",
                         data: init,
                     };
@@ -70,6 +67,8 @@ while (attempt <= MAX_ATTEMPTS && (!client || ["closing", "closed"].includes(cli
                     nvim.onNotification((event, [arg]) => {
                         // TODO(gualcasas) use msgpackr instead of JSON.stringify
                         socket.write(JSON.stringify({ type: event, data: arg }));
+                        if (event === "some-event") {
+                        }
                     });
                 },
                 data(_socket, data) {

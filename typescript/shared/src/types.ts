@@ -5,11 +5,7 @@ export type PluginInit = Output<typeof PluginInitSchema>;
 export type CursorMove = Output<typeof CursorMoveSchema>;
 export type ContentChange = Output<typeof ContentChangeSchema>;
 
-export type SocketEvent =
-    | {
-          type: "github-preview-init";
-          data: PluginInit;
-      }
+export type NeovimNotification =
     | {
           type: "github-preview-cursor-move";
           data: CursorMove;

@@ -1,19 +1,17 @@
-import { type PluginInit, type WsBrowserRequest, type WsServerMessage } from "@gp/shared";
-import { type Server, type Socket } from "bun";
+import {
+    type BrowserState,
+    type PluginInit,
+    type WsBrowserRequest,
+    type WsServerMessage,
+} from "@gp/shared";
+import { type Server } from "bun";
 import { logger } from "../logger.ts";
-import { type UnixSocketMetadata } from "../unix-socket/types.ts";
 import { onHttpRequest } from "./on-http-request.ts";
 import { onWsGetEntry } from "./ws-on-get-entry.ts";
 
 export const EDITOR_EVENTS_TOPIC = "editor-events";
 
-export function startWebServer(
-    init: PluginInit,
-    unixSocket: Socket<UnixSocketMetadata | undefined>,
-): Server {
-    const browserState = unixSocket.data?.browserState;
-    if (!browserState) throw Error("browserState missing");
-
+export function startWebServer(init: PluginInit, browserState: BrowserState): Server {
     logger.verbose("starting http server", { init });
     logger.verbose("browserState: ", { browserState });
 

@@ -1,33 +1,50 @@
-import { GP_UNIX_SOCKET_PATH, type SocketEvent } from "@gp/shared";
-import { logger } from "./logger.ts";
-import { onContentChange } from "./unix-socket/on-content-change.ts";
-import { onCursorMove } from "./unix-socket/on-cursor-move.ts";
-import { onInit } from "./unix-socket/on-init.ts";
-import { type UnixSocketMetadata } from "./unix-socket/types.ts";
+import { type BrowserState, type PluginInit } from "@gp/shared";
+import { attach } from "bunvim";
+import { getContent, getEntries, getRepoName } from "./utils.ts";
 
-// TODO(gualcasas): close webserver when unix socket disconnects
-logger.verbose("starting unix socket");
+const SOCKET = process.env["NVIM"];
+if (!SOCKET) throw Error("socket missing");
 
-Bun.listen<UnixSocketMetadata>({
-    unix: GP_UNIX_SOCKET_PATH,
-    socket: {
-        async data(unixSocket, rawEvent) {
-            const event = JSON.parse(rawEvent.toString()) as SocketEvent;
-            logger.verbose("unixSocket event received", event);
+const nvim = await attach<{ "event-1": [number] }>({ socket: SOCKET });
+const init = (await nvim.call("nvim_get_var", ["github_preview_init"])) as PluginInit;
 
-            if (event.type === "github-preview-init") await onInit(unixSocket, event.data);
-
-            const browserState = unixSocket.data?.browserState;
-            if (!browserState) return;
-
-            if (event.type === "github-preview-cursor-move")
-                await onCursorMove(unixSocket, event.data);
-
-            if (event.type === "github-preview-content-change")
-                await onContentChange(unixSocket, event.data);
-        },
-        error(_socket, error) {
-            logger.verbose("unixSocket ERROR", error);
-        },
-    },
+const entries = await getEntries({
+    root: init.root,
+    currentPath: init.path,
 });
+
+const { currentPath, content, cursorLine } = getContent({
+    currentPath: init.root,
+    entries,
+    newContent: init.content,
+});
+
+const browserState: BrowserState = {
+    root: init.root,
+    repoName: getRepoName({ root: init.root }),
+    entries: entries,
+    content,
+    currentPath,
+    disableSyncScroll: init.disable_sync_scroll,
+    cursorLine: cursorLine !== undefined ? cursorLine : init.cursor_line,
+};
+
+nvim.onNotification("event-1", (args) => {
+    console.log("args: ", args);
+});
+
+// const webServer = startWebServer(init, browserState);
+
+// for (const event of EVENT_NAMES) await nvim.call("nvim_subscribe", [event]);
+
+// nvim.onNotification(async (event, [arg]) => {
+//     logger.verbose(`unixSocket event={${event}}`, arg);
+
+//     if (event === "github-preview-cursor-move") {
+//         await onCursorMove(browserState, webServer, arg);
+//     }
+
+//     if (event === "github-preview-content-change") {
+//         await onContentChange(browserState, webServer, arg);
+//     }
+// });
