@@ -6,15 +6,16 @@
     "clean": "rm -rf node_modules && rm -rf dist",
     "format": "prettier **.ts -w",
     "lint": "tsc && eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
-    "dev": "bun --watch run src/index.ts",
+    "dev": "bun --hot run src/index.ts",
     "start": "NODE_ENV=production; bun run src/index.ts"
   },
   "dependencies": {
-    "bunvim": "0.1.0",
+    "@gp/shared": "workspace:*",
+    "bunvim": "latest",
     "globby": "^13.2.2",
     "istextorbinary": "^6.0.0",
     "opener": "^1.5.2",
-    "@gp/shared": "workspace:*"
+    "valibot": "^0.15.0"
   },
   "devDependencies": {
     "@types/opener": "^1.4.1"

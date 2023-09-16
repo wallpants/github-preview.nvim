@@ -12,22 +12,22 @@ M.default_opts = {
 	ignore_buffer_patterns = { "NvimTree_*" },
 }
 
----@param ignore_buffer_patterns string[]
----@param buffer_name string
----@return boolean
-local function shouldIgnoreBuffer(ignore_buffer_patterns, buffer_name)
-	if buffer_name == "" then
-		return true
-	end
+-----@param ignore_buffer_patterns string[]
+-----@param buffer_name string
+-----@return boolean
+--local function shouldIgnoreBuffer(ignore_buffer_patterns, buffer_name)
+--	if buffer_name == "" then
+--		return true
+--	end
 
-	for i = #ignore_buffer_patterns, 1, -1 do
-		if string.match(buffer_name, ignore_buffer_patterns[i]) then
-			return true
-		end
-	end
+--	for i = #ignore_buffer_patterns, 1, -1 do
+--		if string.match(buffer_name, ignore_buffer_patterns[i]) then
+--			return true
+--		end
+--	end
 
-	return false
-end
+--	return false
+--end
 
 ---@param opts nvim_plugin_opts
 M.setup = function(opts)
@@ -70,42 +70,42 @@ M.setup = function(opts)
 			disable_sync_scroll = opts.disable_sync_scroll,
 		}
 
-		vim.api.nvim_create_autocmd({ "TextChangedI", "TextChanged" }, {
-			---@param arg autocmd_arg
-			callback = function(arg)
-				local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
-				local content = table.concat(lines, "\n")
+		--vim.api.nvim_create_autocmd({ "TextChangedI", "TextChanged" }, {
+		--	---@param arg autocmd_arg
+		--	callback = function(arg)
+		--		local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
+		--		local content = table.concat(lines, "\n")
 
-				---@type content_change
-				local content_change = {
-					abs_path = arg.file,
-					content = content,
-				}
+		--		---@type content_change
+		--		local content_change = {
+		--			abs_path = arg.file,
+		--			content = content,
+		--		}
 
-				-- TODO(gualcasas) maybe filter with autocmd pattern instead of manually
-				if not shouldIgnoreBuffer(opts.ignore_buffer_patterns, arg.file) then
-					vim.rpcnotify(0, "github-preview-content-change", content_change)
-				end
-			end,
-		})
+		--		-- TODO(gualcasas) maybe filter with autocmd pattern instead of manually
+		--		if not shouldIgnoreBuffer(opts.ignore_buffer_patterns, arg.file) then
+		--			vim.rpcnotify(0, "github-preview-content-change", content_change)
+		--		end
+		--	end,
+		--})
 
-		vim.api.nvim_create_autocmd({ "CursorHoldI", "CursorHold" }, {
-			---@param arg autocmd_arg
-			callback = function(arg)
-				local cursor_line = vim.api.nvim_win_get_cursor(0)[1] - 1
+		--vim.api.nvim_create_autocmd({ "CursorHoldI", "CursorHold" }, {
+		--	---@param arg autocmd_arg
+		--	callback = function(arg)
+		--		local cursor_line = vim.api.nvim_win_get_cursor(0)[1] - 1
 
-				---@type cursor_move
-				local cursor_move = {
-					abs_path = arg.file,
-					cursor_line = cursor_line,
-				}
+		--		---@type cursor_move
+		--		local cursor_move = {
+		--			abs_path = arg.file,
+		--			cursor_line = cursor_line,
+		--		}
 
-				-- TODO(gualcasas) maybe filter with autocmd pattern instead of manually
-				if not shouldIgnoreBuffer(opts.ignore_buffer_patterns, arg.file) then
-					vim.rpcnotify(0, "github-preview-cursor-move", cursor_move)
-				end
-			end,
-		})
+		--		-- TODO(gualcasas) maybe filter with autocmd pattern instead of manually
+		--		if not shouldIgnoreBuffer(opts.ignore_buffer_patterns, arg.file) then
+		--			vim.rpcnotify(0, "github-preview-cursor-move", cursor_move)
+		--		end
+		--	end,
+		--})
 
 		local __filename = debug.getinfo(1, "S").source:sub(2)
 		local plugin_root = vim.fn.fnamemodify(__filename, ":p:h:h:h") .. "/"
@@ -114,7 +114,7 @@ M.setup = function(opts)
 		local cmd = is_dev and "bun dev" or "bun start"
 
 		vim.fn.jobstart(cmd, {
-			cwd = plugin_root .. "typescript/neovim-bridge",
+			cwd = plugin_root .. "typescript/server",
 			stderr_buffered = false,
 			stdout_buffered = false,
 			stdin = "null",

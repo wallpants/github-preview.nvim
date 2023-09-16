@@ -5,8 +5,7 @@ export const ENV = {
     IS_DEV: Boolean(VITE_GP_WS_PORT),
 
     // logs
-    GP_SERVER_LOG_STREAM: process.env["GP_SERVER_LOG_STREAM"],
-    GP_BRIDGE_LOG_STREAM: process.env["GP_BRIDGE_LOG_STREAM"],
+    GP_LOG_FILE: process.env["GP_LOG_FILE"],
     GP_LOG_LEVEL: process.env["GP_LOG_LEVEL"],
 
     // nvim sets its listen address in child processes

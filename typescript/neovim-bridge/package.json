@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@gp/shared": "workspace:*",
-    "bunvim": "0.1.0",
+    "bunvim": "latest",
     "msgpackr": "^1.9.9"
   }
 }
