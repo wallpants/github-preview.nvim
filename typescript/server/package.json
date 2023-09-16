@@ -10,7 +10,7 @@
     "start": "NODE_ENV=production; bun run src/index.ts"
   },
   "dependencies": {
-    "bunvim": "latest",
+    "bunvim": "0.1.0",
     "globby": "^13.2.2",
     "istextorbinary": "^6.0.0",
     "opener": "^1.5.2",
