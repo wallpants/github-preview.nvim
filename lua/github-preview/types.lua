@@ -4,7 +4,6 @@ local M = {}
 ---@field port number
 ---@field root string
 ---@field path string
----@field content string
 ---@field cursor_line number
 ---@field scroll_debounce_ms number
 ---@field disable_sync_scroll boolean

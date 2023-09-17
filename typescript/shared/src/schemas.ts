@@ -11,7 +11,6 @@ export const PluginInitSchema = object({
      * otherwise path looks something like "/Users/.../README.md"
      * */
     path: string(),
-    content: string(),
     cursor_line: number(),
     scroll_debounce_ms: number(),
     disable_sync_scroll: boolean(),

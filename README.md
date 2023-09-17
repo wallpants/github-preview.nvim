@@ -2,6 +2,7 @@ asdf
 
 # my name is casas medina
 
+-   [ ] create "BufEnter" or similar autocmd to detach from previous buffers and attach to new
 -   [ ] allow users to override markdown codeblock language per file extension
     -   [ ] log to the console the file extension detected to make it easier for the user to know what to override
 -   [ ] if we're on root readme, and then go into a dir, scroll indicator stays in screen even though there's no content

@@ -56,7 +56,7 @@ M.setup = function(opts)
 		local init_path = vim.fn.fnamemodify(buffer_name, ":p")
 
 		local init_buf_lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
-		local init_content = table.concat(init_buf_lines, "\n")
+		-- local init_content = table.concat(init_buf_lines, "\n")
 		local init_cursor_line = vim.api.nvim_win_get_cursor(0)[1] - 1
 
 		---@type plugin_init
@@ -64,7 +64,7 @@ M.setup = function(opts)
 			port = opts.port,
 			root = root,
 			path = init_path,
-			content = init_content,
+			-- content = init_content,
 			cursor_line = init_cursor_line,
 			scroll_debounce_ms = opts.scroll_debounce_ms,
 			disable_sync_scroll = opts.disable_sync_scroll,
