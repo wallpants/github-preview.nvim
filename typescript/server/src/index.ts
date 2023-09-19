@@ -28,22 +28,23 @@ const webServer = startWebServer(init.port, browserState, nvim);
 if (!ENV.IS_DEV) opener(`http://localhost:${init.port}`);
 
 await subscribeCursorMove(nvim, async (cursorMove) => {
-    nvim.logger?.verbose("subscribeCursorMove", { cursorMove });
     const message = await updateBrowserState(
         browserState,
         cursorMove.abs_path,
         cursorMove.cursor_line,
     );
+    nvim.logger?.verbose("subscribeCursorMove WS_SERVER_MESSAGE", {
+        serverMessage: message,
+        browserState,
+    });
     webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 });
 
 subscribeContentChange(nvim, browserState, async (newContent, newPath, newCursorLine) => {
-    nvim.logger?.verbose("subscribeContentChange", { newContent });
-    const message = await updateBrowserState(
+    const message = await updateBrowserState(browserState, newPath, newCursorLine, newContent);
+    nvim.logger?.verbose("subscribeContentChange WS_SERVER_MESSAGE", {
+        serverMessage: message,
         browserState,
-        newPath,
-        newCursorLine ?? browserState.cursorLine,
-        newContent,
-    );
+    });
     webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 });

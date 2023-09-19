@@ -1,0 +1,200 @@
+1. Open buffer .env.example.local  line 8
+2. Open buffer .env.local          line 6
+3. Start github preview
+4. Move back to .env.example.local line 8
+
+info 16:57:18.848
+{ cursorMove: 
+   { abs_path: '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.local',
+     cursor_line: 5,
+     buffer_id: 17 },
+  message: 'cursor_move' }
+
+info 16:57:18.852
+{ message: 'nvim_buf_lines_event' }
+
+verbose 16:57:18.871
+{ serverMessage: 
+   { cursorLine: null,
+     entries: 
+      [ '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/lua/',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/typescript/',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.example.local',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.eslintrc.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.gitignore',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.prettierrc.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/README.md',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/bun.lockb',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/package.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/tsconfig.json' ],
+     content: [],
+     currentPath: '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.local' },
+  browserState: 
+   { root: '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/',
+     repoName: 'gualcasas/github-preview.nvim',
+     entries: 
+      [ '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/lua/',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/typescript/',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.example.local',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.eslintrc.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.gitignore',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.prettierrc.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/README.md',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/bun.lockb',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/package.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/tsconfig.json' ],
+     content: [],
+     currentPath: '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.local',
+     disableSyncScroll: false,
+     cursorLine: null },
+  message: 'subscribeCursorMove WS_SERVER_MESSAGE' }
+
+verbose 16:57:18.872
+{ serverMessage: 
+   { cursorLine: 8,
+     content: 
+      [ '# port on which webapp will try to find websocket',
+        '# we also use this var to know if we\'re in dev',
+        '# IS_DEV = Boolean(VITE_GP_WS_PORT)',
+        'VITE_GP_WS_PORT=6041',
+        '',
+        '# error: 0',
+        '# warn: 1',
+        '# info: 2',
+        '# http: 3',
+        '# verbose: 4',
+        '# debug: 5',
+        '# silly: 6',
+        'GP_LOG_LEVEL=verbose' ] },
+  browserState: 
+   { root: '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/',
+     repoName: 'gualcasas/github-preview.nvim',
+     entries: 
+      [ '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/lua/',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/typescript/',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.example.local',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.eslintrc.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.gitignore',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.prettierrc.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/README.md',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/bun.lockb',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/package.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/tsconfig.json' ],
+     content: 
+      [ '# port on which webapp will try to find websocket',
+        '# we also use this var to know if we\'re in dev',
+        '# IS_DEV = Boolean(VITE_GP_WS_PORT)',
+        'VITE_GP_WS_PORT=6041',
+        '',
+        '# error: 0',
+        '# warn: 1',
+        '# info: 2',
+        '# http: 3',
+        '# verbose: 4',
+        '# debug: 5',
+        '# silly: 6',
+        'GP_LOG_LEVEL=verbose' ],
+     currentPath: '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.local',
+     disableSyncScroll: false,
+     cursorLine: 8 },
+  message: 'subscribeContentChange WS_SERVER_MESSAGE' }
+
+info 16:57:47.828
+{ cursorMove: 
+   { abs_path: '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.example.local',
+     cursor_line: 7,
+     buffer_id: 1 },
+  message: 'cursor_move' }
+
+info 16:57:47.855
+{ message: 'nvim_buf_lines_event' }
+
+verbose 16:57:47.860
+{ serverMessage: 
+   { cursorLine: null,
+     entries: 
+      [ '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/lua/',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/typescript/',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.example.local',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.eslintrc.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.gitignore',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.prettierrc.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/README.md',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/bun.lockb',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/package.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/tsconfig.json' ],
+     content: [],
+     currentPath: '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.example.local' },
+  browserState: 
+   { root: '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/',
+     repoName: 'gualcasas/github-preview.nvim',
+     entries: 
+      [ '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/lua/',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/typescript/',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.example.local',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.eslintrc.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.gitignore',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.prettierrc.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/README.md',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/bun.lockb',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/package.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/tsconfig.json' ],
+     content: [],
+     currentPath: '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.example.local',
+     disableSyncScroll: false,
+     cursorLine: null },
+  message: 'subscribeCursorMove WS_SERVER_MESSAGE' }
+
+verbose 16:57:47.861
+{ serverMessage: 
+   { cursorLine: 8,
+     content: 
+      [ '# copy this file to .env.local & run neovim with package.json\'s script `vi` to load env vars',
+        '',
+        '# port on which webapp will try to find websocket',
+        '# we also use this var to know if we\'re in dev',
+        '# IS_DEV = Boolean(VITE_GP_WS_PORT)',
+        'VITE_GP_WS_PORT=6041',
+        '',
+        '# error: 0',
+        '# warn: 1',
+        '# info: 2',
+        '# http: 3',
+        '# verbose: 4',
+        '# debug: 5',
+        '# silly: 6',
+        'GP_LOG_LEVEL=debug' ] },
+  browserState: 
+   { root: '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/',
+     repoName: 'gualcasas/github-preview.nvim',
+     entries: 
+      [ '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/lua/',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/typescript/',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.example.local',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.eslintrc.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.gitignore',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.prettierrc.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/README.md',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/bun.lockb',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/package.json',
+        '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/tsconfig.json' ],
+     content: 
+      [ '# copy this file to .env.local & run neovim with package.json\'s script `vi` to load env vars',
+        '',
+        '# port on which webapp will try to find websocket',
+        '# we also use this var to know if we\'re in dev',
+        '# IS_DEV = Boolean(VITE_GP_WS_PORT)',
+        'VITE_GP_WS_PORT=6041',
+        '',
+        '# error: 0',
+        '# warn: 1',
+        '# info: 2',
+        '# http: 3',
+        '# verbose: 4',
+        '# debug: 5',
+        '# silly: 6',
+        'GP_LOG_LEVEL=debug' ],
+     currentPath: '/home/gualcasas/Projects/nvim-plugins/github-preview.nvim/.env.example.local',
+     disableSyncScroll: false,
+     cursorLine: 8 },
+  message: 'subscribeContentChange WS_SERVER_MESSAGE' }

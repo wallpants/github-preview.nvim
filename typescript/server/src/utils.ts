@@ -51,10 +51,12 @@ export function isValidBuffer(path: string) {
 export async function updateBrowserState(
     browserState: BrowserState,
     newCurrentPath: string,
-    newCursorLine: null | number,
+    newCursorLine: null | number | undefined,
     newContent?: BrowserState["content"],
 ): Promise<WsServerMessage> {
-    browserState.cursorLine = newCursorLine;
+    if (newCursorLine !== undefined) {
+        browserState.cursorLine = newCursorLine;
+    }
 
     const message: WsServerMessage = {
         cursorLine: browserState.cursorLine,

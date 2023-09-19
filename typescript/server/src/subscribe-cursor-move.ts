@@ -31,6 +31,7 @@ export async function subscribeCursorMove(
     ]);
 
     nvim.onNotification("cursor_move", async ([cursorMove]) => {
+        nvim.logger?.info("cursor_move", { cursorMove });
         ENV.IS_DEV && parse(CursorMoveSchema, cursorMove);
         if (!isValidBuffer(cursorMove.abs_path)) return;
         await callback(cursorMove);

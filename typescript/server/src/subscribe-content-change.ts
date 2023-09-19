@@ -34,6 +34,7 @@ export function subscribeContentChange(
     nvim.onNotification(
         "nvim_buf_lines_event",
         async ([buffer, _changedtick, firstline, lastline, linedata, _more]) => {
+            nvim.logger?.info("nvim_buf_lines_event");
             const path = await nvim.call("nvim_buf_get_name", [buffer]);
             const deleteCount =
                 lastline === -1 ? browserState.content.length - firstline : lastline - firstline;
@@ -61,6 +62,7 @@ export function subscribeContentChange(
     );
 
     nvim.onNotification("nvim_buf_changedtick_event", async ([buffer, _changedtick]) => {
+        nvim.logger?.info("nvim_buf_changedtick_event");
         const path = await nvim.call("nvim_buf_get_name", [buffer]);
         const linedata = await nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]);
         await callback(linedata, path);
