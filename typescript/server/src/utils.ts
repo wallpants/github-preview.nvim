@@ -1,10 +1,10 @@
-import { type BrowserState, type WsServerMessage } from "@gp/shared";
+import { type BrowserState, type PluginInit, type WsServerMessage } from "@gp/shared";
 import { globby } from "globby";
 import { isText } from "istextorbinary";
 import { existsSync, readFileSync } from "node:fs";
 import { basename, dirname, resolve } from "node:path";
 
-export function getRepoName({ root }: { root: BrowserState["root"] }): string {
+function getRepoName({ root }: { root: BrowserState["root"] }): string {
     const gitConfig = readFileSync(resolve(root, ".git/config")).toString();
     const lines = gitConfig.split("\n");
     let repoName = "no-repo-name";
@@ -19,6 +19,33 @@ export function getRepoName({ root }: { root: BrowserState["root"] }): string {
         }
     }
     return repoName;
+}
+
+export async function initBrowserState(init: PluginInit): Promise<BrowserState> {
+    const entries = await getEntries({
+        root: init.root,
+        currentPath: init.path,
+    });
+
+    const { currentPath, content } = getContent({
+        currentPath: init.root,
+        entries,
+    });
+
+    return {
+        root: init.root,
+        repoName: getRepoName({ root: init.root }),
+        entries: entries,
+        content,
+        currentPath,
+        disableSyncScroll: init.disable_sync_scroll,
+        cursorLine: null,
+    };
+}
+
+export function isValidBuffer(path: string) {
+    // TODO(gualcasas): we need to check whether buffer is telescope/nvimtree
+    return !!path;
 }
 
 export async function updateBrowserState(
@@ -110,32 +137,46 @@ export function getContent({
     entries: BrowserState["entries"];
     newContent?: string | undefined;
 }): { content: BrowserState["content"]; currentPath: string; cursorLine?: number | null } {
-    if (!existsSync(currentPath)) return { content: null, currentPath, cursorLine: null };
-    if (newContent) return { content: newContent, currentPath };
+    if (!existsSync(currentPath)) {
+        return {
+            content: null,
+            currentPath,
+            cursorLine: null,
+        };
+    }
+
+    if (newContent) {
+        return {
+            content: newContent,
+            currentPath,
+        };
+    }
 
     const isDir = currentPath.endsWith("/");
     if (isDir) {
         // search for readme.md
         const readmePath = entries.find((e) => basename(e).toLowerCase() === "readme.md");
         if (readmePath) currentPath = readmePath;
-        else return { content: null, currentPath, cursorLine: null };
+        else {
+            return {
+                content: null,
+                currentPath,
+                cursorLine: null,
+            };
+        }
     }
 
     if (isText(currentPath)) {
-        return { content: readFileSync(currentPath).toString(), currentPath, cursorLine: null };
+        return {
+            content: readFileSync(currentPath).toString(),
+            currentPath,
+            cursorLine: null,
+        };
     }
 
-    return { content: null, currentPath, cursorLine: null };
-
-    // const isImage = checkIsImage(browserState.currentPath)
-    // if (isImage) {
-    //     return {
-    //         content: null,
-    //         image: {
-    //             buffer: img,
-    //             ext: isImage.ext,
-    //             mime: isImage.mime,
-    //         },
-    //     };
-    // }
+    return {
+        content: null,
+        currentPath,
+        cursorLine: null,
+    };
 }

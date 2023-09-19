@@ -12,23 +12,6 @@ M.default_opts = {
 	ignore_buffer_patterns = { "NvimTree_*" },
 }
 
------@param ignore_buffer_patterns string[]
------@param buffer_name string
------@return boolean
---local function shouldIgnoreBuffer(ignore_buffer_patterns, buffer_name)
---	if buffer_name == "" then
---		return true
---	end
-
---	for i = #ignore_buffer_patterns, 1, -1 do
---		if string.match(buffer_name, ignore_buffer_patterns[i]) then
---			return true
---		end
---	end
-
---	return false
---end
-
 ---@param opts nvim_plugin_opts
 M.setup = function(opts)
 	opts = vim.tbl_deep_extend("keep", opts, M.default_opts)
@@ -55,17 +38,11 @@ M.setup = function(opts)
 		local buffer_name = vim.api.nvim_buf_get_name(0)
 		local init_path = vim.fn.fnamemodify(buffer_name, ":p")
 
-		local init_buf_lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
-		-- local init_content = table.concat(init_buf_lines, "\n")
-		local init_cursor_line = vim.api.nvim_win_get_cursor(0)[1] - 1
-
 		---@type plugin_init
 		vim.g.github_preview_init = {
 			port = opts.port,
 			root = root,
 			path = init_path,
-			-- content = init_content,
-			cursor_line = init_cursor_line,
 			scroll_debounce_ms = opts.scroll_debounce_ms,
 			disable_sync_scroll = opts.disable_sync_scroll,
 		}
@@ -115,8 +92,6 @@ M.setup = function(opts)
 
 		vim.fn.jobstart(cmd, {
 			cwd = plugin_root .. "typescript/server",
-			stderr_buffered = false,
-			stdout_buffered = false,
 			stdin = "null",
 			on_exit = M.log,
 			on_stdout = M.log,

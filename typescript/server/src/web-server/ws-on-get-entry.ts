@@ -1,6 +1,5 @@
 import { type BrowserState } from "@gp/shared";
 import { type ServerWebSocket } from "bun";
-import { logger } from "../logger.ts";
 import { updateBrowserState } from "../utils.ts";
 
 export async function onWsGetEntry(

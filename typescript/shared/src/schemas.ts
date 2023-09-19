@@ -17,6 +17,11 @@ export const PluginInitSchema = object({
 });
 
 export const CursorMoveSchema = object({
+    /**
+     * Used to attach & detach buffers (subscribe to buffer changes)
+     * as user navigates from buffer to buffer in neovim.
+     * */
+    buffer_id: number(),
     abs_path: string(),
     cursor_line: number(),
 });
