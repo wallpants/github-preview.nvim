@@ -7,8 +7,7 @@
   "scripts": {
     "vi": "nvim",
     "web:dev": "cd typescript/web && bun dev",
-    "build:web": "cd typescript/web && bun run build",
-    "logs": "tail -F -n 0 \"$GP_LOG_FILE\"",
+    "web:build": "cd typescript/web && bun run build",
     "clean": "rm -rf node_modules && bun run typescript/recursive.ts clean",
     "format": "bun run typescript/recursive.ts format",
     "lint": "bun run typescript/recursive.ts lint"

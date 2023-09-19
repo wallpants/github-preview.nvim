@@ -5,16 +5,6 @@ export type PluginInit = Output<typeof PluginInitSchema>;
 export type CursorMove = Output<typeof CursorMoveSchema>;
 export type ContentChange = Output<typeof ContentChangeSchema>;
 
-export type NeovimNotification =
-    | {
-          type: "github-preview-cursor-move";
-          data: CursorMove;
-      }
-    | {
-          type: "github-preview-content-change";
-          data: ContentChange;
-      };
-
 export type BrowserState = {
     root: string;
     repoName: string;

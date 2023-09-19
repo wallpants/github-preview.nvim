@@ -1,5 +1,5 @@
 import { ENV, PluginInitSchema, type PluginInit } from "@gp/shared";
-import { attach } from "bunvim";
+import { attach, type LogLevel } from "bunvim";
 import opener from "opener";
 import { parse } from "valibot";
 import { subscribeContentChange } from "./subscribe-content-change.ts";
@@ -11,10 +11,12 @@ import { EDITOR_EVENTS_TOPIC, startWebServer } from "./web-server/index.ts";
 const SOCKET = process.env["NVIM"];
 if (!SOCKET) throw Error("socket missing");
 
+const LOG_LEVEL = ENV.GP_LOG_LEVEL as LogLevel | undefined;
+
 const nvim = await attach<ApiInfo>({
     socket: SOCKET,
     client: { name: "github-preview" },
-    logging: { level: "debug" },
+    logging: { level: LOG_LEVEL },
 });
 
 const init = (await nvim.call("nvim_get_var", ["github_preview_init"])) as PluginInit;
