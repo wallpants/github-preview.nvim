@@ -2,8 +2,8 @@ import { type BrowserState, type WsBrowserRequest, type WsServerMessage } from "
 import { type Server } from "bun";
 import { type Nvim } from "bunvim";
 import { type ApiInfo } from "../types.ts";
+import { updateBrowserState } from "../utils.ts";
 import { onHttpRequest } from "./on-http-request.ts";
-import { onWsGetEntry } from "./ws-on-get-entry.ts";
 
 export const EDITOR_EVENTS_TOPIC = "editor-events";
 
@@ -36,7 +36,13 @@ export function startWebServer(
                 }
 
                 if (browserRequest.type === "getEntry") {
-                    await onWsGetEntry(webSocket, browserState, browserRequest.currentPath);
+                    const message = await updateBrowserState(
+                        browserState,
+                        browserRequest.currentPath,
+                        null,
+                    );
+                    nvim.logger?.verbose(`onBrowserRequest.getEntry RESPONSE`, message);
+                    webSocket.send(JSON.stringify(message));
                 }
             },
         },
