@@ -5,6 +5,7 @@ import ReconnectingWebSocket from "reconnecting-websocket";
 import { Banner } from "../components/banner.tsx";
 import { contentToHtml } from "../components/markdown/markdown-it/index.ts";
 import {
+    CURSOR_LINE_ELEMENT_ID,
     getScrollOffsets,
     scroll,
     type Offsets,
@@ -94,13 +95,24 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 }
             }
 
-            if (
-                message.cursorLine !== null &&
-                message.cursorLine !== undefined &&
-                !state.current.disableSyncScroll
-            ) {
-                if (!offsets.current) offsets.current = getScrollOffsets();
-                scroll({ cursorLine: message.cursorLine, offsets: offsets.current, fileExt });
+            if (message.cursorLine !== undefined) {
+                state.current.cursorLine = message.cursorLine;
+            }
+
+            if (state.current.cursorLine !== undefined) {
+                const scrollIndicatorEle = document.getElementById(CURSOR_LINE_ELEMENT_ID);
+                if (!scrollIndicatorEle) return;
+                if (state.current.cursorLine === null) {
+                    scrollIndicatorEle.style.setProperty("visibility", "hidden");
+                } else if (!state.current.disableSyncScroll) {
+                    scrollIndicatorEle.style.setProperty("visibility", "visible");
+                    if (!offsets.current) offsets.current = getScrollOffsets();
+                    scroll({
+                        cursorLine: state.current.cursorLine,
+                        offsets: offsets.current,
+                        fileExt,
+                    });
+                }
             }
         };
     }, [wsRequest]);

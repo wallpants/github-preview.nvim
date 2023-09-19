@@ -37,12 +37,12 @@ await subscribeCursorMove(nvim, async (cursorMove) => {
     webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 });
 
-subscribeContentChange(nvim, browserState, async (newContent, newPath) => {
+subscribeContentChange(nvim, browserState, async (newContent, newPath, newCursorLine) => {
     nvim.logger?.verbose("subscribeContentChange", { newContent });
     const message = await updateBrowserState(
         browserState,
         newPath,
-        browserState.cursorLine,
+        newCursorLine ?? browserState.cursorLine,
         newContent,
     );
     webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));

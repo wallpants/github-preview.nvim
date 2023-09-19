@@ -7,7 +7,7 @@ import { isValidBuffer } from "./utils.ts";
 export function subscribeContentChange(
     nvim: Nvim<ApiInfo>,
     browserState: BrowserState,
-    callback: (newContent: string[], newPath: string) => Promise<void>,
+    callback: (newContent: string[], newPath: string, newCursorLine?: number) => Promise<void>,
 ) {
     let subscribedBufferId: null | number = null;
 
@@ -37,15 +37,26 @@ export function subscribeContentChange(
             const path = await nvim.call("nvim_buf_get_name", [buffer]);
             const deleteCount =
                 lastline === -1 ? browserState.content.length - firstline : lastline - firstline;
-            // If the user navigates on the browser to a different file and then makes some changes
-            // in the editor without first moving the cursor, linedata won't really apply to the current
-            // browserState.content as they refer to different files
-            const newContent =
+
+            const newData =
                 path === browserState.currentPath
-                    ? // TODO(gualcasas): maybe not create a new array every time? mutate existing array?
-                      browserState.content.toSpliced(firstline, deleteCount, ...linedata)
-                    : await nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]);
-            await callback(newContent, path);
+                    ? {
+                          cursorLine: undefined,
+                          content: browserState.content.toSpliced(
+                              firstline,
+                              deleteCount,
+                              ...linedata,
+                          ),
+                      }
+                    : {
+                          cursorLine: (await nvim.call("nvim_win_get_cursor", [0]))[1] - 1,
+                          // If the user navigates on the browser to a different file and then makes some changes
+                          // in the editor without first moving the cursor, linedata won't really apply to the current
+                          // browserState.content as they refer to different files
+                          content: await nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]),
+                      };
+
+            await callback(newData.content, path, newData.cursorLine);
         },
     );
 
