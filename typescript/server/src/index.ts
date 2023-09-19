@@ -1,4 +1,4 @@
-import { ENV, PluginInitSchema, type ContentChange, type PluginInit } from "@gp/shared";
+import { ENV, PluginInitSchema, type PluginInit } from "@gp/shared";
 import { attach } from "bunvim";
 import opener from "opener";
 import { parse } from "valibot";
@@ -26,6 +26,7 @@ const webServer = startWebServer(init.port, browserState, nvim);
 if (!ENV.IS_DEV) opener(`http://localhost:${init.port}`);
 
 await subscribeCursorMove(nvim, async (cursorMove) => {
+    nvim.logger?.verbose("subscribeCursorMove", { cursorMove });
     const message = await updateBrowserState(
         browserState,
         cursorMove.abs_path,
@@ -34,12 +35,13 @@ await subscribeCursorMove(nvim, async (cursorMove) => {
     webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 });
 
-subscribeContentChange(nvim, async (contentChange: ContentChange) => {
+subscribeContentChange(nvim, browserState, async (newContent) => {
+    nvim.logger?.verbose("subscribeContentChange", { newContent });
     const message = await updateBrowserState(
         browserState,
-        contentChange.abs_path,
+        browserState.currentPath,
         browserState.cursorLine,
-        contentChange.content,
+        newContent,
     );
     webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 });

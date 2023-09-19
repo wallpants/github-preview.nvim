@@ -52,7 +52,7 @@ export async function updateBrowserState(
     browserState: BrowserState,
     newCurrentPath: string,
     newCursorLine: null | number,
-    newContent?: NonNullable<WsServerMessage["content"]>,
+    newContent?: BrowserState["content"],
 ): Promise<WsServerMessage> {
     browserState.cursorLine = newCursorLine;
 
@@ -135,17 +135,17 @@ export function getContent({
 }: {
     currentPath: BrowserState["currentPath"];
     entries: BrowserState["entries"];
-    newContent?: string | undefined;
+    newContent?: BrowserState["content"] | undefined;
 }): { content: BrowserState["content"]; currentPath: string; cursorLine?: number | null } {
     if (!existsSync(currentPath)) {
         return {
-            content: null,
+            content: [],
             currentPath,
             cursorLine: null,
         };
     }
 
-    if (newContent) {
+    if (newContent?.length) {
         return {
             content: newContent,
             currentPath,
@@ -159,7 +159,7 @@ export function getContent({
         if (readmePath) currentPath = readmePath;
         else {
             return {
-                content: null,
+                content: [],
                 currentPath,
                 cursorLine: null,
             };
@@ -168,14 +168,14 @@ export function getContent({
 
     if (isText(currentPath)) {
         return {
-            content: readFileSync(currentPath).toString(),
+            content: readFileSync(currentPath, { encoding: "utf8" }).split("\n"),
             currentPath,
             cursorLine: null,
         };
     }
 
     return {
-        content: null,
+        content: [],
         currentPath,
         cursorLine: null,
     };

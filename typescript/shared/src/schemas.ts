@@ -1,4 +1,4 @@
-import { boolean, number, object, string } from "valibot";
+import { array, boolean, number, object, string } from "valibot";
 
 export const PluginInitSchema = object({
     /** port to host the http/ws server "localhost:\{port\}" */
@@ -28,5 +28,5 @@ export const CursorMoveSchema = object({
 
 export const ContentChangeSchema = object({
     abs_path: string(),
-    content: string(),
+    content: array(string()),
 });

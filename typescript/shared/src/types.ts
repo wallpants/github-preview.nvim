@@ -20,7 +20,7 @@ export type BrowserState = {
     repoName: string;
     entries: string[];
     currentPath: string;
-    content: null | string;
+    content: ContentChange["content"];
     cursorLine: null | number;
     disableSyncScroll: boolean;
 };
