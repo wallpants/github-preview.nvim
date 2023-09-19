@@ -79,10 +79,13 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
             const fileName = getFileName(state.current.currentPath);
             const fileExt = getFileExt(fileName);
 
-            if (message.content === null || message.content) {
+            if (message.content) {
                 offsets.current = null;
                 state.current.content = message.content;
-                markdownElement.innerHTML = contentToHtml({ content: message.content, fileExt });
+                markdownElement.innerHTML = contentToHtml({
+                    content: state.current.content,
+                    fileExt,
+                });
 
                 if (fileExt === "md") markdownElement.style.setProperty("padding", "44px");
                 else {
