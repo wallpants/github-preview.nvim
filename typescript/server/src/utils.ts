@@ -1,25 +1,8 @@
-import { type BrowserState, type PluginInit, type WsServerMessage } from "@gp/shared";
+import { type BrowserState, type PluginInit } from "@gp/shared";
 import { globby } from "globby";
 import { isText } from "istextorbinary";
 import { existsSync, readFileSync } from "node:fs";
 import { basename, dirname, resolve } from "node:path";
-
-function getRepoName({ root }: { root: BrowserState["root"] }): string {
-    const gitConfig = readFileSync(resolve(root, ".git/config")).toString();
-    const lines = gitConfig.split("\n");
-    let repoName = "no-repo-name";
-
-    for (let i = 0; i < lines.length; i += 1) {
-        const line = lines[i];
-        if (line === '[remote "origin"]') {
-            // nextLine = git@github.com:gualcasas/github-preview.nvim.git
-            const nextLine = lines[i + 1];
-            const repo = nextLine?.split(":")[1]?.slice(0, -4);
-            if (repo) repoName = repo;
-        }
-    }
-    return repoName;
-}
 
 export async function initBrowserState(init: PluginInit): Promise<BrowserState> {
     const entries = await getEntries({
@@ -43,49 +26,21 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
     };
 }
 
-export async function updateBrowserState(
-    browserState: BrowserState,
-    newCurrentPath: string,
-    newCursorLine: null | number,
-    newContent?: BrowserState["content"],
-): Promise<WsServerMessage> {
-    browserState.cursorLine = newCursorLine;
+function getRepoName({ root }: { root: BrowserState["root"] }): string {
+    const gitConfig = readFileSync(resolve(root, ".git/config")).toString();
+    const lines = gitConfig.split("\n");
+    let repoName = "no-repo-name";
 
-    const message: WsServerMessage = {
-        cursorLine: browserState.cursorLine,
-    };
-
-    if (browserState.currentPath !== newCurrentPath) {
-        const entries = await getEntries({
-            currentPath: newCurrentPath,
-            root: browserState.root,
-        });
-
-        browserState.entries = entries;
-        message.entries = browserState.entries;
+    for (let i = 0; i < lines.length; i += 1) {
+        const line = lines[i];
+        if (line === '[remote "origin"]') {
+            // nextLine = git@github.com:gualcasas/github-preview.nvim.git
+            const nextLine = lines[i + 1];
+            const repo = nextLine?.split(":")[1]?.slice(0, -4);
+            if (repo) repoName = repo;
+        }
     }
-
-    if (newContent) {
-        // If `newContent` was provided, we keep that
-        browserState.currentPath = newCurrentPath;
-        browserState.content = newContent;
-    } else {
-        // If no content was provided, we're either at a dir so we
-        // look for a readme.md file, or we're requesting a file
-        // from the browser that's not open in neovim, so we get content
-        // from filesystem
-        const { content, currentPath } = getContent({
-            currentPath: newCurrentPath,
-            entries: browserState.entries,
-        });
-        browserState.currentPath = currentPath;
-        browserState.content = content;
-    }
-
-    message.content = browserState.content;
-    message.currentPath = browserState.currentPath;
-
-    return message;
+    return repoName;
 }
 
 export async function getEntries({

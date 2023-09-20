@@ -88,8 +88,9 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                     fileExt,
                 });
 
-                if (fileExt === "md") markdownElement.style.setProperty("padding", "44px");
-                else {
+                if (fileExt === "md") {
+                    markdownElement.style.setProperty("padding", "44px");
+                } else {
                     markdownElement.style.setProperty("padding", "0px");
                     markdownElement.style.setProperty("margin-bottom", "-16px");
                 }

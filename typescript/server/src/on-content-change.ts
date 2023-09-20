@@ -7,6 +7,9 @@ export function onContentChange(
     browserState: BrowserState,
     callback: (content: string[], path: string) => Promise<void>,
 ) {
+    // "nvim_buf_lines_event" and "nvim_buf_changedtick_event" events are
+    // only sent by neovim if we've attached a buffer.
+    // We handle buffer attach and detach in onBufEnter.
     nvim.onNotification(
         "nvim_buf_lines_event",
         async ([buffer, _changedtick, firstline, lastline, linedata, _more]) => {

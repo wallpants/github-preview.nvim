@@ -1,8 +1,9 @@
-import { type BrowserState, type WsBrowserRequest, type WsServerMessage } from "@gp/shared";
+import { ENV, type BrowserState, type WsBrowserRequest, type WsServerMessage } from "@gp/shared";
 import { type Server } from "bun";
 import { type Nvim } from "bunvim";
+import opener from "opener";
 import { type ApiInfo } from "../types.ts";
-import { updateBrowserState } from "../utils.ts";
+import { getContent, getEntries } from "../utils.ts";
 import { onHttpRequest } from "./on-http-request.ts";
 
 export const EDITOR_EVENTS_TOPIC = "editor-events";
@@ -12,39 +13,48 @@ export function startWebServer(
     browserState: BrowserState,
     nvim: Nvim<ApiInfo>,
 ): Server {
-    return Bun.serve({
+    const webServer = Bun.serve({
         port: port,
         fetch: onHttpRequest,
         websocket: {
             open(webSocket) {
                 // subscribe to a topic so we can publish messages from outside
+                // webServer.publish(EDITOR_EVENTS_TOPIC, payload);
                 webSocket.subscribe(EDITOR_EVENTS_TOPIC);
             },
             async message(webSocket, message: string) {
                 const browserRequest = JSON.parse(message) as WsBrowserRequest;
-                nvim.logger?.verbose(`onBrowserRequest.${browserRequest.type} REQUEST`, {
-                    browserRequest,
-                });
+                nvim.logger?.verbose({ INCOMING_WEBSOCKET: browserRequest });
 
                 if (browserRequest.type === "init") {
                     const message: WsServerMessage = browserState;
-                    nvim.logger?.verbose(
-                        `onBrowserRequest.${browserRequest.type} RESPONSE`,
-                        message,
-                    );
                     webSocket.send(JSON.stringify(message));
+                    nvim.logger?.verbose({ OUTGOING_WEBSOCKET: message });
                 }
 
                 if (browserRequest.type === "getEntry") {
-                    const message = await updateBrowserState(
-                        browserState,
-                        browserRequest.currentPath,
-                        null,
-                    );
-                    nvim.logger?.verbose(`onBrowserRequest.getEntry RESPONSE`, message);
-                    webSocket.send(JSON.stringify(message));
+                    const entries = await getEntries({
+                        currentPath: browserRequest.currentPath,
+                        root: browserState.root,
+                    });
+                    const { content, currentPath } = getContent({
+                        currentPath: browserRequest.currentPath,
+                        entries: entries,
+                    });
+                    const stateUpdate: Partial<BrowserState> = {
+                        currentPath: currentPath,
+                        entries: entries,
+                        content: content,
+                        cursorLine: null,
+                    };
+                    Object.assign(browserState, stateUpdate);
+                    webSocket.send(JSON.stringify(stateUpdate));
+                    nvim.logger?.verbose({ OUTGOING_WEBSOCKET: stateUpdate });
                 }
             },
         },
     });
+
+    if (!ENV.IS_DEV) opener(`http://localhost:${port}`);
+    return webServer;
 }

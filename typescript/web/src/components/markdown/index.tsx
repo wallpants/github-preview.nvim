@@ -16,6 +16,8 @@ export const Markdown = () => {
         />,
     );
 
+    console.log("rerender");
+
     const fileName = getFileName(currentPath);
 
     return (
