@@ -2,6 +2,7 @@ asdf
 
 # my name is casas medina
 
+-   [ ] when opening a different buffer, cursorline indicator always goes to the very top and then back do to cursor position. fix that jump
 -   [ ] I believe the "copy code" icon flashes because we're sending the current path in every request and updating react state
     -   only send currentPath if it changed? or only update state if it changed? I thought no rerenderes happened in ssetState same value
 -   [ ] If starting with no open buffer, root readme is not rendered. Scroll indicator moves whilst typing
