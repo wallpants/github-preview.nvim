@@ -58,20 +58,22 @@ export function getScrollOffsets(): Offsets {
     elements.forEach((element, index) => {
         const { elemStartLine, elemEndLine, offsetTop, scrollHeight } = getAttrs(element);
 
-        /* sometimes currLine will go past the next element's startLine.
-         * this happens when we have something like this:
-         *
-         * <li data-source-line="14" data-source-line-end="16">
-         *      Hello from list item
-         *      <ul>
-         *          <li data-source-line="15">hello from nested list item</li>
-         *      </ul>
-         * </li>
-         *
-         * when processing the outer <li>, currLine will go up to 16,
-         * and then when we process the inner <li>, currLine will
-         * be greater than currLine */
-        while (currLine > elemStartLine) currLine--;
+        while (currLine > elemStartLine) {
+            /* sometimes currLine will go past the next element's startLine.
+             * this happens when we have something like this:
+             *
+             * <li data-source-line="14" data-source-line-end="16">
+             *      Hello from list item
+             *      <ul>
+             *          <li data-source-line="15">hello from nested list item</li>
+             *      </ul>
+             * </li>
+             *
+             * when processing the outer <li>, currLine will go up to 16,
+             * and then when we process the inner <li>, currLine will
+             * be greater than currLine */
+            currLine--;
+        }
 
         if (currLine < elemStartLine) {
             let acc = 0;
@@ -101,7 +103,7 @@ export function getScrollOffsets(): Offsets {
 
         if (isCode) {
             // is rendering code only, the margin messes up with
-            // the offset calculations
+            // the offset calculations (maybe?)
             height -= MAGIC;
         }
 
@@ -115,8 +117,8 @@ export function getScrollOffsets(): Offsets {
     });
 
     if (isCode) {
-        //     // remove the fence line
-        //     // ```ts    <= we remove that line
+        // remove the fence line (maybe?)
+        // ```ts    <= we remove that line
         //     endLine--;
         sourceLineOffsets.shift();
     }

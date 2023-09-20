@@ -7,9 +7,8 @@ import {
 } from "@gp/shared";
 import { attach, type LogLevel } from "bunvim";
 import { parse } from "valibot";
-import { onBufEnter } from "./on-buf-enter.ts";
 import { onContentChange } from "./on-content-change.ts";
-import { onCursorHold } from "./on-cursor-hold.ts";
+import { onCursorMove } from "./on-cursor-move.ts";
 import { type ApiInfo } from "./types.ts";
 import { getEntries, initBrowserState } from "./utils.ts";
 import { EDITOR_EVENTS_TOPIC, startWebServer } from "./web-server/index.ts";
@@ -33,28 +32,23 @@ function wsSend(message: WsServerMessage) {
     webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 }
 
-function cursorMoveHandler(event: string) {
-    return async ([buffer, path, cursorLine]: [number, string, number]) => {
-        if (!path) return;
-        nvim.logger?.verbose(event, { buffer, path, cursorLine });
+await onCursorMove(nvim, async ([buffer, path, cursorLine]: [number, string, number]) => {
+    if (!path) return;
+    nvim.logger?.verbose({ ON_CURSOR_MOVE: { buffer, path, cursorLine } });
 
-        const stateUpdate: Partial<BrowserState> = {
-            cursorLine: cursorLine,
-        };
-
-        if (browserState.currentPath !== path) {
-            stateUpdate.currentPath = path;
-            stateUpdate.content = await nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]);
-            stateUpdate.entries = await getEntries({ currentPath: path, root: init.root });
-        }
-
-        Object.assign(browserState, stateUpdate);
-        wsSend(stateUpdate);
+    const stateUpdate: Partial<BrowserState> = {
+        cursorLine: cursorLine,
     };
-}
 
-await onBufEnter(nvim, cursorMoveHandler("onBufEnter"));
-await onCursorHold(nvim, cursorMoveHandler("onCursorHold"));
+    if (browserState.currentPath !== path) {
+        stateUpdate.currentPath = path;
+        stateUpdate.content = await nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]);
+        stateUpdate.entries = await getEntries({ currentPath: path, root: init.root });
+    }
+
+    Object.assign(browserState, stateUpdate);
+    wsSend(stateUpdate);
+});
 
 onContentChange(nvim, browserState, async (content, path) => {
     if (!path) return;
