@@ -50,8 +50,9 @@ await onCursorMove(nvim, async ([buffer, path, cursorLine]: [number, string, num
     wsSend(stateUpdate);
 });
 
-onContentChange(nvim, browserState, async (content, path) => {
+await onContentChange(nvim, browserState, async (content, path) => {
     if (!path) return;
+    nvim.logger?.verbose({ ON_CONTENT_CHANGE: { content, path } });
 
     const stateUpdate: Partial<BrowserState> = {
         content: content,
