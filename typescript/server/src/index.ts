@@ -27,12 +27,8 @@ const browserState = await initBrowserState(init);
 const webServer = startWebServer(init.port, browserState, nvim);
 if (!ENV.IS_DEV) opener(`http://localhost:${init.port}`);
 
-await subscribeCursorMove(nvim, async (cursorMove) => {
-    const message = await updateBrowserState(
-        browserState,
-        cursorMove.abs_path,
-        cursorMove.cursor_line,
-    );
+await subscribeCursorMove(nvim, async (cursorLine) => {
+    const message = await updateBrowserState(browserState, browserState.currentPath, cursorLine);
     nvim.logger?.verbose("subscribeCursorMove WS_SERVER_MESSAGE", {
         serverMessage: message,
         browserState,
@@ -40,7 +36,7 @@ await subscribeCursorMove(nvim, async (cursorMove) => {
     webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 });
 
-subscribeContentChange(nvim, browserState, async (newContent, newPath, newCursorLine) => {
+await subscribeContentChange(nvim, browserState, async (newContent, newPath, newCursorLine) => {
     const message = await updateBrowserState(browserState, newPath, newCursorLine, newContent);
     nvim.logger?.verbose("subscribeContentChange WS_SERVER_MESSAGE", {
         serverMessage: message,
