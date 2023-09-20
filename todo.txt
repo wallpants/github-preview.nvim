@@ -1,0 +1,9 @@
+OnBufEnter
+* Update content, cursorLine, currentPath
+
+OnInserEnter
+* Detach prev buffer
+* Attach buffer, don't include content on first request
+
+CursorHold
+* If currentPath changed, update content, cursorLine, currentPath

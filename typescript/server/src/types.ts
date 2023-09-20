@@ -2,9 +2,8 @@ import { type NeovimApi } from "./neovim.types.ts";
 
 export type NotificationsMap = {
     // github-preview
-    CursorHold: [buffer: number];
-    InsertEnter: [buffer: number];
-    BufEnter: [buffer: number];
+    CursorHold: [buffer: number, path: string, cursor_line: number];
+    BufEnter: [buffer: number, path: string, cursor_line: number];
 
     // neovim native
     nvim_buf_detach_event: [buffer: number];

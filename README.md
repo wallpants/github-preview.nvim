@@ -2,6 +2,9 @@ asdf
 
 # my name is casas medina
 
+-   [ ] I believe the "copy code" icon flashes because we're sending the current path in every request and updating react state
+    -   only send currentPath if it changed? or only update state if it changed? I thought no rerenderes happened in ssetState same value
+-   [ ] If starting with no open buffer, root readme is not rendered. Scroll indicator moves whilst typing
 -   [ ] create "BufEnter" or similar autocmd to detach from previous buffers and attach to new
 -   [ ] allow users to override markdown codeblock language per file extension
     -   [ ] log to the console the file extension detected to make it easier for the user to know what to override

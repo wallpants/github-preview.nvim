@@ -43,20 +43,13 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
     };
 }
 
-export function isValidBuffer(path: string) {
-    // TODO(gualcasas): we need to check whether buffer is telescope/nvimtree
-    return !!path;
-}
-
 export async function updateBrowserState(
     browserState: BrowserState,
     newCurrentPath: string,
-    newCursorLine: null | number | undefined,
+    newCursorLine: null | number,
     newContent?: BrowserState["content"],
 ): Promise<WsServerMessage> {
-    if (newCursorLine !== undefined) {
-        browserState.cursorLine = newCursorLine;
-    }
+    browserState.cursorLine = newCursorLine;
 
     const message: WsServerMessage = {
         cursorLine: browserState.cursorLine,
@@ -70,29 +63,27 @@ export async function updateBrowserState(
 
         browserState.entries = entries;
         message.entries = browserState.entries;
-
-        const { content, currentPath, cursorLine } = getContent({
-            currentPath: newCurrentPath,
-            entries: entries,
-            newContent: newContent,
-        });
-
-        if (cursorLine !== undefined) {
-            browserState.cursorLine = cursorLine;
-            message.cursorLine = browserState.cursorLine;
-        }
-
-        browserState.content = content;
-        message.content = browserState.content;
-
-        browserState.currentPath = currentPath;
-        message.currentPath = browserState.currentPath;
     }
 
     if (newContent) {
+        // If `newContent` was provided, we keep that
+        browserState.currentPath = newCurrentPath;
         browserState.content = newContent;
-        message.content = browserState.content;
+    } else {
+        // If no content was provided, we're either at a dir so we
+        // look for a readme.md file, or we're requesting a file
+        // from the browser that's not open in neovim, so we get content
+        // from filesystem
+        const { content, currentPath } = getContent({
+            currentPath: newCurrentPath,
+            entries: browserState.entries,
+        });
+        browserState.currentPath = currentPath;
+        browserState.content = content;
     }
+
+    message.content = browserState.content;
+    message.currentPath = browserState.currentPath;
 
     return message;
 }
@@ -133,23 +124,13 @@ export async function getEntries({
 export function getContent({
     currentPath,
     entries,
-    newContent,
 }: {
     currentPath: BrowserState["currentPath"];
     entries: BrowserState["entries"];
-    newContent?: BrowserState["content"] | undefined;
-}): { content: BrowserState["content"]; currentPath: string; cursorLine?: number | null } {
+}): { content: BrowserState["content"]; currentPath: string } {
     if (!existsSync(currentPath)) {
         return {
             content: [],
-            currentPath,
-            cursorLine: null,
-        };
-    }
-
-    if (newContent?.length) {
-        return {
-            content: newContent,
             currentPath,
         };
     }
@@ -163,22 +144,20 @@ export function getContent({
             return {
                 content: [],
                 currentPath,
-                cursorLine: null,
             };
         }
     }
 
     if (isText(currentPath)) {
         return {
+            // TODO(gualcasas): rewrite using Bun's apis
             content: readFileSync(currentPath, { encoding: "utf8" }).split("\n"),
             currentPath,
-            cursorLine: null,
         };
     }
 
     return {
         content: [],
         currentPath,
-        cursorLine: null,
     };
 }
