@@ -35,12 +35,15 @@ function wsSend(message: WsServerMessage) {
 await onCursorMove(
     nvim,
     // TODO(gualcasas) use _winHeight and _winLine to calculate scroll
-    async ([buffer, path, cursorLine, _winHeight, _winLine]: NotificationsMap["CursorMove"]) => {
+    async ([buffer, path, cursorLine, winLine]: NotificationsMap["CursorMove"]) => {
         if (!path) return;
         nvim.logger?.verbose({ ON_CURSOR_MOVE: { buffer, path, cursorLine } });
 
         const stateUpdate: Partial<BrowserState> = {
-            cursorLine: cursorLine,
+            scroll: {
+                cursorLine: cursorLine,
+                winLine: init.disable_sync_scroll ? null : winLine,
+            },
         };
 
         if (browserState.currentPath !== path) {

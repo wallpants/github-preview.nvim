@@ -11,8 +11,10 @@ export type BrowserState = {
     entries: string[];
     currentPath: string;
     content: ContentChange["content"];
-    cursorLine: null | number;
-    disableSyncScroll: boolean;
+    scroll: {
+        cursorLine: null | number;
+        winLine: null | number;
+    };
 };
 
 export type WsServerMessage = Partial<BrowserState> & {

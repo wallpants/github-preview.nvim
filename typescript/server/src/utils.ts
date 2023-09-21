@@ -21,8 +21,10 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
         entries: entries,
         content,
         currentPath,
-        disableSyncScroll: init.disable_sync_scroll,
-        cursorLine: null,
+        scroll: {
+            cursorLine: null,
+            winLine: null,
+        },
     };
 }
 

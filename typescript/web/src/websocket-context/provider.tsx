@@ -60,8 +60,6 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
             if (message.root) state.current.root = message.root;
             if (message.entries) state.current.entries = message.entries;
             if (message.repoName) state.current.repoName = message.repoName;
-            if (message.disableSyncScroll)
-                state.current.disableSyncScroll = message.disableSyncScroll;
 
             if (message.currentPath) {
                 if (state.current.currentPath !== message.currentPath) {
@@ -96,24 +94,27 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 }
             }
 
-            if (message.cursorLine !== undefined) {
-                state.current.cursorLine = message.cursorLine;
+            if (message.scroll !== undefined) {
+                state.current.scroll = message.scroll;
             }
 
-            if (state.current.cursorLine !== undefined) {
+            if (state.current.scroll !== undefined) {
                 const scrollIndicatorEle = document.getElementById(CURSOR_LINE_ELEMENT_ID);
                 if (!scrollIndicatorEle) return;
-                if (state.current.cursorLine === null) {
+
+                if (state.current.scroll.cursorLine === null) {
                     scrollIndicatorEle.style.setProperty("visibility", "hidden");
-                } else if (!state.current.disableSyncScroll) {
-                    scrollIndicatorEle.style.setProperty("visibility", "visible");
-                    if (!offsets.current) offsets.current = getScrollOffsets();
-                    scroll({
-                        cursorLine: state.current.cursorLine,
-                        offsets: offsets.current,
-                        fileExt,
-                    });
+                    return;
                 }
+
+                scrollIndicatorEle.style.setProperty("visibility", "visible");
+                if (!offsets.current) offsets.current = getScrollOffsets();
+                scroll({
+                    cursorLine: state.current.scroll.cursorLine,
+                    winLine: state.current.scroll.winLine,
+                    offsets: offsets.current,
+                    fileExt,
+                });
             }
         };
     }, [wsRequest]);

@@ -3,13 +3,7 @@ import { type NeovimApi } from "./neovim.types.ts";
 export type NotificationsMap = {
     // github-preview
     AttachBuffer: [buffer: number, path: string];
-    CursorMove: [
-        buffer: number,
-        path: string,
-        cursor_line: number,
-        win_height: number,
-        win_line: number,
-    ];
+    CursorMove: [buffer: number, path: string, cursor_line: number, win_line: number];
 
     // neovim native
     nvim_buf_detach_event: [buffer: number];

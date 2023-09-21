@@ -131,25 +131,33 @@ export function getScrollOffsets(): Offsets {
 
 export function scroll({
     cursorLine,
+    winLine,
     offsets,
     fileExt,
 }: {
     cursorLine: number;
+    winLine: number | null;
     offsets: Offsets;
     fileExt: string | undefined;
 }) {
-    const offset = offsets.sourceLineOffsets[cursorLine];
+    const cursorLineOffset = offsets.sourceLineOffsets[cursorLine];
     const cursorLineElement = document.getElementById(CURSOR_LINE_ELEMENT_ID);
-    if (cursorLineElement) {
-        if (!offset) throw Error(`offset for line ${cursorLine} missing`);
-        cursorLineElement.style.setProperty("top", `${offset[0]}px`);
-        if (fileExt === "md") {
-            cursorLineElement.classList.add("h-11");
-            cursorLineElement.classList.remove("-translate-y-3", "h-9");
-        } else {
-            cursorLineElement.classList.add("-translate-y-3", "h-9");
-            cursorLineElement.classList.remove("h-11");
-        }
-        window.scrollTo({ top: offset[0] - 150, behavior: "smooth" });
+
+    if (!cursorLineElement) return;
+
+    if (!cursorLineOffset) throw Error(`offset for line ${cursorLine} missing`);
+    cursorLineElement.style.setProperty("top", `${cursorLineOffset[0]}px`);
+    if (fileExt === "md") {
+        cursorLineElement.classList.add("h-11");
+        cursorLineElement.classList.remove("-translate-y-3", "h-9");
+    } else {
+        cursorLineElement.classList.add("-translate-y-3", "h-9");
+        cursorLineElement.classList.remove("h-11");
+    }
+
+    if (winLine !== null) {
+        const winLineOffset = offsets.sourceLineOffsets[cursorLine - winLine];
+        if (!winLineOffset) throw Error(`offset for line ${cursorLine - winLine} missing`);
+        window.scrollTo({ top: winLineOffset[0], behavior: "smooth" });
     }
 }
