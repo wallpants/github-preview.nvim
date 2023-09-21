@@ -7,7 +7,7 @@ export type Offsets = {
     sourceLineOffsets: [number, HTMLElement][];
 };
 
-type Returns = {
+type Attrs = {
     offsetTop: number;
     scrollHeight: number;
     clientHeight: number;
@@ -18,14 +18,14 @@ type Returns = {
 // affects line height when calculating offsets in non markdown files
 const MAGIC = 12;
 
-function getAttrs(element: HTMLElement): Returns {
+function getAttrs(element: HTMLElement): Attrs {
     const { tagName, parentElement, offsetTop, scrollHeight, clientHeight } = element;
     const startLineAttr = element.getAttribute("data-source-line");
     const endLineAttr = element.getAttribute("data-source-line-end");
 
     if (!startLineAttr) throw Error("startLineAttr missing");
 
-    const result: Returns = {
+    const attrs: Attrs = {
         offsetTop,
         scrollHeight,
         clientHeight,
@@ -37,12 +37,12 @@ function getAttrs(element: HTMLElement): Returns {
         // we get the data from the <pre> tag surrounding the <code>
         // <code> tags return a scrollHeight of 0 && offsetTop is a bit off
         if (!parentElement) throw Error("<code> element parent not found");
-        result.offsetTop = parentElement.offsetTop;
-        result.scrollHeight = parentElement.scrollHeight;
-        result.clientHeight = parentElement.clientHeight;
+        attrs.offsetTop = parentElement.offsetTop;
+        attrs.scrollHeight = parentElement.scrollHeight;
+        attrs.clientHeight = parentElement.clientHeight;
     }
 
-    return result;
+    return attrs;
 }
 
 export function getScrollOffsets(): Offsets {
@@ -150,7 +150,6 @@ export function scroll({
             cursorLineElement.classList.add("-translate-y-3", "h-9");
             cursorLineElement.classList.remove("h-11");
         }
+        window.scrollTo({ top: offset[0] - 150, behavior: "smooth" });
     }
-
-    // window.scrollTo({ top: offset[0] + markdownTopOffset, behavior: "smooth" });
 }

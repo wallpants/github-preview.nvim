@@ -3,7 +3,6 @@
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Explorer } from "./components/explorer/index.tsx";
 import { Markdown } from "./components/markdown/index.tsx";
 import "./index.scss";
 import { WebsocketProvider } from "./websocket-context/provider.tsx";
@@ -15,7 +14,7 @@ if (root) {
         <React.StrictMode>
             <WebsocketProvider>
                 <div className={"relative h-full w-full p-8 pb-0"}>
-                    <Explorer />
+                    {/* <Explorer /> */}
                     <Markdown />
                 </div>
             </WebsocketProvider>

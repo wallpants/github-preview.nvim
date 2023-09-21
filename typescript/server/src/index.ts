@@ -9,7 +9,7 @@ import { attach, type LogLevel } from "bunvim";
 import { parse } from "valibot";
 import { onContentChange } from "./on-content-change.ts";
 import { onCursorMove } from "./on-cursor-move.ts";
-import { type ApiInfo } from "./types.ts";
+import { type ApiInfo, type NotificationsMap } from "./types.ts";
 import { getEntries, initBrowserState } from "./utils.ts";
 import { EDITOR_EVENTS_TOPIC, startWebServer } from "./web-server/index.ts";
 
@@ -32,23 +32,27 @@ function wsSend(message: WsServerMessage) {
     webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 }
 
-await onCursorMove(nvim, async ([buffer, path, cursorLine]: [number, string, number]) => {
-    if (!path) return;
-    nvim.logger?.verbose({ ON_CURSOR_MOVE: { buffer, path, cursorLine } });
+await onCursorMove(
+    nvim,
+    // TODO(gualcasas) use _winHeight and _winLine to calculate scroll
+    async ([buffer, path, cursorLine, _winHeight, _winLine]: NotificationsMap["CursorMove"]) => {
+        if (!path) return;
+        nvim.logger?.verbose({ ON_CURSOR_MOVE: { buffer, path, cursorLine } });
 
-    const stateUpdate: Partial<BrowserState> = {
-        cursorLine: cursorLine,
-    };
+        const stateUpdate: Partial<BrowserState> = {
+            cursorLine: cursorLine,
+        };
 
-    if (browserState.currentPath !== path) {
-        stateUpdate.currentPath = path;
-        stateUpdate.content = await nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]);
-        stateUpdate.entries = await getEntries({ currentPath: path, root: init.root });
-    }
+        if (browserState.currentPath !== path) {
+            stateUpdate.currentPath = path;
+            stateUpdate.content = await nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]);
+            stateUpdate.entries = await getEntries({ currentPath: path, root: init.root });
+        }
 
-    Object.assign(browserState, stateUpdate);
-    wsSend(stateUpdate);
-});
+        Object.assign(browserState, stateUpdate);
+        wsSend(stateUpdate);
+    },
+);
 
 await onContentChange(nvim, browserState, async (content, path) => {
     if (!path) return;

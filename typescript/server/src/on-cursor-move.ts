@@ -21,7 +21,9 @@ export async function onCursorMove(
             local buffer = vim.api.nvim_get_current_buf()
             local path = vim.api.nvim_buf_get_name(0)
             local cursor_line = vim.api.nvim_win_get_cursor(0)[1] - 1
-            vim.rpcnotify(${channelId}, "CursorMove", buffer, path, cursor_line)`,
+            local win_height = vim.api.nvim_win_get_height(0)
+            local win_line = vim.fn.winline()
+            vim.rpcnotify(${channelId}, "CursorMove", buffer, path, cursor_line, win_height, win_line)`,
         },
     ]);
 }
