@@ -10,7 +10,7 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
         currentPath: init.path,
     });
 
-    const { currentPath, content } = getContent({
+    const { currentPath, content } = await getContent({
         currentPath: init.root,
         entries,
     });
@@ -76,13 +76,13 @@ export async function getEntries({
     return dirs.concat(files);
 }
 
-export function getContent({
+export async function getContent({
     currentPath,
     entries,
 }: {
     currentPath: BrowserState["currentPath"];
     entries: BrowserState["entries"];
-}): { content: BrowserState["content"]; currentPath: string } {
+}): Promise<{ content: BrowserState["content"]; currentPath: string }> {
     if (!existsSync(currentPath)) {
         return {
             content: [],
@@ -104,9 +104,10 @@ export function getContent({
     }
 
     if (isText(currentPath)) {
+        const fileContent = await Bun.file(currentPath).text();
         return {
             // TODO(gualcasas): rewrite using Bun's apis
-            content: readFileSync(currentPath, { encoding: "utf8" }).split("\n"),
+            content: fileContent.split("\n"),
             currentPath,
         };
     }

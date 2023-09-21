@@ -37,7 +37,7 @@ export function startWebServer(
                         currentPath: browserRequest.currentPath,
                         root: browserState.root,
                     });
-                    const { content, currentPath } = getContent({
+                    const { content, currentPath } = await getContent({
                         currentPath: browserRequest.currentPath,
                         entries: entries,
                     });
