@@ -98,7 +98,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 state.current.scroll = message.scroll;
             }
 
-            if (state.current.scroll !== undefined) {
+            if (state.current.scroll !== undefined && state.current.content) {
                 const scrollIndicatorEle = document.getElementById(CURSOR_LINE_ELEMENT_ID);
                 if (!scrollIndicatorEle) return;
 
@@ -110,6 +110,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 scrollIndicatorEle.style.setProperty("visibility", "visible");
                 if (!offsets.current) offsets.current = getScrollOffsets();
                 scroll({
+                    linesCount: state.current.content.length,
                     cursorLine: state.current.scroll.cursorLine,
                     winLine: state.current.scroll.winLine,
                     offsets: offsets.current,

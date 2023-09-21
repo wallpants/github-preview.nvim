@@ -130,11 +130,13 @@ export function getScrollOffsets(): Offsets {
 }
 
 export function scroll({
+    linesCount,
     cursorLine,
     winLine,
     offsets,
     fileExt,
 }: {
+    linesCount: number;
     cursorLine: number;
     winLine: number | null;
     offsets: Offsets;
@@ -156,8 +158,16 @@ export function scroll({
     }
 
     if (winLine !== null) {
-        const winLineOffset = offsets.sourceLineOffsets[cursorLine - winLine];
-        if (!winLineOffset) throw Error(`offset for line ${cursorLine - winLine} missing`);
-        window.scrollTo({ top: winLineOffset[0], behavior: "smooth" });
+        const topLine = cursorLine - winLine;
+        const winLineOffset = offsets.sourceLineOffsets[topLine];
+        if (!winLineOffset) throw Error(`offset for line ${topLine} missing`);
+        // add a little extra per line, up to a total of 222
+        // to add some offset at the bottom when cursor is close
+        // to the end of the buffer
+        const extraPerLine = 222 / linesCount;
+        window.scrollTo({
+            top: winLineOffset[0] + topLine * extraPerLine,
+            behavior: "smooth",
+        });
     }
 }

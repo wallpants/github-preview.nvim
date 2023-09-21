@@ -17,7 +17,7 @@ export const Markdown = () => {
     const fileName = getFileName(currentPath);
 
     return (
-        <Container>
+        <Container className="mb-48">
             <p className="!mb-0 p-4 text-sm font-semibold relative bg-github-canvas-default h-[52px]">
                 {fileName}
             </p>
