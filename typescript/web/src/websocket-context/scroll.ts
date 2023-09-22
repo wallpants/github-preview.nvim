@@ -1,4 +1,5 @@
-import { MARKDOWN_ELEMENT_ID } from "./provider.tsx";
+// affects line height when calculating offsets in non markdown files
+const MAGIC = 12;
 
 type Attrs = {
     offsetTop: number;
@@ -7,9 +8,6 @@ type Attrs = {
     elemStartLine: number;
     elemEndLine: number | undefined;
 };
-
-// affects line height when calculating offsets in non markdown files
-const MAGIC = 12;
 
 function getAttrs(element: HTMLElement): Attrs {
     const { tagName, parentElement, offsetTop, scrollHeight, clientHeight } = element;
@@ -28,7 +26,7 @@ function getAttrs(element: HTMLElement): Attrs {
 
     if (tagName === "CODE") {
         // we get the data from the <pre> tag surrounding the <code>
-        // <code> tags return a scrollHeight of 0 && offsetTop is a bit off
+        // <code> tags return a scrollHeight of 0 & offsetTop is a bit off
         if (!parentElement) throw Error("<code> element parent not found");
         attrs.offsetTop = parentElement.offsetTop;
         attrs.scrollHeight = parentElement.scrollHeight;
@@ -43,11 +41,9 @@ export type Offsets = {
     sourceLineOffsets: [number, HTMLElement][];
 };
 
-export function getScrollOffsets(): Offsets {
-    const markdownElement = document.getElementById(MARKDOWN_ELEMENT_ID);
-    if (!markdownElement) throw Error("markdownElement missing");
-
+export function getScrollOffsets(markdownElement: HTMLElement): Offsets {
     const elements: NodeListOf<HTMLElement> = document.querySelectorAll("[data-source-line]");
+    // HTMLElement kept arround for debugging purposes
     const sourceLineOffsets: [number, HTMLElement][] = [];
 
     let currLine = 0;
@@ -69,7 +65,7 @@ export function getScrollOffsets(): Offsets {
              *
              * when processing the outer <li>, currLine will go up to 16,
              * and then when we process the inner <li>, currLine will
-             * be greater than currLine */
+             * be greater than elemStartLine */
             currLine--;
         }
 
