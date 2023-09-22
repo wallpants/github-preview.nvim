@@ -32,27 +32,23 @@ function wsSend(message: WsServerMessage) {
     webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 }
 
-await onCursorMove(
-    nvim,
-    // TODO(gualcasas) use _winHeight and _winLine to calculate scroll
-    async ([buffer, path, cursorLine]: NotificationsMap["CursorMove"]) => {
-        if (!path) return;
-        nvim.logger?.verbose({ ON_CURSOR_MOVE: { buffer, path, cursorLine } });
+await onCursorMove(nvim, async ([buffer, path, cursorLine]: NotificationsMap["CursorMove"]) => {
+    if (!path) return;
+    nvim.logger?.verbose({ ON_CURSOR_MOVE: { buffer, path, cursorLine } });
 
-        const stateUpdate: Partial<BrowserState> = {
-            cursorLine: cursorLine,
-        };
+    const stateUpdate: Partial<BrowserState> = {
+        cursorLine: cursorLine,
+    };
 
-        if (browserState.currentPath !== path) {
-            stateUpdate.currentPath = path;
-            stateUpdate.content = await nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]);
-            stateUpdate.entries = await getEntries({ currentPath: path, root: init.root });
-        }
+    if (browserState.currentPath !== path) {
+        stateUpdate.currentPath = path;
+        stateUpdate.content = await nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]);
+        stateUpdate.entries = await getEntries({ currentPath: path, root: init.root });
+    }
 
-        Object.assign(browserState, stateUpdate);
-        wsSend(stateUpdate);
-    },
-);
+    Object.assign(browserState, stateUpdate);
+    wsSend(stateUpdate);
+});
 
 await onContentChange(nvim, browserState, async (content, path) => {
     if (!path) return;

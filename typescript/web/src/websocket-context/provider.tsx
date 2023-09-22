@@ -117,6 +117,13 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 }
             }
 
+            if (stateUpdate.cursorLineColor) {
+                cursorLineElement.current.style.setProperty(
+                    "background-color",
+                    stateUpdate.cursorLineColor,
+                );
+            }
+
             if (typeof state.current.cursorLine !== "number") {
                 cursorLineElement.current.style.setProperty("visibility", "hidden");
             } else if (offsets.current) {

@@ -11,6 +11,7 @@ export type BrowserState = {
     entries: string[];
     currentPath: string;
     content: ContentChange["content"];
+    cursorLineColor: string;
     cursorLine: null | number;
     topOffsetPct: null | number;
 };

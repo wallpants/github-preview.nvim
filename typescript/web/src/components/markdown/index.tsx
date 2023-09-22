@@ -9,10 +9,7 @@ export const Markdown = () => {
     // We use refs, because we don't want these htmlelements ever to rerender
     const markdownElement = useRef(<div id={MARKDOWN_ELEMENT_ID} className="-mt-9" />);
     const cursorLineElement = useRef(
-        <div
-            id={CURSOR_LINE_ELEMENT_ID}
-            className="absolute pointer-events-none w-full bg-orange-500/20"
-        />,
+        <div id={CURSOR_LINE_ELEMENT_ID} className="absolute pointer-events-none w-full" />,
     );
     const fileName = getFileName(currentPath);
 

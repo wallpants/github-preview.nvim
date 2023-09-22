@@ -1,8 +1,32 @@
 local M = {}
 
+---@class scroll
+---@field disable boolean
+---@field top_offset_pct number
+
+---@class cursor_line
+---@field disable boolean
+---@field color string
+
+---@class plugin_init
+---@field port number
+---@field root string
+---@field path string
+---@field scroll scroll
+---@field cursor_line cursor_line
+
+---@class nvim_plugin_opts
+---@field port number
+---@field scroll scroll
+---@field cursor_line cursor_line
+
 ---@type nvim_plugin_opts
 M.default_opts = {
 	port = 6041,
+	cursor_line = {
+		disable = false,
+		color = "rgb(200 100 20 / 0.2)",
+	},
 	scroll = {
 		disable = false,
 		top_offset_pct = 50,
@@ -15,11 +39,14 @@ M.setup = function(opts)
 
 	vim.validate({
 		port = { opts.port, "number" },
+		["cursor_line.color"] = { opts.cursor_line.color, "string" },
+		["cursor_line.disable"] = { opts.cursor_line.disable, "boolean" },
 		["scroll.disable"] = { opts.scroll.disable, "boolean" },
 		["scroll.top_offset_pct"] = {
 			opts.scroll.top_offset_pct,
-            -- stylua: ignore
-			function(pct) return (type(pct) == "number") and (pct >= 0) and (pct <= 100) end,
+			function(pct)
+				return (type(pct) == "number") and (pct >= 0) and (pct <= 100)
+			end,
 			"number between 0 and 100",
 		},
 	})
@@ -52,6 +79,7 @@ M.setup = function(opts)
 			root = root,
 			path = init_path,
 			scroll = opts.scroll,
+			cursor_line = opts.cursor_line,
 		}
 
 		local __filename = debug.getinfo(1, "S").source:sub(2)

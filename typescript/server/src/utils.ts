@@ -21,6 +21,7 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
         entries: entries,
         content,
         currentPath,
+        cursorLineColor: init.cursor_line.disable ? "transparent" : init.cursor_line.color,
         cursorLine: null,
         topOffsetPct: init.scroll.disable ? null : init.scroll.top_offset_pct,
     };

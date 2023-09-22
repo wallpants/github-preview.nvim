@@ -11,6 +11,10 @@ export const PluginInitSchema = object({
      * otherwise path looks something like "/Users/.../README.md"
      * */
     path: string(),
+    cursor_line: object({
+        disable: boolean(),
+        color: string(),
+    }),
     scroll: object({
         disable: boolean(),
         top_offset_pct: number(),
