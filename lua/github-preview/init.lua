@@ -29,7 +29,7 @@ M.default_opts = {
 	},
 	scroll = {
 		disable = false,
-		top_offset_pct = 50,
+		top_offset_pct = 35,
 	},
 }
 
