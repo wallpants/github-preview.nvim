@@ -11,14 +11,11 @@ export type BrowserState = {
     entries: string[];
     currentPath: string;
     content: ContentChange["content"];
-    scroll: {
-        cursorLine: null | number;
-        winLine: null | number;
-    };
+    cursorLine: null | number;
+    topOffsetPct: null | number;
 };
 
 export type WsServerMessage = Partial<BrowserState> & {
-    repoName?: string;
     goodbye?: true;
 };
 

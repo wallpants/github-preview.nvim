@@ -21,10 +21,8 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
         entries: entries,
         content,
         currentPath,
-        scroll: {
-            cursorLine: null,
-            winLine: null,
-        },
+        cursorLine: null,
+        topOffsetPct: init.scroll.disable ? null : init.scroll.top_offset_pct,
     };
 }
 

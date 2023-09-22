@@ -11,7 +11,10 @@ export const PluginInitSchema = object({
      * otherwise path looks something like "/Users/.../README.md"
      * */
     path: string(),
-    disable_sync_scroll: boolean(),
+    scroll: object({
+        disable: boolean(),
+        top_offset_pct: number(),
+    }),
 });
 
 export const CursorMoveSchema = object({

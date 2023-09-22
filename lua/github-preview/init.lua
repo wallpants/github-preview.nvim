@@ -3,7 +3,10 @@ local M = {}
 ---@type nvim_plugin_opts
 M.default_opts = {
 	port = 6041,
-	disable_sync_scroll = false,
+	scroll = {
+		disable = false,
+		top_offset_pct = 50,
+	},
 }
 
 ---@param opts nvim_plugin_opts
@@ -12,7 +15,13 @@ M.setup = function(opts)
 
 	vim.validate({
 		port = { opts.port, "number" },
-		disable_sync_scroll = { opts.disable_sync_scroll, "boolean" },
+		["scroll.disable"] = { opts.scroll.disable, "boolean" },
+		["scroll.top_offset_pct"] = {
+			opts.scroll.top_offset_pct,
+            -- stylua: ignore
+			function(pct) return (type(pct) == "number") and (pct >= 0) and (pct <= 100) end,
+			"number between 0 and 100",
+		},
 	})
 
 	local is_dev = os.getenv("VITE_GP_WS_PORT") and true or false
@@ -42,7 +51,7 @@ M.setup = function(opts)
 			port = opts.port,
 			root = root,
 			path = init_path,
-			disable_sync_scroll = opts.disable_sync_scroll,
+			scroll = opts.scroll,
 		}
 
 		local __filename = debug.getinfo(1, "S").source:sub(2)

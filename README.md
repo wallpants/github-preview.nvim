@@ -2,6 +2,7 @@ asdf
 
 # my name is casas medina
 
+-   [ ] when starting github preview whilst on root readme, scroll offsets are incorrect
 -   [ ] Scroll gets kind of wonky sometimes whilst typing. Seems to happen more when close to end of buffer
 -   [ ] Change page title & favicon
 -   [ ] Implement autoscroll

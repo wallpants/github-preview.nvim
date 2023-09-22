@@ -1,12 +1,12 @@
 import { useContext, useRef } from "react";
 import { getFileName } from "../../utils.ts";
 import { websocketContext } from "../../websocket-context/context.ts";
-import { MARKDOWN_ELEMENT_ID } from "../../websocket-context/provider.tsx";
+import { CURSOR_LINE_ELEMENT_ID, MARKDOWN_ELEMENT_ID } from "../../websocket-context/provider.tsx";
 import { Container } from "../container.tsx";
-import { CURSOR_LINE_ELEMENT_ID } from "./markdown-it/scroll.ts";
 
 export const Markdown = () => {
     const { currentPath } = useContext(websocketContext);
+    // We use refs, because we don't want these htmlelements ever to rerender
     const markdownElement = useRef(<div id={MARKDOWN_ELEMENT_ID} className="-mt-9" />);
     const cursorLineElement = useRef(
         <div
@@ -17,7 +17,7 @@ export const Markdown = () => {
     const fileName = getFileName(currentPath);
 
     return (
-        <Container className="mb-48">
+        <Container className="mb-[500px]">
             <p className="!mb-0 p-4 text-sm font-semibold relative bg-github-canvas-default h-[52px]">
                 {fileName}
             </p>

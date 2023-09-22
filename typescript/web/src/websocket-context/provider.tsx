@@ -4,20 +4,15 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { Banner } from "../components/banner.tsx";
 import { contentToHtml } from "../components/markdown/markdown-it/index.ts";
-import {
-    CURSOR_LINE_ELEMENT_ID,
-    getScrollOffsets,
-    scroll,
-    type Offsets,
-} from "../components/markdown/markdown-it/scroll.ts";
 import { ENV } from "../env.ts";
-import { getFileExt, getFileName } from "../utils.ts";
+import { getFileExt } from "../utils.ts";
 import { websocketContext } from "./context.ts";
+import { getScrollOffsets, scroll, type Offsets } from "./scroll.ts";
 
 export const MARKDOWN_ELEMENT_ID = "markdown-element-id";
+export const CURSOR_LINE_ELEMENT_ID = "cursor-line-element-id";
 
 const URL = "ws://" + (ENV.IS_DEV ? `localhost:${ENV.VITE_GP_WS_PORT}` : window.location.host);
-
 const ws = new ReconnectingWebSocket(URL, [], {
     maxReconnectionDelay: 1500,
     startClosed: true,
@@ -26,8 +21,10 @@ const ws = new ReconnectingWebSocket(URL, [], {
 const history = createBrowserHistory();
 
 export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
-    const state = useRef<Partial<BrowserState>>({});
     const offsets = useRef<Offsets | null>(null);
+    const state = useRef<Partial<BrowserState>>({});
+    const markdownElement = useRef<HTMLElement | null>(null);
+    const cursorLineElement = useRef<HTMLElement | null>(null);
     const [currentPath, setCurrentPath] = useState<string>();
     const [isConnected, setIsConnected] = useState(false);
 
@@ -44,6 +41,36 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     useEffect(() => {
+        // recalculate offsets whenever markdownElement's height changes
+        if (!state.current.content?.length || !markdownElement.current) return;
+
+        const observer = new ResizeObserver(() => {
+            offsets.current = getScrollOffsets();
+            if (typeof state.current.cursorLine === "number" && cursorLineElement.current) {
+                scroll(
+                    state.current.topOffsetPct,
+                    offsets.current,
+                    state.current.cursorLine,
+                    cursorLineElement.current,
+                );
+            }
+        });
+        observer.observe(markdownElement.current);
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [currentPath, markdownElement]);
+
+    useEffect(() => {
+        // Update url on navigation
+        if (!currentPath) return;
+        if (!state.current.root) throw Error("root missing");
+        const relative = currentPath.slice(state.current.root.length);
+        history.push("/" + relative);
+    }, [currentPath]);
+
+    useEffect(() => {
         // Register websocket listeners
         ws.onopen = () => {
             setIsConnected(true);
@@ -53,69 +80,52 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
             setIsConnected(false);
         };
         ws.onmessage = (event) => {
-            const message = JSON.parse(String(event.data)) as WsServerMessage;
-            if (ENV.IS_DEV) console.log("received:", message);
+            const { goodbye, ...stateUpdate } = JSON.parse(String(event.data)) as WsServerMessage;
+            if (ENV.IS_DEV) console.log("received:", stateUpdate);
+            Object.assign(state.current, stateUpdate);
 
-            if (message.goodbye) window.close();
-            if (message.root) state.current.root = message.root;
-            if (message.entries) state.current.entries = message.entries;
-            if (message.repoName) state.current.repoName = message.repoName;
+            if (goodbye) window.close();
 
-            if (message.currentPath) {
-                if (state.current.currentPath !== message.currentPath) {
-                    state.current.currentPath = message.currentPath;
-                    setCurrentPath(message.currentPath);
-                }
+            // Set currentPath in react state to trigger render
+            // if path is the same as currentState, react doesn't rerender
+            setCurrentPath(state.current.currentPath);
 
-                if (!state.current.root) throw Error("root missing");
-                const relative = message.currentPath.slice(state.current.root.length);
-                history.push("/" + relative);
+            if (!markdownElement.current || !cursorLineElement.current) {
+                markdownElement.current = document.getElementById(MARKDOWN_ELEMENT_ID);
+                if (!markdownElement.current) throw Error("MarkdownElement not found");
+                cursorLineElement.current = document.getElementById(CURSOR_LINE_ELEMENT_ID);
+                if (!cursorLineElement.current) throw Error("CursorLineElement not found");
             }
 
-            const markdownElement = document.getElementById(MARKDOWN_ELEMENT_ID);
-            if (!markdownElement) throw Error("markdownElement missing");
+            const fileExt = getFileExt(state.current.currentPath);
 
-            const fileName = getFileName(state.current.currentPath);
-            const fileExt = getFileExt(fileName);
-
-            if (message.content) {
-                offsets.current = null;
-                state.current.content = message.content;
-                markdownElement.innerHTML = contentToHtml({
-                    content: state.current.content,
+            if (stateUpdate.content) {
+                markdownElement.current.innerHTML = contentToHtml({
+                    content: stateUpdate.content,
                     fileExt,
                 });
 
                 if (fileExt === "md") {
-                    markdownElement.style.setProperty("padding", "44px");
+                    markdownElement.current.style.setProperty("padding", "44px");
+                    cursorLineElement.current.classList.add("h-11");
+                    cursorLineElement.current.classList.remove("-translate-y-3", "h-9");
                 } else {
-                    markdownElement.style.setProperty("padding", "0px");
-                    markdownElement.style.setProperty("margin-bottom", "-16px");
+                    markdownElement.current.style.setProperty("padding", "0px");
+                    markdownElement.current.style.setProperty("margin-bottom", "-16px");
+                    cursorLineElement.current.classList.add("-translate-y-3", "h-9");
+                    cursorLineElement.current.classList.remove("h-11");
                 }
             }
 
-            if (message.scroll !== undefined) {
-                state.current.scroll = message.scroll;
-            }
-
-            if (state.current.scroll !== undefined && state.current.content) {
-                const scrollIndicatorEle = document.getElementById(CURSOR_LINE_ELEMENT_ID);
-                if (!scrollIndicatorEle) return;
-
-                if (state.current.scroll.cursorLine === null) {
-                    scrollIndicatorEle.style.setProperty("visibility", "hidden");
-                    return;
-                }
-
-                scrollIndicatorEle.style.setProperty("visibility", "visible");
-                if (!offsets.current) offsets.current = getScrollOffsets();
-                scroll({
-                    linesCount: state.current.content.length,
-                    cursorLine: state.current.scroll.cursorLine,
-                    winLine: state.current.scroll.winLine,
-                    offsets: offsets.current,
-                    fileExt,
-                });
+            if (typeof state.current.cursorLine !== "number") {
+                cursorLineElement.current.style.setProperty("visibility", "hidden");
+            } else if (offsets.current) {
+                scroll(
+                    state.current.topOffsetPct,
+                    offsets.current,
+                    state.current.cursorLine,
+                    cursorLineElement.current,
+                );
             }
         };
     }, [wsRequest]);

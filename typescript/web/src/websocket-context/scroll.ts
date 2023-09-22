@@ -1,11 +1,4 @@
-import { MARKDOWN_ELEMENT_ID } from "../../../websocket-context/provider.tsx";
-
-export const CURSOR_LINE_ELEMENT_ID = "cursor-line-element-id";
-
-export type Offsets = {
-    markdownTopOffset: number;
-    sourceLineOffsets: [number, HTMLElement][];
-};
+import { MARKDOWN_ELEMENT_ID } from "./provider.tsx";
 
 type Attrs = {
     offsetTop: number;
@@ -44,6 +37,11 @@ function getAttrs(element: HTMLElement): Attrs {
 
     return attrs;
 }
+
+export type Offsets = {
+    markdownTopOffset: number;
+    sourceLineOffsets: [number, HTMLElement][];
+};
 
 export function getScrollOffsets(): Offsets {
     const markdownElement = document.getElementById(MARKDOWN_ELEMENT_ID);
@@ -129,44 +127,27 @@ export function getScrollOffsets(): Offsets {
     };
 }
 
-export function scroll({
-    linesCount,
-    cursorLine,
-    winLine,
-    offsets,
-    fileExt,
-}: {
-    linesCount: number;
-    cursorLine: number;
-    winLine: number | null;
-    offsets: Offsets;
-    fileExt: string | undefined;
-}) {
-    const cursorLineOffset = offsets.sourceLineOffsets[cursorLine];
-    const cursorLineElement = document.getElementById(CURSOR_LINE_ELEMENT_ID);
+export function scroll(
+    topOffsetPct: number | null | undefined,
+    offsets: Offsets,
+    cursorLine: number,
+    cursorLineElement: HTMLElement,
+) {
+    let cursorLineOffset = offsets.sourceLineOffsets[cursorLine];
 
-    if (!cursorLineElement) return;
-
-    if (!cursorLineOffset) throw Error(`offset for line ${cursorLine} missing`);
-    cursorLineElement.style.setProperty("top", `${cursorLineOffset[0]}px`);
-    if (fileExt === "md") {
-        cursorLineElement.classList.add("h-11");
-        cursorLineElement.classList.remove("-translate-y-3", "h-9");
-    } else {
-        cursorLineElement.classList.add("-translate-y-3", "h-9");
-        cursorLineElement.classList.remove("h-11");
+    while (!cursorLineOffset) {
+        // When adding new lines at the end of the buffer, the offset for the
+        // new lines is not available until cursorHold
+        cursorLineOffset = offsets.sourceLineOffsets[--cursorLine];
     }
 
-    if (winLine !== null) {
-        const topLine = cursorLine - winLine;
-        const winLineOffset = offsets.sourceLineOffsets[topLine];
-        if (!winLineOffset) throw Error(`offset for line ${topLine} missing`);
-        // add a little extra per line, up to a total of 222
-        // to add some offset at the bottom when cursor is close
-        // to the end of the buffer
-        const extraPerLine = 222 / linesCount;
+    cursorLineElement.style.setProperty("top", `${cursorLineOffset[0]}px`);
+    cursorLineElement.style.setProperty("visibility", "visible");
+
+    if (typeof topOffsetPct === "number") {
+        const percent = topOffsetPct / 100;
         window.scrollTo({
-            top: winLineOffset[0] + topLine * extraPerLine,
+            top: cursorLineOffset[0] - window.screen.height * percent,
             behavior: "smooth",
         });
     }

@@ -45,10 +45,8 @@ export function startWebServer(
                         currentPath: currentPath,
                         entries: entries,
                         content: content,
-                        scroll: {
-                            cursorLine: null,
-                            winLine: null,
-                        },
+                        cursorLine: null,
+                        topOffsetPct: null,
                     };
                     Object.assign(browserState, stateUpdate);
                     webSocket.send(JSON.stringify(stateUpdate));
