@@ -3,11 +3,11 @@ asdf
 # my name is casas medina
 
 -   [ ] include types in bunvim instead of forcing the user to create them
--   [ ] when starting github preview whilst on root readme, scroll offsets are incorrect
--   [ ] Scroll gets kind of wonky sometimes whilst typing. Seems to happen more when close to end of buffer
+-   [x] when starting github preview whilst on root readme, scroll offsets are incorrect
+-   [x] Scroll gets kind of wonky sometimes whilst typing. Seems to happen more when close to end of buffer
 -   [ ] Change page title & favicon
--   [ ] Implement autoscroll
--   [ ] Make cursor indicator customizable
+-   [x] Implement autoscroll
+-   [x] Make cursor indicator customizable
 -   [ ] allow users to override markdown codeblock language per file extension
     -   [ ] log to the console the file extension detected to make it easier for the user to know what to override
 -   [ ] send goodbye messsage from browser when closing tab to close server
