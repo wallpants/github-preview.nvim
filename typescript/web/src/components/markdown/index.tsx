@@ -7,7 +7,9 @@ import { Container } from "../container.tsx";
 export const Markdown = ({ className }: { className: string }) => {
     const { currentPath } = useContext(websocketContext);
     // We use refs, because we don't want these htmlelements ever to rerender
-    const markdownElement = useRef(<div id={MARKDOWN_ELEMENT_ID} className="-mt-9" />);
+    const markdownElement = useRef(
+        <div id={MARKDOWN_ELEMENT_ID} className="-mt-9 max-w-[1012px] mx-auto mb-96" />,
+    );
     const cursorLineElement = useRef(
         <div id={CURSOR_LINE_ELEMENT_ID} className="absolute pointer-events-none w-full" />,
     );
@@ -15,7 +17,7 @@ export const Markdown = ({ className }: { className: string }) => {
 
     return (
         <Container className={className}>
-            <p className="!mb-0 p-4 text-sm font-semibold relative bg-github-canvas-default h-[52px]">
+            <p className="!mb-0 p-4 text-sm font-semibold bg-github-border-muted h-[52px] sticky top-0 z-10">
                 {fileName}
             </p>
             {markdownElement.current}

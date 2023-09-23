@@ -16,7 +16,7 @@ if (root) {
             <WebsocketProvider>
                 <div className="flex overflow-hidden h-screen w-screen pt-5">
                     <Explorer className="hidden md:block w-80 sticky shrink-0 top-0 h-full pt-5 overflow-y-auto" />
-                    <Markdown className="max-w-[1000px] mx-auto h-full w-full overflow-y-auto" />
+                    <Markdown className="mx-4 h-full overflow-y-auto overflow-x-hidden flex-1" />
                 </div>
             </WebsocketProvider>
         </React.StrictMode>,
