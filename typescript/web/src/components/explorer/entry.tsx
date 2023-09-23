@@ -29,7 +29,9 @@ export const EntryComponent = ({ absPath, isParent, navigate }: Props) => {
         <div
             onClick={handleClick}
             className={cn(
-                "group flex h-[38px] cursor-pointer items-center border-t px-4 first:border-t-0",
+                // "group flex h-[38px] cursor-pointer items-center border-t px-6 first:border-t-0",
+                // "border-github-border-default hover:bg-github-canvas-subtle",
+                "group flex h-[38px] cursor-pointer items-center px-6",
                 "border-github-border-default hover:bg-github-canvas-subtle",
             )}
         >

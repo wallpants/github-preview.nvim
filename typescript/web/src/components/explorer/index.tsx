@@ -1,9 +1,10 @@
 import { useContext, useMemo } from "react";
 import { websocketContext } from "../../websocket-context/context.ts";
 import { Container } from "../container.tsx";
+import { ThemePicker } from "../theme-select.tsx";
 import { EntryComponent } from "./entry.tsx";
 
-export const Explorer = () => {
+export const Explorer = ({ className }: { className: string }) => {
     const { navigate, currentPath, state } = useContext(websocketContext);
 
     const parent = useMemo(() => {
@@ -25,7 +26,9 @@ export const Explorer = () => {
     }, [state, currentPath]);
 
     return (
-        <Container>
+        <Container className={className}>
+            <ThemePicker />
+            <h4 className="!my-5 px-6">Files</h4>
             {parent && <EntryComponent absPath={parent} navigate={navigate} isParent />}
             {state.current?.entries?.map((entry) => (
                 <EntryComponent key={entry} absPath={entry} navigate={navigate} />

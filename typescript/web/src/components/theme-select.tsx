@@ -52,7 +52,7 @@ export function ThemePicker() {
 
     return (
         <div>
-            <span className="mr-2">Theme</span>
+            <span className="mx-6">Theme</span>
             <select
                 value={selected}
                 onChange={(e) => {

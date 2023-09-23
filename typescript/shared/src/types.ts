@@ -7,7 +7,7 @@ export type ContentChange = Output<typeof ContentChangeSchema>;
 
 export type BrowserState = {
     root: string;
-    repoName: string;
+    // repoName: string;
     entries: string[];
     currentPath: string;
     content: ContentChange["content"];

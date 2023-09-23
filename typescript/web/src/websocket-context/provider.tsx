@@ -2,7 +2,6 @@ import { type BrowserState, type WsBrowserRequest, type WsServerMessage } from "
 import { createBrowserHistory } from "history";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { Banner } from "../components/banner.tsx";
 import { contentToHtml } from "../components/markdown/markdown-it/index.ts";
 import { ENV } from "../env.ts";
 import { getFileExt } from "../utils.ts";
@@ -147,16 +146,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
     );
 
     return (
-        <websocketContext.Provider
-            value={{
-                navigate,
-                isConnected,
-                state,
-                offsets,
-                currentPath,
-            }}
-        >
-            <Banner className="z-50" />
+        <websocketContext.Provider value={{ navigate, isConnected, state, offsets, currentPath }}>
             {children}
         </websocketContext.Provider>
     );

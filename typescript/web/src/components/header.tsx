@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { websocketContext } from "../websocket-context/context.ts";
-import { ThemePicker } from "./theme-select.tsx";
 
 export const Header = () => {
     const { state } = useContext(websocketContext);
@@ -10,7 +9,6 @@ export const Header = () => {
     return (
         <div>
             <h1>Header</h1>
-            <ThemePicker />
             <div className="flex">
                 {username && (
                     <img

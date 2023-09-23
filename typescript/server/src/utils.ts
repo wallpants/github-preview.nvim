@@ -1,8 +1,8 @@
 import { type BrowserState, type PluginInit } from "@gp/shared";
 import { globby } from "globby";
 import { isText } from "istextorbinary";
-import { existsSync, readFileSync } from "node:fs";
-import { basename, dirname, resolve } from "node:path";
+import { existsSync } from "node:fs";
+import { basename, dirname } from "node:path";
 
 export async function initBrowserState(init: PluginInit): Promise<BrowserState> {
     const entries = await getEntries({
@@ -17,7 +17,7 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
 
     return {
         root: init.root,
-        repoName: getRepoName({ root: init.root }),
+        // repoName: getRepoName({ root: init.root }),
         entries: entries,
         content,
         currentPath,
@@ -27,22 +27,22 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
     };
 }
 
-function getRepoName({ root }: { root: BrowserState["root"] }): string {
-    const gitConfig = readFileSync(resolve(root, ".git/config")).toString();
-    const lines = gitConfig.split("\n");
-    let repoName = "no-repo-name";
+// function getRepoName({ root }: { root: BrowserState["root"] }): string {
+//     const gitConfig = readFileSync(resolve(root, ".git/config")).toString();
+//     const lines = gitConfig.split("\n");
+//     let repoName = "no-repo-name";
 
-    for (let i = 0; i < lines.length; i += 1) {
-        const line = lines[i];
-        if (line === '[remote "origin"]') {
-            // nextLine = git@github.com:gualcasas/github-preview.nvim.git
-            const nextLine = lines[i + 1];
-            const repo = nextLine?.split(":")[1]?.slice(0, -4);
-            if (repo) repoName = repo;
-        }
-    }
-    return repoName;
-}
+//     for (let i = 0; i < lines.length; i += 1) {
+//         const line = lines[i];
+//         if (line === '[remote "origin"]') {
+//             // nextLine = git@github.com:gualcasas/github-preview.nvim.git
+//             const nextLine = lines[i + 1];
+//             const repo = nextLine?.split(":")[1]?.slice(0, -4);
+//             if (repo) repoName = repo;
+//         }
+//     }
+//     return repoName;
+// }
 
 export async function getEntries({
     currentPath,
