@@ -1,7 +1,6 @@
 import { useContext, useMemo } from "react";
 import { websocketContext } from "../../websocket-context/context.ts";
 import { Container } from "../container.tsx";
-import { ThemePicker } from "../theme-select.tsx";
 import { EntryComponent } from "./entry.tsx";
 
 export const Explorer = () => {
@@ -25,28 +24,12 @@ export const Explorer = () => {
         return parent;
     }, [state, currentPath]);
 
-    const [username, repo] = state.current?.repoName?.split("/") ?? "";
-
     return (
-        <div>
-            <Container className="border-none">
-                <ThemePicker />
-                <div className="flex">
-                    {username && (
-                        <img
-                            src={`https://github.com/${username}.png?size=48`}
-                            className="mb-4 mr-2 mt-6 h-6 w-6 rounded-[100%]"
-                        />
-                    )}
-                    <h3>{repo}</h3>
-                </div>
-            </Container>
-            <Container>
-                {parent && <EntryComponent absPath={parent} navigate={navigate} isParent />}
-                {state.current?.entries?.map((entry) => (
-                    <EntryComponent key={entry} absPath={entry} navigate={navigate} />
-                ))}
-            </Container>
-        </div>
+        <Container>
+            {parent && <EntryComponent absPath={parent} navigate={navigate} isParent />}
+            {state.current?.entries?.map((entry) => (
+                <EntryComponent key={entry} absPath={entry} navigate={navigate} />
+            ))}
+        </Container>
     );
 };

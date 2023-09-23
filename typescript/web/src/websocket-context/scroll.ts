@@ -36,12 +36,9 @@ function getAttrs(element: HTMLElement): Attrs {
     return attrs;
 }
 
-export type Offsets = {
-    markdownTopOffset: number;
-    sourceLineOffsets: [number, HTMLElement][];
-};
+export type Offsets = [number, HTMLElement][];
 
-export function getScrollOffsets(markdownElement: HTMLElement): Offsets {
+export function getScrollOffsets(): Offsets {
     const elements: NodeListOf<HTMLElement> = document.querySelectorAll("[data-source-line]");
     // HTMLElement kept arround for debugging purposes
     const sourceLineOffsets: [number, HTMLElement][] = [];
@@ -117,24 +114,22 @@ export function getScrollOffsets(markdownElement: HTMLElement): Offsets {
         sourceLineOffsets.shift();
     }
 
-    return {
-        markdownTopOffset: document.body.offsetHeight - markdownElement.offsetHeight,
-        sourceLineOffsets,
-    };
+    return sourceLineOffsets;
 }
 
 export function scroll(
     topOffsetPct: number | null | undefined,
     offsets: Offsets,
     cursorLine: number,
+    markdownElement: HTMLElement,
     cursorLineElement: HTMLElement,
 ) {
-    let cursorLineOffset = offsets.sourceLineOffsets[cursorLine];
+    let cursorLineOffset = offsets[cursorLine];
 
     while (!cursorLineOffset) {
         // When adding new lines at the end of the buffer, the offset for the
         // new lines is not available until cursorHold
-        cursorLineOffset = offsets.sourceLineOffsets[--cursorLine];
+        cursorLineOffset = offsets[--cursorLine];
     }
 
     cursorLineElement.style.setProperty("top", `${cursorLineOffset[0]}px`);
@@ -143,7 +138,7 @@ export function scroll(
     if (typeof topOffsetPct === "number") {
         const percent = topOffsetPct / 100;
         window.scrollTo({
-            top: cursorLineOffset[0] - window.screen.height * percent,
+            top: cursorLineOffset[0] + markdownElement.offsetTop - window.screen.height * percent,
             behavior: "smooth",
         });
     }

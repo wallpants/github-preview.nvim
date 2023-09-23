@@ -45,12 +45,13 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
         if (!state.current.content?.length || !markdownElement.current) return;
 
         const observer = new ResizeObserver(() => {
-            offsets.current = getScrollOffsets(markdownElement.current!);
+            offsets.current = getScrollOffsets();
             if (typeof state.current.cursorLine === "number") {
                 scroll(
                     state.current.topOffsetPct,
                     offsets.current,
                     state.current.cursorLine,
+                    markdownElement.current!,
                     cursorLineElement.current!,
                 );
             }
@@ -131,6 +132,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                     state.current.topOffsetPct,
                     offsets.current,
                     state.current.cursorLine,
+                    markdownElement.current,
                     cursorLineElement.current,
                 );
             }
