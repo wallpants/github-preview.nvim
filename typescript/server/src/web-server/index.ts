@@ -46,7 +46,6 @@ export function startWebServer(
                         entries: entries,
                         content: content,
                         cursorLine: null,
-                        topOffsetPct: null,
                     };
                     Object.assign(browserState, stateUpdate);
                     webSocket.send(JSON.stringify(stateUpdate));

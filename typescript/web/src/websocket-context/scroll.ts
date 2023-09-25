@@ -117,10 +117,10 @@ export function getScrollOffsets(): Offsets {
 }
 
 export function scroll(
+    markdownContainer: HTMLElement,
     topOffsetPct: number | null | undefined,
     offsets: Offsets,
     cursorLine: number,
-    markdownContainer: HTMLElement,
     cursorLineElement: HTMLElement,
 ) {
     let cursorLineOffset = offsets[cursorLine];
@@ -134,11 +134,11 @@ export function scroll(
     cursorLineElement.style.setProperty("top", `${cursorLineOffset[0]}px`);
     cursorLineElement.style.setProperty("visibility", "visible");
 
-    if (typeof topOffsetPct === "number") {
-        const percent = topOffsetPct / 100;
-        markdownContainer.scrollTo({
-            top: cursorLineOffset[0] + markdownContainer.offsetTop - window.screen.height * percent,
-            behavior: "smooth",
-        });
-    }
+    if (typeof topOffsetPct !== "number") return;
+
+    const percent = topOffsetPct / 100;
+    markdownContainer.scrollTo({
+        top: cursorLineOffset[0] + markdownContainer.offsetTop - window.screen.height * percent,
+        behavior: "smooth",
+    });
 }

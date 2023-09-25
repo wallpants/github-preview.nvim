@@ -60,10 +60,10 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
 
             if (typeof state.current.cursorLine === "number") {
                 scroll(
+                    markdownContainer.current!,
                     state.current.topOffsetPct,
                     offsets.current,
                     state.current.cursorLine,
-                    markdownContainer.current!,
                     cursorLineElement.current!,
                 );
             }
@@ -103,20 +103,20 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
             setCurrentPath(state.current.currentPath);
 
             if (
+                !markdownContainer.current ||
                 !markdownElement.current ||
                 !cursorLineElement.current ||
-                !lineNumbersElement.current ||
-                !markdownContainer.current
+                !lineNumbersElement.current
             ) {
                 // get reference to html elements on first render
+                markdownContainer.current = document.getElementById(MARKDOWN_CONTAINER_ID);
+                if (!markdownContainer.current) throw Error("MarkdownContainer not found");
                 markdownElement.current = document.getElementById(MARKDOWN_ELEMENT_ID);
                 if (!markdownElement.current) throw Error("MarkdownElement not found");
                 cursorLineElement.current = document.getElementById(CURSOR_LINE_ELEMENT_ID);
                 if (!cursorLineElement.current) throw Error("CursorLineElement not found");
                 lineNumbersElement.current = document.getElementById(LINE_NUMBERS_ELEMENT_ID);
                 if (!lineNumbersElement.current) throw Error("LineNumbersElement not found");
-                markdownContainer.current = document.getElementById(MARKDOWN_CONTAINER_ID);
-                if (!markdownContainer.current) throw Error("markdownContainer not found");
             }
 
             const fileExt = getFileExt(state.current.currentPath);
@@ -167,10 +167,10 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 cursorLineElement.current.style.setProperty("visibility", "hidden");
             } else if (offsets.current) {
                 scroll(
+                    markdownContainer.current,
                     state.current.topOffsetPct,
                     offsets.current,
                     state.current.cursorLine,
-                    markdownContainer.current,
                     cursorLineElement.current,
                 );
             }
