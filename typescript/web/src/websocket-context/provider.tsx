@@ -10,6 +10,7 @@ import { getScrollOffsets, scroll, type Offsets } from "./scroll.ts";
 
 export const MARKDOWN_ELEMENT_ID = "markdown-element-id";
 export const CURSOR_LINE_ELEMENT_ID = "cursor-line-element-id";
+export const LINE_NUMBERS_ELEMENT_ID = "line-numbers-element-id";
 
 const URL = "ws://" + (ENV.IS_DEV ? `localhost:${ENV.VITE_GP_WS_PORT}` : window.location.host);
 const ws = new ReconnectingWebSocket(URL, [], {
@@ -24,6 +25,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
     const state = useRef<Partial<BrowserState>>({});
     const markdownElement = useRef<HTMLElement | null>(null);
     const cursorLineElement = useRef<HTMLElement | null>(null);
+    const lineNumbersElement = useRef<HTMLElement | null>(null);
     const [currentPath, setCurrentPath] = useState<string>();
     const [isConnected, setIsConnected] = useState(false);
 
@@ -45,6 +47,21 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
 
         const observer = new ResizeObserver(() => {
             offsets.current = getScrollOffsets();
+
+            const html = offsets.current.reduce((html, offset, index) => {
+                if (index === offsets.current!.length - 1) return html;
+                return (
+                    html +
+                    `<span style="position: absolute; top: ${
+                        offset[0]
+                    }px; transform: translateY(-4px); font-size: 13px; width: 45px; text-align: right; color: var(--color-fg-subtle); pointer-events: none;">${
+                        index + 1
+                    }</span>`
+                );
+            }, "");
+
+            lineNumbersElement.current!.innerHTML = html;
+
             if (typeof state.current.cursorLine === "number") {
                 scroll(
                     state.current.topOffsetPct,
@@ -55,6 +72,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 );
             }
         });
+
         observer.observe(markdownElement.current);
 
         return () => {
@@ -86,15 +104,20 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
 
             if (goodbye) window.close();
 
-            // Set currentPath in react state to trigger render
-            // if path is the same as currentState, react doesn't rerender
             setCurrentPath(state.current.currentPath);
 
-            if (!markdownElement.current || !cursorLineElement.current) {
+            if (
+                !markdownElement.current ||
+                !cursorLineElement.current ||
+                !lineNumbersElement.current
+            ) {
+                // get reference to html elements on first render
                 markdownElement.current = document.getElementById(MARKDOWN_ELEMENT_ID);
                 if (!markdownElement.current) throw Error("MarkdownElement not found");
                 cursorLineElement.current = document.getElementById(CURSOR_LINE_ELEMENT_ID);
                 if (!cursorLineElement.current) throw Error("CursorLineElement not found");
+                lineNumbersElement.current = document.getElementById(LINE_NUMBERS_ELEMENT_ID);
+                if (!lineNumbersElement.current) throw Error("LineNumbersElement not found");
             }
 
             const fileExt = getFileExt(state.current.currentPath);
@@ -107,13 +130,23 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
 
                 if (fileExt === "md") {
                     markdownElement.current.style.setProperty("padding", "44px");
-                    cursorLineElement.current.classList.add("h-11");
-                    cursorLineElement.current.classList.remove("-translate-y-3", "h-9");
+                    markdownElement.current.style.setProperty("max-width", "1012px");
+                    markdownElement.current.style.removeProperty("margin-top");
+                    cursorLineElement.current.style.removeProperty("transform");
+                    lineNumbersElement.current.style.setProperty("display", "none");
                 } else {
-                    markdownElement.current.style.setProperty("padding", "0px");
-                    markdownElement.current.style.setProperty("margin-bottom", "-16px");
-                    cursorLineElement.current.classList.add("-translate-y-3", "h-9");
-                    cursorLineElement.current.classList.remove("h-11");
+                    // rendering code file
+                    markdownElement.current.style.setProperty("margin-top", "-36px");
+                    markdownElement.current.style.setProperty("padding", "0 0 0 60px");
+                    markdownElement.current.style.removeProperty("max-width");
+                    // move cursorLineElement up so line of code is vertically centered
+                    cursorLineElement.current.style.setProperty("transform", "translateY(-12px)");
+                    lineNumbersElement.current.style.setProperty("display", "block");
+
+                    // Change code background color to canvas default when displaying only code
+                    const codeContainer = markdownElement.current.getElementsByTagName("pre")[0];
+                    if (!codeContainer) throw Error("codeContainer not found");
+                    codeContainer.style.setProperty("background", "var(--color-canvas-default)");
                 }
             }
 

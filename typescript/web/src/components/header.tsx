@@ -1,10 +1,8 @@
-import { useContext } from "react";
-import { websocketContext } from "../websocket-context/context.ts";
-
 export const Header = () => {
-    const { state } = useContext(websocketContext);
+    // const { state } = useContext(websocketContext);
 
-    const [username, repo] = state.current?.repoName?.split("/") ?? "";
+    // const [username, repo] = state.current?.repoName?.split("/") ?? "";
+    const [username, repo] = ["gualcasas", "github-preview.nvim"];
 
     return (
         <div>
