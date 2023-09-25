@@ -1,4 +1,5 @@
 import { useContext, useMemo } from "react";
+import { getBreadCrumbs } from "../../utils.ts";
 import { websocketContext } from "../../websocket-context/context.ts";
 import { Container } from "../container.tsx";
 import { ThemePicker } from "../theme-select.tsx";
@@ -10,8 +11,7 @@ export const Explorer = ({ className }: { className: string }) => {
     const parent = useMemo(() => {
         if (!state.current?.root || !currentPath) return;
 
-        const relative = currentPath.slice(state.current.root.length);
-        const segments = relative.split("/");
+        const segments = getBreadCrumbs(state.current.root, currentPath);
 
         if (segments.length <= 1) return;
 

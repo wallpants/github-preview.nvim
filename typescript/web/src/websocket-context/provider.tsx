@@ -52,14 +52,8 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
 
             const html = offsets.current.reduce((html, offset, index) => {
                 if (index === offsets.current!.length - 1) return html;
-                return (
-                    html +
-                    `<span style="position: absolute; top: ${
-                        offset[0]
-                    }px; transform: translateY(-4px); font-size: 13px; width: 45px; text-align: right; color: var(--color-fg-subtle); pointer-events: none;">${
-                        index + 1
-                    }</span>`
-                );
+                const style = `position: absolute; top: ${offset[0]}px; transform: translateY(-4px); font-size: 13px; width: 45px; text-align: right; color: var(--color-fg-subtle); pointer-events: none;`;
+                return html + `<span style="${style}">${index + 1}</span>`;
             }, "");
 
             lineNumbersElement.current!.innerHTML = html;
@@ -146,12 +140,19 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                     markdownElement.current.style.removeProperty("max-width");
                     // move cursorLineElement up so line of code is vertically centered
                     cursorLineElement.current.style.setProperty("transform", "translateY(-12px)");
-                    lineNumbersElement.current.style.setProperty("display", "block");
+                    lineNumbersElement.current.style.setProperty(
+                        "display",
+                        state.current.content?.length ? "block" : "none",
+                    );
 
                     // Change code background color to canvas default when displaying only code
                     const codeContainer = markdownElement.current.getElementsByTagName("pre")[0];
-                    if (!codeContainer) throw Error("codeContainer not found");
-                    codeContainer.style.setProperty("background", "var(--color-canvas-default)");
+                    if (codeContainer) {
+                        codeContainer.style.setProperty(
+                            "background",
+                            "var(--color-canvas-default)",
+                        );
+                    }
                 }
             }
 
