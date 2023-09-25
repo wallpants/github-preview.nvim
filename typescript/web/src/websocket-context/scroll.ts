@@ -94,7 +94,7 @@ export function getScrollOffsets(): Offsets {
 
         if (isCode) {
             // is rendering code only, the margin messes up with
-            // the offset calculations (maybe?)
+            // the offset calculations
             height -= MAGIC;
         }
 
@@ -108,9 +108,8 @@ export function getScrollOffsets(): Offsets {
     });
 
     if (isCode) {
-        // remove the fence line (maybe?)
+        // remove the fence line
         // ```ts    <= we remove that line
-        //     endLine--;
         sourceLineOffsets.shift();
     }
 
@@ -121,7 +120,7 @@ export function scroll(
     topOffsetPct: number | null | undefined,
     offsets: Offsets,
     cursorLine: number,
-    markdownElement: HTMLElement,
+    markdownContainer: HTMLElement,
     cursorLineElement: HTMLElement,
 ) {
     let cursorLineOffset = offsets[cursorLine];
@@ -137,8 +136,8 @@ export function scroll(
 
     if (typeof topOffsetPct === "number") {
         const percent = topOffsetPct / 100;
-        window.scrollTo({
-            top: cursorLineOffset[0] + markdownElement.offsetTop - window.screen.height * percent,
+        markdownContainer.scrollTo({
+            top: cursorLineOffset[0] + markdownContainer.offsetTop - window.screen.height * percent,
             behavior: "smooth",
         });
     }

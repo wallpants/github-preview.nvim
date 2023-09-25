@@ -8,6 +8,7 @@ import { getFileExt } from "../utils.ts";
 import { websocketContext } from "./context.ts";
 import { getScrollOffsets, scroll, type Offsets } from "./scroll.ts";
 
+export const MARKDOWN_CONTAINER_ID = "markdown-container-id";
 export const MARKDOWN_ELEMENT_ID = "markdown-element-id";
 export const CURSOR_LINE_ELEMENT_ID = "cursor-line-element-id";
 export const LINE_NUMBERS_ELEMENT_ID = "line-numbers-element-id";
@@ -24,6 +25,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
     const offsets = useRef<Offsets | null>(null);
     const state = useRef<Partial<BrowserState>>({});
     const markdownElement = useRef<HTMLElement | null>(null);
+    const markdownContainer = useRef<HTMLElement | null>(null);
     const cursorLineElement = useRef<HTMLElement | null>(null);
     const lineNumbersElement = useRef<HTMLElement | null>(null);
     const [currentPath, setCurrentPath] = useState<string>();
@@ -67,7 +69,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                     state.current.topOffsetPct,
                     offsets.current,
                     state.current.cursorLine,
-                    markdownElement.current!,
+                    markdownContainer.current!,
                     cursorLineElement.current!,
                 );
             }
@@ -109,7 +111,8 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
             if (
                 !markdownElement.current ||
                 !cursorLineElement.current ||
-                !lineNumbersElement.current
+                !lineNumbersElement.current ||
+                !markdownContainer.current
             ) {
                 // get reference to html elements on first render
                 markdownElement.current = document.getElementById(MARKDOWN_ELEMENT_ID);
@@ -118,6 +121,8 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 if (!cursorLineElement.current) throw Error("CursorLineElement not found");
                 lineNumbersElement.current = document.getElementById(LINE_NUMBERS_ELEMENT_ID);
                 if (!lineNumbersElement.current) throw Error("LineNumbersElement not found");
+                markdownContainer.current = document.getElementById(MARKDOWN_CONTAINER_ID);
+                if (!markdownContainer.current) throw Error("markdownContainer not found");
             }
 
             const fileExt = getFileExt(state.current.currentPath);
@@ -164,7 +169,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                     state.current.topOffsetPct,
                     offsets.current,
                     state.current.cursorLine,
-                    markdownElement.current,
+                    markdownContainer.current,
                     cursorLineElement.current,
                 );
             }
