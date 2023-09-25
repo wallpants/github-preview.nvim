@@ -35,6 +35,7 @@ M.default_opts = {
 
 ---@param opts nvim_plugin_opts
 M.setup = function(opts)
+	-- deep merge user opts with default opts without overriding user opts
 	opts = vim.tbl_deep_extend("keep", opts, M.default_opts)
 
 	vim.validate({
@@ -63,7 +64,7 @@ M.setup = function(opts)
 		-- should look like "/Users/.../github-preview"
 		local root = vim.fn.finddir(".git", ";")
 
-		if root == "" or root == "/" then
+		if root == "" then
 			error("root dir with .git not found")
 		else
 			-- if found, path is made absolute & has "/.git/" popped
