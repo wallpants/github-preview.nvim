@@ -17,7 +17,6 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
 
     return {
         root: init.root,
-        // repoName: getRepoName({ root: init.root }),
         entries: entries,
         content,
         currentPath,
@@ -27,35 +26,19 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
     };
 }
 
-// function getRepoName({ root }: { root: BrowserState["root"] }): string {
-//     const gitConfig = readFileSync(resolve(root, ".git/config")).toString();
-//     const lines = gitConfig.split("\n");
-//     let repoName = "no-repo-name";
-
-//     for (let i = 0; i < lines.length; i += 1) {
-//         const line = lines[i];
-//         if (line === '[remote "origin"]') {
-//             // nextLine = git@github.com:gualcasas/github-preview.nvim.git
-//             const nextLine = lines[i + 1];
-//             const repo = nextLine?.split(":")[1]?.slice(0, -4);
-//             if (repo) repoName = repo;
-//         }
-//     }
-//     return repoName;
-// }
-
 export async function getEntries({
-    currentPath,
     root,
+    currentPath,
 }: {
-    currentPath: BrowserState["currentPath"];
     root: BrowserState["root"];
+    currentPath: BrowserState["currentPath"];
 }): Promise<string[]> {
     const relativePath = currentPath.slice(root.length);
     const currentDir = relativePath.endsWith("/") ? relativePath : dirname(relativePath) + "/";
     const paths = await globby(currentDir + "*", {
         cwd: root,
         dot: true,
+        ignore: [".git"],
         absolute: true,
         gitignore: true,
         onlyFiles: false,
@@ -66,9 +49,8 @@ export async function getEntries({
     const files: string[] = [];
 
     for (const path of paths) {
-        if (path.endsWith("/")) {
-            if (!path.endsWith(".git/")) dirs.push(path);
-        } else files.push(path);
+        if (path.endsWith("/")) dirs.push(path);
+        else files.push(path);
     }
 
     dirs.sort();
