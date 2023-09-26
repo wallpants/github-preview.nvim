@@ -26,10 +26,13 @@ export function startWebServer(
                 const browserRequest = JSON.parse(message) as WsBrowserRequest;
                 nvim.logger?.verbose({ INCOMING_WEBSOCKET: browserRequest });
 
+                function wsSend(m: WsServerMessage) {
+                    nvim.logger?.verbose({ OUTGOING_WEBSOCKET: m });
+                    webSocket.send(JSON.stringify(m));
+                }
+
                 if (browserRequest.type === "init") {
-                    const message: WsServerMessage = browserState;
-                    webSocket.send(JSON.stringify(message));
-                    nvim.logger?.verbose({ OUTGOING_WEBSOCKET: message });
+                    wsSend(browserState);
                 }
 
                 if (browserRequest.type === "getEntry") {
@@ -48,8 +51,7 @@ export function startWebServer(
                         cursorLine: null,
                     };
                     Object.assign(browserState, stateUpdate);
-                    webSocket.send(JSON.stringify(stateUpdate));
-                    nvim.logger?.verbose({ OUTGOING_WEBSOCKET: stateUpdate });
+                    wsSend(stateUpdate);
                 }
             },
         },
