@@ -5,7 +5,7 @@ import { type ApiInfo } from "./types.ts";
 export async function onContentChange(
     nvim: Nvim<ApiInfo>,
     browserState: BrowserState,
-    callback: (content: string[], path: string) => Promise<void>,
+    callback: (content: string[], path: string) => void,
 ) {
     // We attach buffers to receive notifications on content change
     let attachedBuffer: null | number = null;
@@ -60,13 +60,13 @@ export async function onContentChange(
             const newContent = replaceAll
                 ? linedata
                 : browserState.content.toSpliced(firstline, deleteCount, ...linedata);
-            await callback(newContent, path);
+            callback(newContent, path);
         },
     );
 
     nvim.onNotification("nvim_buf_changedtick_event", async ([buffer, _changedtick]) => {
         const path = await nvim.call("nvim_buf_get_name", [buffer]);
         const linedata = await nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]);
-        await callback(linedata, path);
+        callback(linedata, path);
     });
 }

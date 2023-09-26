@@ -6,11 +6,12 @@ import {
     type WsServerMessage,
 } from "@gp/shared";
 import { attach, type LogLevel } from "bunvim";
+import { relative } from "node:path";
 import { parse } from "valibot";
 import { onContentChange } from "./on-content-change.ts";
 import { onCursorMove } from "./on-cursor-move.ts";
 import { type ApiInfo, type NotificationsMap } from "./types.ts";
-import { getEntries, initBrowserState } from "./utils.ts";
+import { initBrowserState } from "./utils.ts";
 import { EDITOR_EVENTS_TOPIC, startWebServer } from "./web-server/index.ts";
 
 if (!ENV.NVIM) throw Error("socket missing");
@@ -34,34 +35,31 @@ function wsSend(message: WsServerMessage) {
 
 await onCursorMove(nvim, async ([buffer, path, cursorLine]: NotificationsMap["CursorMove"]) => {
     if (!path) return;
-    nvim.logger?.verbose({ ON_CURSOR_MOVE: { buffer, path, cursorLine } });
+    const relativePath = relative(browserState.root, path);
+    nvim.logger?.verbose({ ON_CURSOR_MOVE: { buffer, path: relativePath, cursorLine } });
 
     const stateUpdate: Partial<BrowserState> = {
         cursorLine: cursorLine,
+        currentPath: relativePath,
     };
 
-    if (browserState.currentPath !== path) {
-        stateUpdate.currentPath = path;
+    if (browserState.currentPath !== relativePath) {
         stateUpdate.content = await nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]);
-        stateUpdate.entries = await getEntries({ currentPath: path, root: init.root });
     }
 
     Object.assign(browserState, stateUpdate);
     wsSend(stateUpdate);
 });
 
-await onContentChange(nvim, browserState, async (content, path) => {
+await onContentChange(nvim, browserState, (content, path) => {
     if (!path) return;
-    nvim.logger?.verbose({ ON_CONTENT_CHANGE: { content, path } });
+    const relativePath = relative(browserState.root, path);
+    nvim.logger?.verbose({ ON_CONTENT_CHANGE: { content, path: relativePath } });
 
     const stateUpdate: Partial<BrowserState> = {
         content: content,
+        currentPath: relativePath,
     };
-
-    if (browserState.currentPath !== path) {
-        stateUpdate.currentPath = path;
-        stateUpdate.entries = await getEntries({ currentPath: path, root: init.root });
-    }
 
     Object.assign(browserState, stateUpdate);
     wsSend(stateUpdate);

@@ -3,19 +3,17 @@ import { cn, getBreadCrumbs } from "../utils.ts";
 import { websocketContext } from "../websocket-context/context.ts";
 
 export const BreadCrumbs = () => {
-    const { state, currentPath, navigate } = useContext(websocketContext);
-    const breadCrumbs = getBreadCrumbs(state.current?.root, currentPath);
+    const { currentPath, setCurrentPath } = useContext(websocketContext);
+    const breadCrumbs = getBreadCrumbs(currentPath);
 
     function handleClick(idx?: number) {
         return () => {
-            if (!state.current?.root) return;
-
             if (typeof idx === "undefined") {
-                navigate(state.current.root);
+                setCurrentPath("/");
                 return;
             }
 
-            navigate(state.current.root + breadCrumbs.slice(0, idx).join("/") + "/");
+            // navigate(breadCrumbs.slice(0, idx).join("/") + "/");
         };
     }
 

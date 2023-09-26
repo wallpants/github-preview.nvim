@@ -7,7 +7,6 @@ export type ContentChange = Output<typeof ContentChangeSchema>;
 
 export type BrowserState = {
     root: string;
-    entries: string[];
     currentPath: string;
     content: ContentChange["content"];
     cursorLineColor: string;
@@ -16,6 +15,7 @@ export type BrowserState = {
 };
 
 export type WsServerMessage = Partial<BrowserState> & {
+    entries?: string[];
     goodbye?: true;
 };
 
@@ -24,6 +24,10 @@ export type WsBrowserRequest =
           type: "init";
       }
     | {
-          type: "getEntry";
+          type: "getEntries";
           currentPath: string;
       };
+// | {
+//       type: "getEntry";
+//       currentPath: string;
+//   };

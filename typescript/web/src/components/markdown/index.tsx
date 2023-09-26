@@ -1,30 +1,100 @@
-import { useRef } from "react";
-import {
-    CURSOR_LINE_ELEMENT_ID,
-    LINE_NUMBERS_ELEMENT_ID,
-    MARKDOWN_CONTAINER_ID,
-    MARKDOWN_ELEMENT_ID,
-} from "../../websocket-context/provider.tsx";
-import { BreadCrumbs } from "../breadcrumbs.tsx";
+import { useContext, useEffect, useState } from "react";
+import { getFileExt } from "../../utils.ts";
+import { websocketContext } from "../../websocket-context/context.ts";
+import { getScrollOffsets, type Offsets } from "../../websocket-context/scroll.ts";
+// import { BreadCrumbs } from "../breadcrumbs.tsx";
 import { Container } from "../container.tsx";
+import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";
+import { LINE_NUMBERS_ELEMENT_ID, LineNumbers } from "./line-numbers.tsx";
+import { contentToHtml } from "./markdown-it/index.ts";
+
+const MARKDOWN_CONTAINER_ID = "markdown-container-id";
+const MARKDOWN_ELEMENT_ID = "markdown-element-id";
 
 export const Markdown = ({ className }: { className: string }) => {
-    // We use refs, because we don't want these htmlelements ever to rerender
-    const markdownElement = useRef(<div id={MARKDOWN_ELEMENT_ID} className="mx-auto mb-96" />);
-    const cursorLineElement = useRef(
-        <div
-            id={CURSOR_LINE_ELEMENT_ID}
-            className="absolute pointer-events-none w-full h-[36px]"
-        />,
-    );
-    const lineNumbers = useRef(<div id={LINE_NUMBERS_ELEMENT_ID} />);
+    const { registerHandler } = useContext(websocketContext);
+    const [offsets, setOffsets] = useState<Offsets | null>(null);
+
+    const [markdownElement, setMarkdownElement] = useState<HTMLElement>();
+    const [cursorLineElement, setCursorLineElement] = useState<HTMLElement>();
+    const [lineNumbersElement, setLineNumbersElement] = useState<HTMLElement>();
+    const [markdownContainerElement, setMarkdownContainerElement] = useState<HTMLElement>();
+
+    useEffect(() => {
+        setMarkdownElement(document.getElementById(MARKDOWN_ELEMENT_ID)!);
+        setCursorLineElement(document.getElementById(CURSOR_LINE_ELEMENT_ID)!);
+        setLineNumbersElement(document.getElementById(LINE_NUMBERS_ELEMENT_ID)!);
+        setMarkdownContainerElement(document.getElementById(MARKDOWN_CONTAINER_ID)!);
+    }, []);
+
+    useEffect(() => {
+        if (!markdownElement || !cursorLineElement || !lineNumbersElement) return;
+
+        registerHandler("markdown", (message) => {
+            if (message.content) {
+                const fileExt = getFileExt(message.currentPath);
+
+                markdownElement.innerHTML = contentToHtml({
+                    content: message.content,
+                    fileExt,
+                });
+
+                if (fileExt === "md") {
+                    markdownElement.style.setProperty("padding", "44px");
+                    markdownElement.style.setProperty("max-width", "1012px");
+                    markdownElement.style.removeProperty("margin-top");
+                    cursorLineElement.style.removeProperty("transform");
+                    lineNumbersElement.style.setProperty("display", "none");
+                } else {
+                    // rendering code file
+                    markdownElement.style.setProperty("margin-top", "-36px");
+                    markdownElement.style.setProperty("padding", "0 0 0 60px");
+                    markdownElement.style.removeProperty("max-width");
+                    // move cursorLineElement up so line of code is vertically centered
+                    cursorLineElement.style.setProperty("transform", "translateY(-12px)");
+                    lineNumbersElement.style.setProperty(
+                        "display",
+                        message.content.length ? "block" : "none",
+                    );
+
+                    // Change code background color to canvas default when displaying only code
+                    const codeContainer = markdownElement.getElementsByTagName("pre")[0];
+                    if (codeContainer) {
+                        codeContainer.style.setProperty(
+                            "background",
+                            "var(--color-canvas-default)",
+                        );
+                    }
+                }
+            }
+        });
+    }, [registerHandler, markdownElement, cursorLineElement, lineNumbersElement]);
+
+    useEffect(() => {
+        // recalculate offsets whenever markdownElement's height changes
+        if (!markdownElement) return;
+
+        const observer = new ResizeObserver(() => {
+            setOffsets(getScrollOffsets());
+        });
+
+        observer.observe(markdownElement);
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [markdownElement]);
 
     return (
         <Container className={className} id={MARKDOWN_CONTAINER_ID}>
-            <BreadCrumbs />
-            {markdownElement.current}
-            {lineNumbers.current}
-            {cursorLineElement.current}
+            {/* <BreadCrumbs /> */}
+            <CursorLine
+                offsets={offsets}
+                cursorLineElement={cursorLineElement}
+                markdownContainerElement={markdownContainerElement}
+            />
+            <div id={MARKDOWN_ELEMENT_ID} className="mx-auto mb-96" />
+            <LineNumbers offsets={offsets} lineNumbersElement={lineNumbersElement} />
         </Container>
     );
 };

@@ -2,7 +2,7 @@ import { type BrowserState, type PluginInit } from "@gp/shared";
 import { globby } from "globby";
 import { isText } from "istextorbinary";
 import { existsSync } from "node:fs";
-import { basename, dirname } from "node:path";
+import { basename, dirname, relative } from "node:path";
 
 export async function initBrowserState(init: PluginInit): Promise<BrowserState> {
     const entries = await getEntries({
@@ -17,9 +17,8 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
 
     return {
         root: init.root,
-        entries: entries,
         content,
-        currentPath,
+        currentPath: relative(init.root, currentPath),
         cursorLineColor: init.cursor_line.disable ? "transparent" : init.cursor_line.color,
         cursorLine: null,
         topOffsetPct: init.scroll.disable ? null : init.scroll.top_offset_pct,
@@ -33,8 +32,7 @@ export async function getEntries({
     root: BrowserState["root"];
     currentPath: BrowserState["currentPath"];
 }): Promise<string[]> {
-    const relativePath = currentPath.slice(root.length);
-    const currentDir = relativePath.endsWith("/") ? relativePath : dirname(relativePath) + "/";
+    const currentDir = currentPath.endsWith("/") ? currentPath : dirname(currentPath) + "/";
     const paths = await globby(currentDir + "*", {
         cwd: root,
         dot: true,
@@ -59,7 +57,7 @@ export async function getContent({
     entries,
 }: {
     currentPath: BrowserState["currentPath"];
-    entries: BrowserState["entries"];
+    entries: string[];
 }): Promise<{ content: BrowserState["content"]; currentPath: string }> {
     if (!existsSync(currentPath)) {
         return {

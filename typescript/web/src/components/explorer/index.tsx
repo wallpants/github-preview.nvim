@@ -1,38 +1,33 @@
-import { useContext, useMemo } from "react";
-import { getBreadCrumbs } from "../../utils.ts";
+import { useContext, useEffect, useState } from "react";
 import { websocketContext } from "../../websocket-context/context.ts";
 import { Container } from "../container.tsx";
 import { ThemePicker } from "../theme-select.tsx";
-import { EntryComponent } from "./entry.tsx";
+
+const root = "";
 
 export const Explorer = ({ className }: { className: string }) => {
-    const { navigate, currentPath, state } = useContext(websocketContext);
+    const { isConnected, registerHandler, getEntries } = useContext(websocketContext);
+    const [entries, setEntries] = useState<string[]>([]);
 
-    const parent = useMemo(() => {
-        if (!state.current?.root || !currentPath) return;
+    useEffect(() => {
+        registerHandler("explorer-root", (message) => {
+            if (message.currentPath === root && message.entries) {
+                setEntries(message.entries);
+            }
+        });
+    }, [registerHandler, getEntries]);
 
-        const segments = getBreadCrumbs(state.current.root, currentPath);
+    useEffect(() => {
+        if (!isConnected) return;
+        getEntries(root);
+    }, [isConnected, getEntries]);
 
-        if (segments.length <= 1) return;
-
-        segments.pop();
-        segments.pop();
-
-        let parent = state.current.root + segments.join("/");
-
-        // parent is always a dir, must end with "/"
-        if (!parent.endsWith("/")) parent += "/";
-        return parent;
-    }, [state, currentPath]);
+    console.log("entries: ", entries);
 
     return (
         <Container className={className}>
             <ThemePicker />
             <h4 className="!my-5 px-6">Files</h4>
-            {parent && <EntryComponent absPath={parent} navigate={navigate} isParent />}
-            {state.current?.entries?.map((entry) => (
-                <EntryComponent key={entry} absPath={entry} navigate={navigate} />
-            ))}
         </Container>
     );
 };
