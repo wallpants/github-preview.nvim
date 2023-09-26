@@ -45,18 +45,13 @@ export async function getEntries({
         markDirectories: true,
     });
 
-    const dirs: string[] = [];
-    const files: string[] = [];
-
-    for (const path of paths) {
-        if (path.endsWith("/")) dirs.push(path);
-        else files.push(path);
-    }
-
-    dirs.sort();
-    files.sort();
-
-    return dirs.concat(files);
+    return paths.sort((a, b) => {
+        if (a.endsWith("/") && !b.endsWith("/")) return -1;
+        if (b.endsWith("/") && !a.endsWith("/")) return 1;
+        if (a > b) return 1;
+        if (a < b) return -1;
+        return 0;
+    });
 }
 
 export async function getContent({
