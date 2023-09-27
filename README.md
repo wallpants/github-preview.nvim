@@ -2,6 +2,10 @@ asdf
 
 # my name is casas medina
 
+-   [ ] add padding at bottom of explorer tree
+-   [ ] navigating to root, or starting github-preview with no buffer doesn't render root README
+-   [ ] if file too large, don't send entry or browser freezes
+-   [ ] scroll to top if cursorLine === null
 -   [ ] include types in bunvim instead of forcing the user to create them
 -   [x] when starting github preview whilst on root readme, scroll offsets are incorrect
 -   [x] Scroll gets kind of wonky sometimes whilst typing. Seems to happen more when close to end of buffer

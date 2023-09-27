@@ -2,23 +2,26 @@ import { type BrowserState, type PluginInit } from "@gp/shared";
 import { globby } from "globby";
 import { isText } from "istextorbinary";
 import { existsSync } from "node:fs";
-import { basename, dirname, relative } from "node:path";
+import { basename, dirname } from "node:path";
 
 export async function initBrowserState(init: PluginInit): Promise<BrowserState> {
+    const relativePath = init.path.slice(init.root.length);
+
     const entries = await getEntries({
         root: init.root,
-        currentPath: init.path,
+        path: relativePath,
     });
 
-    const { currentPath, content } = await getContent({
-        currentPath: init.root,
+    const { path, content } = await getContent({
+        root: init.root,
+        path: relativePath,
         entries,
     });
 
     return {
         root: init.root,
         content,
-        currentPath: relative(init.root, currentPath),
+        currentPath: path,
         cursorLineColor: init.cursor_line.disable ? "transparent" : init.cursor_line.color,
         cursorLine: null,
         topOffsetPct: init.scroll.disable ? null : init.scroll.top_offset_pct,
@@ -27,17 +30,16 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
 
 export async function getEntries({
     root,
-    currentPath,
+    path,
 }: {
-    root: BrowserState["root"];
-    currentPath: BrowserState["currentPath"];
+    root: string;
+    path: string;
 }): Promise<string[]> {
-    const currentDir = currentPath.endsWith("/") ? currentPath : dirname(currentPath) + "/";
+    const currentDir = path.endsWith("/") ? path : dirname(path) + "/";
     const paths = await globby(currentDir + "*", {
         cwd: root,
         dot: true,
         ignore: [".git"],
-        absolute: true,
         gitignore: true,
         onlyFiles: false,
         markDirectories: true,
@@ -53,43 +55,53 @@ export async function getEntries({
 }
 
 export async function getContent({
-    currentPath,
+    root,
+    path,
     entries,
 }: {
-    currentPath: BrowserState["currentPath"];
+    root: string;
+    path: string;
     entries: string[];
-}): Promise<{ content: BrowserState["content"]; currentPath: string }> {
-    if (!existsSync(currentPath)) {
+}): Promise<{ content: string[]; path: string }> {
+    if (!existsSync(root + path)) {
         return {
             content: [],
-            currentPath,
+            path,
         };
     }
 
-    const isDir = currentPath.endsWith("/");
+    const isDir = (root + path).endsWith("/");
     if (isDir) {
         // search for readme.md
         const readmePath = entries.find((e) => basename(e).toLowerCase() === "readme.md");
-        if (readmePath) currentPath = readmePath;
+        if (readmePath) path = readmePath;
         else {
             return {
                 content: [],
-                currentPath,
+                path,
             };
         }
     }
 
-    if (isText(currentPath)) {
-        const fileContent = await Bun.file(currentPath).text();
+    if (isText(root + path)) {
+        const file = Bun.file(root + path);
+        // limit file size or browser freezes when trying to apply syntax highlight
+        if (file.size > 500_000) {
+            return {
+                content: ["file too large"],
+                path,
+            };
+        }
+
+        const fileContent = await file.text();
         return {
-            // TODO(gualcasas): rewrite using Bun's apis
             content: fileContent.split("\n"),
-            currentPath,
+            path,
         };
     }
 
     return {
         content: [],
-        currentPath,
+        path,
     };
 }

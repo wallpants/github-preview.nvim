@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-export function getBreadCrumbs(path: string | undefined): string[] {
+export function getSegments(path: string | undefined): string[] {
     if (!path) return [];
     return path.split("/");
 }

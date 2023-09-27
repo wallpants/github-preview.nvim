@@ -3,7 +3,7 @@ import { type Server } from "bun";
 import { type Nvim } from "bunvim";
 import opener from "opener";
 import { type ApiInfo } from "../types.ts";
-import { getEntries } from "../utils.ts";
+import { getContent, getEntries } from "../utils.ts";
 import { onHttpRequest } from "./on-http-request.ts";
 
 export const EDITOR_EVENTS_TOPIC = "editor-events";
@@ -38,33 +38,41 @@ export function startWebServer(
                 if (browserRequest.type === "getEntries") {
                     wsSend(
                         {
-                            entries: await getEntries({
-                                currentPath: browserRequest.currentPath,
-                                root: browserState.root,
-                            }),
+                            entries: {
+                                path: browserRequest.path,
+                                list: await getEntries({
+                                    root: browserState.root,
+                                    path: browserRequest.path,
+                                }),
+                            },
                         },
                         "getEntries",
                     );
                 }
 
-                // if (browserRequest.type === "getEntry") {
-                //     const entries = await getEntries({
-                //         currentPath: browserRequest.currentPath,
-                //         root: browserState.root,
-                //     });
-                //     const { content, currentPath } = await getContent({
-                //         currentPath: browserRequest.currentPath,
-                //         entries: entries,
-                //     });
-                //     const message: Partial<BrowserState> = {
-                //         currentPath: currentPath,
-                //         // entries: entries,
-                //         content: content,
-                //         cursorLine: null,
-                //     };
-                //     Object.assign(browserState, stateUpdate);
-                //     wsSend(stateUpdate);
-                // }
+                if (browserRequest.type === "getEntry") {
+                    const entries = await getEntries({
+                        root: browserState.root,
+                        path: browserRequest.path,
+                    });
+                    const { content, path } = await getContent({
+                        root: browserState.root,
+                        path: browserRequest.path,
+                        entries,
+                    });
+
+                    browserState.content = content;
+                    browserState.currentPath = path;
+
+                    wsSend(
+                        {
+                            currentPath: browserState.currentPath,
+                            content,
+                            cursorLine: null,
+                        },
+                        "getEntry",
+                    );
+                }
             },
         },
     });

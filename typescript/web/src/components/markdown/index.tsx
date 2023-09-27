@@ -3,6 +3,7 @@ import { getFileExt } from "../../utils.ts";
 import { websocketContext } from "../../websocket-context/context.ts";
 import { getScrollOffsets, type Offsets } from "../../websocket-context/scroll.ts";
 // import { BreadCrumbs } from "../breadcrumbs.tsx";
+import { BreadCrumbs } from "../breadcrumbs.tsx";
 import { Container } from "../container.tsx";
 import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";
 import { LINE_NUMBERS_ELEMENT_ID, LineNumbers } from "./line-numbers.tsx";
@@ -13,7 +14,7 @@ const MARKDOWN_ELEMENT_ID = "markdown-element-id";
 
 export const Markdown = ({ className }: { className: string }) => {
     const { registerHandler } = useContext(websocketContext);
-    const [offsets, setOffsets] = useState<Offsets | null>(null);
+    const [offsets, setOffsets] = useState<Offsets>([]);
 
     const [markdownElement, setMarkdownElement] = useState<HTMLElement>();
     const [cursorLineElement, setCursorLineElement] = useState<HTMLElement>();
@@ -87,7 +88,7 @@ export const Markdown = ({ className }: { className: string }) => {
 
     return (
         <Container className={className} id={MARKDOWN_CONTAINER_ID}>
-            {/* <BreadCrumbs /> */}
+            <BreadCrumbs />
             <CursorLine
                 offsets={offsets}
                 cursorLineElement={cursorLineElement}

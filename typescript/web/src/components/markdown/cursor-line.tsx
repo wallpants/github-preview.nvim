@@ -5,7 +5,7 @@ import { scroll, type Offsets } from "../../websocket-context/scroll.ts";
 export const CURSOR_LINE_ELEMENT_ID = "cursor-line-element-id";
 
 type Props = {
-    offsets: Offsets | null;
+    offsets: Offsets;
     cursorLineElement: HTMLElement | undefined;
     markdownContainerElement: HTMLElement | undefined;
 };
@@ -32,7 +32,7 @@ export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElemen
             return;
         }
 
-        if (!offsets || !markdownContainerElement) return;
+        if (!offsets.length || !markdownContainerElement) return;
 
         scroll(markdownContainerElement, topOffsetPct, offsets, cursorLine, cursorLineElement);
     }, [cursorLine, cursorLineElement, markdownContainerElement, offsets, topOffsetPct]);

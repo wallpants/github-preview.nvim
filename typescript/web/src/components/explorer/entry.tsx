@@ -1,44 +1,94 @@
-import { cn } from "../../utils.ts";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { cn, getSegments } from "../../utils.ts";
+import { websocketContext } from "../../websocket-context/context.ts";
+import { ChevronRight } from "./chevron-right-icon.tsx";
 import { DirIcon } from "./dir-icon.tsx";
 import { FileIcon } from "./file-icon.tsx";
+import { OpenDirIcon } from "./open-dir-icon.tsx";
 
 const iconClassName = "mr-3 h-5 w-5";
 
 const IconMap = {
     dir: <DirIcon className={iconClassName} />,
+    openDir: <OpenDirIcon className={iconClassName} />,
     file: <FileIcon className={iconClassName} />,
 };
 
 type Props = {
-    absPath: string;
-    isParent?: boolean;
-    navigate: (p: string) => void;
+    entry: string;
+    depth: number;
+    currentPath: string | undefined;
 };
 
-export const EntryComponent = ({ absPath, isParent, navigate }: Props) => {
-    const isDir = absPath.endsWith("/");
-    const split = absPath.split("/");
-    let name = split.pop();
-    if (isDir) name = split.pop();
+export const EntryComponent = ({ entry, depth, currentPath }: Props) => {
+    const { isConnected, registerHandler, getEntries, navigate } = useContext(websocketContext);
+    const [entries, setEntries] = useState<string[]>([]);
+    const [expanded, setExpanded] = useState(
+        // expand root by default ("" is root)
+        entry === "",
+    );
 
-    function handleClick() {
-        navigate(absPath);
-    }
+    useEffect(() => {
+        registerHandler(`explorer-${entry}`, (message) => {
+            if (message.entries?.path !== entry) return;
+            setEntries(message.entries.list);
+        });
+    }, [entry, registerHandler]);
+
+    const isDir = useMemo(() => entry === "" || entry.endsWith("/"), [entry]);
+
+    useEffect(() => {
+        if (!isConnected || !isDir) return;
+        getEntries(entry);
+    }, [getEntries, entry, isConnected, isDir]);
+
+    const entryName = useMemo(() => {
+        const segments = getSegments(entry);
+        let name = segments.pop();
+        if (isDir) name = segments.pop();
+        return name;
+    }, [entry, isDir]);
 
     return (
-        <div
-            onClick={handleClick}
-            className={cn(
-                // "group flex h-[38px] cursor-pointer items-center border-t px-6 first:border-t-0",
-                // "border-github-border-default hover:bg-github-canvas-subtle",
-                "group flex h-[38px] cursor-pointer items-center px-6",
-                "border-github-border-default hover:bg-github-canvas-subtle",
+        <div>
+            {entryName && (
+                <div
+                    onClick={() => {
+                        setExpanded(true);
+                        navigate(entry);
+                    }}
+                    style={{ paddingLeft: depth * 11 + (isDir ? 0 : 20) }}
+                    className={cn(
+                        "group flex h-[34px] cursor-pointer items-center mx-3 rounded-md overflow-hidden",
+                        "border-github-border-default hover:bg-github-canvas-subtle",
+                    )}
+                >
+                    {isDir && (
+                        <div
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setExpanded(!expanded);
+                            }}
+                            className="hover:bg-github-border-default h-full mr-1 flex items-center"
+                        >
+                            <ChevronRight className={cn(expanded && "rotate-90")} />
+                        </div>
+                    )}
+                    {IconMap[isDir ? (expanded ? "openDir" : "dir") : "file"]}
+                    <span className="text-sm group-hover:text-github-accent-fg group-hover:underline">
+                        {entryName}
+                    </span>
+                </div>
             )}
-        >
-            {IconMap[isDir ? "dir" : "file"]}
-            <span className="text-sm group-hover:text-github-accent-fg group-hover:underline">
-                {isParent ? ".." : name}
-            </span>
+            {expanded &&
+                entries.map((entry) => (
+                    <EntryComponent
+                        key={entry}
+                        entry={entry}
+                        depth={depth + 1}
+                        currentPath={currentPath}
+                    />
+                ))}
         </div>
     );
 };

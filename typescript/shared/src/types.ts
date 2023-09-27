@@ -15,7 +15,10 @@ export type BrowserState = {
 };
 
 export type WsServerMessage = Partial<BrowserState> & {
-    entries?: string[];
+    entries?: {
+        path: string;
+        list: string[];
+    };
     goodbye?: true;
 };
 
@@ -25,9 +28,9 @@ export type WsBrowserRequest =
       }
     | {
           type: "getEntries";
-          currentPath: string;
+          path: string;
+      }
+    | {
+          type: "getEntry";
+          path: string;
       };
-// | {
-//       type: "getEntry";
-//       currentPath: string;
-//   };

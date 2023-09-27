@@ -32,8 +32,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         // Update url on navigation
-        if (!currentPath) return;
-        console.log("currentPath: ", currentPath);
+        if (currentPath === undefined) return;
         history.push("/" + currentPath);
     }, [currentPath]);
 
@@ -54,19 +53,27 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 window.close();
             }
 
-            handlers.current.forEach((handler) => {
-                handler(message);
-            });
-
             if (message.currentPath !== undefined) {
                 setCurrentPath(message.currentPath);
             }
+
+            handlers.current.forEach((handler) => {
+                handler(message);
+            });
         };
     }, [wsRequest]);
 
     const getEntries = useCallback(
         (path: string) => {
-            wsRequest({ type: "getEntries", currentPath: path });
+            wsRequest({ type: "getEntries", path });
+        },
+        [wsRequest],
+    );
+
+    const navigate = useCallback(
+        (path: string) => {
+            setCurrentPath(path);
+            wsRequest({ type: "getEntry", path });
         },
         [wsRequest],
     );
@@ -81,8 +88,8 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 isConnected,
                 registerHandler,
                 currentPath,
-                setCurrentPath,
                 getEntries,
+                navigate,
             }}
         >
             {children}
