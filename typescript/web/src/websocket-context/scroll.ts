@@ -120,9 +120,17 @@ export function scroll(
     markdownContainer: HTMLElement,
     topOffsetPct: number | null,
     offsets: Offsets,
-    cursorLine: number,
+    cursorLine: number | null,
     cursorLineElement: HTMLElement,
 ) {
+    if (cursorLine === null) {
+        cursorLineElement.style.setProperty("visibility", "hidden");
+        markdownContainer.scrollTo({ top: 0, behavior: "instant" });
+        return;
+    }
+
+    if (!offsets.length) return;
+
     let cursorLineOffset = offsets[cursorLine];
 
     while (!cursorLineOffset) {

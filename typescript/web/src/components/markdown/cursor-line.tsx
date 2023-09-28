@@ -25,15 +25,7 @@ export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElemen
     }, [registerHandler]);
 
     useEffect(() => {
-        if (!cursorLineElement) return;
-
-        if (cursorLine === null) {
-            cursorLineElement.style.setProperty("visibility", "hidden");
-            return;
-        }
-
-        if (!offsets.length || !markdownContainerElement) return;
-
+        if (!cursorLineElement || !markdownContainerElement) return;
         scroll(markdownContainerElement, topOffsetPct, offsets, cursorLine, cursorLineElement);
     }, [cursorLine, cursorLineElement, markdownContainerElement, offsets, topOffsetPct]);
 
