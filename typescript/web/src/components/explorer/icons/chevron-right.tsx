@@ -1,4 +1,4 @@
-import { cn } from "../../utils.ts";
+import { cn } from "../../../utils.ts";
 
 type Props = {
     className?: string;

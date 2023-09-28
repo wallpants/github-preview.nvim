@@ -20,7 +20,7 @@ export const BreadCrumbs = () => {
     if (isDir) segmentsLen--;
 
     return (
-        <p className="!mb-0 p-4 font-semibold bg-github-border-muted h-[52px] sticky top-0 z-10 text-[15px] [&>span]:cursor-pointer">
+        <p className="!mb-0 p-2 font-semibold bg-github-border-muted h-[40px] sticky top-0 z-10 text-[15px] [&>span]:cursor-pointer">
             {[repoName].concat(segments).map((segment, idx) => {
                 const isLast = idx === segmentsLen;
 
