@@ -5,8 +5,9 @@
 
 .copy-button-container {
     position: relative;
-    left: calc(100% - 40px);
-    top: 40px;
+    left: calc(100% - 36px);
+    top: 5px;
+    height: 0;
 }
 
 .markdown-it-copy-block {

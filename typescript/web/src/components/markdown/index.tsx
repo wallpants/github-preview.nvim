@@ -43,12 +43,10 @@ export const Markdown = ({ className }: { className: string }) => {
                 if (fileExt === "md") {
                     markdownElement.style.setProperty("padding", "44px");
                     markdownElement.style.setProperty("max-width", "1012px");
-                    markdownElement.style.removeProperty("margin-top");
                     cursorLineElement.style.removeProperty("transform");
                     lineNumbersElement.style.setProperty("display", "none");
                 } else {
                     // rendering code file
-                    markdownElement.style.setProperty("margin-top", "-36px");
                     markdownElement.style.setProperty("padding", "0 0 0 60px");
                     markdownElement.style.removeProperty("max-width");
                     // move cursorLineElement up so line of code is vertically centered

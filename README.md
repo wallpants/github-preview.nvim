@@ -2,7 +2,7 @@ asdf
 
 # my name is casas medina
 
--   [ ] .copy-button-container adds some extra padding on top of code blocks in markdown
+-   [x] .copy-button-container adds some extra padding on top of code blocks in markdown
 -   [x] breadcrumbs navigation is broken
 -   [x] add padding at bottom of explorer tree
 -   [x] navigating to root, or starting github-preview with no buffer doesn't render root README
