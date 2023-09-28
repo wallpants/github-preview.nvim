@@ -11,7 +11,7 @@ asdf
 -   [ ] include types in bunvim instead of forcing the user to create them
 -   [x] when starting github preview whilst on root readme, scroll offsets are incorrect
 -   [x] Scroll gets kind of wonky sometimes whilst typing. Seems to happen more when close to end of buffer
--   [ ] Change page title & favicon
+-   [x] Change page title & favicon
 -   [x] Implement autoscroll
 -   [x] Make cursor indicator customizable
 -   [ ] send goodbye messsage from browser when closing tab to close server
