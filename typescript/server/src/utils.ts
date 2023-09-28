@@ -46,6 +46,7 @@ export async function getEntries({
     });
 
     return paths.sort((a, b) => {
+        // sort dirs first and then alphabetically
         if (a.endsWith("/") && !b.endsWith("/")) return -1;
         if (b.endsWith("/") && !a.endsWith("/")) return 1;
         if (a > b) return 1;
@@ -53,12 +54,6 @@ export async function getEntries({
         return 0;
     });
 }
-
-const signature = [
-    "Built with ♥️ by https://github.com/wallpants",
-    "",
-    "hire me, maybe? [jobs@wallpants.io]",
-];
 
 export async function getContent({
     root,
@@ -71,19 +66,7 @@ export async function getContent({
 }): Promise<{ content: string[]; path: string }> {
     if (!existsSync(root + path)) {
         return {
-            content: [
-                `Path: ${path}`,
-                "",
-                "ERROR: path not found",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                ...signature,
-            ],
+            content: [`Path: ${path}`, "", "ERROR: path not found"],
             path,
         };
     }
@@ -95,7 +78,7 @@ export async function getContent({
         if (readmePath) path = readmePath;
         else {
             return {
-                content: signature,
+                content: [`Directory: ${path}`],
                 path,
             };
         }
@@ -103,19 +86,7 @@ export async function getContent({
 
     if (await isBinaryFile(root + path)) {
         return {
-            content: [
-                `File: ${path}`,
-                "",
-                "ERROR: binary files not yet supported",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                ...signature,
-            ],
+            content: [`File: ${path}`, "", "ERROR: binary files not yet supported"],
             path,
         };
     }
@@ -124,19 +95,7 @@ export async function getContent({
     // limit file size or browser freezes when trying to apply syntax highlight
     if (file.size > 500_000) {
         return {
-            content: [
-                `File: ${path}`,
-                "",
-                "ERROR: file too large (>500kB)",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                ...signature,
-            ],
+            content: [`File: ${path}`, "", "ERROR: file too large (>500kB)"],
             path,
         };
     }
