@@ -6,8 +6,6 @@ export const BreadCrumbs = () => {
     const { currentPath, navigate } = useContext(websocketContext);
     const segments = getSegments(currentPath);
 
-    segments.unshift("ROOT");
-
     function handleClick(idx: number) {
         return () => {
             let path = segments.slice(0, idx).join("/");
@@ -16,10 +14,15 @@ export const BreadCrumbs = () => {
         };
     }
 
+    const repoName = "ROOT";
+    const isDir = currentPath?.endsWith("/");
+    let segmentsLen = segments.length;
+    if (isDir) segmentsLen--;
+
     return (
         <p className="!mb-0 p-4 font-semibold bg-github-border-muted h-[52px] sticky top-0 z-10 text-[15px] [&>span]:cursor-pointer">
-            {segments.map((segment, idx) => {
-                const isLast = idx === segments.length - 1;
+            {[repoName].concat(segments).map((segment, idx) => {
+                const isLast = idx === segmentsLen;
 
                 return (
                     <Fragment key={idx}>
