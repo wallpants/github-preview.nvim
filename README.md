@@ -2,20 +2,18 @@ asdf
 
 # my name is casas medina
 
--   [ ] add padding at bottom of explorer tree
--   [ ] navigating to root, or starting github-preview with no buffer doesn't render root README
--   [ ] if file too large, don't send entry or browser freezes
--   [ ] scroll to top if cursorLine === null
+-   [x] breadcrumbs navigation is broken
+-   [x] add padding at bottom of explorer tree
+-   [x] navigating to root, or starting github-preview with no buffer doesn't render root README
+-   [x] if file too large, don't send entry or browser freezes
+-   [x] scroll to top if cursorLine === null
 -   [ ] include types in bunvim instead of forcing the user to create them
 -   [x] when starting github preview whilst on root readme, scroll offsets are incorrect
 -   [x] Scroll gets kind of wonky sometimes whilst typing. Seems to happen more when close to end of buffer
 -   [ ] Change page title & favicon
 -   [x] Implement autoscroll
 -   [x] Make cursor indicator customizable
--   [ ] allow users to override markdown codeblock language per file extension
-    -   [ ] log to the console the file extension detected to make it easier for the user to know what to override
 -   [ ] send goodbye messsage from browser when closing tab to close server
--   [ ] if root is not found, server should start in single file mode
 -   [ ] what happens if we have a running instance and try running another?
 -   [ ] github renders html within markdown [see here](https://github.com/microsoft/vscode-extension-samples), **VS Code Extension Samples** doesn't render well in github-preview
 
