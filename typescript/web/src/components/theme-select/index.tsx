@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { SystemIcon } from "./system-icon.tsx";
 
 type Theme = "dark" | "light";
 type Selected = Theme | "system";
@@ -10,7 +11,7 @@ function getSystemTheme(): Theme {
 }
 
 export function ThemePicker() {
-    const [selected, setSelected] = useState<Selected>(local ?? "system");
+    const [selected] = useState<Selected>(local ?? "system");
     const [system, setSystem] = useState<Theme>(getSystemTheme());
     const [override, setOverride] = useState<Theme | null>(local);
 
@@ -52,17 +53,26 @@ export function ThemePicker() {
 
     return (
         <div>
-            <span className="mx-6">Theme</span>
-            <select
-                value={selected}
-                onChange={(e) => {
-                    setSelected(e.target.value as Selected);
-                }}
-            >
-                <option value="system">System</option>
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
-            </select>
+            <button className="hover:bg-github-canvas-subtle w-10 rounded-md h-10 flex justify-center items-center border border-github-border-default">
+                <SystemIcon />
+            </button>
         </div>
+        // <select
+        //     value={selected}
+        //     className="w-20 h-20"
+        //     onChange={(e) => {
+        //         setSelected(e.target.value as Selected);
+        //     }}
+        // >
+        //     <option value="system">
+        //         <SystemIcon />
+        //     </option>
+        //     <option value="light">
+        //         <SunIcon />
+        //     </option>
+        //     <option value="dark">
+        //         <MoonIcon />
+        //     </option>
+        // </select>
     );
 }
