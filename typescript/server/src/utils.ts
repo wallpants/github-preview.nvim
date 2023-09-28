@@ -78,7 +78,13 @@ export async function getContent({
         if (readmePath) path = readmePath;
         else {
             return {
-                content: [`Directory: ${path}`],
+                content: [
+                    `Directory: ${path}`,
+                    "",
+                    "",
+                    "Entries:",
+                    ...entries.map((entry) => `- ${entry.slice(path.length)}`),
+                ],
                 path,
             };
         }
