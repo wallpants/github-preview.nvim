@@ -1,6 +1,6 @@
 import { type BrowserState, type PluginInit } from "@gp/shared";
 import { globby } from "globby";
-import { isText } from "istextorbinary";
+import { isBinaryFile } from "isbinaryfile";
 import { existsSync } from "node:fs";
 import { basename, dirname } from "node:path";
 
@@ -54,6 +54,12 @@ export async function getEntries({
     });
 }
 
+const signature = [
+    "Built with ♥️ by https://github.com/wallpants",
+    "",
+    "hire me, maybe? [jobs@wallpants.io]",
+];
+
 export async function getContent({
     root,
     path,
@@ -65,7 +71,19 @@ export async function getContent({
 }): Promise<{ content: string[]; path: string }> {
     if (!existsSync(root + path)) {
         return {
-            content: [],
+            content: [
+                `Path: ${path}`,
+                "",
+                "ERROR: path not found",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ...signature,
+            ],
             path,
         };
     }
@@ -77,31 +95,55 @@ export async function getContent({
         if (readmePath) path = readmePath;
         else {
             return {
-                content: [],
+                content: signature,
                 path,
             };
         }
     }
 
-    if (isText(root + path)) {
-        const file = Bun.file(root + path);
-        // limit file size or browser freezes when trying to apply syntax highlight
-        if (file.size > 500_000) {
-            return {
-                content: ["file too large"],
-                path,
-            };
-        }
-
-        const fileContent = await file.text();
+    if (await isBinaryFile(root + path)) {
         return {
-            content: fileContent.split("\n"),
+            content: [
+                `File: ${path}`,
+                "",
+                "ERROR: binary files not yet supported",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ...signature,
+            ],
             path,
         };
     }
 
+    const file = Bun.file(root + path);
+    // limit file size or browser freezes when trying to apply syntax highlight
+    if (file.size > 500_000) {
+        return {
+            content: [
+                `File: ${path}`,
+                "",
+                "ERROR: file too large (>500kB)",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ...signature,
+            ],
+            path,
+        };
+    }
+
+    const fileContent = await file.text();
     return {
-        content: [],
+        content: fileContent.split("\n"),
         path,
     };
 }

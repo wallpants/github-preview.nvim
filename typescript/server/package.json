@@ -13,7 +13,7 @@
     "@gp/shared": "workspace:*",
     "bunvim": "latest",
     "globby": "^13.2.2",
-    "istextorbinary": "^6.0.0",
+    "isbinaryfile": "5.0.0",
     "opener": "^1.5.2",
     "valibot": "^0.15.0"
   },
