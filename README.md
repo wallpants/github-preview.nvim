@@ -2,8 +2,8 @@ asdf
 
 # my name is casas medina
 
+-   [ ] update explorer tree (expand dirs) when navigating
 -   [ ] get repo name and display, fallback to "ROOT"
--   [ ] implement explorer in markdown container just like github does. Double explorer
 -   [ ] write docs
 -   [ ] implement theme picker
 -   [ ] implement explorer expand & collapse
@@ -13,7 +13,7 @@ asdf
 -   [x] navigating to root, or starting github-preview with no buffer doesn't render root README
 -   [x] if file too large, don't send entry or browser freezes
 -   [x] scroll to top if cursorLine === null
--   [ ] include types in bunvim instead of forcing the user to create them
+-   [x] include types in bunvim instead of forcing the user to create them
 -   [x] when starting github preview whilst on root readme, scroll offsets are incorrect
 -   [x] Scroll gets kind of wonky sometimes whilst typing. Seems to happen more when close to end of buffer
 -   [x] Change page title & favicon

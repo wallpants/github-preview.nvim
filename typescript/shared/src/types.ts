@@ -19,7 +19,6 @@ export type WsServerMessage = Partial<BrowserState> & {
         path: string;
         list: string[];
     };
-    goodbye?: true;
 };
 
 export type WsBrowserRequest =

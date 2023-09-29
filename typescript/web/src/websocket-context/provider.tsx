@@ -33,7 +33,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         // Update url on navigation
         if (currentPath === undefined) return;
-        history.push("/" + currentPath);
+        history.replace("/" + currentPath);
     }, [currentPath]);
 
     useEffect(() => {
@@ -44,14 +44,11 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
         };
         ws.onclose = () => {
             setIsConnected(false);
+            window.close();
         };
         ws.onmessage = (event) => {
             const message = JSON.parse(String(event.data)) as WsServerMessage;
             if (ENV.IS_DEV) console.log("received:", message);
-
-            if (message.goodbye) {
-                window.close();
-            }
 
             if (message.currentPath !== undefined) {
                 setCurrentPath(message.currentPath);
