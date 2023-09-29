@@ -10,13 +10,13 @@ import { relative } from "node:path";
 import { parse } from "valibot";
 import { onContentChange } from "./on-content-change.ts";
 import { onCursorMove } from "./on-cursor-move.ts";
-import { type ApiInfo, type NotificationsMap } from "./types.ts";
+import { type CustomEvents } from "./types.ts";
 import { initBrowserState } from "./utils.ts";
 import { EDITOR_EVENTS_TOPIC, startWebServer } from "./web-server/index.ts";
 
 if (!ENV.NVIM) throw Error("socket missing");
 
-const nvim = await attach<ApiInfo>({
+const nvim = await attach<CustomEvents>({
     socket: ENV.NVIM,
     client: { name: "github-preview" },
     logging: { level: ENV.GP_LOG_LEVEL as LogLevel | undefined },
@@ -33,23 +33,26 @@ function wsSend(message: WsServerMessage) {
     webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 }
 
-await onCursorMove(nvim, async ([buffer, path, cursorLine]: NotificationsMap["CursorMove"]) => {
-    if (!path) return;
-    const relativePath = relative(browserState.root, path);
-    nvim.logger?.verbose({ ON_CURSOR_MOVE: { buffer, path: relativePath, cursorLine } });
+await onCursorMove(
+    nvim,
+    async ([buffer, path, cursorLine]: CustomEvents["notifications"]["CursorMove"]) => {
+        if (!path) return;
+        const relativePath = relative(browserState.root, path);
+        nvim.logger?.verbose({ ON_CURSOR_MOVE: { buffer, path: relativePath, cursorLine } });
 
-    const stateUpdate: Partial<BrowserState> = {
-        cursorLine: cursorLine,
-        currentPath: relativePath,
-    };
+        const stateUpdate: Partial<BrowserState> = {
+            cursorLine: cursorLine,
+            currentPath: relativePath,
+        };
 
-    if (browserState.currentPath !== relativePath) {
-        stateUpdate.content = await nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]);
-    }
+        if (browserState.currentPath !== relativePath) {
+            stateUpdate.content = await nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]);
+        }
 
-    Object.assign(browserState, stateUpdate);
-    wsSend(stateUpdate);
-});
+        Object.assign(browserState, stateUpdate);
+        wsSend(stateUpdate);
+    },
+);
 
 await onContentChange(nvim, browserState, (content, path) => {
     if (!path) return;

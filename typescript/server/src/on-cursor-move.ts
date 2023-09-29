@@ -1,9 +1,9 @@
 import { type Awaitable, type Nvim } from "bunvim";
-import { type ApiInfo, type NotificationsMap } from "./types.ts";
+import { type CustomEvents } from "./types.ts";
 
 export async function onCursorMove(
-    nvim: Nvim<ApiInfo>,
-    callback: (args: NotificationsMap["CursorMove"]) => Awaitable<void>,
+    nvim: Nvim<CustomEvents>,
+    callback: (args: CustomEvents["notifications"]["CursorMove"]) => Awaitable<void>,
 ) {
     // Subscribe to RPCNotification
     await nvim.call("nvim_subscribe", ["CursorMove"]);

@@ -1,9 +1,9 @@
 import { type BrowserState } from "@gp/shared";
 import { type Nvim } from "bunvim";
-import { type ApiInfo } from "./types.ts";
+import { type CustomEvents } from "./types.ts";
 
 export async function onContentChange(
-    nvim: Nvim<ApiInfo>,
+    nvim: Nvim<CustomEvents>,
     browserState: BrowserState,
     callback: (content: string[], path: string) => void,
 ) {

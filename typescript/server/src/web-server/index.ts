@@ -2,7 +2,7 @@ import { ENV, type BrowserState, type WsBrowserRequest, type WsServerMessage } f
 import { type Server } from "bun";
 import { type Nvim } from "bunvim";
 import opener from "opener";
-import { type ApiInfo } from "../types.ts";
+import { type CustomEvents } from "../types.ts";
 import { getContent, getEntries } from "../utils.ts";
 import { onHttpRequest } from "./on-http-request.ts";
 
@@ -11,7 +11,7 @@ export const EDITOR_EVENTS_TOPIC = "editor-events";
 export function startWebServer(
     port: number,
     browserState: BrowserState,
-    nvim: Nvim<ApiInfo>,
+    nvim: Nvim<CustomEvents>,
 ): Server {
     const webServer = Bun.serve({
         port: port,
