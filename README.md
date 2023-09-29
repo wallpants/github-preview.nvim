@@ -2,6 +2,11 @@ asdf
 
 # my name is casas medina
 
+-   [ ] get repo name and display, fallback to "ROOT"
+-   [ ] implement explorer in markdown container just like github does. Double explorer
+-   [ ] write docs
+-   [ ] implement theme picker
+-   [ ] implement explorer expand & collapse
 -   [x] .copy-button-container adds some extra padding on top of code blocks in markdown
 -   [x] breadcrumbs navigation is broken
 -   [x] add padding at bottom of explorer tree
