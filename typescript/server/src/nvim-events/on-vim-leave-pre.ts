@@ -1,5 +1,5 @@
 import { type Nvim } from "bunvim";
-import { type CustomEvents } from "./types.ts";
+import { type CustomEvents } from "../types.ts";
 
 export async function onVimLeavePre(
     nvim: Nvim<CustomEvents>,

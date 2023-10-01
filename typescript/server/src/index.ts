@@ -8,12 +8,13 @@ import {
 import { attach, type LogLevel } from "bunvim";
 import { relative } from "node:path";
 import { parse } from "valibot";
-import { onContentChange } from "./on-content-change.ts";
-import { onCursorMove } from "./on-cursor-move.ts";
-import { onVimLeavePre } from "./on-vim-leave-pre.ts";
+import { onContentChange } from "./nvim-events/on-content-change.ts";
+import { onCursorMove } from "./nvim-events/on-cursor-move.ts";
+import { onVimLeavePre } from "./nvim-events/on-vim-leave-pre.ts";
+import { startServer } from "./server/index.ts";
+import { EDITOR_EVENTS_TOPIC } from "./server/websocket.ts";
 import { type CustomEvents } from "./types.ts";
 import { initBrowserState } from "./utils.ts";
-import { EDITOR_EVENTS_TOPIC, startWebServer } from "./web-server/index.ts";
 
 if (!ENV.NVIM) throw Error("socket missing");
 
@@ -27,7 +28,7 @@ const init = (await nvim.call("nvim_get_var", ["github_preview_init"])) as Plugi
 if (ENV.IS_DEV) parse(PluginInitSchema, init);
 
 const browserState = await initBrowserState(init);
-const webServer = startWebServer(init.port, browserState, nvim);
+const webServer = startServer(init.port, browserState, nvim);
 
 function wsSend(message: WsServerMessage) {
     nvim.logger?.verbose({ OUTGOING_WEBSOCKET: message });

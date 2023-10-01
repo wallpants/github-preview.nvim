@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 
 const BASE_PATH = resolve(import.meta.dir, "../../../web/dist");
 
-export async function onHttpRequest(req: Request, server: Server) {
+export async function httpHandler(req: Request, server: Server) {
     const upgradedToWs = server.upgrade(req, {
         data: {}, // this data is available in socket.data
         headers: {},
