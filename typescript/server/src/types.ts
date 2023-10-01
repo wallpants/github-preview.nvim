@@ -1,7 +1,7 @@
-import { type EventsMap } from "bunvim";
-
 export type CustomEvents = {
-    requests: EventsMap;
+    requests: {
+        VimLeavePre: [];
+    };
     notifications: {
         // github-preview
         AttachBuffer: [buffer: number, path: string];

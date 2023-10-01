@@ -44,11 +44,14 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
         };
         ws.onclose = () => {
             setIsConnected(false);
-            window.close();
         };
         ws.onmessage = (event) => {
             const message = JSON.parse(String(event.data)) as WsServerMessage;
             if (ENV.IS_DEV) console.log("received:", message);
+
+            if (message.goodbye) {
+                window.close();
+            }
 
             if (message.currentPath !== undefined) {
                 setCurrentPath(message.currentPath);

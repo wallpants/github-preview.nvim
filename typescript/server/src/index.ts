@@ -10,6 +10,7 @@ import { relative } from "node:path";
 import { parse } from "valibot";
 import { onContentChange } from "./on-content-change.ts";
 import { onCursorMove } from "./on-cursor-move.ts";
+import { onVimLeavePre } from "./on-vim-leave-pre.ts";
 import { type CustomEvents } from "./types.ts";
 import { initBrowserState } from "./utils.ts";
 import { EDITOR_EVENTS_TOPIC, startWebServer } from "./web-server/index.ts";
@@ -32,6 +33,12 @@ function wsSend(message: WsServerMessage) {
     nvim.logger?.verbose({ OUTGOING_WEBSOCKET: message });
     webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 }
+
+await onVimLeavePre(nvim, () => {
+    wsSend({ goodbye: true });
+    // neovim remains blocked unless we return something
+    return true;
+});
 
 await onCursorMove(
     nvim,

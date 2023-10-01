@@ -15,6 +15,7 @@ export type BrowserState = {
 };
 
 export type WsServerMessage = Partial<BrowserState> & {
+    goodbye?: boolean;
     entries?: {
         path: string;
         list: string[];
