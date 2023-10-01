@@ -23,10 +23,20 @@ type Props = {
 export const EntryComponent = ({ entry, depth, currentPath }: Props) => {
     const { isConnected, registerHandler, getEntries, navigate } = useContext(websocketContext);
     const [entries, setEntries] = useState<string[]>([]);
+    const [isSelected, setIsSelected] = useState(false);
     const [expanded, setExpanded] = useState(
         // expand root by default ("" is root)
         entry === "",
     );
+
+    const isDir = entry === "" || entry.endsWith("/");
+
+    const entryName = useMemo(() => {
+        const segments = getSegments(entry);
+        let name = segments.pop();
+        if (isDir) name = segments.pop();
+        return name;
+    }, [isDir, entry]);
 
     useEffect(() => {
         registerHandler(`explorer-${entry}`, (message) => {
@@ -35,19 +45,22 @@ export const EntryComponent = ({ entry, depth, currentPath }: Props) => {
         });
     }, [entry, registerHandler]);
 
-    const isDir = useMemo(() => entry === "" || entry.endsWith("/"), [entry]);
-
     useEffect(() => {
         if (!isConnected || !isDir) return;
         getEntries(entry);
     }, [getEntries, entry, isConnected, isDir]);
 
-    const entryName = useMemo(() => {
-        const segments = getSegments(entry);
-        let name = segments.pop();
-        if (isDir) name = segments.pop();
-        return name;
-    }, [entry, isDir]);
+    useEffect(() => {
+        const segments = getSegments(currentPath);
+        let entrySlice = segments.slice(0, depth + 1).join("/");
+
+        if (isDir) {
+            entrySlice += "/";
+            if (entrySlice === entry) setExpanded(true);
+        }
+
+        setIsSelected(currentPath === entry);
+    }, [currentPath, depth, entry, isDir]);
 
     return (
         <div>
@@ -61,6 +74,7 @@ export const EntryComponent = ({ entry, depth, currentPath }: Props) => {
                     className={cn(
                         "group flex h-[34px] cursor-pointer items-center mx-3 rounded-md overflow-hidden",
                         "border-github-border-default hover:bg-github-canvas-subtle",
+                        isSelected && "bg-github-canvas-subtle",
                     )}
                 >
                     {isDir && (
