@@ -64,6 +64,9 @@ export const EntryComponent = ({ entry, depth, currentPath }: Props) => {
 
     return (
         <div>
+            {isSelected && (
+                <div className="absolute left-1.5 w-1.5 h-6 translate-y-1 rounded-sm bg-github-accent-fg" />
+            )}
             {entryName && (
                 <div
                     onClick={() => {
