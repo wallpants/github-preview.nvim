@@ -15,6 +15,8 @@
     "globby": "^13.2.2",
     "isbinaryfile": "5.0.0",
     "opener": "^1.5.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "valibot": "^0.15.0"
   },
   "devDependencies": {
