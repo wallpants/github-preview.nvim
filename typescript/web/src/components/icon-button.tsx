@@ -3,7 +3,7 @@ import { cn } from "../utils.ts";
 
 type Props = {
     Icon: FC<{ className: string }>;
-    onClick: () => void;
+    onClick: React.MouseEventHandler<HTMLElement>;
     className?: string;
     noBorder?: boolean;
 };

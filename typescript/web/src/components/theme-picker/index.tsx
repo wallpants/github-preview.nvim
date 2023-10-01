@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FC } from "react";
 import { IconButton } from "../icon-button.tsx";
+import { MoonIcon } from "./moon-icon.tsx";
+import { SunIcon } from "./sun-icon.tsx";
 import { SystemIcon } from "./system-icon.tsx";
 
 type Theme = "dark" | "light";
@@ -11,10 +13,17 @@ function getSystemTheme(): Theme {
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
+const iconsMap: Record<Selected, FC<{ className: string }>> = {
+    system: SystemIcon,
+    light: SunIcon,
+    dark: MoonIcon,
+};
+
 export function ThemePicker({ noBorder }: { noBorder?: boolean }) {
-    const [selected] = useState<Selected>(local ?? "system");
+    const [selected, setSelected] = useState<Selected>(local ?? "system");
     const [system, setSystem] = useState<Theme>(getSystemTheme());
     const [override, setOverride] = useState<Theme | null>(local);
+    const [isOpen, setIsOpen] = useState(false);
 
     const theme = override ?? system;
 
@@ -52,32 +61,51 @@ export function ThemePicker({ noBorder }: { noBorder?: boolean }) {
         };
     }, [override]);
 
+    useEffect(() => {
+        if (!isOpen) return;
+        // setup listener to close menu on click anywhere
+        const controller = new AbortController();
+
+        document.addEventListener(
+            "click",
+            () => {
+                setIsOpen(false);
+            },
+            { signal: controller.signal },
+        );
+
+        return () => {
+            controller.abort();
+        };
+    }, [isOpen]);
+
     return (
-        <div>
+        <div className="relative">
             <IconButton
-                noBorder={Boolean(noBorder)}
-                Icon={SystemIcon}
-                onClick={() => {
-                    console.log("clicked");
+                noBorder={Boolean(noBorder) && !isOpen}
+                Icon={iconsMap[selected]}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setIsOpen(!isOpen);
                 }}
             />
+            {isOpen && (
+                <div className="absolute bottom-full">
+                    {Object.keys(iconsMap)
+                        .filter((theme) => theme !== selected)
+                        .map((theme) => (
+                            <IconButton
+                                key={theme}
+                                className="bg-github-canvas-default"
+                                Icon={iconsMap[theme as Selected]}
+                                onClick={() => {
+                                    setSelected(theme as Selected);
+                                    setIsOpen(!isOpen);
+                                }}
+                            />
+                        ))}
+                </div>
+            )}
         </div>
-        // <select
-        //     value={selected}
-        //     className="w-20 h-20"
-        //     onChange={(e) => {
-        //         setSelected(e.target.value as Selected);
-        //     }}
-        // >
-        //     <option value="system">
-        //         <SystemIcon />
-        //     </option>
-        //     <option value="light">
-        //         <SunIcon />
-        //     </option>
-        //     <option value="dark">
-        //         <MoonIcon />
-        //     </option>
-        // </select>
     );
 }
