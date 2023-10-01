@@ -20,8 +20,8 @@ export function ThemePicker({ noBorder }: { noBorder?: boolean }) {
 
     useEffect(() => {
         function handleThemeChange(theme: Theme) {
-            const rootHtml = document.getElementsByTagName("html")[0];
-            if (rootHtml) rootHtml.className = `github-styles ${theme}`;
+            const rootHtml = document.getElementsByTagName("html")[0]!;
+            rootHtml.className = `github-styles ${theme}`;
         }
 
         handleThemeChange(theme);
