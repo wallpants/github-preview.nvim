@@ -2,6 +2,7 @@ asdf
 
 # my name is casas medina
 
+-   [ ] make footer link <a>link</a>
 -   [ ] update explorer tree (expand dirs) when navigating
 -   [ ] get repo name and display, fallback to "ROOT"
 -   [ ] write docs
