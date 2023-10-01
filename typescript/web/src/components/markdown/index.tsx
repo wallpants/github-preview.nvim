@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { getFileExt } from "../../utils.ts";
 import { websocketContext } from "../../websocket-context/context.ts";
 import { getScrollOffsets, type Offsets } from "../../websocket-context/scroll.ts";
-// import { BreadCrumbs } from "../breadcrumbs.tsx";
 import { BreadCrumbs } from "../breadcrumbs.tsx";
 import { Container } from "../container.tsx";
 import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";

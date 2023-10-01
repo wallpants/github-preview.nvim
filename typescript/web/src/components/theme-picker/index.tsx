@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { IconButton } from "../icon-button.tsx";
 import { SystemIcon } from "./system-icon.tsx";
 
 type Theme = "dark" | "light";
@@ -10,7 +11,7 @@ function getSystemTheme(): Theme {
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-export function ThemePicker() {
+export function ThemePicker({ noBorder }: { noBorder?: boolean }) {
     const [selected] = useState<Selected>(local ?? "system");
     const [system, setSystem] = useState<Theme>(getSystemTheme());
     const [override, setOverride] = useState<Theme | null>(local);
@@ -53,9 +54,13 @@ export function ThemePicker() {
 
     return (
         <div>
-            <button className="hover:bg-github-canvas-subtle w-10 rounded-md h-10 flex justify-center items-center border border-github-border-default">
-                <SystemIcon />
-            </button>
+            <IconButton
+                noBorder={Boolean(noBorder)}
+                Icon={SystemIcon}
+                onClick={() => {
+                    console.log("clicked");
+                }}
+            />
         </div>
         // <select
         //     value={selected}

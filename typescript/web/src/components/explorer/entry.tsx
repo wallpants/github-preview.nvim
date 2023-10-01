@@ -64,9 +64,6 @@ export const EntryComponent = ({ entry, depth, currentPath }: Props) => {
 
     return (
         <div>
-            {isSelected && (
-                <div className="absolute left-1.5 w-1.5 h-6 translate-y-1 rounded-sm bg-github-accent-fg" />
-            )}
             {entryName && (
                 <div
                     onClick={() => {
@@ -75,18 +72,21 @@ export const EntryComponent = ({ entry, depth, currentPath }: Props) => {
                     }}
                     style={{ paddingLeft: depth * 11 + (isDir ? 0 : 20) }}
                     className={cn(
-                        "group flex h-[34px] cursor-pointer items-center mx-3 rounded-md overflow-hidden",
+                        "relative group flex h-[34px] cursor-pointer items-center mx-3 rounded-md",
                         "border-github-border-default hover:bg-github-canvas-subtle",
                         isSelected && "bg-github-canvas-subtle",
                     )}
                 >
+                    {isSelected && (
+                        <div className="absolute -left-2 h-6 w-1.5 rounded-sm bg-github-accent-fg" />
+                    )}
                     {isDir && (
                         <div
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setExpanded(!expanded);
                             }}
-                            className="hover:bg-github-border-default h-full mr-1 flex items-center"
+                            className="mr-1 flex h-full items-center hover:bg-github-border-default"
                         >
                             <ChevronRight className={cn(expanded && "rotate-90")} />
                         </div>

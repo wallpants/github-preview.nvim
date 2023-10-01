@@ -9,9 +9,15 @@
   "extends": [
     "eslint:recommended",
     "plugin:import/recommended",
+    "plugin:tailwindcss/recommended",
     "plugin:@typescript-eslint/strict-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked"
   ],
+  "settings": {
+    "tailwindcss": {
+      "config": "typescript/web/tailwind.config.ts"
+    }
+  },
   "ignorePatterns": ["dist"],
   "rules": {
     "import/no-unresolved": ["error", { "ignore": ["bun", "@gp/*"] }],

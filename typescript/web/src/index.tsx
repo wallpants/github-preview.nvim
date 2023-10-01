@@ -8,17 +8,15 @@ import { Markdown } from "./components/markdown/index.tsx";
 import "./index.scss";
 import { WebsocketProvider } from "./websocket-context/provider.tsx";
 
-const root = document.getElementById("root");
+const root = document.getElementById("root")!;
 
-if (root) {
-    ReactDOM.createRoot(root).render(
-        <React.StrictMode>
-            <WebsocketProvider>
-                <div className="flex overflow-hidden h-screen w-screen pt-5">
-                    <Explorer className="hidden md:block w-80 sticky shrink-0 top-0 h-full pt-5 overflow-y-auto" />
-                    <Markdown className="mx-4 h-full overflow-y-auto overflow-x-hidden flex-1" />
-                </div>
-            </WebsocketProvider>
-        </React.StrictMode>,
-    );
-}
+ReactDOM.createRoot(root).render(
+    <React.StrictMode>
+        <WebsocketProvider>
+            <div className="flex h-screen w-screen overflow-hidden py-3">
+                <Explorer />
+                <Markdown className="mx-4 h-full flex-1 overflow-y-auto overflow-x-hidden" />
+            </div>
+        </WebsocketProvider>
+    </React.StrictMode>,
+);
