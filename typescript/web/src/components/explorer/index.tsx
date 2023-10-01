@@ -44,7 +44,12 @@ export const Explorer = () => {
                 )}
             >
                 {isExpanded && (
-                    <p className="!mb-0 mr-4 text-center text-sm">with ♥️ by wallpants.io</p>
+                    <p className="!mb-0 mr-4 text-center text-sm">
+                        with ♥️ by{" "}
+                        <a href="https://wallpants.io" target="_blank" rel="noreferrer">
+                            wallpants.io
+                        </a>
+                    </p>
                 )}
                 <ThemePicker noBorder={!isExpanded} />
             </div>

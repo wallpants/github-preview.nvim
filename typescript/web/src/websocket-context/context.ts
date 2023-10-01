@@ -9,10 +9,12 @@ export const websocketContext = createContext<{
     currentPath: string | undefined;
     getEntries: (path: string) => void;
     navigate: (path: string) => void;
+    repoName: string;
 }>({
     isConnected: false,
     registerHandler: () => null,
     currentPath: undefined,
     getEntries: () => null,
     navigate: () => null,
+    repoName: "",
 });

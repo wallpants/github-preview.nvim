@@ -16,6 +16,7 @@ const history = createBrowserHistory();
 export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
     const [isConnected, setIsConnected] = useState(false);
     const [currentPath, setCurrentPath] = useState<string>();
+    const [repoName, setRepoName] = useState<string>("");
     const handlers = useRef(new Map<string, MessageHandler>());
 
     useEffect(() => {
@@ -51,6 +52,10 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
 
             if (message.goodbye) {
                 window.close();
+            }
+
+            if (message.repoName !== undefined) {
+                setRepoName(message.repoName);
             }
 
             if (message.currentPath !== undefined) {
@@ -90,6 +95,7 @@ export const WebsocketProvider = ({ children }: { children: ReactNode }) => {
                 currentPath,
                 getEntries,
                 navigate,
+                repoName,
             }}
         >
             {children}

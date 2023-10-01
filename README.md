@@ -2,12 +2,13 @@ asdf
 
 # my name is casas medina
 
--   [ ] make footer link <a>link</a>
--   [ ] update explorer tree (expand dirs) when navigating
--   [ ] get repo name and display, fallback to "ROOT"
+-   [ ] add support for local images
+-   [x] make footer link <a>link</a>
+-   [x] update explorer tree (expand dirs) when navigating
+-   [x] get repo name and display, fallback to "ROOT"
 -   [ ] write docs
--   [ ] implement theme picker
--   [ ] implement explorer expand & collapse
+-   [x] implement theme picker
+-   [x] implement explorer expand & collapse
 -   [x] .copy-button-container adds some extra padding on top of code blocks in markdown
 -   [x] breadcrumbs navigation is broken
 -   [x] add padding at bottom of explorer tree
@@ -20,7 +21,7 @@ asdf
 -   [x] Change page title & favicon
 -   [x] Implement autoscroll
 -   [x] Make cursor indicator customizable
--   [ ] send goodbye messsage from browser when closing tab to close server
+-   [x] send goodbye messsage from browser when closing tab to close server
 -   [ ] what happens if we have a running instance and try running another?
 -   [ ] github renders html within markdown [see here](https://github.com/microsoft/vscode-extension-samples), **VS Code Extension Samples** doesn't render well in github-preview
 

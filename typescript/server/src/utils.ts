@@ -2,10 +2,29 @@ import { type BrowserState, type PluginInit } from "@gp/shared";
 import { globby } from "globby";
 import { isBinaryFile } from "isbinaryfile";
 import { existsSync } from "node:fs";
-import { basename, dirname } from "node:path";
+import { basename, dirname, resolve } from "node:path";
+
+export async function getRepoName({ root }: { root: BrowserState["root"] }): Promise<string> {
+    const gitConfig = await Bun.file(resolve(root, ".git/config")).text();
+    const lines = gitConfig.split("\n");
+    let repoName = "root";
+
+    for (let i = 0; i < lines.length; i += 1) {
+        const line = lines[i];
+        if (line === '[remote "origin"]') {
+            // nextLine = git@github.com:gualcasas/github-preview.nvim.git
+            const nextLine = lines[i + 1];
+            const repo = nextLine?.split(":")[1]?.slice(0, -4).split("/")[1];
+            if (repo) repoName = repo;
+        }
+    }
+    return repoName;
+}
 
 export async function initBrowserState(init: PluginInit): Promise<BrowserState> {
     const relativePath = init.path.slice(init.root.length);
+
+    const repoName = await getRepoName({ root: init.root });
 
     const entries = await getEntries({
         root: init.root,
@@ -21,6 +40,7 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
     return {
         root: init.root,
         content,
+        repoName,
         currentPath: path,
         cursorLineColor: init.cursor_line.disable ? "transparent" : init.cursor_line.color,
         cursorLine: null,
