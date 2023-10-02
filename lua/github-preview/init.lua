@@ -12,6 +12,7 @@ local M = {}
 ---@field port number
 ---@field root string
 ---@field path string
+---@field single_file boolean
 ---@field scroll scroll
 ---@field cursor_line cursor_line
 
@@ -63,9 +64,10 @@ M.setup = function(opts)
 	local function start_server()
 		-- should look like "/Users/.../github-preview"
 		local root = vim.fn.finddir(".git", ";")
+		local single_file = false
 
 		if root == "" then
-			error("root dir with .git not found")
+			single_file = true
 		else
 			-- if found, path is made absolute & has "/.git/" popped
 			root = vim.fn.fnamemodify(root, ":p:h:h") .. "/"
@@ -79,6 +81,7 @@ M.setup = function(opts)
 			port = opts.port,
 			root = root,
 			path = init_path,
+			single_file = single_file,
 			scroll = opts.scroll,
 			cursor_line = opts.cursor_line,
 		}
