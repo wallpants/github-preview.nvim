@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { websocketContext } from "../provider/context.ts";
-import { getFileExt } from "../utils.ts";
+import { cn, getFileExt } from "../utils.ts";
 import { BreadCrumbs } from "./breadcrumbs.tsx";
-import { Container } from "./container.tsx";
 import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";
 import { LINE_NUMBERS_ELEMENT_ID, LineNumbers } from "./line-numbers.tsx";
 import { contentToHtml } from "./markdown-it/index.ts";
@@ -84,7 +83,14 @@ export const Markdown = ({ className }: { className: string }) => {
     }, [markdownElement]);
 
     return (
-        <Container className={className} id={MARKDOWN_CONTAINER_ID}>
+        <div
+            className={cn(
+                "relative box-border rounded border",
+                "border-github-border-default bg-github-canvas-default",
+                className,
+            )}
+            id={MARKDOWN_CONTAINER_ID}
+        >
             <BreadCrumbs />
             <CursorLine
                 offsets={offsets}
@@ -93,6 +99,6 @@ export const Markdown = ({ className }: { className: string }) => {
             />
             <div id={MARKDOWN_ELEMENT_ID} className="mx-auto mb-96" />
             <LineNumbers offsets={offsets} lineNumbersElement={lineNumbersElement} />
-        </Container>
+        </div>
     );
 };
