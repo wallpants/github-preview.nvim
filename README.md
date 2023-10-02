@@ -2,6 +2,8 @@ asdf
 
 # my name is casas medina
 
+- [ ] delete banner component
+- [ ] delete container component
 - [ ] add single file support
 - [ ] think of more generic name than github-preview
 - [ ] implement link follow for local files
