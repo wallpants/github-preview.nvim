@@ -10,6 +10,7 @@ export const websocketContext = createContext<{
     getEntries: (path: string) => void;
     navigate: (path: string) => void;
     repoName: string;
+    isSingleFile: boolean;
 }>({
     isConnected: false,
     registerHandler: () => null,
@@ -17,4 +18,5 @@ export const websocketContext = createContext<{
     getEntries: () => null,
     navigate: () => null,
     repoName: "",
+    isSingleFile: false,
 });

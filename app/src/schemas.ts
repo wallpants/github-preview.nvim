@@ -11,6 +11,7 @@ export const PluginInitSchema = object({
      * otherwise path looks something like "/Users/.../README.md"
      * */
     path: string(),
+    single_file: boolean(),
     cursor_line: object({
         disable: boolean(),
         color: string(),

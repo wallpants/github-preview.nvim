@@ -31,6 +31,7 @@ export function websocketHandler(nvim: Nvim, browserState: BrowserState): WebSoc
                         entries: {
                             path: browserRequest.path,
                             list: await getEntries({
+                                singleFile: browserState.singleFile,
                                 root: browserState.root,
                                 path: browserRequest.path,
                             }),
@@ -42,6 +43,7 @@ export function websocketHandler(nvim: Nvim, browserState: BrowserState): WebSoc
 
             if (browserRequest.type === "getEntry") {
                 const entries = await getEntries({
+                    singleFile: browserState.singleFile,
                     root: browserState.root,
                     path: browserRequest.path,
                 });
