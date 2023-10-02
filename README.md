@@ -2,28 +2,32 @@ asdf
 
 # my name is casas medina
 
--   [ ] add support for local images
--   [x] make footer link <a>link</a>
--   [x] update explorer tree (expand dirs) when navigating
--   [x] get repo name and display, fallback to "ROOT"
--   [ ] write docs
--   [x] implement theme picker
--   [x] implement explorer expand & collapse
--   [x] .copy-button-container adds some extra padding on top of code blocks in markdown
--   [x] breadcrumbs navigation is broken
--   [x] add padding at bottom of explorer tree
--   [x] navigating to root, or starting github-preview with no buffer doesn't render root README
--   [x] if file too large, don't send entry or browser freezes
--   [x] scroll to top if cursorLine === null
--   [x] include types in bunvim instead of forcing the user to create them
--   [x] when starting github preview whilst on root readme, scroll offsets are incorrect
--   [x] Scroll gets kind of wonky sometimes whilst typing. Seems to happen more when close to end of buffer
--   [x] Change page title & favicon
--   [x] Implement autoscroll
--   [x] Make cursor indicator customizable
--   [x] send goodbye messsage from browser when closing tab to close server
--   [ ] what happens if we have a running instance and try running another?
--   [ ] github renders html within markdown [see here](https://github.com/microsoft/vscode-extension-samples), **VS Code Extension Samples** doesn't render well in github-preview
+- [ ] add single file support
+- [ ] think of more generic name than github-preview
+- [ ] implement link follow for local files
+- [ ] git hook to compile tailwind
+- [ ] add support for local images
+- [x] make footer link <a>link</a>
+- [x] update explorer tree (expand dirs) when navigating
+- [x] get repo name and display, fallback to "ROOT"
+- [ ] write docs
+- [x] implement theme picker
+- [x] implement explorer expand & collapse
+- [x] .copy-button-container adds some extra padding on top of code blocks in markdown
+- [x] breadcrumbs navigation is broken
+- [x] add padding at bottom of explorer tree
+- [x] navigating to root, or starting github-preview with no buffer doesn't render root README
+- [x] if file too large, don't send entry or browser freezes
+- [x] scroll to top if cursorLine === null
+- [x] include types in bunvim instead of forcing the user to create them
+- [x] when starting github preview whilst on root readme, scroll offsets are incorrect
+- [x] Scroll gets kind of wonky sometimes whilst typing. Seems to happen more when close to end of buffer
+- [x] Change page title & favicon
+- [x] Implement autoscroll
+- [x] Make cursor indicator customizable
+- [x] send goodbye messsage from browser when closing tab to close server
+- [ ] what happens if we have a running instance and try running another?
+- [ ] github renders html within markdown [see here](https://github.com/microsoft/vscode-extension-samples), **VS Code Extension Samples** doesn't render well in github-preview
 
 [follow this link](https://github.com)
 
