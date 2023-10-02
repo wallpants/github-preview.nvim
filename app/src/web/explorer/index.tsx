@@ -1,14 +1,12 @@
 import { useContext, useState } from "react";
-import { IconButton } from "../icon-button.tsx";
 import { websocketContext } from "../provider/context.ts";
-import { ThemePicker } from "../theme-picker/index.tsx";
 import { cn } from "../utils.ts";
 import { EntryComponent } from "./entry.tsx";
-import { PanelCloseIcon } from "./icons/panel-close.tsx";
-import { PanelOpenIcon } from "./icons/panel-open.tsx";
+import { Footer } from "./footer.tsx";
+import { Header } from "./header.tsx";
 
 export const Explorer = () => {
-    const { currentPath } = useContext(websocketContext);
+    const { currentPath, isSingleFile } = useContext(websocketContext);
     const [isExpanded, setIsExpanded] = useState(false);
 
     return (
@@ -18,41 +16,19 @@ export const Explorer = () => {
                 isExpanded ? "w-80" : "w-12",
             )}
         >
-            <div
-                className={cn(
-                    "flex h-14 items-center border-b border-github-border-default",
-                    isExpanded ? "px-4 justify-between" : "justify-center",
-                )}
-            >
-                {isExpanded && <h4 className="!my-0">Files</h4>}
-                <IconButton
-                    className={cn(isExpanded && "ml-4")}
-                    noBorder={!isExpanded}
-                    Icon={isExpanded ? PanelOpenIcon : PanelCloseIcon}
-                    onClick={() => {
-                        setIsExpanded(!isExpanded);
-                    }}
-                />
-            </div>
+            <Header isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
             <div className={isExpanded ? "block h-full overflow-auto pb-56 pt-1" : "hidden"}>
-                <EntryComponent entry="" depth={-1} currentPath={currentPath} />
-            </div>
-            <div
-                className={cn(
-                    "absolute bottom-0 flex h-14 inset-x-0 items-center justify-center",
-                    "border-t border-github-border-default bg-github-canvas-default",
+                {isSingleFile ? (
+                    <div className="!px-3">
+                        <h3>Single file mode</h3>
+                        <p>Git repository could not be found.</p>
+                        <p>File explorer only available when in a repo.</p>
+                    </div>
+                ) : (
+                    <EntryComponent entry="" depth={-1} currentPath={currentPath} />
                 )}
-            >
-                {isExpanded && (
-                    <p className="!mb-0 mr-4 text-center text-sm">
-                        with ♥️ by{" "}
-                        <a href="https://wallpants.io" target="_blank" rel="noreferrer">
-                            wallpants.io
-                        </a>
-                    </p>
-                )}
-                <ThemePicker noBorder={!isExpanded} />
             </div>
+            <Footer isExpanded={isExpanded} />
         </div>
     );
 };

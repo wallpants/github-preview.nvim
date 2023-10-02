@@ -19,19 +19,17 @@ export async function onContentChange(
     await nvim.call("nvim_subscribe", ["AttachBuffer"]);
 
     // Notification handler
-    nvim.onNotification("AttachBuffer", async (args) => {
-        // args[0] buffer
-        // args[1] path
-        if (!args[1]) return;
+    nvim.onNotification("AttachBuffer", async ([buffer, path]) => {
+        if (!path) return;
 
-        if (attachedBuffer !== args[0]) {
+        if (attachedBuffer !== buffer) {
             if (attachedBuffer !== null) {
                 await nvim.call("nvim_buf_detach", [attachedBuffer]);
                 attachedBuffer = null;
             }
             // attach to buffer to receive content change notifications
-            const attached = await nvim.call("nvim_buf_attach", [args[0], true, {}]);
-            if (attached) attachedBuffer = args[0];
+            const attached = await nvim.call("nvim_buf_attach", [buffer, true, {}]);
+            if (attached) attachedBuffer = buffer;
         }
     });
 

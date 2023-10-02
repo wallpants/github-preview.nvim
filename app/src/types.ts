@@ -10,6 +10,7 @@ export type BrowserState = {
     repoName: string;
     currentPath: string;
     content: ContentChange["content"];
+    singleFile: boolean;
     cursorLineColor: string;
     cursorLine: null | number;
     topOffsetPct: null | number;

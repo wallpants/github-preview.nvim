@@ -12,6 +12,7 @@ local M = {}
 ---@field port number
 ---@field root string
 ---@field path string
+---@field single_file boolean
 ---@field scroll scroll
 ---@field cursor_line cursor_line
 
@@ -63,22 +64,33 @@ M.setup = function(opts)
 	local function start_server()
 		-- should look like "/Users/.../github-preview"
 		local root = vim.fn.finddir(".git", ";")
+		local single_file = false
+
+		local buffer_name = vim.api.nvim_buf_get_name(0)
+		local init_path = vim.fn.fnamemodify(buffer_name, ":p")
 
 		if root == "" then
-			error("root dir with .git not found")
+			if vim.fn.fnamemodify(init_path, ":t") == "" then
+				vim.notify(
+					"github-preview: A file must be loaded into buffer if not in a git repo",
+					vim.log.levels.ERROR
+				)
+				return
+			end
+			-- if root not found, we set root to current path
+			root = vim.fn.fnamemodify(init_path, ":h")
+			single_file = true
 		else
 			-- if found, path is made absolute & has "/.git/" popped
 			root = vim.fn.fnamemodify(root, ":p:h:h") .. "/"
 		end
-
-		local buffer_name = vim.api.nvim_buf_get_name(0)
-		local init_path = vim.fn.fnamemodify(buffer_name, ":p")
 
 		---@type plugin_init
 		vim.g.github_preview_init = {
 			port = opts.port,
 			root = root,
 			path = init_path,
+			single_file = single_file,
 			scroll = opts.scroll,
 			cursor_line = opts.cursor_line,
 		}

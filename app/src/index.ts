@@ -37,7 +37,8 @@ function wsSend(message: WsServerMessage) {
 
 await onVimLeavePre(nvim, () => {
     wsSend({ goodbye: true });
-    // neovim remains blocked unless we return something
+    // We're handling an RPCRequest, which means neovim remains blocked
+    // until we return something
     return true;
 });
 

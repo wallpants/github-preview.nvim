@@ -20,6 +20,7 @@ export const Provider = ({
             startClosed: true,
         }),
     );
+    const [isSingleFile, setIsSingleFile] = useState(true);
     const [isConnected, setIsConnected] = useState(false);
     const [currentPath, setCurrentPath] = useState<string>();
     const [repoName, setRepoName] = useState<string>("");
@@ -60,6 +61,10 @@ export const Provider = ({
                 window.close();
             }
 
+            if (typeof message.singleFile === "boolean") {
+                setIsSingleFile(message.singleFile);
+            }
+
             if (message.repoName !== undefined) {
                 setRepoName(message.repoName);
             }
@@ -97,6 +102,7 @@ export const Provider = ({
         <websocketContext.Provider
             value={{
                 isConnected,
+                isSingleFile,
                 registerHandler,
                 currentPath,
                 getEntries,
