@@ -8,7 +8,7 @@ export async function onVimLeavePre(
     // Subscribe to RPCNotification
     await nvim.call("nvim_subscribe", ["CursorMove"]);
 
-    // Notification handler
+    // Request handler
     nvim.onRequest("VimLeavePre", callback);
 
     // Create autocmd to notify us with event "CursorMove"
