@@ -1,0 +1,48 @@
+{
+  "name": "@gp/server",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "vi": "nvim",
+    "clean": "rm -rf node_modules && rm -rf dist",
+    "format": "prettier **.{ts,tsx,css} -w",
+    "lint": "tsc && eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
+    "dev": "bun --hot run src/index.ts",
+    "start": "NODE_ENV=production; bun run src/index.ts",
+    "tailwind:compile": "tailwindcss -c ./src/web/tailwind.config.cjs -o ./src/web/tailwind.css"
+  },
+  "dependencies": {
+    "clipboard": "^2.0.11",
+    "bunvim": "latest",
+    "clsx": "^2.0.0",
+    "globby": "^13.2.2",
+    "isbinaryfile": "5.0.0",
+    "markdown-it": "^13.0.1",
+    "markdown-it-highlightjs": "^4.0.1",
+    "opener": "^1.5.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "reconnecting-websocket": "^4.4.0",
+    "tailwind-merge": "^1.14.0",
+    "valibot": "^0.18.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^13.0.1",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@types/opener": "^1.4.1",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
+    "bun-types": "latest",
+    "eslint": "^8.47.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "eslint-plugin-tailwindcss": "3.13.0",
+    "prettier": "^3.0.2",
+    "prettier-plugin-organize-imports": "^3.2.3",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.2.2"
+  }
+}

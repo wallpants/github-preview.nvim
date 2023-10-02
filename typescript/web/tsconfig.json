@@ -1,6 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "compilerOptions": { "jsx": "react-jsx" },
-  "include": ["src", "tailwind.config.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
-}

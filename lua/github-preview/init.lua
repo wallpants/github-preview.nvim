@@ -52,7 +52,7 @@ M.setup = function(opts)
 		},
 	})
 
-	local is_dev = os.getenv("VITE_GP_WS_PORT") and true or false
+	local is_dev = os.getenv("GP_LOG_LEVEL") and true or false
 
 	local function log(_, data)
 		if is_dev then
@@ -86,10 +86,16 @@ M.setup = function(opts)
 		local __filename = debug.getinfo(1, "S").source:sub(2)
 		local plugin_root = vim.fn.fnamemodify(__filename, ":p:h:h:h") .. "/"
 
+		-- install bun dependencies
+		local bun_install = vim.fn.jobstart("bun install --frozen-lockfile --production", {
+			cwd = plugin_root .. "app",
+		})
+		vim.fn.jobwait({ bun_install })
+
 		local cmd = is_dev and "bun dev" or "bun start"
 
 		vim.fn.jobstart(cmd, {
-			cwd = plugin_root .. "typescript/server",
+			cwd = plugin_root .. "app",
 			stdin = "null",
 			on_exit = log,
 			on_stdout = log,
