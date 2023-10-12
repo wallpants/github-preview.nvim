@@ -4,11 +4,16 @@
 
 # Github Preview
 
+😍😍😍
+
+😍
+
 - [ ] breadcrumbs messed up when window is narrow
 - [x] delete banner component
 - [x] delete container component
 - [x] add single file support
 - [ ] think of more generic name than github-preview
+  - [ ] think of more generic name than github-preview
 - [ ] implement link follow for local files
 - [ ] git hook to compile tailwind
 - [x] add support for local images
@@ -38,7 +43,7 @@
 
 ![Alt text](https://www.digitalocean.com/_next/static/media/intro-to-cloud.d49bc5f7.jpeg)
 
-what if I type and then gualberto
+what if I type
 
 ```ts
 console.log("hello world");
