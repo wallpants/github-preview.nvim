@@ -1,5 +1,5 @@
 import { type Output } from "valibot";
-import type { ContentChangeSchema, CursorMoveSchema, PluginInitSchema } from "./schemas";
+import type { ContentChangeSchema, CursorMoveSchema, PluginInitSchema } from "./schemas.ts";
 
 export type PluginInit = Output<typeof PluginInitSchema>;
 export type CursorMove = Output<typeof CursorMoveSchema>;

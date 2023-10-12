@@ -1,14 +1,22 @@
+// import { type Mermaid } from "mermaid";
+import { Pantsdown } from "pantsdown";
 import { useContext, useEffect, useState } from "react";
 import { websocketContext } from "../provider/context.ts";
 import { cn, getFileExt } from "../utils.ts";
 import { BreadCrumbs } from "./breadcrumbs.tsx";
 import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";
 import { LINE_NUMBERS_ELEMENT_ID, LineNumbers } from "./line-numbers.tsx";
-import { contentToHtml } from "./markdown-it/index.ts";
+// import { contentToHtml } from "./marked/index.ts";
 import { getScrollOffsets, type Offsets } from "./scroll.ts";
 
 const MARKDOWN_CONTAINER_ID = "markdown-container-id";
 const MARKDOWN_ELEMENT_ID = "markdown-element-id";
+export const GP_LOCALIMAGE_PREFIX = "/__localimage__/";
+
+// declare const mermaid: Mermaid;
+const pantsdown = new Pantsdown({
+    renderer: { localImageUrlPrefix: GP_LOCALIMAGE_PREFIX },
+});
 
 export const Markdown = ({ className }: { className: string }) => {
     const { registerHandler } = useContext(websocketContext);
@@ -20,6 +28,7 @@ export const Markdown = ({ className }: { className: string }) => {
     const [markdownContainerElement, setMarkdownContainerElement] = useState<HTMLElement>();
 
     useEffect(() => {
+        // mermaid.initialize({ startOnLoad: false });
         setMarkdownElement(document.getElementById(MARKDOWN_ELEMENT_ID)!);
         setCursorLineElement(document.getElementById(CURSOR_LINE_ELEMENT_ID)!);
         setLineNumbersElement(document.getElementById(LINE_NUMBERS_ELEMENT_ID)!);
@@ -33,10 +42,11 @@ export const Markdown = ({ className }: { className: string }) => {
             if (message.content) {
                 const fileExt = getFileExt(message.currentPath);
 
-                markdownElement.innerHTML = contentToHtml({
-                    content: message.content,
-                    fileExt,
-                });
+                const text = message.content.join("\n");
+                const markdown = fileExt === "md" ? text : "```" + fileExt + `\n${text}`;
+                markdownElement.innerHTML = pantsdown.parse(markdown);
+
+                // void mermaid.run();
 
                 if (fileExt === "md") {
                     markdownElement.style.setProperty("padding", "44px");

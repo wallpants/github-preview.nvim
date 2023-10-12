@@ -1,13 +1,14 @@
 import { type Server } from "bun";
 import { renderToReadableStream } from "react-dom/server";
 import { ENV } from "../env.ts";
-import { Index } from "../web/index.tsx";
+import { GP_STATIC_PREFIX, Index } from "../web/index.tsx";
+import { GP_LOCALIMAGE_PREFIX } from "../web/markdown/index.tsx";
 
-const appRoot = import.meta.dir + "/..";
+const webRoot = import.meta.dir + "/../web/";
 
 const host = "localhost";
 
-export function httpHandler(port: number) {
+export function httpHandler(port: number, root: string) {
     return async (req: Request, server: Server) => {
         const upgradedToWs = server.upgrade(req, {
             data: {}, // this data is available in socket.data
@@ -17,27 +18,34 @@ export function httpHandler(port: number) {
 
         const { pathname } = new URL(req.url);
 
-        if (pathname === "/hydrate.js") {
-            const { outputs } = await Bun.build({
-                entrypoints: [appRoot + "/web" + "/hydrate.tsx"],
-                define: {
-                    __GP_HOST__: JSON.stringify(host),
-                    __GP_PORT__: JSON.stringify(port),
-                    __DEV__: JSON.stringify(Boolean(ENV.GP_LOG_LEVEL)),
-                },
-            });
+        if (pathname.startsWith(GP_STATIC_PREFIX)) {
+            const requested = pathname.slice(GP_STATIC_PREFIX.length);
 
-            return new Response(outputs[0]);
+            if (requested === "hydrate.js") {
+                const { outputs } = await Bun.build({
+                    entrypoints: [webRoot + "hydrate.tsx"],
+                    define: {
+                        __GP_HOST__: JSON.stringify(host),
+                        __GP_PORT__: JSON.stringify(port),
+                        __DEV__: JSON.stringify(Boolean(ENV.GP_LOG_LEVEL)),
+                    },
+                });
+
+                return new Response(outputs[0]);
+            }
+
+            const file = Bun.file(webRoot + requested);
+            return new Response(file);
         }
 
-        const file = Bun.file(appRoot + "/web" + pathname);
-
-        if (await file.exists()) {
+        if (pathname.startsWith(GP_LOCALIMAGE_PREFIX)) {
+            const requested = pathname.slice(GP_LOCALIMAGE_PREFIX.length);
+            const file = Bun.file(root + requested);
             return new Response(file);
         }
 
         const stream = await renderToReadableStream(<Index />, {
-            bootstrapModules: ["/hydrate.js"],
+            bootstrapModules: [`${GP_STATIC_PREFIX}hydrate.js`],
         });
 
         return new Response(stream);
