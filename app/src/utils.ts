@@ -5,9 +5,14 @@ import { basename, dirname, resolve } from "node:path";
 import { type BrowserState, type PluginInit } from "./types.ts";
 
 export async function getRepoName({ root }: { root: BrowserState["root"] }): Promise<string> {
-    const gitConfig = await Bun.file(resolve(root, ".git/config")).text();
-    const lines = gitConfig.split("\n");
     let repoName = "root";
+    const gitConfig = Bun.file(resolve(root, ".git/config"));
+
+    if (!(await gitConfig.exists())) {
+        return repoName;
+    }
+
+    const lines = (await gitConfig.text()).split("\n");
 
     for (let i = 0; i < lines.length; i += 1) {
         const line = lines[i];
@@ -27,6 +32,7 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
     const repoName = await getRepoName({ root: init.root });
 
     const entries = await getEntries({
+        singleFile: init.single_file,
         root: init.root,
         path: relativePath,
     });
@@ -42,6 +48,7 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
         content,
         repoName,
         currentPath: path,
+        singleFile: init.single_file,
         cursorLineColor: init.cursor_line.disable ? "transparent" : init.cursor_line.color,
         cursorLine: null,
         topOffsetPct: init.scroll.disable ? null : init.scroll.top_offset_pct,
@@ -49,12 +56,15 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
 }
 
 export async function getEntries({
+    singleFile,
     root,
     path,
 }: {
+    singleFile: boolean;
     root: string;
     path: string;
 }): Promise<string[]> {
+    if (singleFile) return [];
     const currentDir = path.endsWith("/") ? path : dirname(path) + "/";
     const paths = await globby(currentDir + "*", {
         cwd: root,

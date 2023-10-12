@@ -3,7 +3,7 @@ import { websocketContext } from "../provider/context.ts";
 import { cn, getSegments } from "../utils.ts";
 
 export const BreadCrumbs = () => {
-    const { currentPath, repoName, navigate } = useContext(websocketContext);
+    const { isSingleFile, currentPath, repoName, navigate } = useContext(websocketContext);
     const segments = getSegments(currentPath);
 
     function handleClick(idx: number) {
@@ -22,6 +22,8 @@ export const BreadCrumbs = () => {
         <p className="sticky top-0 z-10 !mb-0 h-[40px] bg-github-border-muted p-2 text-[15px] font-semibold [&>span]:cursor-pointer">
             {[repoName].concat(segments).map((segment, idx) => {
                 const isLast = idx === segmentsLen;
+
+                if (isSingleFile && !isLast) return null;
 
                 return (
                     <Fragment key={idx}>

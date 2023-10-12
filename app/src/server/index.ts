@@ -1,4 +1,3 @@
-// import { ENV, type BrowserState } from "@gp/shared";
 import { type Server } from "bun";
 import { type Nvim } from "bunvim";
 import opener from "opener";
@@ -13,11 +12,10 @@ export function startServer(
 ): Server {
     const server = Bun.serve({
         port: port,
-        fetch: httpHandler(port),
+        fetch: httpHandler(port, browserState.root),
         websocket: websocketHandler(nvim, browserState),
     });
 
-    // if (!ENV.IS_DEV) opener(`http://localhost:${port}`);
     opener(`http://localhost:${port}`);
     return server;
 }
