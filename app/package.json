@@ -1,21 +1,12 @@
 {
-  "name": "@gp/server",
-  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "vi": "nvim",
     "clean": "rm -rf node_modules && rm -rf dist",
     "format": "prettier **.{ts,tsx,css} -w",
     "lint": "tsc && eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
     "dev": "bun --hot run src/index.ts",
-    "commit": "cz",
     "start": "NODE_ENV=production; bun run src/index.ts",
     "tailwind:compile": "tailwindcss -c ./src/web/tailwind.config.cjs -o ./src/web/tailwind.css"
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
   },
   "dependencies": {
     "bunvim": "1.1.0",
@@ -40,7 +31,6 @@
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
     "bun-types": "latest",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.47.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",

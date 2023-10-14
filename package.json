@@ -1,0 +1,28 @@
+{
+  "name": "github-preview.nvim",
+  "version": "0.0.0",
+  "private": true,
+  "author": "wallpants",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wallpants/github-preview.nvim.git"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ]
+  },
+  "scripts": {
+    "commit": "cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0",
+    "semantic-release": "^22.0.5"
+  }
+}
