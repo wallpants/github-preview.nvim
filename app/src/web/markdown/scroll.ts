@@ -1,36 +1,43 @@
 // affects line height when calculating offsets in non markdown files
-const MAGIC = 12;
+const MAGIC = 4;
 
 type Attrs = {
     offsetTop: number;
     scrollHeight: number;
     clientHeight: number;
     elemStartLine: number;
-    elemEndLine: number | undefined;
+    elemEndLine: number;
 };
 
 function getAttrs(element: HTMLElement): Attrs {
     const { tagName, parentElement, offsetTop, scrollHeight, clientHeight } = element;
-    const startLineAttr = element.getAttribute("data-source-line");
-    const endLineAttr = element.getAttribute("data-source-line-end");
+    const startLineAttr = element.getAttribute("line-start");
+    const endLineAttr = element.getAttribute("line-end");
 
-    if (!startLineAttr) throw Error("startLineAttr missing");
+    if (!startLineAttr || !endLineAttr) throw Error("sourceMap info missing");
 
     const attrs: Attrs = {
         offsetTop,
         scrollHeight,
         clientHeight,
         elemStartLine: Number(startLineAttr),
-        elemEndLine: endLineAttr ? Number(endLineAttr) : undefined,
+        elemEndLine: Number(endLineAttr),
     };
 
-    if (tagName === "CODE") {
-        // we get the data from the <pre> tag surrounding the <code>
-        // <code> tags return a scrollHeight of 0 & offsetTop is a bit off
-        if (!parentElement) throw Error("<code> element parent not found");
-        attrs.offsetTop = parentElement.offsetTop;
-        attrs.scrollHeight = parentElement.scrollHeight;
-        attrs.clientHeight = parentElement.clientHeight;
+    if (tagName === "TR") {
+        /* <tr>'s offsetTop is relative to the table component.
+         * <tr> are nested in a <thead> or <tbody> within a <table>
+         *
+         * <table>
+         *     <thead>
+         *         <tr line-start="10" line-end="10"></tr>
+         *     </thead>
+         *     <tbody>
+         *         <tr line-start="12" line-end="12"></tr>
+         *     </tbody>
+         * </table>
+         */
+        attrs.offsetTop += parentElement!.parentElement!.offsetTop;
     }
 
     return attrs;
@@ -38,15 +45,20 @@ function getAttrs(element: HTMLElement): Attrs {
 
 export type Offsets = [number, HTMLElement][];
 
-export function getScrollOffsets(): Offsets {
-    const elements: NodeListOf<HTMLElement> = document.querySelectorAll("[data-source-line]");
+export function getScrollOffsets(markdownContainerElement: HTMLElement): Offsets {
+    const elements: NodeListOf<HTMLElement> = document.querySelectorAll("[line-start]");
     // HTMLElement kept arround for debugging purposes
-    const sourceLineOffsets: [number, HTMLElement][] = [];
+    const sourceLineOffsets: Offsets = [];
 
     let currLine = 0;
-    const isCode = elements.length === 1 && elements[0]?.tagName === "CODE";
+    const isCode =
+        elements.length === 1 &&
+        elements[0]?.tagName === "PRE" &&
+        elements[0].children.length === 1 &&
+        elements[0].firstElementChild?.tagName === "CODE";
 
-    elements.forEach((element, index) => {
+    for (let index = 0, len = elements.length; index < len; index++) {
+        const element = elements[index]!;
         const { elemStartLine, elemEndLine, offsetTop, scrollHeight } = getAttrs(element);
 
         while (currLine > elemStartLine) {
@@ -85,39 +97,27 @@ export function getScrollOffsets(): Offsets {
             }
         }
 
-        if (!elemEndLine) {
-            sourceLineOffsets[currLine++] = [offsetTop, element];
-            return;
-        }
-
         let height = scrollHeight;
+        let acc = offsetTop;
 
         if (isCode) {
-            // is rendering code only, the margin messes up with
-            // the offset calculations
             height -= MAGIC;
+            acc += markdownContainerElement.offsetTop;
         }
 
-        const perLine = height / (elemEndLine - elemStartLine);
+        const perLine = height / (elemEndLine + 1 - elemStartLine);
 
-        let acc = offsetTop;
         while (currLine <= elemEndLine) {
             sourceLineOffsets[currLine++] = [acc, element];
             acc += perLine;
         }
-    });
-
-    if (isCode) {
-        // remove the fence line
-        // ```ts    <= we remove that line
-        sourceLineOffsets.shift();
     }
 
     return sourceLineOffsets;
 }
 
 export function scroll(
-    markdownContainer: HTMLElement,
+    markdownContainerElement: HTMLElement,
     topOffsetPct: number | null,
     offsets: Offsets,
     cursorLine: number | null,
@@ -125,7 +125,7 @@ export function scroll(
 ) {
     if (cursorLine === null) {
         cursorLineElement.style.setProperty("visibility", "hidden");
-        markdownContainer.scrollTo({ top: 0, behavior: "instant" });
+        markdownContainerElement.scrollTo({ top: 0, behavior: "instant" });
         return;
     }
 
@@ -145,8 +145,11 @@ export function scroll(
     if (typeof topOffsetPct !== "number") return;
 
     const percent = topOffsetPct / 100;
-    markdownContainer.scrollTo({
-        top: cursorLineOffset[0] + markdownContainer.offsetTop - window.screen.height * percent,
+    markdownContainerElement.scrollTo({
+        top:
+            cursorLineOffset[0] +
+            markdownContainerElement.offsetTop -
+            window.screen.height * percent,
         behavior: "smooth",
     });
 }

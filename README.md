@@ -1,7 +1,5 @@
 <h1>Hello world</h1>
 
-[![NPM Downloads](https://img.shields.io/npm/dm/mermaid)](https://www.npmjs.com/package/mermaid)
-
 # Github Preview
 
 😍😍😍
