@@ -14,13 +14,20 @@ export function httpHandler(port: number, root: string) {
             data: {}, // this data is available in socket.data
             headers: {},
         });
-        if (upgradedToWs) return;
+        if (upgradedToWs) {
+            // If client (browser) requested to upgrade connection to websocket
+            // and we successfully upgraded request
+            return;
+        }
 
         const { pathname } = new URL(req.url);
 
+        // files included in base html (js,css) are prefixed with GP_STATIC_PREFIX
         if (pathname.startsWith(GP_STATIC_PREFIX)) {
             const requested = pathname.slice(GP_STATIC_PREFIX.length);
 
+            // hydrate.js hydrates the server components generated and sent below
+            // hydrate.js is built from typescript files on request
             if (requested === "hydrate.js") {
                 const { outputs } = await Bun.build({
                     entrypoints: [webRoot + "hydrate.tsx"],
@@ -38,12 +45,16 @@ export function httpHandler(port: number, root: string) {
             return new Response(file);
         }
 
+        // images referenced in html or markdown that point to the currently
+        // previewed repo, are prefixed with GP_LOCALIMAGE_PREFIX
         if (pathname.startsWith(GP_LOCALIMAGE_PREFIX)) {
             const requested = pathname.slice(GP_LOCALIMAGE_PREFIX.length);
             const file = Bun.file(root + requested);
             return new Response(file);
         }
 
+        // If none of the previous cases matches the request, the client (browser) is
+        // probably making its first request to get the server rendered react app
         const stream = await renderToReadableStream(<Index />, {
             bootstrapModules: [`${GP_STATIC_PREFIX}hydrate.js`],
         });
