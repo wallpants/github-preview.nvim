@@ -6,7 +6,6 @@ import { cn, getFileExt } from "../utils.ts";
 import { BreadCrumbs } from "./breadcrumbs.tsx";
 import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";
 import { LINE_NUMBERS_ELEMENT_ID, LineNumbers } from "./line-numbers.tsx";
-// import { contentToHtml } from "./marked/index.ts";
 import { getScrollOffsets, type Offsets } from "./scroll.ts";
 
 const MARKDOWN_CONTAINER_ID = "markdown-container-id";
@@ -67,6 +66,7 @@ export const Markdown = ({ className }: { className: string }) => {
                     // Change code background color to canvas default when displaying only code
                     const codeContainer = markdownElement.getElementsByTagName("pre")[0];
                     if (codeContainer) {
+                        codeContainer.style.setProperty("padding", "8px 16px 16px");
                         codeContainer.style.setProperty(
                             "background",
                             "var(--color-canvas-default)",
@@ -79,10 +79,10 @@ export const Markdown = ({ className }: { className: string }) => {
 
     useEffect(() => {
         // recalculate offsets whenever markdownElement's height changes
-        if (!markdownElement) return;
+        if (!markdownElement || !markdownContainerElement) return;
 
         const observer = new ResizeObserver(() => {
-            setOffsets(getScrollOffsets());
+            setOffsets(getScrollOffsets(markdownContainerElement));
         });
 
         observer.observe(markdownElement);
