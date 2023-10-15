@@ -16,6 +16,7 @@ import {
 } from "./types.ts";
 import { initBrowserState } from "./utils.ts";
 
+const HOST = "localhost";
 if (!ENV.NVIM) throw Error("socket missing");
 
 const nvim = await attach<CustomEvents>({
@@ -28,7 +29,7 @@ const init = (await nvim.call("nvim_get_var", ["github_preview_init"])) as Plugi
 if (ENV.IS_DEV) parse(PluginInitSchema, init);
 
 const browserState = await initBrowserState(init);
-const webServer = startServer(init.port, browserState, nvim);
+const webServer = startServer(HOST, init.port, browserState, nvim);
 
 function wsSend(message: WsServerMessage) {
     nvim.logger?.verbose({ OUTGOING_WEBSOCKET: message });

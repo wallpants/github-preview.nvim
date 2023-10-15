@@ -1,14 +1,13 @@
 import { type Server } from "bun";
+import pantsdownCss from "pantsdown/styles.css";
 import { renderToReadableStream } from "react-dom/server";
 import { ENV } from "../env.ts";
-import { GP_STATIC_PREFIX, Index } from "../web/index.tsx";
+import { GP_STATIC_PREFIX, Index, PANTSDOWN_CSS } from "../web/index.tsx";
 import { GP_LOCALIMAGE_PREFIX } from "../web/markdown/index.tsx";
 
 const webRoot = import.meta.dir + "/../web/";
 
-const host = "localhost";
-
-export function httpHandler(port: number, root: string) {
+export function httpHandler(host: string, port: number, root: string) {
     return async (req: Request, server: Server) => {
         const upgradedToWs = server.upgrade(req, {
             data: {}, // this data is available in socket.data
@@ -39,6 +38,15 @@ export function httpHandler(port: number, root: string) {
                 });
 
                 return new Response(outputs[0]);
+            }
+
+            if (requested === PANTSDOWN_CSS) {
+                const file = Bun.file(pantsdownCss);
+                return new Response(file, {
+                    headers: {
+                        "content-type": "text/css",
+                    },
+                });
             }
 
             const file = Bun.file(webRoot + requested);
