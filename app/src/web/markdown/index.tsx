@@ -82,7 +82,7 @@ export const Markdown = ({ className }: { className: string }) => {
         if (!markdownElement || !markdownContainerElement) return;
 
         const observer = new ResizeObserver(() => {
-            setOffsets(getScrollOffsets(markdownContainerElement));
+            setOffsets(getScrollOffsets(markdownContainerElement, markdownElement));
         });
 
         observer.observe(markdownElement);
