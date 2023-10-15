@@ -1,6 +1,7 @@
 {
   "type": "module",
   "scripts": {
+    "vi": "nvim",
     "clean": "rm -rf node_modules && rm -rf dist",
     "format": "prettier **.{ts,tsx,css} -w",
     "lint": "tsc && eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
@@ -9,7 +10,7 @@
     "tailwind:compile": "tailwindcss -c ./src/web/tailwind.config.cjs -o ./src/web/tailwind.css"
   },
   "dependencies": {
-    "bunvim": "1.1.0",
+    "bunvim": "1.1.1",
     "clipboard": "^2.0.11",
     "clsx": "^2.0.0",
     "globby": "^13.2.2",
@@ -17,7 +18,7 @@
     "isbinaryfile": "5.0.0",
     "mermaid": "^10.5.0",
     "opener": "^1.5.2",
-    "pantsdown": "1.1.3",
+    "pantsdown": "1.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "reconnecting-websocket": "^4.4.0",
