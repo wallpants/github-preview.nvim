@@ -45,7 +45,10 @@ function getAttrs(element: HTMLElement): Attrs {
 
 export type Offsets = [number, HTMLElement][];
 
-export function getScrollOffsets(markdownContainerElement: HTMLElement): Offsets {
+export function getScrollOffsets(
+    markdownContainerElement: HTMLElement,
+    markdownElement: HTMLElement,
+): Offsets {
     const elements: NodeListOf<HTMLElement> = document.querySelectorAll("[line-start]");
     // HTMLElement kept arround for debugging purposes
     const sourceLineOffsets: Offsets = [];
@@ -62,7 +65,7 @@ export function getScrollOffsets(markdownContainerElement: HTMLElement): Offsets
         const { elemStartLine, elemEndLine, offsetTop, scrollHeight } = getAttrs(element);
 
         if (currLine < elemStartLine) {
-            let acc = 0;
+            let acc = markdownElement.offsetTop + markdownElement.getBoundingClientRect().top;
             let perLine = 0;
 
             const prevElement = elements[index - 1];

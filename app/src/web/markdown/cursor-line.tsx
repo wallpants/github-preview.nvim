@@ -27,7 +27,7 @@ export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElemen
     useEffect(() => {
         if (!cursorLineElement || !markdownContainerElement) return;
         scroll(markdownContainerElement, topOffsetPct, offsets, cursorLine, cursorLineElement);
-    }, [cursorLine, cursorLineElement, offsets, topOffsetPct, markdownContainerElement]);
+    }, [markdownContainerElement, topOffsetPct, offsets, cursorLine, cursorLineElement]);
 
     return (
         <div
