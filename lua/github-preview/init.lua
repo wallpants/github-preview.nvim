@@ -41,8 +41,9 @@ local function client_channel(client_name)
 			return chan.id
 		end
 	end
-	-- return broadcast channel if client not found
-	return 0
+
+	vim.notify("github-preview: channel_id not found", vim.log.levels.ERROR)
+	return nil
 end
 
 ---@param opts nvim_plugin_opts
@@ -77,6 +78,9 @@ M.setup = function(opts)
 	local function stop_service()
 		if job_id ~= nil then
 			local channel_id = client_channel("github-preview")
+			if channel_id == nil then
+				return
+			end
 			-- VimLeavePre request closes browser
 			vim.rpcrequest(channel_id, "VimLeavePre")
 			local stopSuccess = vim.fn.jobstop(job_id)
