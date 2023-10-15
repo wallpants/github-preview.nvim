@@ -61,23 +61,6 @@ export function getScrollOffsets(markdownContainerElement: HTMLElement): Offsets
         const element = elements[index]!;
         const { elemStartLine, elemEndLine, offsetTop, scrollHeight } = getAttrs(element);
 
-        while (currLine > elemStartLine) {
-            /* sometimes currLine will go past the next element's startLine.
-             * this happens when we have something like this:
-             *
-             * <li data-source-line="14" data-source-line-end="16">
-             *      Hello from list item
-             *      <ul>
-             *          <li data-source-line="15">hello from nested list item</li>
-             *      </ul>
-             * </li>
-             *
-             * when processing the outer <li>, currLine will go up to 16,
-             * and then when we process the inner <li>, currLine will
-             * be greater than elemStartLine */
-            currLine--;
-        }
-
         if (currLine < elemStartLine) {
             let acc = 0;
             let perLine = 0;
