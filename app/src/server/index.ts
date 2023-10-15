@@ -6,16 +6,17 @@ import { httpHandler } from "./http.tsx";
 import { websocketHandler } from "./websocket.ts";
 
 export function startServer(
+    host: string,
     port: number,
     browserState: BrowserState,
     nvim: Nvim<CustomEvents>,
 ): Server {
     const server = Bun.serve({
         port: port,
-        fetch: httpHandler(port, browserState.root),
+        fetch: httpHandler(host, port, browserState.root),
         websocket: websocketHandler(nvim, browserState),
     });
 
-    opener(`http://localhost:${port}`);
+    opener(`http://${host}:${port}`);
     return server;
 }
