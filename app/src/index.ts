@@ -6,6 +6,7 @@ import { onContentChange } from "./nvim-events/on-content-change.ts";
 import { onCursorMove } from "./nvim-events/on-cursor-move.ts";
 import { onVimLeavePre } from "./nvim-events/on-vim-leave-pre.ts";
 import { PluginInitSchema } from "./schemas.ts";
+import { unaliveURL } from "./server/http.tsx";
 import { startServer } from "./server/index.ts";
 import { EDITOR_EVENTS_TOPIC } from "./server/websocket.ts";
 import {
@@ -17,6 +18,7 @@ import {
 import { initBrowserState } from "./utils.ts";
 
 const HOST = "localhost";
+
 if (!ENV.NVIM) throw Error("socket missing");
 
 const nvim = await attach<CustomEvents>({
@@ -28,6 +30,11 @@ const nvim = await attach<CustomEvents>({
 const init = (await nvim.call("nvim_get_var", ["github_preview_init"])) as PluginInit;
 if (ENV.IS_DEV) parse(PluginInitSchema, init);
 
+try {
+    await fetch(`http://${HOST}:${init.port}${unaliveURL}`);
+    // eslint-disable-next-line
+} catch (err) {}
+
 const browserState = await initBrowserState(init);
 const webServer = startServer(HOST, init.port, browserState, nvim);
 
@@ -36,8 +43,11 @@ function wsSend(message: WsServerMessage) {
     webServer.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(message));
 }
 
-await onVimLeavePre(nvim, () => {
+const augroupId = await nvim.call("nvim_create_augroup", ["github-preview", { clear: true }]);
+
+await onVimLeavePre(nvim, augroupId, async () => {
     wsSend({ goodbye: true });
+    await nvim.call("nvim_del_augroup_by_id", [augroupId]);
     // We're handling an RPCRequest, which means neovim remains blocked
     // until we return something
     return true;
@@ -45,6 +55,7 @@ await onVimLeavePre(nvim, () => {
 
 await onCursorMove(
     nvim,
+    augroupId,
     async ([buffer, path, cursorLine]: CustomEvents["notifications"]["CursorMove"]) => {
         if (!path) return;
         const relativePath = relative(browserState.root, path);
@@ -64,7 +75,7 @@ await onCursorMove(
     },
 );
 
-await onContentChange(nvim, browserState, (content, path) => {
+await onContentChange(nvim, augroupId, browserState, (content, path) => {
     if (!path) return;
     const relativePath = relative(browserState.root, path);
     nvim.logger?.verbose({ ON_CONTENT_CHANGE: { content, path: relativePath } });

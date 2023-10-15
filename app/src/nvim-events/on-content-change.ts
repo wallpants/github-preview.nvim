@@ -1,8 +1,11 @@
 import { type Nvim } from "bunvim";
 import { type BrowserState, type CustomEvents } from "../types.ts";
 
+const NOTIFICATION = "AttachBuffer";
+
 export async function onContentChange(
     nvim: Nvim<CustomEvents>,
+    augroupId: number,
     browserState: BrowserState,
     callback: (content: string[], path: string) => void,
 ) {
@@ -16,10 +19,10 @@ export async function onContentChange(
     });
 
     // Subscribe to RPCNotification
-    await nvim.call("nvim_subscribe", ["AttachBuffer"]);
+    await nvim.call("nvim_subscribe", [NOTIFICATION]);
 
     // Notification handler
-    nvim.onNotification("AttachBuffer", async ([buffer, path]) => {
+    nvim.onNotification(NOTIFICATION, async ([buffer, path]) => {
         if (!path) return;
 
         if (attachedBuffer !== buffer) {
@@ -38,11 +41,12 @@ export async function onContentChange(
     await nvim.call("nvim_create_autocmd", [
         ["InsertEnter", "TextChanged"],
         {
+            group: augroupId,
             desc: "Notify github-preview",
             command: `lua
             local buffer = vim.api.nvim_get_current_buf()
             local path = vim.api.nvim_buf_get_name(0)
-            vim.rpcnotify(${channelId}, "AttachBuffer", buffer, path)`,
+            vim.rpcnotify(${channelId}, "${NOTIFICATION}", buffer, path)`,
         },
     ]);
 

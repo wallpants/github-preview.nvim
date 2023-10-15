@@ -6,6 +6,7 @@ import { GP_STATIC_PREFIX, Index, PANTSDOWN_CSS } from "../web/index.tsx";
 import { GP_LOCALIMAGE_PREFIX } from "../web/markdown/index.tsx";
 
 const webRoot = import.meta.dir + "/../web/";
+export const unaliveURL = "/unalive";
 
 export function httpHandler(host: string, port: number, root: string) {
     return async (req: Request, server: Server) => {
@@ -20,6 +21,12 @@ export function httpHandler(host: string, port: number, root: string) {
         }
 
         const { pathname } = new URL(req.url);
+
+        if (pathname === unaliveURL) {
+            // This endpoint is called when starting the service to kill
+            // github-preview instances started by other nvim instances
+            process.exit(0);
+        }
 
         // files included in base html (js,css) are prefixed with GP_STATIC_PREFIX
         if (pathname.startsWith(GP_STATIC_PREFIX)) {
