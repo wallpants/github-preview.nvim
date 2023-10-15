@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { websocketContext } from "../provider/context.ts";
 import { cn } from "../utils.ts";
 import { EntryComponent } from "./entry.tsx";
@@ -8,6 +8,11 @@ import { Header } from "./header.tsx";
 export const Explorer = () => {
     const { currentPath, isSingleFile } = useContext(websocketContext);
     const [isExpanded, setIsExpanded] = useState(false);
+
+    useEffect(() => {
+        const isDir = Boolean(currentPath?.endsWith("/"));
+        if (isDir) setIsExpanded(true);
+    }, [currentPath]);
 
     return (
         <div
