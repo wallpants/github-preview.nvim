@@ -34,6 +34,17 @@ M.default_opts = {
 	},
 }
 
+---@param client_name string
+local function client_channel(client_name)
+	for _, chan in ipairs(vim.api.nvim_list_chans()) do
+		if chan.client and chan.client.name == client_name then
+			return chan.id
+		end
+	end
+	-- return broadcast channel if client not found
+	return 0
+end
+
 ---@param opts nvim_plugin_opts
 M.setup = function(opts)
 	-- deep merge user opts with default opts without overriding user opts
@@ -61,7 +72,26 @@ M.setup = function(opts)
 		end
 	end
 
-	local function start_server()
+	local job_id = nil
+
+	local function stop_service()
+		if job_id ~= nil then
+			local channel_id = client_channel("github-preview")
+			-- VimLeavePre request closes browser
+			vim.rpcrequest(channel_id, "VimLeavePre")
+			local stopSuccess = vim.fn.jobstop(job_id)
+			if stopSuccess then
+				job_id = nil
+			else
+				vim.notify("github-preview: invalid job_id", vim.log.levels.ERROR)
+			end
+		end
+	end
+
+	local function start_service()
+		-- stop service if it's already running and we try starting it again
+		stop_service()
+
 		-- should look like "/Users/.../github-preview"
 		local root = vim.fn.finddir(".git", ";")
 		local single_file = false
@@ -106,7 +136,7 @@ M.setup = function(opts)
 
 		local cmd = is_dev and "bun dev" or "bun start"
 
-		vim.fn.jobstart(cmd, {
+		job_id = vim.fn.jobstart(cmd, {
 			cwd = plugin_root .. "app",
 			stdin = "null",
 			on_exit = log,
@@ -115,7 +145,17 @@ M.setup = function(opts)
 		})
 	end
 
-	vim.api.nvim_create_user_command("GithubPreview", start_server, {})
+	local function toggle_service()
+		if job_id ~= nil then
+			stop_service()
+		else
+			start_service()
+		end
+	end
+
+	vim.api.nvim_create_user_command("GithubPreviewStop", stop_service, {})
+	vim.api.nvim_create_user_command("GithubPreviewStart", start_service, {})
+	vim.api.nvim_create_user_command("GithubPreviewToggle", toggle_service, {})
 end
 
 return M
