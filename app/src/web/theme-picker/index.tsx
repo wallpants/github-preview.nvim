@@ -35,7 +35,7 @@ export function ThemePicker({ noBorder }: { noBorder?: boolean }) {
     useEffect(() => {
         function handleThemeChange(theme: Theme) {
             const rootHtml = document.getElementsByTagName("html")[0]!;
-            rootHtml.className = `github-styles ${theme}`;
+            rootHtml.className = `pantsdown ${theme}`;
         }
 
         handleThemeChange(theme);

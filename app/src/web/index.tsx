@@ -19,14 +19,14 @@ export const Index = ({
     is_dev?: boolean;
 }) => (
     <React.StrictMode>
-        <html lang="en" className="github-styles dark">
+        <html lang="en" className="pantsdown dark">
             <head>
                 <meta charSet="UTF-8" />
                 <link rel="icon" type="image/svg+xml" href={`${GP_STATIC_PREFIX}github.svg`} />
-                <script type="text/javascript" src={`${GP_STATIC_PREFIX}mermaid.min.js`}></script>
+                {/* <script type="text/javascript" src={`${GP_STATIC_PREFIX}mermaid.min.js`}></script> */}
                 <link href={`${GP_STATIC_PREFIX}tailwind.css`} rel="stylesheet" />
-                <link href={`${GP_STATIC_PREFIX}index.css`} rel="stylesheet" />
                 <link href={`${GP_STATIC_PREFIX}${PANTSDOWN_CSS}`} rel="stylesheet" />
+                <link href={`${GP_STATIC_PREFIX}index.css`} rel="stylesheet" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>GitHub</title>
             </head>
