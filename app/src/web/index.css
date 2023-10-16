@@ -31,3 +31,8 @@
     color: green;
     font-size: 0.9rem;
 }
+ul {
+    /* https://tailwindcss.com/docs/preflight#lists-are-unstyled */
+    /* bullets not rendered if we don't specify list-style */
+    list-style: disc;
+}
