@@ -14,7 +14,7 @@ export const GP_LOCALIMAGE_PREFIX = "/__localimage__/";
 
 // declare const mermaid: Mermaid;
 const pantsdown = new Pantsdown({
-    renderer: { localImageUrlPrefix: GP_LOCALIMAGE_PREFIX },
+    renderer: { relativeImageUrlPrefix: GP_LOCALIMAGE_PREFIX },
 });
 
 export const Markdown = ({ className }: { className: string }) => {
