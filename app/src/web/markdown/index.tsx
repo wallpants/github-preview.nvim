@@ -1,4 +1,3 @@
-// import { type Mermaid } from "mermaid";
 import { Pantsdown } from "pantsdown";
 import { useContext, useEffect, useState } from "react";
 import { websocketContext } from "../provider/context.ts";
@@ -12,7 +11,6 @@ const MARKDOWN_CONTAINER_ID = "markdown-container-id";
 const MARKDOWN_ELEMENT_ID = "markdown-element-id";
 export const GP_LOCALIMAGE_PREFIX = "/__localimage__/";
 
-// declare const mermaid: Mermaid;
 const pantsdown = new Pantsdown({
     renderer: { relativeImageUrlPrefix: GP_LOCALIMAGE_PREFIX },
 });
@@ -27,7 +25,6 @@ export const Markdown = ({ className }: { className: string }) => {
     const [markdownContainerElement, setMarkdownContainerElement] = useState<HTMLElement>();
 
     useEffect(() => {
-        // mermaid.initialize({ startOnLoad: false });
         setMarkdownElement(document.getElementById(MARKDOWN_ELEMENT_ID)!);
         setCursorLineElement(document.getElementById(CURSOR_LINE_ELEMENT_ID)!);
         setLineNumbersElement(document.getElementById(LINE_NUMBERS_ELEMENT_ID)!);
@@ -44,8 +41,6 @@ export const Markdown = ({ className }: { className: string }) => {
                 const text = message.content.join("\n");
                 const markdown = fileExt === "md" ? text : "```" + fileExt + `\n${text}`;
                 markdownElement.innerHTML = pantsdown.parse(markdown);
-
-                // void mermaid.run();
 
                 if (fileExt === "md") {
                     markdownElement.style.setProperty("padding", "44px");
