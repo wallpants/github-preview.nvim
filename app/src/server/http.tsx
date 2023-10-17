@@ -32,8 +32,8 @@ export function httpHandler(host: string, port: number, root: string) {
         if (pathname.startsWith(GP_STATIC_PREFIX)) {
             const requested = pathname.slice(GP_STATIC_PREFIX.length);
 
-            // hydrate.js hydrates the server components generated and sent below
-            // hydrate.js is built from typescript files on request
+            // hydrate.js hydrates the server components generated and sent below.
+            // hydrate.js is built from hydrate.ts on request
             if (requested === "hydrate.js") {
                 const { outputs } = await Bun.build({
                     entrypoints: [webRoot + "hydrate.tsx"],
@@ -68,7 +68,7 @@ export function httpHandler(host: string, port: number, root: string) {
             return new Response(file);
         }
 
-        // If none of the previous cases matches the request, the client (browser) is
+        // If none of the previous cases match the request, the client (browser) is
         // probably making its first request to get the server rendered react app
         const stream = await renderToReadableStream(<Index />, {
             bootstrapModules: [`${GP_STATIC_PREFIX}hydrate.js`],

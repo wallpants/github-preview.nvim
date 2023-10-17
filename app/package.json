@@ -15,7 +15,6 @@
     "clsx": "^2.0.0",
     "globby": "^13.2.2",
     "isbinaryfile": "5.0.0",
-    "mermaid": "^10.5.0",
     "opener": "^1.5.2",
     "pantsdown": "1.4.1",
     "react": "^18.2.0",
