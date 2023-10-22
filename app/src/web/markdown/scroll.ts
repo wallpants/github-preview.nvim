@@ -9,8 +9,8 @@ type Attrs = {
     elemEndLine: number;
 };
 
-function getAttrs(element: HTMLElement): Attrs {
-    const { tagName, parentElement, offsetTop, scrollHeight, clientHeight } = element;
+function getAttrs(markdownContainerElement: HTMLElement, element: HTMLElement): Attrs {
+    const { offsetTop, scrollHeight, clientHeight } = element;
     const startLineAttr = element.getAttribute("line-start");
     const endLineAttr = element.getAttribute("line-end");
 
@@ -24,20 +24,11 @@ function getAttrs(element: HTMLElement): Attrs {
         elemEndLine: Number(endLineAttr),
     };
 
-    if (tagName === "TR") {
-        /* <tr>'s offsetTop is relative to the table component.
-         * <tr> are nested in a <thead> or <tbody> within a <table>
-         *
-         * <table>
-         *     <thead>
-         *         <tr line-start="10" line-end="10"></tr>
-         *     </thead>
-         *     <tbody>
-         *         <tr line-start="12" line-end="12"></tr>
-         *     </tbody>
-         * </table>
-         */
-        attrs.offsetTop += parentElement!.parentElement!.offsetTop;
+    let offsetParent = element.offsetParent as HTMLElement | null;
+
+    while (offsetParent !== null && offsetParent.id !== markdownContainerElement.id) {
+        attrs.offsetTop += offsetParent.offsetTop;
+        offsetParent = offsetParent.offsetParent as HTMLElement | null;
     }
 
     return attrs;
@@ -62,15 +53,21 @@ export function getScrollOffsets(
 
     for (let index = 0, len = elements.length; index < len; index++) {
         const element = elements[index]!;
-        const { elemStartLine, elemEndLine, offsetTop, scrollHeight } = getAttrs(element);
+        const { elemStartLine, elemEndLine, offsetTop, scrollHeight } = getAttrs(
+            markdownContainerElement,
+            element,
+        );
 
-        if (currLine < elemStartLine) {
+        if (currLine >= elemStartLine) {
+            currLine = elemStartLine;
+            sourceLineOffsets[currLine] = [offsetTop, element];
+        } else {
             let acc = markdownElement.offsetTop + markdownElement.getBoundingClientRect().top;
             let perLine = 0;
 
             const prevElement = elements[index - 1];
             if (prevElement) {
-                const prevAttrs = getAttrs(prevElement);
+                const prevAttrs = getAttrs(markdownContainerElement, prevElement);
                 const prevEleBottom = prevAttrs.offsetTop + prevAttrs.clientHeight;
                 const offsetToInterpolate = offsetTop - prevEleBottom;
                 perLine = offsetToInterpolate / (elemStartLine - currLine);

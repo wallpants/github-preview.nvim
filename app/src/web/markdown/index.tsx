@@ -12,7 +12,10 @@ const MARKDOWN_ELEMENT_ID = "markdown-element-id";
 export const GP_LOCALIMAGE_PREFIX = "/__localimage__/";
 
 const pantsdown = new Pantsdown({
-    renderer: { relativeImageUrlPrefix: GP_LOCALIMAGE_PREFIX },
+    renderer: {
+        relativeImageUrlPrefix: GP_LOCALIMAGE_PREFIX,
+        detailsTagDefaultOpen: true,
+    },
 });
 
 export const Markdown = ({ className }: { className: string }) => {
@@ -102,7 +105,7 @@ export const Markdown = ({ className }: { className: string }) => {
                 cursorLineElement={cursorLineElement}
                 markdownContainerElement={markdownContainerElement}
             />
-            <div id={MARKDOWN_ELEMENT_ID} className="mx-auto mb-96" />
+            <div id={MARKDOWN_ELEMENT_ID} className="relative mx-auto mb-96" />
             <LineNumbers offsets={offsets} lineNumbersElement={lineNumbersElement} />
         </div>
     );
