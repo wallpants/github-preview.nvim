@@ -14,7 +14,15 @@ export const LineNumbers = ({ offsets, lineNumbersElement }: Props) => {
 
         const html = offsets.reduce((html, offset, index) => {
             if (index === offsets.length - 1) return html;
-            const style = `position: absolute; top: ${offset[0]}px; transform: translateY(-5px); font-size: 13px; width: 45px; text-align: right; color: var(--color-fg-subtle); pointer-events: none;`;
+            const style =
+                "position: absolute;" +
+                `top: ${offset[0]}px` +
+                "transform: translateY(-5px);" +
+                "font-size: 13px;" +
+                "color: var(--color-fg-subtle);" +
+                "width: 45px;" +
+                "pointer-events: none;" +
+                "text-align: right;";
             return html + `<span style="${style}">${index + 1}</span>`;
         }, "");
 

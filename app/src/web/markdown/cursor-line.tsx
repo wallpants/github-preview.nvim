@@ -32,7 +32,7 @@ export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElemen
     return (
         <div
             id={CURSOR_LINE_ELEMENT_ID}
-            className="pointer-events-none absolute h-[36px] w-full"
+            className="pointer-events-none absolute z-10 h-[36px] w-full"
             style={{ background: lineColor }}
         />
     );

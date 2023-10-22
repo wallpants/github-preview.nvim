@@ -2,6 +2,9 @@
 export default {
     darkMode: ["class"],
     content: ["./**/*.{html,tsx}"],
+    corePlugins: {
+        preflight: false,
+    },
     theme: {
         colors: ({ colors }) => ({
             orange: colors.orange,

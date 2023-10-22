@@ -23,6 +23,7 @@ export const Index = ({
             <head>
                 <meta charSet="UTF-8" />
                 <link rel="icon" type="image/svg+xml" href={`${GP_STATIC_PREFIX}github.svg`} />
+                <link href={`${GP_STATIC_PREFIX}preflight.css`} rel="stylesheet" />
                 <link href={`${GP_STATIC_PREFIX}tailwind.css`} rel="stylesheet" />
                 <link href={`${GP_STATIC_PREFIX}${PANTSDOWN_CSS}`} rel="stylesheet" />
                 <link href={`${GP_STATIC_PREFIX}index.css`} rel="stylesheet" />
