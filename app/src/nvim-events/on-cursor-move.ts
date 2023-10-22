@@ -24,7 +24,7 @@ export async function onCursorMove(
             command: `lua
             local buffer = vim.api.nvim_get_current_buf()
             local path = vim.api.nvim_buf_get_name(0)
-            local cursor_line = vim.api.nvim_win_get_cursor(0)[1] - 1
+            local cursor_line = vim.api.nvim_win_get_cursor(0)[1]
             vim.rpcnotify(${channelId}, "${NOTIFICATION}", buffer, path, cursor_line)`,
         },
     ]);
