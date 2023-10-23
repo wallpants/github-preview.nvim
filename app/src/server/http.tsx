@@ -2,7 +2,7 @@ import { type Server } from "bun";
 import pantsdownCss from "pantsdown/styles.css";
 import { renderToReadableStream } from "react-dom/server";
 import { ENV } from "../env.ts";
-import { GP_STATIC_PREFIX, Index, PANTSDOWN_CSS } from "../web/index.tsx";
+import { GP_STATIC_PREFIX, Index } from "../web/index.tsx";
 import { GP_LOCALIMAGE_PREFIX } from "../web/markdown/index.tsx";
 
 const webRoot = import.meta.dir + "/../web/";
@@ -47,7 +47,7 @@ export function httpHandler(host: string, port: number, root: string) {
                 return new Response(outputs[0]);
             }
 
-            if (requested === PANTSDOWN_CSS) {
+            if (requested === "pantsdown.css") {
                 const file = Bun.file(pantsdownCss);
                 return new Response(file, {
                     headers: {

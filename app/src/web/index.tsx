@@ -7,7 +7,6 @@ import { Markdown } from "./markdown/index.tsx";
 import { Provider } from "./provider/provider.tsx";
 
 export const GP_STATIC_PREFIX = "/__static_github_preview_";
-export const PANTSDOWN_CSS = "pantsdown.css";
 
 export const Index = ({
     host,
@@ -25,7 +24,7 @@ export const Index = ({
                 <link rel="icon" type="image/svg+xml" href={`${GP_STATIC_PREFIX}github.svg`} />
                 <link href={`${GP_STATIC_PREFIX}preflight.css`} rel="stylesheet" />
                 <link href={`${GP_STATIC_PREFIX}tailwind.css`} rel="stylesheet" />
-                <link href={`${GP_STATIC_PREFIX}${PANTSDOWN_CSS}`} rel="stylesheet" />
+                <link href={`${GP_STATIC_PREFIX}pantsdown.css`} rel="stylesheet" />
                 <link href={`${GP_STATIC_PREFIX}index.css`} rel="stylesheet" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>GitHub</title>
