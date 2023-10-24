@@ -100,3 +100,4 @@ Starts the service if not running or stops it if it's already running.
 - [ ] git hook to compile tailwind (23 oct)
 - [ ] write docs (23 oct)
 - [ ] write checkhealth (23 oct)
+- [ ] add .eslintconfig to app/src/web. There are some devDependncies installed for eslint-react that I believe are currently not being used
