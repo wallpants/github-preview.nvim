@@ -132,7 +132,9 @@ M.setup = function(opts)
 		local __filename = debug.getinfo(1, "S").source:sub(2)
 		local plugin_root = vim.fn.fnamemodify(__filename, ":p:h:h:h") .. "/"
 
-		-- install bun dependencies
+		-- Install Bun dependencies:
+		-- if we try using bun's auto-install feature, web dependencies are not installed,
+		-- because they're not imported until the browser makes the initial http request.
 		local bun_install = vim.fn.jobstart("bun install --frozen-lockfile --production", {
 			cwd = plugin_root .. "app",
 		})
