@@ -60,7 +60,6 @@ export function getScrollOffsets(
 
         if (currLine >= elemStartLine) {
             currLine = elemStartLine;
-            sourceLineOffsets[currLine] = [offsetTop, element];
         } else {
             let acc = markdownElement.offsetTop + markdownElement.getBoundingClientRect().top;
             let perLine = 0;
