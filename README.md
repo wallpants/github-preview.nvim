@@ -1,10 +1,11 @@
 # GitHub Markdown Preview
 
-<img src="docs/nvim.svg" height="60px" align="right" />
-<img src="docs/github.svg" height="60px" align="right" />
-<img src="docs/bun.svg" height="60px" align="right" />
+[<img src="docs/nvim.svg" height="60px" align="right" />](https://neovim.io/)
+[<img src="docs/github.svg" height="60px" align="right" />](https://github.com/)
+[<img src="docs/bun.svg" height="60px" align="right" />](https://bun.sh/)
 
 Live Preview of your Markdown files & local repositories.
+
 Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https://github.com/wallpants/pantsdown).
 
 ## Features
