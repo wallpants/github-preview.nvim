@@ -20,22 +20,31 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
 
 ![Demo](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/demo.gif)
 
+## Requirements
+
+1. [Bun](https://bun.sh)
+2. [Neovim](https://neovim.io)
+
 ## Installation
 
 Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
 {
-    'nvim-telescope/telescope.nvim',
+    'wallpants/github-preview.nvim',
     opts = {}
+    -- optionally, add a keymap
+    keys = {
+        { "<leader>mp", "<cmd>GithubPreviewToggle<cr>" }
+    },
 }
 ```
 
 ## Customization
 
 ```lua
-require('github-preview.nvim').setup{
-    -- these are the default options, any options
+require('github-preview').setup({
+    -- these are the default values, any values
     -- you specify will be merged with this dictionary
 
     port = 6041,
@@ -56,10 +65,13 @@ require('github-preview.nvim').setup{
         -- VERY LOW and VERY HIGH numbers might be out of screen
         top_offset_pct = 35,
     },
-}
+})
 ```
 
 ## Usage
+
+🚨 The first time you run `:GithubPreviewStart`, it might take a few seconds for your browser to open as dependencies are being downloaded.
+This might happen again after a plugin update if there were any changes to the plugin dependencies.
 
 ### `:GithubPreviewStart`
 
@@ -77,14 +89,14 @@ Starts the service if not running or stops it if it's already running.
 
 ## Roadmap
 
-- [ ] set initial content or first render shows outdated content
-- [ ] disable srcoll & disable cursorline, how do these options interact with each other
-- [ ] fix line numbers in code files
-- [ ] keep track of open and closed \<details> every rerender
-- [ ] parse markdown in webworker (maybe?)
-- [ ] recalculate offsets on line count change (throttle maybe?)
-- [ ] implement link follow for local files
-- [ ] git hook to compile tailwind
-- [ ] write docs
-- [ ] github removes "style" from html, we do render it
-- [ ] write checkhealth
+- [ ] delete .bak files (23 oct)
+- [ ] set initial content or first render shows outdated content (23 oct)
+- [ ] fix line numbers in code files (23 oct)
+- [ ] keep track of open and closed \<details> every rerender (23 oct)
+  - [ ] scroll is broken in details when not open (use bunvim readme to debug) (23 oct)
+  - [ ] (quickfix?) add option to in UI to let user select if render all open or all closed (23 oct)
+- [ ] recalculate offsets on line count change (throttle maybe?) (23 oct)
+- [ ] implement link follow for local files (23 oct)
+- [ ] git hook to compile tailwind (23 oct)
+- [ ] write docs (23 oct)
+- [ ] write checkhealth (23 oct)
