@@ -1,3 +1,4 @@
+import { type BaseEvents } from "bunvim";
 import { type Output } from "valibot";
 import type { ContentChangeSchema, CursorMoveSchema, PluginInitSchema } from "./schemas.ts";
 
@@ -37,7 +38,8 @@ export type WsBrowserRequest =
           path: string;
       };
 
-export type CustomEvents = {
+// eslint-disable-next-line
+export interface CustomEvents extends BaseEvents {
     requests: {
         VimLeavePre: [];
     };
@@ -58,4 +60,4 @@ export type CustomEvents = {
         ];
         nvim_buf_changedtick_event: [buffer: number, changedtick: number];
     };
-};
+}
