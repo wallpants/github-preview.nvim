@@ -77,7 +77,10 @@ Starts the service if not running or stops it if it's already running.
 
 ## Roadmap
 
+- [ ] set initial content or first render shows outdated content
+- [ ] disable srcoll & disable cursorline, how do these options interact with each other
 - [ ] fix line numbers in code files
+- [ ] keep track of open and closed \<details> every rerender
 - [ ] parse markdown in webworker (maybe?)
 - [ ] recalculate offsets on line count change (throttle maybe?)
 - [ ] implement link follow for local files

@@ -8,9 +8,6 @@ export async function onCursorMove(
     augroupId: number,
     callback: (args: CustomEvents["notifications"][typeof NOTIFICATION]) => Awaitable<void>,
 ) {
-    // Subscribe to RPCNotification
-    await nvim.call("nvim_subscribe", [NOTIFICATION]);
-
     // Notification handler
     nvim.onNotification(NOTIFICATION, callback);
 

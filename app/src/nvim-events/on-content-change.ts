@@ -18,9 +18,6 @@ export async function onContentChange(
         if (attachedBuffer === buffer) attachedBuffer = null;
     });
 
-    // Subscribe to RPCNotification
-    await nvim.call("nvim_subscribe", [NOTIFICATION]);
-
     // Notification handler
     nvim.onNotification(NOTIFICATION, async ([buffer, path]) => {
         if (!path) return;
