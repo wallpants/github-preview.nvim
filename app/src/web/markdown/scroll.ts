@@ -109,7 +109,6 @@ export function getScrollOffsets(
         }
     }
 
-    console.log("sourceLineOffsets: ", sourceLineOffsets);
     return sourceLineOffsets;
 }
 
