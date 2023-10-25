@@ -41,7 +41,7 @@ export type WsBrowserRequest =
 // eslint-disable-next-line
 export interface CustomEvents extends BaseEvents {
     requests: {
-        VimLeavePre: [];
+        onBeforeExit: [];
     };
     notifications: {
         // github-preview

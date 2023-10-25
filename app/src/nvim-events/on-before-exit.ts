@@ -1,9 +1,9 @@
 import { type Nvim } from "bunvim";
 import { type CustomEvents } from "../types.ts";
 
-const REQUEST = "VimLeavePre";
+const REQUEST = "onBeforeExit";
 
-export async function onVimLeavePre(
+export async function onBeforeExit(
     nvim: Nvim<CustomEvents>,
     augroupId: number,
     callback: (args: CustomEvents["requests"][typeof REQUEST]) => unknown,
@@ -14,7 +14,7 @@ export async function onVimLeavePre(
     // Create autocmd to make RPCRequest
     const channelId = await nvim.channelId();
     await nvim.call("nvim_create_autocmd", [
-        [REQUEST],
+        ["VimLeavePre"],
         {
             group: augroupId,
             desc: "Notify github-preview",
