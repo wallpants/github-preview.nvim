@@ -53,6 +53,11 @@ export function getScrollOffsets(
 
     for (let index = 0, len = elements.length; index < len; index++) {
         const element = elements[index]!;
+
+        if (!element.checkVisibility()) {
+            continue;
+        }
+
         const { elemStartLine, elemEndLine, offsetTop, scrollHeight } = getAttrs(
             markdownContainerElement,
             element,
@@ -74,7 +79,16 @@ export function getScrollOffsets(
             }
 
             while (currLine < elemStartLine) {
-                sourceLineOffsets[currLine++] = [acc, element];
+                sourceLineOffsets[currLine] = [acc, element];
+
+                if (!acc && sourceLineOffsets[currLine - 1]?.[0]) {
+                    // In some cases acc is 0 here
+                    // it happens inside of <details>, maybe there are other cases.
+                    // If there's a prev offset already, we copy the value over
+                    sourceLineOffsets[currLine]![0] = sourceLineOffsets[currLine - 1]![0];
+                }
+
+                currLine++;
                 acc += perLine;
             }
         }
@@ -95,6 +109,7 @@ export function getScrollOffsets(
         }
     }
 
+    console.log("sourceLineOffsets: ", sourceLineOffsets);
     return sourceLineOffsets;
 }
 
