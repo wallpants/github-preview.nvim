@@ -1,4 +1,5 @@
 import { type Server } from "bun";
+import { type Nvim } from "bunvim";
 import pantsdownCss from "pantsdown/styles.css";
 import { renderToReadableStream } from "react-dom/server";
 import { ENV } from "../env.ts";
@@ -8,7 +9,7 @@ import { GP_LOCALIMAGE_PREFIX } from "../web/markdown/index.tsx";
 const webRoot = import.meta.dir + "/../web/";
 export const unaliveURL = "/unalive";
 
-export function httpHandler(host: string, port: number, root: string) {
+export function httpHandler(host: string, port: number, root: string, nvim: Nvim) {
     return async (req: Request, server: Server) => {
         const upgradedToWs = server.upgrade(req, {
             data: {}, // this data is available in socket.data
@@ -25,6 +26,7 @@ export function httpHandler(host: string, port: number, root: string) {
         if (pathname === unaliveURL) {
             // This endpoint is called when starting the service to kill
             // github-preview instances started by other nvim instances
+            nvim.detach();
             process.exit(0);
         }
 
