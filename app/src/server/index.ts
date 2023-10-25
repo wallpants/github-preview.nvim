@@ -13,7 +13,7 @@ export function startServer(
 ): Server {
     const server = Bun.serve({
         port: port,
-        fetch: httpHandler(host, port, browserState.root),
+        fetch: httpHandler(host, port, browserState.root, nvim),
         websocket: websocketHandler(nvim, browserState),
     });
 
