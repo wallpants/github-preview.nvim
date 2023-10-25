@@ -1,7 +1,7 @@
 local M = {}
 
----@type nvim_plugin_opts
-M.default_opts = {
+---@type opts
+local default_opts = {
 	port = 6041,
 	cursor_line = {
 		disable = false,
@@ -25,10 +25,10 @@ local function client_channel(client_name)
 	return nil
 end
 
----@param opts nvim_plugin_opts
+---@param opts opts
 M.setup = function(opts)
 	-- deep merge user opts with default opts without overriding user opts
-	opts = vim.tbl_deep_extend("keep", opts, M.default_opts)
+	opts = vim.tbl_deep_extend("keep", opts, default_opts)
 
 	vim.validate({
 		port = { opts.port, "number" },
@@ -60,8 +60,8 @@ M.setup = function(opts)
 			if channel_id == nil then
 				return
 			end
-			-- VimLeavePre request closes browser
-			vim.rpcrequest(channel_id, "VimLeavePre")
+			-- onBeforeExit request closes browser
+			vim.rpcrequest(channel_id, "onBeforeExit")
 			local stopSuccess = vim.fn.jobstop(job_id)
 			if stopSuccess then
 				job_id = nil
@@ -72,8 +72,7 @@ M.setup = function(opts)
 	end
 
 	local function start_service()
-		-- stop service if it's already running and we try starting it again
-		stop_service()
+		vim.notify("github-preview: init", vim.log.levels.INFO)
 
 		-- should look like "/Users/.../github-preview"
 		local root = vim.fn.finddir(".git", ";")

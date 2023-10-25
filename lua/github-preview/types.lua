@@ -14,7 +14,7 @@
 ---@field scroll scroll
 ---@field cursor_line cursor_line
 
----@class nvim_plugin_opts
+---@class opts
 ---@field port number
 ---@field scroll scroll
 ---@field cursor_line cursor_line
