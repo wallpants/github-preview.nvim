@@ -2,9 +2,9 @@ import { attach, type LogLevel } from "bunvim";
 import { relative } from "node:path";
 import { parse } from "valibot";
 import { ENV } from "./env.ts";
+import { onBeforeExit } from "./nvim-events/on-before-exit.ts";
 import { onContentChange } from "./nvim-events/on-content-change.ts";
 import { onCursorMove } from "./nvim-events/on-cursor-move.ts";
-import { onVimLeavePre } from "./nvim-events/on-vim-leave-pre.ts";
 import { PluginInitSchema } from "./schemas.ts";
 import { unaliveURL } from "./server/http.tsx";
 import { startServer } from "./server/index.ts";
@@ -45,9 +45,9 @@ function wsSend(message: WsServerMessage) {
 
 const augroupId = await nvim.call("nvim_create_augroup", ["github-preview", { clear: true }]);
 
-await onVimLeavePre(nvim, augroupId, async () => {
+await onBeforeExit(nvim, augroupId, () => {
     wsSend({ goodbye: true });
-    await nvim.call("nvim_del_augroup_by_id", [augroupId]);
+    // await nvim.call("nvim_del_augroup_by_id", [augroupId]);
     // We're handling an RPCRequest, which means neovim remains blocked
     // until we return something
     return true;
