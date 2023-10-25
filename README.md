@@ -90,15 +90,11 @@ Starts the service if not running or stops it if it's already running.
 
 ## Roadmap
 
-- [ ] delete .bak files (23 oct)
 - [ ] set initial content or first render shows outdated content (23 oct)
 - [ ] fix line numbers in code files (23 oct)
 - [ ] keep track of open and closed \<details> every rerender (23 oct)
-  - [ ] scroll is broken in details when not open (use bunvim readme to debug) (23 oct)
   - [ ] (quickfix?) add option to in UI to let user select if render all open or all closed (23 oct)
-- [ ] recalculate offsets on line count change (throttle maybe?) (23 oct)
 - [ ] implement link follow for local files (23 oct)
 - [ ] git hook to compile tailwind (23 oct)
 - [ ] write docs (23 oct)
 - [ ] write checkhealth (23 oct)
-- [ ] add .eslintconfig to app/src/web. There are some devDependncies installed for eslint-react that I believe are currently not being used
