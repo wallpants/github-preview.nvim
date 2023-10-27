@@ -73,4 +73,5 @@ you'll get an error.
 ## Repository Mode
 
 If your `cwd` is a GitHub Repository or within one, **Repository Mode** will be enabled.
-You can even run `:GithubPreviewStart` without loading a file into the Neovim buffer.
+You can even run `:GithubPreviewStart` without loading a file into the Neovim buffer if
+in a repo.
