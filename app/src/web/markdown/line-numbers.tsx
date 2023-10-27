@@ -13,17 +13,21 @@ export const LineNumbers = ({ offsets, lineNumbersElement }: Props) => {
         if (!offsets || !lineNumbersElement) return;
 
         const html = offsets.reduce((html, offset, index) => {
-            if (index === offsets.length - 1) return html;
+            const isFirst = index === 0;
+            const isLast = index === offsets.length - 1;
+
+            if (isFirst || isLast) return html;
+
             const style =
                 "position: absolute;" +
-                `top: ${offset[0]}px` +
+                `top: ${offset[0]}px;` +
                 "transform: translateY(-5px);" +
                 "font-size: 13px;" +
                 "color: var(--color-fg-subtle);" +
                 "width: 45px;" +
                 "pointer-events: none;" +
                 "text-align: right;";
-            return html + `<span style="${style}">${index + 1}</span>`;
+            return html + `<span style="${style}">${index}</span>`;
         }, "");
 
         lineNumbersElement.innerHTML = html;
