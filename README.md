@@ -69,7 +69,7 @@ require('github-preview').setup({
 
         -- Between 0 and 100.
         -- Play around with this number until you find the offset you like.
-        -- VERY LOW and VERY HIGH numbers might be out of screen
+        -- VERY LOW and VERY HIGH numbers might result in cursorline out of screen.
         top_offset_pct = 35,
     },
 })
@@ -82,8 +82,8 @@ This might happen again after a plugin update if there were any changes to the p
 
 ### `:GithubPreviewStart`
 
-Start service. If an instance of `github-preview.nvim` is already running,
-be it by the current Neovim instance or another, the older `github-preview.nvim`
+Start service. If an instance of **github-preview.nvim** is already running,
+be it by the current Neovim instance or another, the older **github-preview.nvim**
 is unalived in favour of the younger one.
 
 ### `:GithubPreviewStop`
@@ -96,15 +96,15 @@ Starts the service if not running or stops it if it's already running.
 
 ## Roadmap
 
-2. set initial content or first render shows outdated content (23 oct)
-3. fix line numbers in code files (23 oct)
-4. Better Mermaid support (27 oct)
+1. set initial content or first render shows outdated content (23 oct)
+2. fix line numbers in code files (23 oct)
+3. Better Mermaid support (27 oct)
    - center svgs
    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line)
    - mermaid dark theme
-5. keep track of open and closed \<details> every rerender (23 oct)
+4. keep track of open and closed \<details> every rerender (23 oct)
    - (quickfix?) add option to in UI to let user select if render all open or all closed (23 oct)
-6. implement link follow for local files (23 oct)
-7. git hook to compile tailwind (23 oct)
-8. write docs (23 oct)
-9. write checkhealth (23 oct)
+5. implement link follow for local files (23 oct)
+6. git hook to compile tailwind (23 oct)
+7. write docs (23 oct)
+8. write checkhealth (23 oct)
