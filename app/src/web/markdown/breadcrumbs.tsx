@@ -19,7 +19,7 @@ export const BreadCrumbs = () => {
     if (isDir) segmentsLen--;
 
     return (
-        <p className="sticky top-0 z-20 !mb-0 flex h-[40px] min-w-max flex-nowrap overflow-hidden bg-github-border-muted p-2 text-[15px] font-semibold [&>span]:cursor-pointer">
+        <p className="bg-github-border-muted sticky top-0 z-20 !mb-0 flex h-[40px] min-w-max flex-nowrap overflow-hidden p-2 text-[15px] font-semibold [&>span]:cursor-pointer">
             {[repoName].concat(segments).map((segment, idx) => {
                 const isLast = idx === segmentsLen;
 
@@ -28,13 +28,15 @@ export const BreadCrumbs = () => {
                 return (
                     <Fragment key={idx}>
                         {idx ? (
-                            <span className="mx-1 font-normal text-github-fg-subtle">/</span>
+                            <span className="text-github-fg-subtle mx-1 font-normal">/</span>
                         ) : null}
                         <span
                             key={idx}
                             className={cn(
                                 "hover:underline",
-                                isLast ? "pointer-events-none" : "text-github-accent-fg",
+                                isLast
+                                    ? "pointer-events-none font-normal"
+                                    : "text-github-accent-fg",
                             )}
                             onClick={handleClick(idx)}
                         >

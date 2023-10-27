@@ -96,14 +96,13 @@ Starts the service if not running or stops it if it's already running.
 
 ## Roadmap
 
-1. fix line numbers in code files (23 oct)
-2. Better Mermaid support (27 oct)
+1. Better Mermaid support (27 oct)
    - center svgs
    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line)
    - mermaid dark theme
-3. keep track of open and closed \<details> every rerender (23 oct)
+2. keep track of open and closed \<details> every rerender (23 oct)
    - (quickfix?) add option to in UI to let user select if render all open or all closed (23 oct)
-4. implement link follow for local files (23 oct)
-5. git hook to compile tailwind (23 oct)
-6. write docs (23 oct)
-7. write checkhealth (23 oct)
+3. implement link follow for local files (23 oct)
+4. git hook to compile tailwind (23 oct)
+5. write docs (23 oct)
+6. write checkhealth (23 oct)
