@@ -58,6 +58,15 @@ export function httpHandler(host: string, port: number, root: string, nvim: Nvim
                 });
             }
 
+            if (requested === "vendor/mermaid.min.js") {
+                const file = Bun.file(webRoot + requested);
+                return new Response(file, {
+                    headers: {
+                        "content-type": "text/javascript",
+                    },
+                });
+            }
+
             const file = Bun.file(webRoot + requested);
             return new Response(file);
         }

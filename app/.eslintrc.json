@@ -6,6 +6,7 @@
     "sourceType": "module",
     "project": ["tsconfig.json"]
   },
+  "ignorePatterns": ["*.min.js"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/strict-type-checked",
