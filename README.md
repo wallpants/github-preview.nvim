@@ -47,7 +47,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ## Setup
 
-`setup` must be called for the plugin to be loaded. Some plugin managers do this for you.
+`setup` must be called for the plugin to be loaded. Some plugin managers handle this for you.
 
 ```lua
 require('github-preview').setup({
@@ -98,8 +98,10 @@ Starts the service if not running or stops it if it's already running.
 
 1. Better Mermaid support (27 oct)
    - center svgs
-   - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line)
+   - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
    - mermaid dark theme
+   - after svgs are generated, if markdown container width changes, svgs mantain their size
+     which could be either too wide or too narrow
 2. keep track of open and closed \<details> every rerender (23 oct)
    - (quickfix?) add option to in UI to let user select if render all open or all closed (23 oct)
 3. implement link follow for local files (23 oct)
