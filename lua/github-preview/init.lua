@@ -97,10 +97,13 @@ M.setup = function(opts)
 			root = vim.fn.fnamemodify(root, ":p:h:h") .. "/"
 		end
 
+		local content = vim.api.nvim_buf_get_lines(0, 0, -1, true)
+
 		---@type plugin_init
 		vim.g.github_preview_init = {
 			port = opts.port,
 			root = root,
+			content = content,
 			path = init_path,
 			single_file = single_file,
 			scroll = opts.scroll,

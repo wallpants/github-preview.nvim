@@ -10,6 +10,7 @@
 ---@field port number
 ---@field root string
 ---@field path string
+---@field content string[]
 ---@field single_file boolean
 ---@field scroll scroll
 ---@field cursor_line cursor_line

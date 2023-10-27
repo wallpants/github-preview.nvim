@@ -45,7 +45,7 @@ export async function initBrowserState(init: PluginInit): Promise<BrowserState> 
 
     return {
         root: init.root,
-        content,
+        content: path === relativePath ? init.content : content,
         repoName,
         currentPath: path,
         singleFile: init.single_file,
