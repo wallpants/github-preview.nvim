@@ -45,9 +45,9 @@ function wsSend(message: WsServerMessage) {
 
 const augroupId = await nvim.call("nvim_create_augroup", ["github-preview", { clear: true }]);
 
-await onBeforeExit(nvim, augroupId, () => {
+await onBeforeExit(nvim, augroupId, async () => {
     wsSend({ goodbye: true });
-    // await nvim.call("nvim_del_augroup_by_id", [augroupId]);
+    await nvim.call("nvim_del_augroup_by_id", [augroupId]);
     // We're handling an RPCRequest, which means neovim remains blocked
     // until we return something
     return true;
