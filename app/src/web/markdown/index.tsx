@@ -1,3 +1,4 @@
+import { type Mermaid } from "mermaid";
 import { Pantsdown } from "pantsdown";
 import { useContext, useEffect, useState } from "react";
 import { websocketContext } from "../provider/context.ts";
@@ -18,9 +19,12 @@ const pantsdown = new Pantsdown({
     },
 });
 
+declare const mermaid: Mermaid;
+
 export const Markdown = ({ className }: { className: string }) => {
     const { registerHandler } = useContext(websocketContext);
     const [offsets, setOffsets] = useState<Offsets>([]);
+    // const mermaids = useRef<Record<string, string>>({});
 
     const [markdownElement, setMarkdownElement] = useState<HTMLElement>();
     const [cursorLineElement, setCursorLineElement] = useState<HTMLElement>();
@@ -36,14 +40,30 @@ export const Markdown = ({ className }: { className: string }) => {
 
     useEffect(() => {
         if (!markdownElement || !cursorLineElement || !lineNumbersElement) return;
+        // const serializer = new XMLSerializer();
 
-        registerHandler("markdown", (message) => {
+        registerHandler("markdown", async (message) => {
             if (message.content) {
                 const fileExt = getFileExt(message.currentPath);
 
                 const text = message.content.join("\n");
                 const markdown = fileExt === "md" ? text : "```" + fileExt + `\n${text}`;
                 markdownElement.innerHTML = pantsdown.parse(markdown);
+
+                // markdownElement.querySelectorAll(".mermaid").forEach((mermaid) => {
+                //     const mermaidHash = serializer.serializeToString(mermaid);
+                //     if (mermaids.current[mermaidHash]) {
+                //         mermaid.outerHTML = mermaids.current[mermaidHash]!;
+                //     }
+                // });
+
+                await mermaid.run({
+                    querySelector: ".mermaid",
+                    suppressErrors: true,
+                    postRenderCallback(id) {
+                        console.log("id: ", id);
+                    },
+                });
 
                 if (fileExt === "md") {
                     markdownElement.style.setProperty("padding", "44px");
@@ -88,7 +108,7 @@ export const Markdown = ({ className }: { className: string }) => {
         return () => {
             observer.disconnect();
         };
-    }, [markdownElement]);
+    }, [markdownElement, markdownContainerElement]);
 
     return (
         <div

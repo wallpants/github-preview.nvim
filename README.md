@@ -10,12 +10,14 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
 
 ## Features
 
-- 🔴 LIVE updates
-- ♻ Synced Scrolling
-- 🖍️ Cursorline in Preview
-- 🏞️ Local Image Support
-- 📄 Single-file mode
-- 🗄️ Repository mode
+- [💻 Linux / macOS / WSL](./docs/features.md#linux--macos--wsl)
+- [🔴 LIVE updates](./docs/features.md#live-updates)
+- [♻ Synced Scrolling](./docs/features.md#synced-scrolling)
+- [🖍️ Cursorline in Preview](./docs/features.md#cursorline-in-preview)
+- [🏞️ Local Image Support](./docs/features.md#local-image-support)
+- [🧜 Mermaid Support](./docs/features.md#mermaid-support)
+- [📄 Single-file mode](./docs/features.md#single-file-mode)
+- [🗄️ Repository mode](./docs/features.md#repository-mode)
 
 ## Demo
 
@@ -33,15 +35,19 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 ```lua
 {
     'wallpants/github-preview.nvim',
-    opts = {}
-    -- optionally, add a keymap
+    opts = {
+        -- config goes here
+    }
     keys = {
+        -- optionally, add a keymap
         { "<leader>mp", "<cmd>GithubPreviewToggle<cr>" }
     },
 }
 ```
 
-## Customization
+## Setup
+
+`setup` must be called for the plugin to be loaded. Some plugin managers do this for you.
 
 ```lua
 require('github-preview').setup({
@@ -90,11 +96,15 @@ Starts the service if not running or stops it if it's already running.
 
 ## Roadmap
 
-- [ ] set initial content or first render shows outdated content (23 oct)
-- [ ] fix line numbers in code files (23 oct)
-- [ ] keep track of open and closed \<details> every rerender (23 oct)
-  - [ ] (quickfix?) add option to in UI to let user select if render all open or all closed (23 oct)
-- [ ] implement link follow for local files (23 oct)
-- [ ] git hook to compile tailwind (23 oct)
-- [ ] write docs (23 oct)
-- [ ] write checkhealth (23 oct)
+2. set initial content or first render shows outdated content (23 oct)
+3. fix line numbers in code files (23 oct)
+4. Better Mermaid support (27 oct)
+   - center svgs
+   - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line)
+   - mermaid dark theme
+5. keep track of open and closed \<details> every rerender (23 oct)
+   - (quickfix?) add option to in UI to let user select if render all open or all closed (23 oct)
+6. implement link follow for local files (23 oct)
+7. git hook to compile tailwind (23 oct)
+8. write docs (23 oct)
+9. write checkhealth (23 oct)

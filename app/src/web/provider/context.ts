@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { type WsServerMessage } from "../../types.ts";
 
-export type MessageHandler = (message: WsServerMessage) => void;
+export type MessageHandler = (message: WsServerMessage) => void | Promise<void>;
 
 export const websocketContext = createContext<{
     isConnected: boolean;

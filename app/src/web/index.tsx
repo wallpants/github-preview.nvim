@@ -22,6 +22,13 @@ export const Index = ({
             <head>
                 <meta charSet="UTF-8" />
                 <link rel="icon" type="image/svg+xml" href={`${GP_STATIC_PREFIX}github.svg`} />
+                <script
+                    type="text/javascript"
+                    src={`${GP_STATIC_PREFIX}vendor/mermaid.min.js`}
+                    dangerouslySetInnerHTML={{
+                        __html: "mermaid.initialize({ startOnLoad: false })",
+                    }}
+                ></script>
                 <link href={`${GP_STATIC_PREFIX}preflight.css`} rel="stylesheet" />
                 <link href={`${GP_STATIC_PREFIX}tailwind.css`} rel="stylesheet" />
                 <link href={`${GP_STATIC_PREFIX}pantsdown.css`} rel="stylesheet" />
