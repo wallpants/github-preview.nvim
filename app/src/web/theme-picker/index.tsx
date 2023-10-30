@@ -41,7 +41,7 @@ export function ThemePicker({ noBorder }: { noBorder?: boolean }) {
             rootHtml.className = `pantsdown ${theme}`;
             mermaid.initialize({
                 startOnLoad: false,
-                theme: theme === "light" ? "default" : theme,
+                theme: theme === "light" ? "default" : "dark",
             });
         }
 
