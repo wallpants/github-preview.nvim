@@ -21,6 +21,16 @@ const pantsdown = new Pantsdown({
 
 declare const mermaid: Mermaid;
 
+async function runMermaid() {
+    await mermaid.run({
+        querySelector: ".mermaid",
+        suppressErrors: true,
+        postRenderCallback(_id) {
+            // console.log("id: ", id);
+        },
+    });
+}
+
 export const Markdown = ({ className }: { className: string }) => {
     const { registerHandler } = useContext(websocketContext);
     const [offsets, setOffsets] = useState<Offsets>([]);
@@ -57,13 +67,7 @@ export const Markdown = ({ className }: { className: string }) => {
                 //     }
                 // });
 
-                await mermaid.run({
-                    querySelector: ".mermaid",
-                    suppressErrors: true,
-                    postRenderCallback(_id) {
-                        // console.log("id: ", id);
-                    },
-                });
+                await runMermaid();
 
                 if (fileExt === "md") {
                     markdownElement.style.setProperty("padding", "44px");
@@ -101,6 +105,7 @@ export const Markdown = ({ className }: { className: string }) => {
 
         const observer = new ResizeObserver(() => {
             setOffsets(getScrollOffsets(markdownContainerElement, markdownElement));
+            void runMermaid();
         });
 
         observer.observe(markdownElement);
