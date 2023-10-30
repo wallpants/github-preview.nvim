@@ -76,10 +76,10 @@ export const Markdown = ({ className }: { className: string }) => {
                     lineNumbersElement.style.setProperty("display", "none");
                 } else {
                     // rendering code file
-                    markdownElement.style.setProperty("padding", "0 0 0 60px");
+                    markdownElement.style.setProperty("padding", "20px 0 0 60px");
                     markdownElement.style.removeProperty("max-width");
                     // move cursorLineElement up so line of code is vertically centered
-                    cursorLineElement.style.setProperty("transform", "translateY(-12px)");
+                    cursorLineElement.style.setProperty("transform", "translateY(-9px)");
                     lineNumbersElement.style.setProperty(
                         "display",
                         message.content.length ? "block" : "none",
@@ -88,7 +88,7 @@ export const Markdown = ({ className }: { className: string }) => {
                     // Change code background color to canvas default when displaying only code
                     const codeContainer = markdownElement.getElementsByTagName("pre")[0];
                     if (codeContainer) {
-                        codeContainer.style.setProperty("padding", "8px 16px 16px");
+                        codeContainer.style.setProperty("padding", "0px 16px");
                         codeContainer.style.setProperty(
                             "background",
                             "var(--color-canvas-default)",
