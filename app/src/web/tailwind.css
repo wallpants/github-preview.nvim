@@ -181,8 +181,8 @@
   bottom: 0px
 }
 
-.left-full {
-  left: 100%
+.left-\[102\%\] {
+  left: 102%
 }
 
 .top-0 {
@@ -419,6 +419,12 @@
 
 .justify-between {
   justify-content: space-between
+}
+
+.space-x-\[1\%\] > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1% * var(--tw-space-x-reverse));
+  margin-left: calc(1% * calc(1 - var(--tw-space-x-reverse)))
 }
 
 .overflow-hidden {
