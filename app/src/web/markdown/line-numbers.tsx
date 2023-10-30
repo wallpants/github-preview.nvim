@@ -21,7 +21,7 @@ export const LineNumbers = ({ offsets, lineNumbersElement }: Props) => {
             const style =
                 "position: absolute;" +
                 `top: ${offset[0]}px;` +
-                "transform: translateY(-5px);" +
+                "transform: translateY(-2px);" +
                 "font-size: 13px;" +
                 "color: var(--color-fg-subtle);" +
                 "width: 45px;" +

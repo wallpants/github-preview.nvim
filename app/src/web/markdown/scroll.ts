@@ -1,6 +1,3 @@
-// affects line height when calculating offsets in non markdown files
-const MAGIC = 4;
-
 type Attrs = {
     offsetTop: number;
     scrollHeight: number;
@@ -53,7 +50,6 @@ export function getScrollOffsets(
     const isCode =
         sortedElements.length === 1 &&
         sortedElements[0]?.tagName === "PRE" &&
-        sortedElements[0].children.length === 1 &&
         sortedElements[0].firstElementChild?.tagName === "CODE";
 
     for (let index = 0, len = sortedElements.length; index < len; index++) {
@@ -98,15 +94,18 @@ export function getScrollOffsets(
             }
         }
 
-        let height = scrollHeight;
         let acc = offsetTop;
+        // +1, because we go up until <= elemEndLine
+        let lineRange = elemEndLine + 1 - elemStartLine;
 
         if (isCode) {
-            height -= MAGIC;
-            acc += markdownContainerElement.offsetTop;
+            // -1, because when rendering only code, we omit
+            // the fence closing line ```
+            // or at least that's what I think is happening
+            lineRange -= 1;
         }
 
-        const perLine = height / (elemEndLine + 1 - elemStartLine);
+        const perLine = scrollHeight / lineRange;
 
         while (currLine <= elemEndLine) {
             sourceLineOffsets[currLine++] = [acc, element];
