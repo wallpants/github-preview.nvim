@@ -17,12 +17,15 @@ export const Explorer = () => {
     return (
         <div
             className={cn(
-                "relative overflow-hidden rounded-r-md border border-l-0 border-github-border-default",
+                "relative rounded-r-md border border-l-0 border-github-border-default",
                 isExpanded ? "w-80" : "w-12",
             )}
         >
-            <Header isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
-            <div className={isExpanded ? "block h-full overflow-auto pb-56 pt-1" : "hidden"}>
+            <div
+                className={
+                    isExpanded ? "absolute inset-0 block overflow-y-auto pb-56 pt-16" : "hidden"
+                }
+            >
                 {isSingleFile ? (
                     <div className="!px-3">
                         <h3>Single file mode</h3>
@@ -33,6 +36,11 @@ export const Explorer = () => {
                     <EntryComponent entry="" depth={-1} currentPath={currentPath} />
                 )}
             </div>
+            <Header
+                className="absolute inset-x-0 top-0 rounded-tr-md"
+                isExpanded={isExpanded}
+                setIsExpanded={setIsExpanded}
+            />
             <Footer isExpanded={isExpanded} />
         </div>
     );

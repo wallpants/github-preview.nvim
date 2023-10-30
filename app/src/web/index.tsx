@@ -35,9 +35,9 @@ export const Index = ({
             </head>
             <body>
                 <Provider host={host} port={port} is_dev={is_dev}>
-                    <div className="flex h-screen w-screen overflow-hidden py-3">
-                        <Explorer />
+                    <div className="flex h-screen w-screen flex-row-reverse overflow-hidden py-3">
                         <Markdown className="mx-4 h-full flex-1 overflow-y-auto overflow-x-hidden" />
+                        <Explorer />
                     </div>
                 </Provider>
             </body>
