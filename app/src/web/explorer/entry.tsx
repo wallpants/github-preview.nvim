@@ -78,7 +78,7 @@ export const EntryComponent = ({ entry, depth, currentPath }: Props) => {
                     )}
                 >
                     {isSelected && (
-                        <div className="absolute -left-2 h-6 w-1.5 rounded-sm bg-github-accent-fg" />
+                        <div className="bg-github-accent-fg absolute -left-2 h-6 w-1.5 rounded-sm" />
                     )}
                     {isDir && (
                         <div
@@ -86,13 +86,14 @@ export const EntryComponent = ({ entry, depth, currentPath }: Props) => {
                                 e.stopPropagation();
                                 setExpanded(!expanded);
                             }}
-                            className="mr-1 flex h-full items-center hover:bg-github-border-default"
+                            // eslint-disable-next-line
+                            className="hover:bg-github-border-default mr-1 flex h-full items-center"
                         >
                             <ChevronRight className={cn(expanded && "rotate-90")} />
                         </div>
                     )}
                     {IconMap[isDir ? (expanded ? "openDir" : "dir") : "file"]}
-                    <span className="text-sm group-hover:text-github-accent-fg group-hover:underline">
+                    <span className="group-hover:text-github-accent-fg text-sm group-hover:underline">
                         {entryName}
                     </span>
                 </div>

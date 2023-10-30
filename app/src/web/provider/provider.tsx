@@ -31,12 +31,15 @@ export const Provider = ({
         // to have rendered and registered their onWsMessageHandlers
         is_dev && console.log("connecting websocket");
         ws.current.reconnect();
-    }, []);
+    }, [is_dev]);
 
-    const wsRequest = useCallback((message: WsBrowserRequest) => {
-        is_dev && console.log(`requesting '${message.type}'`, message);
-        ws.current.send(JSON.stringify(message));
-    }, []);
+    const wsRequest = useCallback(
+        (message: WsBrowserRequest) => {
+            is_dev && console.log(`requesting '${message.type}'`, message);
+            ws.current.send(JSON.stringify(message));
+        },
+        [is_dev],
+    );
 
     useEffect(() => {
         // Update url on navigation
@@ -74,10 +77,10 @@ export const Provider = ({
             }
 
             handlers.current.forEach((handler) => {
-                handler(message);
+                void handler(message);
             });
         };
-    }, [wsRequest]);
+    }, [wsRequest, is_dev]);
 
     const getEntries = useCallback(
         (path: string) => {

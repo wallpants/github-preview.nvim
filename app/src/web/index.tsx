@@ -21,18 +21,15 @@ export const Index = ({
         <html lang="en" className="pantsdown dark">
             <head>
                 <meta charSet="UTF-8" />
-                <link rel="icon" type="image/svg+xml" href={`${GP_STATIC_PREFIX}github.svg`} />
-                <script
-                    type="text/javascript"
-                    src={`${GP_STATIC_PREFIX}vendor/mermaid.min.js`}
-                    dangerouslySetInnerHTML={{
-                        __html: "mermaid.initialize({ startOnLoad: false })",
-                    }}
-                ></script>
+                <link href={`${GP_STATIC_PREFIX}github.svg`} rel="icon" type="image/svg+xml" />
                 <link href={`${GP_STATIC_PREFIX}preflight.css`} rel="stylesheet" />
                 <link href={`${GP_STATIC_PREFIX}tailwind.css`} rel="stylesheet" />
                 <link href={`${GP_STATIC_PREFIX}pantsdown.css`} rel="stylesheet" />
                 <link href={`${GP_STATIC_PREFIX}index.css`} rel="stylesheet" />
+                <script
+                    src={`${GP_STATIC_PREFIX}vendor/mermaid.min.js`}
+                    type="text/javascript"
+                ></script>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>GitHub</title>
             </head>

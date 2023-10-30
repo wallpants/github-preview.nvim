@@ -40,19 +40,26 @@ export function getScrollOffsets(
     markdownContainerElement: HTMLElement,
     markdownElement: HTMLElement,
 ): Offsets {
-    const elements: NodeListOf<HTMLElement> = document.querySelectorAll("[line-start]");
+    // Elements must be sorted or footnote sourcemaps mess up with offsets.
+    // TODO: We could also think of a way to handle elements not being ordered
+    const sortedElements = Array.from(document.querySelectorAll("[line-start]")).sort(
+        (a, b) => Number(a.getAttribute("line-start")) - Number(b.getAttribute("line-start")),
+    ) as HTMLElement[];
+
+    console.log("sortedElements: ", sortedElements);
+
     // HTMLElement kept arround for debugging purposes
     const sourceLineOffsets: Offsets = [];
 
     let currLine = 0;
     const isCode =
-        elements.length === 1 &&
-        elements[0]?.tagName === "PRE" &&
-        elements[0].children.length === 1 &&
-        elements[0].firstElementChild?.tagName === "CODE";
+        sortedElements.length === 1 &&
+        sortedElements[0]?.tagName === "PRE" &&
+        sortedElements[0].children.length === 1 &&
+        sortedElements[0].firstElementChild?.tagName === "CODE";
 
-    for (let index = 0, len = elements.length; index < len; index++) {
-        const element = elements[index]!;
+    for (let index = 0, len = sortedElements.length; index < len; index++) {
+        const element = sortedElements[index]!;
 
         if (!element.checkVisibility()) {
             continue;
@@ -69,7 +76,7 @@ export function getScrollOffsets(
             let acc = markdownElement.offsetTop + markdownElement.getBoundingClientRect().top;
             let perLine = 0;
 
-            const prevElement = elements[index - 1];
+            const prevElement = sortedElements[index - 1];
             if (prevElement) {
                 const prevAttrs = getAttrs(markdownContainerElement, prevElement);
                 const prevEleBottom = prevAttrs.offsetTop + prevAttrs.clientHeight;
