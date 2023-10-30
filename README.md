@@ -96,13 +96,14 @@ Starts the service if not running or stops it if it's already running.
 
 ## Roadmap
 
-1. Better Mermaid support (27 oct)
-   - mermaid dark theme colors are not okay, features.md diagram is not legible
+1. Add settings modal (30 oct)
+2. Dir navigation in markdown container (30 oct)
+3. Better Mermaid support (27 oct)
+   - replace mermaid example in features.md with something more legible
    - center svgs
    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
-2. keep track of open and closed \<details> every rerender (23 oct)
+4. keep track of open and closed \<details> every rerender (23 oct)
    - (quickfix?) add option to in UI to let user select if render all open or all closed (23 oct)
-3. implement link follow for local files (23 oct)
-4. git hook to compile tailwind (23 oct)
-5. write docs (23 oct)
-6. write checkhealth (23 oct)
+5. implement link follow for local files (23 oct)
+6. write docs (23 oct)
+7. write checkhealth (23 oct)
