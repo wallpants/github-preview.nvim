@@ -1,3 +1,4 @@
+import { type Mermaid } from "mermaid";
 import { useEffect, useState, type FC } from "react";
 import { IconButton } from "../icon-button.tsx";
 import { MoonIcon } from "./icons/moon.tsx";
@@ -12,6 +13,8 @@ const iconsMap: Record<Selected, FC<{ className: string }>> = {
     light: SunIcon,
     dark: MoonIcon,
 };
+
+declare const mermaid: Mermaid;
 
 export function ThemePicker({ noBorder }: { noBorder?: boolean }) {
     const [selected, setSelected] = useState<Selected>("system");
@@ -36,6 +39,10 @@ export function ThemePicker({ noBorder }: { noBorder?: boolean }) {
         function handleThemeChange(theme: Theme) {
             const rootHtml = document.getElementsByTagName("html")[0]!;
             rootHtml.className = `pantsdown ${theme}`;
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: theme === "light" ? "default" : theme,
+            });
         }
 
         handleThemeChange(theme);

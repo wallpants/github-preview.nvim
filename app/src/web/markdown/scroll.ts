@@ -46,8 +46,6 @@ export function getScrollOffsets(
         (a, b) => Number(a.getAttribute("line-start")) - Number(b.getAttribute("line-start")),
     ) as HTMLElement[];
 
-    console.log("sortedElements: ", sortedElements);
-
     // HTMLElement kept arround for debugging purposes
     const sourceLineOffsets: Offsets = [];
 
