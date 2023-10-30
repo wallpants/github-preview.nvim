@@ -102,7 +102,7 @@ export function ThemePicker({ noBorder }: { noBorder?: boolean }) {
                 }}
             />
             {isOpen && (
-                <div className="absolute bottom-full">
+                <div className="absolute left-full top-0 flex">
                     {Object.keys(iconsMap)
                         .filter((theme) => theme !== selected)
                         .map((theme) => (

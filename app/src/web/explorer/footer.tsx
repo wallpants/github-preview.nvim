@@ -5,7 +5,7 @@ export const Footer = ({ isExpanded }: { isExpanded: boolean }) => (
     <div
         className={cn(
             "absolute bottom-0 flex h-14 inset-x-0 items-center justify-center",
-            "border-t border-github-border-default bg-github-canvas-default",
+            "border-t border-github-border-default bg-github-canvas-default rounded-br-md",
         )}
     >
         {isExpanded && (

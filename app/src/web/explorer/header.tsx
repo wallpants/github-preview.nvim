@@ -6,14 +6,17 @@ import { PanelOpenIcon } from "./icons/panel-open.tsx";
 export const Header = ({
     isExpanded,
     setIsExpanded,
+    className,
 }: {
     isExpanded: boolean;
     setIsExpanded: (e: boolean) => void;
+    className: string;
 }) => (
     <div
         className={cn(
-            "flex h-14 items-center border-b border-github-border-default",
+            "flex h-14 items-center border-b border-github-border-default bg-github-canvas-default",
             isExpanded ? "px-4 justify-between" : "justify-center",
+            className,
         )}
     >
         {isExpanded && <h4 className="!my-0">Files</h4>}
