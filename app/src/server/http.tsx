@@ -23,7 +23,7 @@ export function httpHandler(host: string, port: number, root: string, nvim: Nvim
 
         const { pathname } = new URL(req.url);
 
-        if (pathname === unaliveURL) {
+        if (pathname === unaliveURL && !ENV.IS_DEV) {
             // This endpoint is called when starting the service to kill
             // github-preview instances started by other nvim instances
             nvim.detach();

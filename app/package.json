@@ -3,7 +3,7 @@
   "scripts": {
     "format": "prettier **.{ts,tsx,css} -w",
     "lint": "tsc && eslint . --ext ts --ext tsx --report-unused-disable-directives --max-warnings 0",
-    "dev": "bun --hot run src/index.ts",
+    "dev": "bun run watch-tailwind.ts & bun --hot run src/index.ts",
     "start": "NODE_ENV=production; bun run src/index.ts",
     "tailwind:compile": "tailwindcss -c ./src/web/tailwind.config.cjs -o ./src/web/tailwind.css"
   },

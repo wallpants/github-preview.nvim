@@ -44,7 +44,7 @@ M.setup = function(opts)
 		},
 	})
 
-	local is_dev = os.getenv("GP_LOG_LEVEL") and true or false
+	local is_dev = opts.dev
 
 	local function log(_, data)
 		if is_dev then
@@ -121,7 +121,13 @@ M.setup = function(opts)
 		})
 		vim.fn.jobwait({ bun_install })
 
-		local cmd = is_dev and "bun dev" or "bun start"
+		local cmd = "bun start"
+		local env = {}
+
+		if is_dev then
+			cmd = "bun dev"
+			env.GP_LOG_LEVEL = "debug"
+		end
 
 		job_id = vim.fn.jobstart(cmd, {
 			cwd = plugin_root .. "app",
@@ -129,6 +135,7 @@ M.setup = function(opts)
 			on_exit = log,
 			on_stdout = log,
 			on_stderr = log,
+			env = env,
 		})
 	end
 
