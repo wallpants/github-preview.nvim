@@ -60,8 +60,8 @@ export const Markdown = ({ className }: { className: string }) => {
                 await mermaid.run({
                     querySelector: ".mermaid",
                     suppressErrors: true,
-                    postRenderCallback(id) {
-                        console.log("id: ", id);
+                    postRenderCallback(_id) {
+                        // console.log("id: ", id);
                     },
                 });
 
