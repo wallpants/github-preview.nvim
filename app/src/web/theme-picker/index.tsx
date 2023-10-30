@@ -92,7 +92,7 @@ export function ThemePicker({ noBorder }: { noBorder?: boolean }) {
     }, [isOpen]);
 
     return (
-        <div className="relative">
+        <div className="relative z-20">
             <IconButton
                 noBorder={Boolean(noBorder) && !isOpen}
                 Icon={iconsMap[selected]}
@@ -102,7 +102,7 @@ export function ThemePicker({ noBorder }: { noBorder?: boolean }) {
                 }}
             />
             {isOpen && (
-                <div className="absolute left-full top-0 flex">
+                <div className="absolute left-[102%] top-0 flex space-x-[1%]">
                     {Object.keys(iconsMap)
                         .filter((theme) => theme !== selected)
                         .map((theme) => (
