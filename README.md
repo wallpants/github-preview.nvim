@@ -97,6 +97,7 @@ Starts the service if not running or stops it if it's already running.
 ## Roadmap
 
 1. Better Mermaid support (27 oct)
+   - mermaid dark theme colors are not okay, features.md diagram is not legible
    - center svgs
    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
 2. keep track of open and closed \<details> every rerender (23 oct)
