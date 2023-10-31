@@ -1,4 +1,3 @@
-import { ThemePicker } from "../theme-picker/index.tsx";
 import { cn } from "../utils.ts";
 
 export const Footer = ({ isExpanded }: { isExpanded: boolean }) => (
@@ -8,14 +7,22 @@ export const Footer = ({ isExpanded }: { isExpanded: boolean }) => (
             "border-t border-github-border-default bg-github-canvas-default rounded-br-md",
         )}
     >
-        {isExpanded && (
+        {isExpanded ? (
             <p className="!mb-0 mr-4 text-center text-sm">
                 with ♥️ by{" "}
                 <a href="https://wallpants.io" target="_blank" rel="noreferrer">
                     wallpants.io
                 </a>
             </p>
+        ) : (
+            <a
+                href="https://wallpants.io"
+                target="_blank"
+                rel="noreferrer"
+                className="h-8 w-8 overflow-hidden rounded-full"
+            >
+                <img src="/__github_preview__/static/wallpants-256.png" />
+            </a>
         )}
-        <ThemePicker noBorder={!isExpanded} />
     </div>
 );

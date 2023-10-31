@@ -1,19 +1,13 @@
 {
-  "extends": [
-    "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended",
-    "plugin:tailwindcss/recommended"
-  ],
+  "extends": ["plugin:react-hooks/recommended", "plugin:tailwindcss/recommended"],
+  "plugins": ["react-refresh"],
   "settings": {
-    "react": {
-      "version": "detect"
-    },
     "tailwindcss": {
       "config": "tailwind.config.cjs"
     }
   },
   "rules": {
+    "react-refresh/only-export-components": ["warn", { "allowConstantExport": true }],
     "tailwindcss/no-custom-classname": [
       "warn",
       {

@@ -24,7 +24,7 @@ if (!ENV.NVIM) throw Error("socket missing");
 const nvim = await attach<CustomEvents>({
     socket: ENV.NVIM,
     client: { name: "github-preview" },
-    logging: { level: ENV.GP_LOG_LEVEL as LogLevel | undefined },
+    logging: { level: ENV.LOG_LEVEL as LogLevel | undefined },
 });
 
 const init = (await nvim.call("nvim_get_var", ["github_preview_init"])) as PluginInit;

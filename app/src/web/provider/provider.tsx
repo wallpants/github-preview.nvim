@@ -1,3 +1,5 @@
+import "../dev-tailwind.css";
+
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { type WsBrowserRequest, type WsServerMessage } from "../../types.ts";
@@ -10,9 +12,9 @@ export const Provider = ({
     is_dev,
 }: {
     children: ReactNode;
-    host: string | undefined;
-    port: number | undefined;
-    is_dev: boolean | undefined;
+    host: string;
+    port: number;
+    is_dev: boolean;
 }) => {
     const ws = useRef(
         new ReconnectingWebSocket(`ws://${host}:${port}`, [], {

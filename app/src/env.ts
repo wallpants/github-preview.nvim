@@ -1,6 +1,6 @@
 export const ENV = {
-    GP_LOG_LEVEL: process.env["GP_LOG_LEVEL"],
-    IS_DEV: Boolean(process.env["GP_LOG_LEVEL"]),
+    LOG_LEVEL: process.env["LOG_LEVEL"],
+    IS_DEV: Boolean(process.env["IS_DEV"]),
 
     // nvim sets its listen address in child processes
     NVIM: process.env["NVIM"],
