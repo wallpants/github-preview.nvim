@@ -14,8 +14,8 @@
     ]
   },
   "scripts": {
-    "vi": "nvim",
-    "commit": "cz"
+    "commit": "cz",
+    "web:dev": "cd app/src/web && bun vite --open"
   },
   "config": {
     "commitizen": {

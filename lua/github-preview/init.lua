@@ -27,6 +27,8 @@ end
 
 ---@param opts opts
 M.setup = function(opts)
+	local is_dev = opts.dev and true or false
+
 	-- deep merge user opts with default opts without overriding user opts
 	opts = vim.tbl_deep_extend("keep", opts, default_opts)
 
@@ -43,8 +45,6 @@ M.setup = function(opts)
 			"number between 0 and 100",
 		},
 	})
-
-	local is_dev = opts.dev
 
 	local function log(_, data)
 		if is_dev then
@@ -121,10 +121,12 @@ M.setup = function(opts)
 		})
 		vim.fn.jobwait({ bun_install })
 
-		local cmd = is_dev and "bun dev" or "bun start"
-		local env = { IS_DEV = is_dev and true or false }
+		local env = { IS_DEV = is_dev }
+		if is_dev and opts.log_level then
+			env.LOG_LEVEL = opts.log_level
+		end
 
-		job_id = vim.fn.jobstart(cmd, {
+		job_id = vim.fn.jobstart("bun start", {
 			cwd = plugin_root .. "app",
 			stdin = "null",
 			on_exit = log,

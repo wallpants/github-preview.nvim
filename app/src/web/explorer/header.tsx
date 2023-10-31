@@ -2,7 +2,7 @@ import { IconButton } from "../icon-button.tsx";
 import { cn } from "../utils.ts";
 import { PanelCloseIcon } from "./icons/panel-close.tsx";
 import { PanelOpenIcon } from "./icons/panel-open.tsx";
-// import { SettingsIcon } from "./icons/settings.tsx";
+import { SettingsIcon } from "./icons/settings.tsx";
 
 export const Header = ({
     isExpanded,
@@ -20,15 +20,15 @@ export const Header = ({
             className,
         )}
     >
-        {isExpanded && <h4 className="!my-0">Files</h4>}
-        {/* <IconButton */}
-        {/*     className={cn(isExpanded ? "ml-4" : "my-2")} */}
-        {/*     noBorder={!isExpanded} */}
-        {/*     Icon={SettingsIcon} */}
-        {/*     onClick={() => { */}
-        {/*         console.log("open settings"); */}
-        {/*     }} */}
-        {/* /> */}
+        {isExpanded && <h4 className="!my-0 mr-auto">Files</h4>}
+        <IconButton
+            className={cn(isExpanded ? "ml-4" : "my-2")}
+            noBorder={!isExpanded}
+            Icon={SettingsIcon}
+            onClick={() => {
+                console.log("open settings");
+            }}
+        />
         <IconButton
             className={cn(isExpanded ? "ml-4" : "my-2")}
             noBorder={!isExpanded}

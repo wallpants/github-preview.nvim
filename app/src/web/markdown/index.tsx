@@ -10,11 +10,10 @@ import { getScrollOffsets, type Offsets } from "./scroll.ts";
 
 const MARKDOWN_CONTAINER_ID = "markdown-container-id";
 const MARKDOWN_ELEMENT_ID = "markdown-element-id";
-export const GP_LOCALIMAGE_PREFIX = "/__localimage__/";
 
 const pantsdown = new Pantsdown({
     renderer: {
-        relativeImageUrlPrefix: GP_LOCALIMAGE_PREFIX,
+        relativeImageUrlPrefix: "/__github_preview__/image/",
         detailsTagDefaultOpen: true,
     },
 });
