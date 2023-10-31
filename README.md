@@ -53,6 +53,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 require('github-preview').setup({
     -- these are the default values, any values
     -- you specify will be merged with this dictionary
+    -- most of these options can be overridden from the webapp
 
     port = 6041,
 
@@ -94,16 +95,24 @@ Stops the service. Closes browser tab as well.
 
 Starts the service if not running or stops it if it's already running.
 
+## Development & Contributing
+
+[See documentation](/docs/contributing.md)
+
 ## Roadmap
 
-1. Add settings modal (30 oct)
-2. Dir navigation in markdown container (30 oct)
-3. Better Mermaid support (27 oct)
+1. Add settings modal (per session settings override) (31 oct)
+2. Write development docs (31 oct)
+3. Write contribution docs (31 oct)
+4. Find a way to automate building tailwind.css (31 oct)
+5. Write issue templates (31 oct)
+6. Dir navigation in markdown container (30 oct)
+7. Better Mermaid support (27 oct)
    - replace mermaid example in features.md with something more legible
    - center svgs
    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
-4. keep track of open and closed \<details> every rerender (23 oct)
+8. keep track of open and closed \<details> every rerender (23 oct)
    - (quickfix?) add option to in UI to let user select if render all open or all closed (23 oct)
-5. implement link follow for local files (23 oct)
-6. write docs (23 oct)
-7. write checkhealth (23 oct)
+9. implement link follow for local files (23 oct)
+10. write docs (23 oct)
+11. write checkhealth (23 oct)
