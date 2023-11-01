@@ -17,10 +17,8 @@ jobs:
       - name: Install bun
         uses: oven-sh/setup-bun@v1
       - name: Install dependencies
-        working-directory: ./app
         run: bun install
       - name: Validate tailwind.css
-        working-directory: ./app
         run: bun run tailwind:compile
         run: |
           if [[ $(git status --porcelain) ]]; then
@@ -28,10 +26,8 @@ jobs:
             exit 1
           fi
       - name: Lint
-        working-directory: ./app
         run: bun run lint
       - name: Test
-        working-directory: ./app
         run: bun test
 
   Release:

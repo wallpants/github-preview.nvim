@@ -1,4 +1,4 @@
-import "../dev-tailwind.css";
+import "../static/dev-tailwind.css";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";

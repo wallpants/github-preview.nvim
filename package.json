@@ -1,5 +1,6 @@
 {
   "name": "github-preview.nvim",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
   "author": "wallpants",
@@ -15,15 +16,52 @@
   },
   "scripts": {
     "commit": "cz",
-    "web:dev": "cd app/src/web && bun vite --open"
+    "format": "prettier **.{md,ts,tsx,css} -w",
+    "lint": "tsc -p ./app/tsconfig.json && eslint . --ext ts --ext tsx --report-unused-disable-directives --max-warnings 0",
+    "start": "bun run app/src/index.ts",
+    "web:dev": "cd app/src/web && bun vite --open",
+    "tailwind:compile": "tailwindcss -c ./app/src/web/tailwind.config.cjs -o ./app/src/web/static/tailwind.css"
   },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
   },
+  "dependencies": {
+    "bunvim": "1.1.3",
+    "clsx": "^2.0.0",
+    "globby": "^13.2.2",
+    "isbinaryfile": "5.0.0",
+    "opener": "^1.5.2",
+    "pantsdown": "1.7.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "reconnecting-websocket": "^4.4.0",
+    "tailwind-merge": "^1.14.0",
+    "valibot": "^0.18.0"
+  },
   "devDependencies": {
+    "@types/eslint": "^8.44.6",
+    "@types/opener": "^1.4.1",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
+    "@vitejs/plugin-react-swc": "^3.3.2",
+    "autoprefixer": "^10.4.16",
+    "bun-types": "latest",
     "cz-conventional-changelog": "^3.3.0",
-    "semantic-release": "^22.0.5"
+    "eslint": "^8.47.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "eslint-plugin-tailwindcss": "3.13.0",
+    "mermaid": "^10.6.0",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.2",
+    "prettier-plugin-organize-imports": "^3.2.3",
+    "semantic-release": "^22.0.5",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.2.2",
+    "vite": "5.0.0-beta.13"
   }
 }

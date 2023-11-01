@@ -117,7 +117,7 @@ M.setup = function(opts)
 		-- if we try using bun's auto-install feature, web dependencies are not installed,
 		-- because they're not imported until the browser makes the initial http request.
 		local bun_install = vim.fn.jobstart("bun install --frozen-lockfile --production", {
-			cwd = plugin_root .. "app",
+			cwd = plugin_root,
 		})
 		vim.fn.jobwait({ bun_install })
 
@@ -127,7 +127,7 @@ M.setup = function(opts)
 		end
 
 		job_id = vim.fn.jobstart("bun start", {
-			cwd = plugin_root .. "app",
+			cwd = plugin_root,
 			stdin = "null",
 			on_exit = log,
 			on_stdout = log,
