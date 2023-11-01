@@ -101,18 +101,21 @@ Starts the service if not running or stops it if it's already running.
 
 ## Roadmap
 
-1. Add settings modal (per session settings override) (31 oct)
-2. Write development docs (31 oct)
-3. Write contribution docs (31 oct)
-4. Find a way to automate building tailwind.css (31 oct)
-5. Write issue templates (31 oct)
-6. Dir navigation in markdown container (30 oct)
-7. Better Mermaid support (27 oct)
+Current: Theme select in options modal
+
+1. Option to force single-file mode (31 oct)
+2. Add settings modal (per session settings override) (31 oct)
+3. Write development docs (31 oct)
+4. Write contribution docs (31 oct)
+5. Find a way to automate building tailwind.css (31 oct)
+6. Write issue templates (31 oct)
+7. Dir navigation in markdown container (30 oct)
+8. Better Mermaid support (27 oct)
    - replace mermaid example in features.md with something more legible
    - center svgs
    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
-8. keep track of open and closed \<details> every rerender (23 oct)
+9. keep track of open and closed \<details> every rerender (23 oct)
    - (quickfix?) add option to in UI to let user select if render all open or all closed (23 oct)
-9. implement link follow for local files (23 oct)
-10. write docs (23 oct)
-11. write checkhealth (23 oct)
+10. implement link follow for local files (23 oct)
+11. write docs (23 oct)
+12. write checkhealth (23 oct)
