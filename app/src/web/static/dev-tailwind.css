@@ -1,0 +1,6 @@
+/* This file is only loaded by vite */
+/* It's required for tailwind hot reload */
+/* CSS is manually generated for production */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
