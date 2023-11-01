@@ -16,6 +16,7 @@
 ---@field cursor_line cursor_line
 
 ---@class opts
+---@field log_level? string
 ---@field port number
 ---@field scroll scroll
 ---@field cursor_line cursor_line
