@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { websocketContext } from "../provider/context.ts";
+import { websocketContext } from "../websocket/context.ts";
 import { scroll, type Offsets } from "./scroll.ts";
 
 export const CURSOR_LINE_ELEMENT_ID = "cursor-line-element-id";

@@ -1,10 +1,10 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { websocketContext } from "../provider/context.ts";
-import { cn, getSegments } from "../utils.ts";
-import { ChevronRight } from "./icons/chevron-right.tsx";
-import { DirIcon } from "./icons/dir.tsx";
-import { FileIcon } from "./icons/file.tsx";
-import { OpenDirIcon } from "./icons/open-dir.tsx";
+import { cn, getSegments } from "../../utils.ts";
+import { ChevronRight } from "../icons/chevron-right.tsx";
+import { DirIcon } from "../icons/dir.tsx";
+import { FileIcon } from "../icons/file.tsx";
+import { OpenDirIcon } from "../icons/open-dir.tsx";
+import { websocketContext } from "../websocket/context.ts";
 
 const iconClassName = "mr-3 h-5 w-5";
 

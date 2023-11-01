@@ -1,8 +1,8 @@
 import { type Mermaid } from "mermaid";
 import { Pantsdown } from "pantsdown";
 import { useContext, useEffect, useState } from "react";
-import { websocketContext } from "../provider/context.ts";
-import { cn, getFileExt } from "../utils.ts";
+import { cn, getFileExt } from "../../utils.ts";
+import { websocketContext } from "../websocket/context.ts";
 import { BreadCrumbs } from "./breadcrumbs.tsx";
 import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";
 import { LINE_NUMBERS_ELEMENT_ID, LineNumbers } from "./line-numbers.tsx";

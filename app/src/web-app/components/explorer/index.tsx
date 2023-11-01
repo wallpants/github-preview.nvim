@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { websocketContext } from "../provider/context.ts";
-import { cn } from "../utils.ts";
+import { cn } from "../../utils.ts";
+import { websocketContext } from "../websocket/context.ts";
 import { EntryComponent } from "./entry.tsx";
 import { Footer } from "./footer.tsx";
 import { Header } from "./header.tsx";

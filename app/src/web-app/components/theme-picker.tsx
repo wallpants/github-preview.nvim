@@ -1,6 +1,6 @@
 import { type Mermaid } from "mermaid";
 import { useEffect, useState, type FC } from "react";
-import { IconButton } from "../icon-button.tsx";
+import { IconButton } from "./icon-button.tsx";
 import { MoonIcon } from "./icons/moon.tsx";
 import { SunIcon } from "./icons/sun.tsx";
 import { SystemIcon } from "./icons/system.tsx";
