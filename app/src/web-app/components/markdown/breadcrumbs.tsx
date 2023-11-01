@@ -1,6 +1,6 @@
 import { Fragment, useContext } from "react";
-import { websocketContext } from "../provider/context.ts";
-import { cn, getSegments } from "../utils.ts";
+import { cn, getSegments } from "../../utils.ts";
+import { websocketContext } from "../websocket/context.ts";
 
 export const BreadCrumbs = () => {
     const { isSingleFile, currentPath, repoName, navigate } = useContext(websocketContext);

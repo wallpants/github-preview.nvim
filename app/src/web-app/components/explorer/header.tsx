@@ -1,8 +1,8 @@
+import { cn } from "../../utils.ts";
 import { IconButton } from "../icon-button.tsx";
-import { cn } from "../utils.ts";
-import { PanelCloseIcon } from "./icons/panel-close.tsx";
-import { PanelOpenIcon } from "./icons/panel-open.tsx";
-import { SettingsIcon } from "./icons/settings.tsx";
+import { PanelCloseIcon } from "../icons/panel-close.tsx";
+import { PanelOpenIcon } from "../icons/panel-open.tsx";
+import { SettingsIcon } from "../icons/settings.tsx";
 
 export const Header = ({
     isExpanded,

@@ -19,8 +19,8 @@
     "format": "prettier **.{md,ts,tsx,css} -w",
     "lint": "tsc -p ./app/tsconfig.json && eslint . --ext ts --ext tsx --report-unused-disable-directives --max-warnings 0",
     "start": "bun run app/src/index.ts",
-    "web:dev": "cd app/src/web && bun vite --open",
-    "tailwind:compile": "tailwindcss -c ./app/src/web/tailwind.config.cjs -o ./app/src/web/static/tailwind.css"
+    "web:dev": "cd app/src/web-app && bun vite --open",
+    "tailwind:compile": "tailwindcss -c ./app/src/web-app/tailwind.config.cjs -o ./app/src/web-app/static/tailwind.css"
   },
   "config": {
     "commitizen": {

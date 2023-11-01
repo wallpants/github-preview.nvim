@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { type WsServerMessage } from "../../types.ts";
+import { type WsServerMessage } from "../../../types.ts";
 
 export type MessageHandler = (message: WsServerMessage) => void | Promise<void>;
 

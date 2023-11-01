@@ -1,8 +1,8 @@
-import "../static/dev-tailwind.css";
+import "../../static/dev-tailwind.css";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { type WsBrowserRequest, type WsServerMessage } from "../../types.ts";
+import { type WsBrowserRequest, type WsServerMessage } from "../../../types.ts";
 import { websocketContext, type MessageHandler } from "./context.ts";
 
 export const Provider = ({

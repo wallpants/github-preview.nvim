@@ -6,9 +6,6 @@ import { onBeforeExit } from "./nvim-events/on-before-exit.ts";
 import { onContentChange } from "./nvim-events/on-content-change.ts";
 import { onCursorMove } from "./nvim-events/on-cursor-move.ts";
 import { PluginInitSchema } from "./schemas.ts";
-import { unaliveURL } from "./server/http.tsx";
-import { startServer } from "./server/index.ts";
-import { EDITOR_EVENTS_TOPIC } from "./server/websocket.ts";
 import {
     type BrowserState,
     type CustomEvents,
@@ -16,6 +13,9 @@ import {
     type WsServerMessage,
 } from "./types.ts";
 import { initBrowserState } from "./utils.ts";
+import { unaliveURL } from "./web-server/http.tsx";
+import { startServer } from "./web-server/index.ts";
+import { EDITOR_EVENTS_TOPIC } from "./web-server/websocket.ts";
 
 const HOST = "localhost";
 

@@ -1,5 +1,5 @@
 import { type FC } from "react";
-import { cn } from "./utils.ts";
+import { cn } from "../utils.ts";
 
 type Props = {
     Icon: FC<{ className: string }>;

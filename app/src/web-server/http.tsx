@@ -2,7 +2,7 @@ import { type BunPlugin, type Server } from "bun";
 import { type Nvim } from "bunvim";
 import pantsdownCss from "pantsdown/styles.css";
 
-const webRoot = import.meta.dir + "/../web";
+const webRoot = import.meta.dir + "/../web-app";
 export const unaliveURL = "/unalive";
 
 const GP_PREFIX = "/__github_preview__";
@@ -31,6 +31,8 @@ export function httpHandler(host: string, port: number, root: string, nvim: Nvim
         }
 
         const { pathname } = new URL(req.url);
+
+        nvim.logger?.verbose({ HTTP: pathname });
 
         if (pathname === unaliveURL) {
             // This endpoint is called when starting the service to kill

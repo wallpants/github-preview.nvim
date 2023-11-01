@@ -3,9 +3,9 @@
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Explorer } from "./explorer/index.tsx";
-import { Markdown } from "./markdown/index.tsx";
-import { Provider } from "./provider/provider";
+import { Explorer } from "./components/explorer/index.tsx";
+import { Markdown } from "./components/markdown/index.tsx";
+import { Provider } from "./components/websocket/provider";
 
 // consts defined during Bun build or vite config
 declare const __HOST__: string;
