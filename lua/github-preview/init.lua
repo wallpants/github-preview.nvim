@@ -1,8 +1,10 @@
 local M = {}
 
----@type opts
-local default_opts = {
+---@type config
+local default_config = {
+	host = "localhost",
 	port = 6041,
+	single_file = false,
 	cursor_line = {
 		disable = false,
 		color = "rgb(200 100 20 / 0.2)",
@@ -25,39 +27,25 @@ local function client_channel(client_name)
 	return nil
 end
 
----@param opts opts
-M.setup = function(opts)
+---@param config config
+M.setup = function(config)
 	-- deep merge user opts with default opts without overriding user opts
-	opts = vim.tbl_deep_extend("keep", opts, default_opts)
+	config = vim.tbl_deep_extend("keep", config, default_config)
 
 	vim.validate({
-		port = { opts.port, "number" },
-		["cursor_line.color"] = { opts.cursor_line.color, "string" },
-		["cursor_line.disable"] = { opts.cursor_line.disable, "boolean" },
-		["scroll.disable"] = { opts.scroll.disable, "boolean" },
+		host = { config.host, "string" },
+		port = { config.port, "number" },
+		["cursor_line.color"] = { config.cursor_line.color, "string" },
+		["cursor_line.disable"] = { config.cursor_line.disable, "boolean" },
+		["scroll.disable"] = { config.scroll.disable, "boolean" },
 		["scroll.top_offset_pct"] = {
-			opts.scroll.top_offset_pct,
+			config.scroll.top_offset_pct,
 			function(pct)
 				return (type(pct) == "number") and (pct >= 0) and (pct <= 100)
 			end,
 			"number between 0 and 100",
 		},
 	})
-
-	local command = "bun run start"
-	local env = { IS_DEV = false }
-
-	if opts.log_level then
-		command = "bun --hot run start"
-		env.IS_DEV = true
-		env.LOG_LEVEL = opts.log_level
-	end
-
-	local function log(_, data)
-		if env.IS_DEV then
-			vim.print(data)
-		end
-	end
 
 	local job_id = nil
 
@@ -83,7 +71,6 @@ M.setup = function(opts)
 
 		-- should look like "/Users/.../github-preview"
 		local root = vim.fn.finddir(".git", ";")
-		local single_file = false
 
 		local buffer_name = vim.api.nvim_buf_get_name(0)
 		local init_path = vim.fn.fnamemodify(buffer_name, ":p")
@@ -98,23 +85,22 @@ M.setup = function(opts)
 			end
 			-- if root not found, we set root to current path
 			root = vim.fn.fnamemodify(init_path, ":h")
-			single_file = true
+			config.single_file = true
 		else
 			-- if found, path is made absolute & has "/.git/" popped
 			root = vim.fn.fnamemodify(root, ":p:h:h") .. "/"
 		end
 
-		local content = vim.api.nvim_buf_get_lines(0, 0, -1, true)
+		local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
 
-		---@type plugin_init
-		vim.g.github_preview_init = {
-			port = opts.port,
-			root = root,
-			content = content,
-			path = init_path,
-			single_file = single_file,
-			scroll = opts.scroll,
-			cursor_line = opts.cursor_line,
+		---@type plugin_props
+		vim.g.github_preview_props = {
+			init = {
+				root = root,
+				path = init_path,
+				lines = lines,
+			},
+			config = config,
 		}
 
 		local __filename = debug.getinfo(1, "S").source:sub(2)
@@ -127,6 +113,21 @@ M.setup = function(opts)
 			cwd = plugin_root,
 		})
 		vim.fn.jobwait({ bun_install })
+
+		local command = "bun run start"
+		local env = { IS_DEV = false }
+
+		if config.log_level then
+			command = "bun --hot run start"
+			env.IS_DEV = true
+			env.LOG_LEVEL = config.log_level
+		end
+
+		local function log(_, data)
+			if env.IS_DEV then
+				vim.print(data)
+			end
+		end
 
 		job_id = vim.fn.jobstart(command, {
 			cwd = plugin_root,
