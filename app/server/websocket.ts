@@ -42,8 +42,7 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
             }
 
             if (browserMessage.type === "getEntry") {
-                const entries = await app.getEntries(browserMessage.path);
-                await app.readCurrPath(entries);
+                await app.setCurrPath(browserMessage.path);
 
                 const message: WsServerMessage = {
                     type: "entry",
