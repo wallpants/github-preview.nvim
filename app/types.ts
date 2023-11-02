@@ -21,6 +21,7 @@ export const PluginPropsSchema = object({
         /** port to host the http/ws server "localhost:\{port\}" */
         port: number(),
         single_file: boolean(),
+        details_tags_open: boolean(),
         cursor_line: object({
             disable: boolean(),
             color: string(),
