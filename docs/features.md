@@ -1,5 +1,7 @@
 # Features
 
+![Demo](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/demo.gif)
+
 ## Linux / macOS / WSL
 
 Compatible with Linux, macOS and WSL[^1].
@@ -19,7 +21,9 @@ See updates live in your browser as you edit your files.
 Live Preview auto scrolls following your cursor in Neovim. You can customize/disable scrolling
 in your [Setup](../README.md#setup).
 
-![Demo](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/demo.gif)
+## Light & Dark modes
+
+TODO: add gif or images
 
 ## Cursorline in Preview
 

@@ -8,52 +8,79 @@ Live Preview of your Markdown files & local repositories.
 
 Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https://github.com/wallpants/pantsdown).
 
-## Features
+## ✨ Features
 
 - [💻 Linux / macOS / WSL](./docs/features.md#linux--macos--wsl)
 - [🔴 LIVE updates](./docs/features.md#live-updates)
-- [♻ Synced Scrolling](./docs/features.md#synced-scrolling)
+- [♻️ Synced Scrolling](./docs/features.md#synced-scrolling)
+- [🌈 Dark & Light modes](./docs/features.md#light-&-dark-modes)
 - [🖍️ Cursorline in Preview](./docs/features.md#cursorline-in-preview)
 - [🏞️ Local Image Support](./docs/features.md#local-image-support)
 - [🧜 Mermaid Support](./docs/features.md#mermaid-support)
 - [📄 Single-file mode](./docs/features.md#single-file-mode)
-- [🗄️ Repository mode](./docs/features.md#repository-mode)
+- [📂 Repository mode](./docs/features.md#repository-mode)
 
-## Demo
+## ▶️ Demo
 
 ![Demo](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/demo.gif)
 
-## Requirements
+## ✅ Requirements
 
-1. [Bun](https://bun.sh)
-2. [Neovim](https://neovim.io)
+- [Bun](https://bun.sh)
+- [Neovim](https://neovim.io)
 
-## Installation
+## 📦 Installation
 
-Using [lazy.nvim](https://github.com/folke/lazy.nvim)
+<details>
+    <summary>
+        Using <a href="https://github.com/folke/lazy.nvim">lazy.nvim</a>
+    </summary>
 
 ```lua
 {
-    'wallpants/github-preview.nvim',
+    "wallpants/github-preview.nvim",
+    -- version = "*", -- latest stable version, may have breaking changes if major version changed
+    -- version = "^1.0.0", -- pin major version, include fixes and features that do not have breaking changes
+    cmd = { "GithubPreviewToggle" },
     opts = {
         -- config goes here
     }
-    keys = {
-        -- optionally, add a keymap
-        { "<leader>mp", "<cmd>GithubPreviewToggle<cr>" }
-    },
 }
 ```
 
-## Setup
+</details>
+
+<details>
+    <summary>
+        Using <a href="https://github.com/wbthomason/packer.nvim">packer.nvim</a>
+    </summary>
+
+```lua
+use {
+    "wallpants/github-preview.nvim",
+    disable = false,
+    opt = true,
+    cmd = { "GithubPreviewToggle" },
+    -- tag = "*", -- latest stable version, may have breaking changes if major version changed
+    -- tag = "v2.0.0", -- pin specific tag
+    config = function()
+        require("github-preview").setup({
+            -- config goes here
+        })
+    end,
+}
+```
+
+</details>
+
+## ⚙️ Setup
 
 `setup` must be called for the plugin to be loaded. Some plugin managers handle this for you.
 
 ```lua
-require('github-preview').setup({
+require("github-preview").setup({
     -- these are the default values, any values
     -- you specify will be merged with this dictionary
-    -- most of these options can be overridden from the webapp
 
     port = 6041,
 
@@ -76,7 +103,7 @@ require('github-preview').setup({
 })
 ```
 
-## Usage
+## 💻 Usage
 
 🚨 The first time you run `:GithubPreviewStart`, it might take a few seconds for your browser to open as dependencies are being downloaded.
 This might happen again after a plugin update if there were any changes to the plugin dependencies.
@@ -95,11 +122,11 @@ Stops the service. Closes browser tab as well.
 
 Starts the service if not running or stops it if it's already running.
 
-## Development & Contributing
+## 👷 Development & Contributing
 
 [See documentation](/docs/development.md)
 
-## Roadmap
+## 🚀 Roadmap
 
 Current: Theme select in options modal. Per websocket connection browser state (allow browserState override).
 
