@@ -41,7 +41,7 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
     "wallpants/github-preview.nvim",
     -- version = "*", -- latest stable version, may have breaking changes if major version changed
     -- version = "^1.0.0", -- pin major version, include fixes and features that do not have breaking changes
-    cmd = { "GithubPreviewToggle" },
+    cmd = { "GithubPreviewStart", "GithubPreviewToggle" },
     opts = {
         -- config goes here
     }
@@ -60,7 +60,7 @@ use {
     "wallpants/github-preview.nvim",
     disable = false,
     opt = true,
-    cmd = { "GithubPreviewToggle" },
+    cmd = { "GithubPreviewStart", "GithubPreviewToggle" },
     -- tag = "*", -- latest stable version, may have breaking changes if major version changed
     -- tag = "v2.0.0", -- pin specific tag
     config = function()
@@ -88,10 +88,9 @@ require("github-preview").setup({
 	-- set to "true" to force single-file mode & disable repository mode
 	single_file = false,
 
-	-- define how you'd like your <details> tags to be rendered on init/content-change
+	-- define how to render <details> tags on init/content-change
 	-- true: <details> tags are rendered open (with html attribute open="")
 	-- false: <details> tags are rendered closed
-	-- you can always open <details> in the preview by clicking on <summary> like you normally would
 	details_tags_open = true,
 
 	cursor_line = {
@@ -106,7 +105,6 @@ require("github-preview").setup({
 		disable = false,
 
 		-- Between 0 and 100.
-		-- Play around with this number until you find the offset you like.
 		-- VERY LOW and VERY HIGH numbers might result in cursorline out of screen.
 		top_offset_pct = 35,
 	},

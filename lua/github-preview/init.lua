@@ -11,10 +11,9 @@ local default_config = {
 	-- set to "true" to force single-file mode & disable repository mode
 	single_file = false,
 
-	-- define how you'd like your <details> tags to be rendered on init/content-change
+	-- define how to render <details> tags on init/content-change
 	-- true: <details> tags are rendered open (with html attribute open="")
 	-- false: <details> tags are rendered closed
-	-- you can always open <details> in the preview by clicking on <summary> like you normally would
 	details_tags_open = true,
 
 	cursor_line = {
@@ -28,7 +27,6 @@ local default_config = {
 		disable = false,
 
 		-- Between 0 and 100.
-		-- Play around with this number until you find the offset you like.
 		-- VERY LOW and VERY HIGH numbers might result in cursorline out of screen.
 		top_offset_pct = 35,
 	},
