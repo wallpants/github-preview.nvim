@@ -18,9 +18,9 @@
     "commit": "cz",
     "format": "prettier **.{md,ts,tsx,css} -w",
     "lint": "tsc -p ./app/tsconfig.json && eslint . --ext ts --ext tsx --report-unused-disable-directives --max-warnings 0",
-    "start": "bun run app/src/index.ts",
-    "web:dev": "cd app/src/web-app && bun vite --open",
-    "tailwind:compile": "tailwindcss -c ./app/src/web-app/tailwind.config.cjs -o ./app/src/web-app/static/tailwind.css"
+    "start": "bun run app/index.ts",
+    "web:dev": "cd app/web && bun vite --open",
+    "tailwind:compile": "tailwindcss -c ./app/web/tailwind.config.cjs -o ./app/web/static/tailwind.css"
   },
   "config": {
     "commitizen": {
@@ -28,7 +28,7 @@
     }
   },
   "dependencies": {
-    "bunvim": "1.1.3",
+    "bunvim": "1.1.4",
     "clsx": "^2.0.0",
     "globby": "^13.2.2",
     "isbinaryfile": "5.0.0",

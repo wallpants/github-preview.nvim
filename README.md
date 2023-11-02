@@ -97,25 +97,27 @@ Starts the service if not running or stops it if it's already running.
 
 ## Development & Contributing
 
-[See documentation](/docs/contributing.md)
+[See documentation](/docs/development.md)
 
 ## Roadmap
 
-Current: Theme select in options modal
+Current: Theme select in options modal. Per websocket connection browser state (allow browserState override).
 
-1. Option to force single-file mode (31 oct)
-2. Add settings modal (per session settings override) (31 oct)
-3. Write development docs (31 oct)
-4. Write contribution docs (31 oct)
-5. Find a way to automate building tailwind.css (31 oct)
-6. Write issue templates (31 oct)
-7. Dir navigation in markdown container (30 oct)
-8. Better Mermaid support (27 oct)
-   - replace mermaid example in features.md with something more legible
-   - center svgs
-   - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
-9. keep track of open and closed \<details> every rerender (23 oct)
-   - (quickfix?) add option to in UI to let user select if render all open or all closed (23 oct)
-10. implement link follow for local files (23 oct)
-11. write docs (23 oct)
-12. write checkhealth (23 oct)
+1. Add theme to lua config (1 nov)
+2. Code line highlights when "#" in url (1 nov)
+3. Option to force single-file mode (31 oct)
+4. Add settings modal (per session settings override) (31 oct)
+5. Write development docs (31 oct)
+6. Write contribution docs (31 oct)
+7. Find a way to automate building tailwind.css (31 oct)
+8. Write issue templates (31 oct)
+9. Dir navigation in markdown container (30 oct)
+10. Better Mermaid support (27 oct)
+    - replace mermaid example in features.md with something more legible
+    - center svgs
+    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
+11. keep track of open and closed \<details> every rerender (23 oct)
+    - (quickfix?) add option to in UI to let user select if render all open or all closed (23 oct)
+12. implement link follow for local files (23 oct)
+13. write docs (23 oct)
+14. write checkhealth (23 oct)
