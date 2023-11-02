@@ -142,7 +142,13 @@ export class GithubPreview {
         });
     }
 
-    async readCurrPath(entries: string[]) {
+    /**
+     * Updates this.currentPath & this.lines based on "path" provided
+     */
+    async setCurrPath(path: string) {
+        this.currentPath = path;
+        const entries = await this.getEntries(this.currentPath);
+
         // TODO: check open buffers and get lines from there before falling
         // back to filesystem
         if (!existsSync(this.root + this.currentPath)) {
