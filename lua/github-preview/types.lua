@@ -15,6 +15,7 @@
 ---@field host string
 ---@field port number
 ---@field single_file boolean
+---@field details_tags_open boolean
 ---@field cursor_line cursor_line
 ---@field scroll scroll
 ---@field log_level? string

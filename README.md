@@ -79,27 +79,37 @@ use {
 
 ```lua
 require("github-preview").setup({
-    -- these are the default values, any values
-    -- you specify will be merged with this dictionary
+	-- these are the default values, any values
+	-- you specify will be merged with this dictionary
 
-    port = 6041,
+	host = "localhost",
+	port = 6041,
 
-    cursor_line = {
-        disable = false,
+	-- set to "true" to force single-file mode & disable repository mode
+	single_file = false,
 
-        -- CSS color
-        -- if you provide an invalid value, cursorline will be invisible
-        color = "rgb(200 100 20 / 0.2)",
-    },
+	-- define how you'd like your <details> tags to be rendered on init/content-change
+	-- true: <details> tags are rendered open (with html attribute open="")
+	-- false: <details> tags are rendered closed
+	-- you can always open <details> in the preview by clicking on <summary> like you normally would
+	details_tags_open = true,
 
-    scroll = {
-        disable = false,
+	cursor_line = {
+		disable = false,
 
-        -- Between 0 and 100.
-        -- Play around with this number until you find the offset you like.
-        -- VERY LOW and VERY HIGH numbers might result in cursorline out of screen.
-        top_offset_pct = 35,
-    },
+		-- CSS color
+		-- if you provide an invalid value, cursorline will be invisible
+		color = "rgb(200 100 20 / 0.2)",
+	},
+
+	scroll = {
+		disable = false,
+
+		-- Between 0 and 100.
+		-- Play around with this number until you find the offset you like.
+		-- VERY LOW and VERY HIGH numbers might result in cursorline out of screen.
+		top_offset_pct = 35,
+	},
 })
 ```
 
@@ -148,3 +158,4 @@ Current: Theme select in options modal. Per websocket connection browser state (
 12. implement link follow for local files (23 oct)
 13. write docs (23 oct)
 14. write checkhealth (23 oct)
+15. what happens if we set opt.single_file to true and try running github-preview with empty buffer? (2 nov)

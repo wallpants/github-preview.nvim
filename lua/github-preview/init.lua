@@ -2,15 +2,34 @@ local M = {}
 
 ---@type config
 local default_config = {
+	-- these are the default values, any values
+	-- you specify will be merged with this dictionary
+
 	host = "localhost",
 	port = 6041,
+
+	-- set to "true" to force single-file mode & disable repository mode
 	single_file = false,
+
+	-- define how you'd like your <details> tags to be rendered on init/content-change
+	-- true: <details> tags are rendered open (with html attribute open="")
+	-- false: <details> tags are rendered closed
+	-- you can always open <details> in the preview by clicking on <summary> like you normally would
+	details_tags_open = true,
+
 	cursor_line = {
 		disable = false,
+
+		-- CSS color
+		-- if you provide an invalid value, cursorline will be invisible
 		color = "rgb(200 100 20 / 0.2)",
 	},
 	scroll = {
 		disable = false,
+
+		-- Between 0 and 100.
+		-- Play around with this number until you find the offset you like.
+		-- VERY LOW and VERY HIGH numbers might result in cursorline out of screen.
 		top_offset_pct = 35,
 	},
 }
