@@ -4,7 +4,7 @@
 [<img src="docs/github.svg" height="60px" align="right" />](https://github.com/)
 [<img src="docs/bun.svg" height="60px" align="right" />](https://bun.sh/)
 
-Live Preview of your Markdown files & local repositories.
+Live Preview of your Markdown files & local git repositories.
 
 Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https://github.com/wallpants/pantsdown).
 
@@ -79,14 +79,17 @@ use {
 
 ```lua
 require("github-preview").setup({
-	-- these are the default values, any values
-	-- you specify will be merged with this dictionary
+	-- these are the default values,
+	-- any values you specify will be merged with this dictionary
 
 	host = "localhost",
 	port = 6041,
 
 	-- set to "true" to force single-file mode & disable repository mode
 	single_file = false,
+
+	-- "system" | "light" | "dark"
+	theme = "system",
 
 	-- define how to render <details> tags on init/content-change
 	-- true: <details> tags are rendered open (with html attribute open="")
