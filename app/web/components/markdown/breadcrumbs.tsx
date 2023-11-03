@@ -3,14 +3,14 @@ import { cn, getSegments } from "../../utils.ts";
 import { websocketContext } from "../websocket-provider/context.ts";
 
 export const BreadCrumbs = () => {
-    const { config, currentPath, repoName, navigate } = useContext(websocketContext);
+    const { config, currentPath, repoName, wsRequest } = useContext(websocketContext);
     const segments = getSegments(currentPath);
 
     function handleClick(idx: number) {
         return () => {
             let path = segments.slice(0, idx).join("/");
             if (path) path += "/";
-            navigate(path);
+            wsRequest({ type: "getEntry", path });
         };
     }
 

@@ -33,7 +33,7 @@ export const Explorer = () => {
                         <p>File explorer only available when in a repo.</p>
                     </div>
                 ) : (
-                    <EntryComponent entry="" depth={-1} currentPath={currentPath} />
+                    <EntryComponent path="" depth={-1} currentPath={currentPath} />
                 )}
             </div>
             <Header
