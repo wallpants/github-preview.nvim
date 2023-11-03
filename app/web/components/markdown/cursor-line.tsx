@@ -11,32 +11,20 @@ type Props = {
 };
 
 export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElement }: Props) => {
-    const { registerHandler } = useContext(websocketContext);
+    const { config, registerHandler } = useContext(websocketContext);
     const [cursorLine, setCursorLine] = useState<number | null>(null);
-    const [lineColor, setLineColor] = useState<string>("transparent");
-    const [topOffsetPct, setTopOffsetPct] = useState<number | null>(null);
 
     useEffect(() => {
         registerHandler("cursor-line", (message) => {
-            if ("config" in message) {
-                setLineColor(
-                    message.config.overrides.cursor_line.disable
-                        ? "transparent"
-                        : message.config.overrides.cursor_line.color,
-                );
-
-                setTopOffsetPct(
-                    message.config.overrides.scroll.disable
-                        ? null
-                        : message.config.overrides.scroll.top_offset_pct,
-                );
-            }
-
             if ("cursorLine" in message) {
                 setCursorLine(message.cursorLine);
             }
         });
     }, [registerHandler]);
+
+    const overrides = config?.overrides;
+    const lineColor = !overrides?.cursor_line.disable && overrides?.cursor_line.color;
+    const topOffsetPct = overrides?.scroll.disable ? null : overrides?.scroll.top_offset_pct;
 
     useEffect(() => {
         if (!cursorLineElement || !markdownContainerElement) return;
@@ -47,7 +35,10 @@ export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElemen
         <div
             id={CURSOR_LINE_ELEMENT_ID}
             className="pointer-events-none absolute z-10 h-[36px] w-full"
-            style={{ background: lineColor }}
+            style={{
+                background: lineColor ? lineColor : "transparent",
+                opacity: overrides?.cursor_line.opacity ?? 0,
+            }}
         />
     );
 };
