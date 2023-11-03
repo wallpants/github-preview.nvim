@@ -58,7 +58,10 @@ export class GithubPreview {
         this.augroupId = augroupId;
         this.repoName = repoName;
         this.cursorLine = cursorLine;
-        this.config = { dotfiles: props.config, overrides: props.config };
+        this.config = {
+            dotfiles: Object.assign({}, props.config),
+            overrides: Object.assign({}, props.config),
+        };
         this.currentPath = props.init.path.slice(props.init.root.length);
         this.lines = props.init.lines;
         this.root = props.init.root;
