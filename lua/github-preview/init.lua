@@ -2,14 +2,17 @@ local M = {}
 
 ---@type config
 local default_config = {
-	-- these are the default values, any values
-	-- you specify will be merged with this dictionary
+	-- these are the default values,
+	-- any values you specify will be merged with this dictionary
 
 	host = "localhost",
 	port = 6041,
 
 	-- set to "true" to force single-file mode & disable repository mode
 	single_file = false,
+
+	-- "system" | "light" | "dark"
+	theme = "system",
 
 	-- define how to render <details> tags on init/content-change
 	-- true: <details> tags are rendered open (with html attribute open="")

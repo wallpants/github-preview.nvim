@@ -1,5 +1,5 @@
 import { type BaseEvents } from "bunvim";
-import { array, boolean, number, object, string, type Output } from "valibot";
+import { array, boolean, literal, number, object, string, union, type Output } from "valibot";
 import { type GithubPreview } from "./github-preview";
 
 export const PluginPropsSchema = object({
@@ -21,6 +21,7 @@ export const PluginPropsSchema = object({
         /** port to host the http/ws server "localhost:\{port\}" */
         port: number(),
         single_file: boolean(),
+        theme: union([literal("system"), literal("light"), literal("dark")]),
         details_tags_open: boolean(),
         cursor_line: object({
             disable: boolean(),

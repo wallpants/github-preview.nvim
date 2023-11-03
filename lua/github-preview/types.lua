@@ -14,6 +14,7 @@
 ---@class config
 ---@field host string
 ---@field port number
+---@field theme "system" | "light" | "dark"
 ---@field single_file boolean
 ---@field details_tags_open boolean
 ---@field cursor_line cursor_line
