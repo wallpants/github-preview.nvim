@@ -1,6 +1,5 @@
 import { useContext, useState, type FC } from "react";
 import { type Config } from "../../../../types.ts";
-import { useOnDocumentClick } from "../../../use-on-document-click.ts";
 import { IconButton } from "../../icon-button.tsx";
 import { MoonIcon } from "../../icons/moon.tsx";
 import { SunIcon } from "../../icons/sun.tsx";
@@ -19,17 +18,9 @@ export function ThemePicker() {
 
     const theme = config?.overrides.theme ?? "system";
 
-    useOnDocumentClick({
-        disabled: !isOpen,
-        callback: () => {
-            setIsOpen(false);
-        },
-    });
-
     return (
-        <div className="relative z-20">
+        <div className="relative z-20 flex flex-col items-center">
             <IconButton
-                noBorder={!isOpen}
                 Icon={iconsMap[theme]}
                 onClick={(e) => {
                     e.stopPropagation();
@@ -37,13 +28,13 @@ export function ThemePicker() {
                 }}
             />
             {isOpen && (
-                <div className="absolute left-[102%] top-0 flex space-x-[1%]">
+                <div className="absolute top-0 flex flex-col">
                     {Object.keys(iconsMap)
-                        .filter((t) => t !== theme)
+                        .sort((t) => (t === theme ? -1 : 1))
                         .map((theme) => (
                             <IconButton
                                 key={theme}
-                                className="bg-github-canvas-default"
+                                className="mb-0.5 bg-github-canvas-default"
                                 Icon={iconsMap[theme as Config["theme"]]}
                                 onClick={(e) => {
                                     e.stopPropagation();
