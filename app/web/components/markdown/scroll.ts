@@ -118,7 +118,7 @@ export function getScrollOffsets(
 
 export function scroll(
     markdownContainerElement: HTMLElement,
-    topOffsetPct: number | null,
+    topOffsetPct: number | null | undefined,
     offsets: Offsets,
     cursorLine: number | null,
     cursorLineElement: HTMLElement,

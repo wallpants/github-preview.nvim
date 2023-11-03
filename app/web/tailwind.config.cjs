@@ -8,6 +8,7 @@ export default {
     theme: {
         colors: ({ colors }) => ({
             orange: colors.orange,
+            green: colors.green,
             github: {
                 fg: {
                     default: "var(--color-fg-default)",

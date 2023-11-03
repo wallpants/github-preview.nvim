@@ -24,7 +24,8 @@ local default_config = {
 
 		-- CSS color
 		-- if you provide an invalid value, cursorline will be invisible
-		color = "rgb(200 100 20 / 0.2)",
+		color = "#c86414",
+		opacity = 0.2,
 	},
 	scroll = {
 		disable = false,

@@ -11,13 +11,6 @@ import { getScrollOffsets, type Offsets } from "./scroll.ts";
 const MARKDOWN_CONTAINER_ID = "markdown-container-id";
 const MARKDOWN_ELEMENT_ID = "markdown-element-id";
 
-const pantsdown = new Pantsdown({
-    renderer: {
-        relativeImageUrlPrefix: "/__github_preview__/image/",
-        detailsTagDefaultOpen: true,
-    },
-});
-
 declare const mermaid: Mermaid;
 
 async function runMermaid() {
@@ -31,14 +24,36 @@ async function runMermaid() {
 }
 
 export const Markdown = ({ className }: { className: string }) => {
-    const { registerHandler } = useContext(websocketContext);
+    const { config, registerHandler } = useContext(websocketContext);
     const [offsets, setOffsets] = useState<Offsets>([]);
+    const [pantsdown, setPantsdown] = useState(
+        new Pantsdown({
+            renderer: {
+                relativeImageUrlPrefix: "/__github_preview__/image/",
+                detailsTagDefaultOpen: config?.overrides.details_tags_open ?? true,
+            },
+        }),
+    );
     // const mermaids = useRef<Record<string, string>>({});
 
     const [markdownElement, setMarkdownElement] = useState<HTMLElement>();
     const [cursorLineElement, setCursorLineElement] = useState<HTMLElement>();
     const [lineNumbersElement, setLineNumbersElement] = useState<HTMLElement>();
     const [markdownContainerElement, setMarkdownContainerElement] = useState<HTMLElement>();
+
+    const details_tags_open = config?.overrides.details_tags_open;
+
+    useEffect(() => {
+        if (details_tags_open === undefined) return;
+        setPantsdown(
+            new Pantsdown({
+                renderer: {
+                    relativeImageUrlPrefix: "/__github_preview__/image/",
+                    detailsTagDefaultOpen: details_tags_open,
+                },
+            }),
+        );
+    }, [details_tags_open]);
 
     useEffect(() => {
         setMarkdownElement(document.getElementById(MARKDOWN_ELEMENT_ID)!);
@@ -98,7 +113,7 @@ export const Markdown = ({ className }: { className: string }) => {
                 await runMermaid();
             }
         });
-    }, [registerHandler, markdownElement, cursorLineElement, lineNumbersElement]);
+    }, [registerHandler, pantsdown, markdownElement, cursorLineElement, lineNumbersElement]);
 
     useEffect(() => {
         // recalculate offsets whenever markdownElement's height changes

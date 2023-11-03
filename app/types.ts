@@ -1,5 +1,16 @@
 import { type BaseEvents } from "bunvim";
-import { array, boolean, literal, number, object, string, union, type Output } from "valibot";
+import {
+    array,
+    boolean,
+    literal,
+    maxValue,
+    minValue,
+    number,
+    object,
+    string,
+    union,
+    type Output,
+} from "valibot";
 import { type GithubPreview } from "./github-preview";
 
 export const PluginPropsSchema = object({
@@ -26,6 +37,7 @@ export const PluginPropsSchema = object({
         cursor_line: object({
             disable: boolean(),
             color: string(),
+            opacity: number([minValue(0), maxValue(1)]),
         }),
         scroll: object({
             disable: boolean(),

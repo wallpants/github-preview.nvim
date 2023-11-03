@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useOnDocumentClick } from "../../use-on-document-click.ts";
-import { cn } from "../../utils.ts";
+import { cn, isEqual } from "../../utils.ts";
 import { IconButton } from "../icon-button.tsx";
 import { PanelCloseIcon } from "../icons/panel-close.tsx";
 import { PanelOpenIcon } from "../icons/panel-open.tsx";
 import { SettingsIcon } from "../icons/settings.tsx";
+import { websocketContext } from "../websocket-provider/context.ts";
 import { Config } from "./config/index.tsx";
 
 export const Header = ({
@@ -16,7 +17,9 @@ export const Header = ({
     setIsExpanded: (e: boolean) => void;
     className: string;
 }) => {
+    const { config } = useContext(websocketContext);
     const [configOpen, setConfigOpen] = useState(false);
+    const isOverriden = !isEqual(config?.dotfiles, config?.overrides);
 
     useOnDocumentClick({
         disabled: !configOpen,
@@ -52,24 +55,29 @@ export const Header = ({
             )}
         >
             {isExpanded && <h4 className="!my-0 mr-auto">Files</h4>}
+            <div className="relative">
+                <IconButton
+                    buttonClassName={cn(isExpanded ? "ml-4" : "my-2")}
+                    noBorder={!isExpanded}
+                    Icon={SettingsIcon}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setConfigOpen(!configOpen);
+                    }}
+                />
+                {isOverriden ? (
+                    <div className="absolute right-1 top-3 h-2 w-2 rounded-full bg-orange-600" />
+                ) : null}
+            </div>
             <IconButton
-                className={cn(isExpanded ? "ml-4" : "my-2")}
-                noBorder={!isExpanded}
-                Icon={SettingsIcon}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    setConfigOpen(!configOpen);
-                }}
-            />
-            <IconButton
-                className={cn(isExpanded ? "ml-4" : "my-2")}
+                buttonClassName={cn(isExpanded ? "ml-4" : "my-2")}
                 noBorder={!isExpanded}
                 Icon={isExpanded ? PanelOpenIcon : PanelCloseIcon}
                 onClick={() => {
                     setIsExpanded(!isExpanded);
                 }}
             />
-            {configOpen ? <Config /> : null}
+            {configOpen ? <Config isOverriden={isOverriden} /> : null}
         </div>
     );
 };
