@@ -1,7 +1,13 @@
+import { useContext } from "react";
 import { cn } from "../../../utils";
+import { websocketContext } from "../../websocket-provider/context";
 import { Option } from "./option";
 
 export const Config = () => {
+    const { config } = useContext(websocketContext);
+
+    if (!config) return null;
+
     return (
         <div
             onClick={(e) => {
@@ -26,16 +32,7 @@ export const Config = () => {
                 .
             </p>
             <div className="grid grid-cols-3 gap-4">
-                <Option />
-                <Option />
-                <Option />
-                <Option />
-                <Option />
-                <Option />
-                <Option />
-                <Option />
-                <Option />
-                <Option />
+                <Option name="Theme" cKey="theme" config={config} />
             </div>
         </div>
     );
