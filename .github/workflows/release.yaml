@@ -19,8 +19,8 @@ jobs:
       - name: Install dependencies
         run: bun install
       - name: Validate tailwind.css
-        run: bun run tailwind:compile
         run: |
+          bun run tailwind:compile
           if [[ $(git status --porcelain) ]]; then
             echo "Outdated tailwind.css found. Please run tailwind:compile locally and commit resulting css."
             exit 1
