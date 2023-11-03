@@ -15,7 +15,7 @@ local default_config = {
 	theme = "system",
 
 	-- define how to render <details> tags on init/content-change
-	-- true: <details> tags are rendered open (with html attribute open="")
+	-- true: <details> tags are rendered open
 	-- false: <details> tags are rendered closed
 	details_tags_open = true,
 
@@ -29,8 +29,8 @@ local default_config = {
 	scroll = {
 		disable = false,
 
-		-- Between 0 and 100.
-		-- VERY LOW and VERY HIGH numbers might result in cursorline out of screen.
+		-- Between 0 and 100
+		-- VERY LOW and VERY HIGH numbers might result in cursorline out of screen
 		top_offset_pct = 35,
 	},
 }

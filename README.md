@@ -92,7 +92,7 @@ require("github-preview").setup({
 	theme = "system",
 
 	-- define how to render <details> tags on init/content-change
-	-- true: <details> tags are rendered open (with html attribute open="")
+	-- true: <details> tags are rendered open
 	-- false: <details> tags are rendered closed
 	details_tags_open = true,
 
@@ -107,8 +107,8 @@ require("github-preview").setup({
 	scroll = {
 		disable = false,
 
-		-- Between 0 and 100.
-		-- VERY LOW and VERY HIGH numbers might result in cursorline out of screen.
+		-- Between 0 and 100
+		-- VERY LOW and VERY HIGH numbers might result in cursorline out of screen
 		top_offset_pct = 35,
 	},
 })
@@ -161,3 +161,4 @@ Current: Theme select in options modal. Per websocket connection browser state (
 14. write docs (23 oct)
 15. write checkhealth (23 oct)
 16. what happens if we set opt.single_file to true and try running github-preview with empty buffer? (2 nov)
+17. setup dependabot (2 nov)
