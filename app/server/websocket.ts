@@ -32,7 +32,7 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                 wsSend(message);
             }
 
-            if (browserMessage.type === "getEntries") {
+            if (browserMessage.type === "get-entries") {
                 const message: WsServerMessage = {
                     type: "entries",
                     path: browserMessage.path,
@@ -41,7 +41,7 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                 wsSend(message);
             }
 
-            if (browserMessage.type === "getEntry") {
+            if (browserMessage.type === "get-entry") {
                 await app.setCurrPath(browserMessage.path);
 
                 const message: WsServerMessage = {
@@ -50,7 +50,16 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                     lines: app.lines,
                     cursorLine: null,
                 };
+                wsSend(message);
+            }
 
+            if (browserMessage.type === "update-config") {
+                Object.assign(app.config.overrides, browserMessage.config);
+
+                const message: WsServerMessage = {
+                    type: "update-config",
+                    config: app.config,
+                };
                 wsSend(message);
             }
         },

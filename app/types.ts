@@ -85,6 +85,10 @@ export type WsServerMessage =
           lines: string[];
       }
     | {
+          type: "update-config";
+          config: GithubPreview["config"];
+      }
+    | {
           type: "goodbye";
       };
 
@@ -93,12 +97,16 @@ export type WsBrowserMessage =
           type: "init";
       }
     | {
-          type: "getEntries";
+          type: "get-entries";
           path: string;
       }
     | {
-          type: "getEntry";
+          type: "get-entry";
           path: string;
+      }
+    | {
+          type: "update-config";
+          config: Partial<Config>;
       };
 
 // eslint-disable-next-line
