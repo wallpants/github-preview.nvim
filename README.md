@@ -26,8 +26,8 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
 
 ## ✅ Requirements
 
-- [Bun](https://bun.sh)
-- [Neovim](https://neovim.io)
+- [x] [Bun](https://bun.sh)
+- [x] [Neovim](https://neovim.io)
 
 ## 📦 Installation
 
