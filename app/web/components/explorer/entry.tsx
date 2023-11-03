@@ -15,41 +15,41 @@ const IconMap = {
 };
 
 type Props = {
-    entry: string;
+    path: string;
     depth: number;
     currentPath: string | undefined;
 };
 
-export const EntryComponent = ({ entry, depth, currentPath }: Props) => {
-    const { isConnected, registerHandler, getEntries, navigate } = useContext(websocketContext);
+export const EntryComponent = ({ path, depth, currentPath }: Props) => {
+    const { isConnected, registerHandler, wsRequest } = useContext(websocketContext);
     const [entries, setEntries] = useState<string[]>([]);
     const [isSelected, setIsSelected] = useState(false);
     const [expanded, setExpanded] = useState(
         // expand root by default ("" is root)
-        entry === "",
+        path === "",
     );
 
-    const isDir = entry === "" || entry.endsWith("/");
+    const isDir = path === "" || path.endsWith("/");
 
     const entryName = useMemo(() => {
-        const segments = getSegments(entry);
+        const segments = getSegments(path);
         let name = segments.pop();
         if (isDir) name = segments.pop();
         return name;
-    }, [isDir, entry]);
+    }, [isDir, path]);
 
     useEffect(() => {
-        registerHandler(`explorer-${entry}`, (message) => {
-            if (message.type === "entries" && message.path === entry) {
+        registerHandler(`explorer-${path}`, (message) => {
+            if (message.type === "entries" && message.path === path) {
                 setEntries(message.entries);
             }
         });
-    }, [entry, registerHandler]);
+    }, [path, registerHandler]);
 
     useEffect(() => {
         if (!isConnected || !isDir) return;
-        getEntries(entry);
-    }, [getEntries, entry, isConnected, isDir]);
+        wsRequest({ type: "getEntries", path: path });
+    }, [wsRequest, path, isConnected, isDir]);
 
     useEffect(() => {
         const segments = getSegments(currentPath);
@@ -57,11 +57,11 @@ export const EntryComponent = ({ entry, depth, currentPath }: Props) => {
 
         if (isDir) {
             entrySlice += "/";
-            if (entrySlice === entry) setExpanded(true);
+            if (entrySlice === path) setExpanded(true);
         }
 
-        setIsSelected(currentPath === entry);
-    }, [currentPath, depth, entry, isDir]);
+        setIsSelected(currentPath === path);
+    }, [currentPath, depth, path, isDir]);
 
     return (
         <div>
@@ -69,7 +69,7 @@ export const EntryComponent = ({ entry, depth, currentPath }: Props) => {
                 <div
                     onClick={() => {
                         setExpanded(true);
-                        navigate(entry);
+                        wsRequest({ type: "getEntry", path });
                     }}
                     style={{ paddingLeft: depth * 11 + (isDir ? 0 : 20) }}
                     className={cn(
@@ -100,10 +100,10 @@ export const EntryComponent = ({ entry, depth, currentPath }: Props) => {
                 </div>
             )}
             {expanded &&
-                entries.map((entry) => (
+                entries.map((path) => (
                     <EntryComponent
-                        key={entry}
-                        entry={entry}
+                        key={path}
+                        path={path}
                         depth={depth + 1}
                         currentPath={currentPath}
                     />

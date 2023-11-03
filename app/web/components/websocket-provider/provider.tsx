@@ -6,7 +6,7 @@ import { type GithubPreview } from "../../../github-preview.ts";
 import { type WsBrowserMessage, type WsServerMessage } from "../../../types.ts";
 import { websocketContext, type MessageHandler } from "./context.ts";
 
-export const Provider = ({
+export const WebsocketProvider = ({
     children,
     host,
     port,
@@ -85,21 +85,6 @@ export const Provider = ({
         };
     }, [wsRequest, is_dev]);
 
-    const getEntries = useCallback(
-        (path: string) => {
-            wsRequest({ type: "getEntries", path });
-        },
-        [wsRequest],
-    );
-
-    const navigate = useCallback(
-        (path: string) => {
-            setCurrentPath(path);
-            wsRequest({ type: "getEntry", path });
-        },
-        [wsRequest],
-    );
-
     const registerHandler = useCallback((id: string, handler: MessageHandler) => {
         handlers.current.set(id, handler);
     }, []);
@@ -110,8 +95,7 @@ export const Provider = ({
                 isConnected,
                 registerHandler,
                 currentPath,
-                getEntries,
-                navigate,
+                wsRequest,
                 repoName,
                 config,
             }}
