@@ -106,7 +106,6 @@ export const Markdown = ({ className }: { className: string }) => {
 
         const observer = new ResizeObserver(() => {
             setOffsets(getScrollOffsets(markdownContainerElement, markdownElement));
-            void runMermaid();
         });
 
         observer.observe(markdownElement);
