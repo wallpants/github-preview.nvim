@@ -28,7 +28,7 @@ export const Explorer = () => {
             >
                 {config?.overrides.single_file ? (
                     <div className="!px-3">
-                        <h3>Single file mode</h3>
+                        <h3>Single-file mode</h3>
                         <p>Git repository could not be found.</p>
                         <p>File explorer only available when in a repo.</p>
                     </div>

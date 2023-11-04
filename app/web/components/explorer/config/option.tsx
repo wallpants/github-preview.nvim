@@ -20,9 +20,10 @@ type Props = {
         step: number;
         onChange: (value: number) => void;
     };
+    disabled?: string | undefined;
 };
 
-export const Option = ({ name, cKey, select, color, range, className }: Props) => {
+export const Option = ({ name, cKey, select, color, range, className, disabled }: Props) => {
     const { config } = useContext(websocketContext);
     if (!config) return null;
 
@@ -41,7 +42,7 @@ export const Option = ({ name, cKey, select, color, range, className }: Props) =
                 <div className="absolute right-1 top-1 h-2 w-2 rounded-full bg-orange-600" />
             ) : null}
             <p className="!my-2">{name}</p>
-            {select && <Select select={select} />}
+            {select && <Select select={select} disabled={disabled} />}
             {color && (
                 <div className="flex gap-x-3">
                     <input

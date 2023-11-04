@@ -96,16 +96,19 @@ M.setup = function(config)
 		local buffer_name = vim.api.nvim_buf_get_name(0)
 		local init_path = vim.fn.fnamemodify(buffer_name, ":p")
 
-		if root == "" then
+		if root == "" or config.single_file then
 			if vim.fn.fnamemodify(init_path, ":t") == "" then
 				vim.notify(
-					"github-preview: A file must be loaded into buffer if not in a git repo",
+					"github-preview: A file must be loaded into buffer when not in repository mode",
 					vim.log.levels.ERROR
 				)
 				return
 			end
+		end
+
+		if root == "" then
 			-- if root not found, we set root to current path
-			root = vim.fn.fnamemodify(init_path, ":h")
+			root = vim.fn.fnamemodify(init_path, ":h") .. "/"
 			config.single_file = true
 		else
 			-- if found, path is made absolute & has "/.git/" popped
