@@ -32,7 +32,9 @@ export class GithubPreview {
      */
     augroupId: number;
     /**
-     * repo root absolute path
+     * repo root absolute path.
+     *
+     * Includes trailing slash
      */
     root: string;
     /**

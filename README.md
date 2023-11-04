@@ -140,7 +140,7 @@ Starts the service if not running or stops it if it's already running.
 ## 🚀 Roadmap
 
 1. Update demo gif (2 nov)
-2. if "single-file" option is enabled, github-preview should not follow cursor to other files (3 nov)
+2. README not automagically loaded when in repo root and no buffer loaded (2 nov)
 3. Code line highlights when "#" in url (1 nov)
 4. Write development docs (31 oct)
 5. Write issue templates (31 oct)

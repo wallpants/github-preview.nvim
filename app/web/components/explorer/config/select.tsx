@@ -11,9 +11,10 @@ export type SelectOption = {
 
 type Props = {
     select: SelectOption[];
+    disabled?: string | undefined;
 };
 
-export const Select = ({ select }: Props) => {
+export const Select = ({ select, disabled }: Props) => {
     const selected = select.find((option) => option.selected);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -23,12 +24,19 @@ export const Select = ({ select }: Props) => {
         <div className="relative z-20 flex flex-col items-center">
             <IconButton
                 Icon={selected.icon}
+                buttonClassName="peer"
                 iconClassName={selected.iconClassName}
+                disabled={Boolean(disabled)}
                 onClick={(e) => {
                     e.stopPropagation();
                     setIsOpen(!isOpen);
                 }}
             />
+            {disabled && (
+                <div className="absolute left-[120%] top-0 hidden w-56 rounded-md border border-orange-600 bg-github-canvas-subtle peer-hover:block">
+                    <p className="!m-3">{disabled}</p>
+                </div>
+            )}
             {isOpen && (
                 <div className="absolute top-0 flex flex-col">
                     {select

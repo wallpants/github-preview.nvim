@@ -162,7 +162,16 @@ export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
             <div className="grid grid-cols-3 gap-4">
                 <Option name="theme" cKey="theme" select={themeSelect} />
                 <Option name="<details>" cKey="details_tags_open" select={detailsSelect} />
-                <Option name="single-file" cKey="single_file" select={singleFileSelect} />
+                <Option
+                    name="single-file"
+                    cKey="single_file"
+                    select={singleFileSelect}
+                    disabled={
+                        config.dotfiles.single_file
+                            ? "If app launched in single-file mode, it cannot be changed."
+                            : undefined
+                    }
+                />
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-4">
