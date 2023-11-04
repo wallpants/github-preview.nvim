@@ -260,6 +260,10 @@
   margin-bottom: 0px !important
 }
 
+.\!mb-6 {
+  margin-bottom: 1.5rem !important
+}
+
 .mb-0 {
   margin-bottom: 0px
 }

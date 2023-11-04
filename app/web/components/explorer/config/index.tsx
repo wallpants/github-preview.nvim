@@ -146,7 +146,7 @@ export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
                 "rounded border border-github-border-default bg-github-canvas-subtle",
             )}
         >
-            <p>
+            <p className="!mb-6">
                 <strong>Temporarily</strong> override your settings.
                 <br />
                 To persist changes, update your{" "}

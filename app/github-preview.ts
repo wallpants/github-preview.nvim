@@ -46,20 +46,13 @@ export class GithubPreview {
     };
     repoName: string;
     server: Server;
-    cursorLine: null | number;
+    cursorLine: null | number = null;
     lines: ContentChange["lines"] = [];
 
-    private constructor(
-        nvim: Nvim,
-        augroupId: number,
-        repoName: string,
-        cursorLine: number,
-        props: PluginProps,
-    ) {
+    private constructor(nvim: Nvim, augroupId: number, repoName: string, props: PluginProps) {
         this.nvim = nvim as Nvim<CustomEvents>;
         this.augroupId = augroupId;
         this.repoName = repoName;
-        this.cursorLine = cursorLine;
         this.config = {
             dotfiles: Object.assign({}, props.config),
             overrides: Object.assign({}, props.config),
@@ -93,13 +86,12 @@ export class GithubPreview {
         } catch (err) {}
 
         const repoName = await GithubPreview.getRepoName({ root: props.init.root });
-        const cursorLine = (await nvim.call("nvim_win_get_cursor", [0]))[0];
         const augroupId = await nvim.call("nvim_create_augroup", [
             "github-preview",
             { clear: true },
         ]);
 
-        return new GithubPreview(nvim, augroupId, repoName, cursorLine, props);
+        return new GithubPreview(nvim, augroupId, repoName, props);
     }
 
     static async getRepoName({ root }: { root: string }): Promise<string> {
@@ -154,6 +146,9 @@ export class GithubPreview {
         const entries = await this.getEntries(this.currentPath);
 
         // TODO: check open buffers and get lines from there before falling back to filesystem.
+        // if buffer exists and is focused, update cursorLine (maybe?)
+        // const cursorLine = (await nvim.call("nvim_win_get_cursor", [0]))[0];
+
         if (!existsSync(this.root + this.currentPath)) {
             this.lines = [`Path: ${this.currentPath}`, "", "ERROR: path not found"];
             return;
