@@ -20,6 +20,16 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                 webSocket.send(JSON.stringify(m));
             }
 
+            let hash: string | null = null;
+
+            if ("path" in browserMessage) {
+                // remove hash from browserMessage.path to prevent filesystem
+                // operations from failing
+                const [path, messageHash] = browserMessage.path.split("#");
+                browserMessage.path = path!;
+                hash = messageHash ?? null;
+            }
+
             if (browserMessage.type === "init") {
                 // call "setCurrPath" in case app started in repository mode and no buffer
                 // was loaded. "setCurrPath" should resolve to readme.md if it exists.
@@ -33,6 +43,7 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                     config: app.config,
                     cursorLine: app.cursorLine,
                 };
+
                 wsSend(message);
             }
 
@@ -53,7 +64,9 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                     currentPath: app.currentPath,
                     lines: app.lines,
                     cursorLine: null,
+                    hash: hash,
                 };
+
                 wsSend(message);
             }
 

@@ -83,6 +83,7 @@ export type WsServerMessage =
           currentPath: string;
           lines: string[];
           cursorLine: number | null;
+          hash: string | null;
       }
     | {
           type: "cursor-move";

@@ -8,6 +8,7 @@ export const websocketContext = createContext<{
     isConnected: boolean;
     registerHandler: (id: string, cb: MessageHandler) => void;
     currentPath: string | undefined;
+    hash: string | null;
     repoName: string;
     wsRequest: (m: WsBrowserMessage) => void;
     config: GithubPreview["config"] | undefined;
@@ -15,6 +16,7 @@ export const websocketContext = createContext<{
     isConnected: false,
     registerHandler: () => null,
     currentPath: undefined,
+    hash: null,
     repoName: "",
     wsRequest: () => null,
     config: undefined,

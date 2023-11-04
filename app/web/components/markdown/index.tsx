@@ -24,7 +24,7 @@ async function runMermaid() {
 }
 
 export const Markdown = ({ className }: { className: string }) => {
-    const { config, registerHandler } = useContext(websocketContext);
+    const { config, registerHandler, wsRequest } = useContext(websocketContext);
     const [offsets, setOffsets] = useState<Offsets>([]);
     const [pantsdown, setPantsdown] = useState(
         new Pantsdown({
@@ -83,12 +83,18 @@ export const Markdown = ({ className }: { className: string }) => {
                 newScript.text = script.innerText;
                 markdownElement.appendChild(newScript);
 
-                // TODO: query for all <a> and <img> (maybe img not)
-                // check their src or href attrs, if they're relative
-                // add click event listener with e.preventDefault()
-                // and handle navigation ourselves with wsRequest({ type: "get-entry" })
-                // markdownElement.querySelectorAll("a")
-                // const reIsAbsolute = /^[\w+]+:\/\//;
+                markdownElement.querySelectorAll("a").forEach((element) => {
+                    element.addEventListener("click", (event) => {
+                        const href = (event.currentTarget as HTMLAnchorElement).href;
+                        const base = window.location.origin + "/";
+
+                        if (!href.startsWith(base)) return;
+                        event.preventDefault();
+
+                        const pathname = href.slice(base.length);
+                        wsRequest({ type: "get-entry", path: pathname });
+                    });
+                });
 
                 if (fileExt === "md") {
                     markdownElement.style.setProperty("padding", "44px");
@@ -120,7 +126,14 @@ export const Markdown = ({ className }: { className: string }) => {
                 await runMermaid();
             }
         });
-    }, [registerHandler, pantsdown, markdownElement, cursorLineElement, lineNumbersElement]);
+    }, [
+        registerHandler,
+        wsRequest,
+        pantsdown,
+        markdownElement,
+        cursorLineElement,
+        lineNumbersElement,
+    ]);
 
     useEffect(() => {
         // recalculate offsets whenever markdownElement's height changes

@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElement }: Props) => {
-    const { config, registerHandler } = useContext(websocketContext);
+    const { config, registerHandler, hash } = useContext(websocketContext);
     const [cursorLine, setCursorLine] = useState<number | null>(null);
 
     useEffect(() => {
@@ -28,8 +28,15 @@ export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElemen
 
     useEffect(() => {
         if (!cursorLineElement || !markdownContainerElement) return;
-        scroll(markdownContainerElement, topOffsetPct, offsets, cursorLine, cursorLineElement);
-    }, [markdownContainerElement, topOffsetPct, offsets, cursorLine, cursorLineElement]);
+        scroll(
+            markdownContainerElement,
+            topOffsetPct,
+            offsets,
+            cursorLine,
+            cursorLineElement,
+            hash,
+        );
+    }, [markdownContainerElement, topOffsetPct, offsets, cursorLine, cursorLineElement, hash]);
 
     return (
         <div
