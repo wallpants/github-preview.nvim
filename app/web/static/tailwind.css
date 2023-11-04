@@ -181,6 +181,10 @@
   left: 3.5rem
 }
 
+.left-\[120\%\] {
+  left: 120%
+}
+
 .right-1 {
   right: 0.25rem
 }
@@ -211,6 +215,10 @@
 
 .float-right {
   float: right
+}
+
+.\!m-3 {
+  margin: 0.75rem !important
 }
 
 .\!my-0 {
@@ -416,6 +424,10 @@
   width: 1.25rem
 }
 
+.w-56 {
+  width: 14rem
+}
+
 .w-6 {
   width: 1.5rem
 }
@@ -582,8 +594,17 @@
   border-color: var(--color-border-default)
 }
 
+.border-orange-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(234 88 12 / var(--tw-border-opacity))
+}
+
 .bg-github-accent-fg {
   background-color: var(--color-accent-fg)
+}
+
+.bg-github-border-default {
+  background-color: var(--color-border-default)
 }
 
 .bg-github-border-muted {
@@ -767,6 +788,10 @@
 
 .group:hover .group-hover\:underline {
   text-decoration-line: underline
+}
+
+.peer:hover ~ .peer-hover\:block {
+  display: block
 }
 
 .\[\&\>span\]\:cursor-pointer>span {

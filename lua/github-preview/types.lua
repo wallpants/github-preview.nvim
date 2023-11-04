@@ -1,7 +1,6 @@
 ---@class init
 ---@field root string
 ---@field path string
----@field lines string[]
 
 ---@class cursor_line
 ---@field disable boolean

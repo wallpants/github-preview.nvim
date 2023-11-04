@@ -25,7 +25,6 @@ const ENV = {
 
 export class GithubPreview {
     nvim: Nvim<CustomEvents>;
-    lines: ContentChange["lines"];
     /**
      * Neovim autocommand group id,
      * under which all autocommands are to be registered
@@ -48,6 +47,7 @@ export class GithubPreview {
     repoName: string;
     server: Server;
     cursorLine: null | number;
+    lines: ContentChange["lines"] = [];
 
     private constructor(
         nvim: Nvim,
@@ -65,7 +65,6 @@ export class GithubPreview {
             overrides: Object.assign({}, props.config),
         };
         this.currentPath = props.init.path.slice(props.init.root.length);
-        this.lines = props.init.lines;
         this.root = props.init.root;
 
         // must be called at end of constructor,
@@ -154,8 +153,7 @@ export class GithubPreview {
         this.currentPath = path;
         const entries = await this.getEntries(this.currentPath);
 
-        // TODO: check open buffers and get lines from there before falling
-        // back to filesystem
+        // TODO: check open buffers and get lines from there before falling back to filesystem.
         if (!existsSync(this.root + this.currentPath)) {
             this.lines = [`Path: ${this.currentPath}`, "", "ERROR: path not found"];
             return;

@@ -23,7 +23,6 @@ export const PluginPropsSchema = object({
          * otherwise path looks something like "/Users/.../README.md"
          * */
         path: string(),
-        lines: array(string()),
     }),
 
     config: object({

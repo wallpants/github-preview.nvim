@@ -97,9 +97,11 @@ M.setup = function(config)
 		local init_path = vim.fn.fnamemodify(buffer_name, ":p")
 
 		if root == "" or config.single_file then
+			-- if repo root not found or single-file mode is enabled,
+			-- we make sure there's something loaded into the current buffer
 			if vim.fn.fnamemodify(init_path, ":t") == "" then
 				vim.notify(
-					"github-preview: A file must be loaded into buffer when not in repository mode",
+					"github-preview: A file must be loaded into buffer when not in repository mode.",
 					vim.log.levels.ERROR
 				)
 				return
@@ -115,14 +117,11 @@ M.setup = function(config)
 			root = vim.fn.fnamemodify(root, ":p:h:h") .. "/"
 		end
 
-		local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
-
 		---@type plugin_props
 		vim.g.github_preview_props = {
 			init = {
 				root = root,
 				path = init_path,
-				lines = lines,
 			},
 			config = config,
 		}
