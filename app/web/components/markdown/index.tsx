@@ -83,6 +83,13 @@ export const Markdown = ({ className }: { className: string }) => {
                 newScript.text = script.innerText;
                 markdownElement.appendChild(newScript);
 
+                // TODO: query for all <a> and <img> (maybe img not)
+                // check their src or href attrs, if they're relative
+                // add click event listener with e.preventDefault()
+                // and handle navigation ourselves with wsRequest({ type: "get-entry" })
+                // markdownElement.querySelectorAll("a")
+                // const reIsAbsolute = /^[\w+]+:\/\//;
+
                 if (fileExt === "md") {
                     markdownElement.style.setProperty("padding", "44px");
                     markdownElement.style.setProperty("max-width", "1012px");

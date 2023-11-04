@@ -28,6 +28,7 @@
     }
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.17",
     "bunvim": "1.1.4",
     "clsx": "^2.0.0",
     "globby": "^13.2.2",
