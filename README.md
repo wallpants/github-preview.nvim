@@ -83,6 +83,7 @@ require("github-preview").setup({
 	-- any values you specify will be merged with this dictionary
 
 	host = "localhost",
+
 	port = 6041,
 
 	-- set to "true" to force single-file mode & disable repository mode
@@ -104,6 +105,7 @@ require("github-preview").setup({
 		color = "#c86414",
 		opacity = 0.2,
 	},
+
 	scroll = {
 		disable = false,
 
@@ -150,7 +152,7 @@ Starts the service if not running or stops it if it's already running.
    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
 7. implement link follow for local files (23 oct)
 8. write checkhealth (23 oct)
-10. setup dependabot (2 nov)
-11. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
-12. update config validation in init.lua (3 nov)
-13. autoclose config select on click away (3 nov)
+9. setup dependabot (2 nov)
+10. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
+11. update config validation in init.lua (3 nov)
+12. autoclose config select on click away (3 nov)
