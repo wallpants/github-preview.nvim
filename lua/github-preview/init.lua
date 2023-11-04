@@ -6,6 +6,7 @@ local default_config = {
 	-- any values you specify will be merged with this dictionary
 
 	host = "localhost",
+
 	port = 6041,
 
 	-- set to "true" to force single-file mode & disable repository mode
@@ -27,6 +28,7 @@ local default_config = {
 		color = "#c86414",
 		opacity = 0.2,
 	},
+
 	scroll = {
 		disable = false,
 
