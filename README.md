@@ -13,7 +13,7 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
 - [💻 Linux / macOS / WSL](./docs/features.md#linux--macos--wsl)
 - [🔴 LIVE updates](./docs/features.md#live-updates)
 - [♻️ Synced Scrolling](./docs/features.md#synced-scrolling)
-- [🌈 Dark & Light modes](./docs/features.md#light-&-dark-modes)
+- [🌈 Dark & Light modes](./docs/features.md#light--dark-modes)
 - [🖍️ Cursorline in Preview](./docs/features.md#cursorline-in-preview)
 - [🏞️ Local Image Support](./docs/features.md#local-image-support)
 - [🧜 Mermaid Support](./docs/features.md#mermaid-support)
