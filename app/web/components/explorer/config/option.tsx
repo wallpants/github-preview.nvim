@@ -44,7 +44,7 @@ export const Option = ({ name, cKey, select, color, range, className, disabled }
             <p className="!my-2">{name}</p>
             {select && <Select select={select} disabled={disabled} />}
             {color && (
-                <div className="flex gap-x-3">
+                <label className="flex items-center gap-x-4 text-[14px]">
                     <input
                         type="color"
                         className="h-6"
@@ -53,8 +53,8 @@ export const Option = ({ name, cKey, select, color, range, className, disabled }
                             color.onChange(e.target.value);
                         }}
                     />
-                    <span>{color.value}</span>
-                </div>
+                    {color.value}
+                </label>
             )}
             {range && (
                 <div className="flex gap-x-3">
