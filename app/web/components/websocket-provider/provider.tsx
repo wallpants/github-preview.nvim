@@ -26,6 +26,7 @@ export const WebsocketProvider = ({
     const [repoName, setRepoName] = useState("");
     const [isConnected, setIsConnected] = useState(false);
     const [currentPath, setCurrentPath] = useState<string>();
+    const [hash, setHash] = useState<string | null>(null);
     const [config, setConfig] = useState<GithubPreview["config"]>();
     const handlers = useRef(new Map<string, MessageHandler>());
 
@@ -48,7 +49,8 @@ export const WebsocketProvider = ({
         // Update url on navigation
         if (currentPath === undefined) return;
         window.history.replaceState({}, "", "/" + currentPath);
-    }, [currentPath]);
+        if (hash) window.location.hash = hash;
+    }, [currentPath, hash]);
 
     useEffect(() => {
         // Register websocket listeners
@@ -79,6 +81,10 @@ export const WebsocketProvider = ({
                 setCurrentPath(message.currentPath);
             }
 
+            if ("hash" in message) {
+                setHash(message.hash);
+            }
+
             handlers.current.forEach((handler) => {
                 void handler(message);
             });
@@ -98,6 +104,7 @@ export const WebsocketProvider = ({
                 wsRequest,
                 repoName,
                 config,
+                hash,
             }}
         >
             {children}
