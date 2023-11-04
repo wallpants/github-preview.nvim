@@ -141,6 +141,8 @@ Starts the service if not running or stops it if it's already running.
 
 ## 🚀 Roadmap
 
+Current: markdown/index.tsx click eventlistener on \<a>. Check `useEffect`
+
 1. Update demo gif (2 nov)
 2. Code line highlights when "#" in url (1 nov)
 3. Write development docs (31 oct)
@@ -156,3 +158,5 @@ Starts the service if not running or stops it if it's already running.
 10. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
 11. update config validation in init.lua (3 nov)
 12. autoclose config select on click away (3 nov)
+13. implement command pallete with plenary.popup to temporarily override settings from neovim (3 nov)
+    - OR we could add the command palette to the webapp & control it from neovim

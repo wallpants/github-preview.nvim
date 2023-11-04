@@ -1,9 +1,7 @@
 import { useContext } from "react";
 import { cn } from "../../../utils";
-import { CheckSquareIcon } from "../../icons/check-square";
 import { FoldVerticalIcon } from "../../icons/fold-vertical";
 import { MoonIcon } from "../../icons/moon";
-import { SquareIcon } from "../../icons/square";
 import { SunIcon } from "../../icons/sun";
 import { SystemIcon } from "../../icons/system";
 import { UnfoldVerticalIcon } from "../../icons/unfold-vertical";
@@ -64,78 +62,6 @@ export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
         },
     ];
 
-    const singleFileSelect: SelectOption[] = [
-        {
-            label: "true",
-            icon: CheckSquareIcon,
-            iconClassName: "stroke-green-600",
-            selected: overrides.single_file,
-            onClick: () => {
-                wsRequest({ type: "update-config", config: { single_file: true } });
-            },
-        },
-        {
-            label: "false",
-            icon: SquareIcon,
-            selected: !overrides.single_file,
-            onClick: () => {
-                wsRequest({ type: "update-config", config: { single_file: false } });
-            },
-        },
-    ];
-
-    const cursorLineSelect: SelectOption[] = [
-        {
-            label: "enabled",
-            icon: CheckSquareIcon,
-            iconClassName: "stroke-green-600",
-            selected: !overrides.cursor_line.disable,
-            onClick: () => {
-                wsRequest({
-                    type: "update-config",
-                    config: { cursor_line: { ...overrides.cursor_line, disable: false } },
-                });
-            },
-        },
-        {
-            label: "disabled",
-            icon: SquareIcon,
-            selected: overrides.cursor_line.disable,
-            onClick: () => {
-                wsRequest({
-                    type: "update-config",
-                    config: { cursor_line: { ...overrides.cursor_line, disable: true } },
-                });
-            },
-        },
-    ];
-
-    const scrollSelect: SelectOption[] = [
-        {
-            label: "enabled",
-            icon: CheckSquareIcon,
-            iconClassName: "stroke-green-600",
-            selected: !overrides.scroll.disable,
-            onClick: () => {
-                wsRequest({
-                    type: "update-config",
-                    config: { scroll: { ...overrides.scroll, disable: false } },
-                });
-            },
-        },
-        {
-            label: "disabled",
-            icon: SquareIcon,
-            selected: overrides.scroll.disable,
-            onClick: () => {
-                wsRequest({
-                    type: "update-config",
-                    config: { scroll: { ...overrides.scroll, disable: true } },
-                });
-            },
-        },
-    ];
-
     return (
         <div
             onClick={(e) => {
@@ -165,7 +91,12 @@ export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
                 <Option
                     name="single-file"
                     cKey="single_file"
-                    select={singleFileSelect}
+                    toggle={{
+                        value: overrides.single_file,
+                        onChange: (enabled) => {
+                            wsRequest({ type: "update-config", config: { single_file: enabled } });
+                        },
+                    }}
                     disabled={
                         config.dotfiles.single_file
                             ? "If app launched in single-file mode, it cannot be changed."
@@ -179,7 +110,17 @@ export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
                     className="h-40"
                     name="cursorline"
                     cKey="cursor_line"
-                    select={cursorLineSelect}
+                    toggle={{
+                        value: !overrides.cursor_line.disable,
+                        onChange: (enabled) => {
+                            wsRequest({
+                                type: "update-config",
+                                config: {
+                                    cursor_line: { ...overrides.cursor_line, disable: !enabled },
+                                },
+                            });
+                        },
+                    }}
                     color={{
                         value: overrides.cursor_line.color,
                         onChange: (color) => {
@@ -208,7 +149,15 @@ export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
                     className="h-40"
                     name="scroll"
                     cKey="scroll"
-                    select={scrollSelect}
+                    toggle={{
+                        value: !overrides.scroll.disable,
+                        onChange: (enabled) => {
+                            wsRequest({
+                                type: "update-config",
+                                config: { scroll: { ...overrides.scroll, disable: !enabled } },
+                            });
+                        },
+                    }}
                     range={{
                         value: overrides.scroll.top_offset_pct,
                         min: 0,

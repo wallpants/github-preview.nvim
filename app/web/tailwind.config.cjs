@@ -9,6 +9,9 @@ export default {
         colors: ({ colors }) => ({
             orange: colors.orange,
             green: colors.green,
+            gray: colors.gray,
+            white: colors.white,
+            transparent: colors.transparent,
             github: {
                 fg: {
                     default: "var(--color-fg-default)",
