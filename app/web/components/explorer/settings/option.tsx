@@ -1,20 +1,15 @@
 import { useContext } from "react";
 import { type GithubPreview } from "../../../../github-preview";
 import { cn, isEqual } from "../../../utils";
-import { Select, type SelectOption } from "../../select";
 import { Toggle } from "../../toggle";
 import { websocketContext } from "../../websocket-provider/context";
+import { Select, type SelectOption } from "./select";
 
 type Props = {
     className?: string;
     name: string;
     cKey: keyof GithubPreview["config"]["overrides"];
-    disabled?: string;
-    select?: {
-        selected: SelectOption;
-        options: SelectOption[];
-        onChange: (s: SelectOption) => void;
-    };
+    select?: SelectOption[];
     toggle?: {
         value: boolean;
         onChange: (v: boolean) => void;
@@ -30,17 +25,18 @@ type Props = {
         step: number;
         onChange: (value: number) => void;
     };
+    disabled?: string | undefined;
 };
 
 export const Option = ({
     name,
     cKey,
-    disabled,
     select,
     color,
     toggle,
     range,
     className,
+    disabled,
 }: Props) => {
     const { config } = useContext(websocketContext);
     if (!config) return null;
@@ -61,13 +57,7 @@ export const Option = ({
             ) : null}
             <p className="!m-0">{name}</p>
             {toggle && <Toggle checked={toggle.value} onChange={toggle.onChange} />}
-            {select && (
-                <Select
-                    selected={select.selected}
-                    options={select.options}
-                    onChange={select.onChange}
-                />
-            )}
+            {select && <Select select={select} disabled={disabled} />}
             {color && (
                 <label className="flex items-center gap-x-4 text-[14px]">
                     <input

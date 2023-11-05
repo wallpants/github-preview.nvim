@@ -1,4 +1,5 @@
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
+import { cn } from "../../../utils";
 import { IconButton } from "../../icon-button";
 
 export type SelectOption = {
@@ -18,13 +19,19 @@ export const Select = ({ select, disabled }: Props) => {
     const selected = select.find((option) => option.selected);
     const [isOpen, setIsOpen] = useState(false);
 
+    useEffect(() => {
+        // kind of a hack to close dropdown on settings modal click
+        // this relies on `tick` in settings/index.tsx
+        setIsOpen(false);
+    }, [select]);
+
     if (!selected) return null;
 
     return (
         <div className="relative z-20 flex flex-col items-center">
             <IconButton
                 Icon={selected.icon}
-                buttonClassName="peer"
+                className="peer"
                 iconClassName={selected.iconClassName}
                 disabled={Boolean(disabled)}
                 onClick={(e) => {
@@ -39,22 +46,23 @@ export const Select = ({ select, disabled }: Props) => {
             )}
             {isOpen && (
                 <div className="absolute top-0 flex flex-col">
-                    {select
-                        .sort((option) => (option.selected ? -1 : 1))
-                        .map((option) => (
-                            <IconButton
-                                key={option.label}
-                                label={option.label}
-                                buttonClassName="mb-0.5 bg-github-canvas-default"
-                                Icon={option.icon}
-                                iconClassName={option.iconClassName}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setIsOpen(!isOpen);
-                                    option.onClick();
-                                }}
-                            />
-                        ))}
+                    {select.map((option) => (
+                        <IconButton
+                            key={option.label}
+                            label={option.label}
+                            className={cn(
+                                "mb-0.5 bg-github-canvas-default",
+                                option.selected ? "border-orange-600" : "border-black",
+                            )}
+                            Icon={option.icon}
+                            iconClassName={option.iconClassName}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setIsOpen(!isOpen);
+                                option.onClick();
+                            }}
+                        />
+                    ))}
                 </div>
             )}
         </div>

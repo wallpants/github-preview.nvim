@@ -1,17 +1,18 @@
-import { useContext } from "react";
-import { type Config } from "../../../../types";
+import { useContext, useState } from "react";
 import { cn } from "../../../utils";
 import { FoldVerticalIcon } from "../../icons/fold-vertical";
 import { MoonIcon } from "../../icons/moon";
 import { SunIcon } from "../../icons/sun";
 import { SystemIcon } from "../../icons/system";
 import { UnfoldVerticalIcon } from "../../icons/unfold-vertical";
-import { type SelectOption } from "../../select";
 import { websocketContext } from "../../websocket-provider/context";
 import { Option } from "./option";
+import { type SelectOption } from "./select";
 
 export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
-    const { config, wsRequest, currentPath } = useContext(websocketContext);
+    const { config, wsRequest } = useContext(websocketContext);
+    const [tick, setTick] = useState(0);
+
     if (!config) return null;
 
     const overrides = config.overrides;
@@ -20,17 +21,26 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
         {
             label: "System",
             icon: SystemIcon,
-            value: "system",
+            selected: overrides.theme === "system",
+            onClick: () => {
+                wsRequest({ type: "update-config", config: { theme: "system" } });
+            },
         },
         {
             label: "Light",
             icon: SunIcon,
-            value: "light",
+            selected: overrides.theme === "light",
+            onClick: () => {
+                wsRequest({ type: "update-config", config: { theme: "light" } });
+            },
         },
         {
             label: "Dark",
             icon: MoonIcon,
-            value: "dark",
+            selected: overrides.theme === "dark",
+            onClick: () => {
+                wsRequest({ type: "update-config", config: { theme: "dark" } });
+            },
         },
     ];
 
@@ -39,12 +49,18 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
             label: "open",
             icon: UnfoldVerticalIcon,
             iconClassName: "stroke-github-accent-fg",
-            value: "open",
+            selected: overrides.details_tags_open,
+            onClick: () => {
+                wsRequest({ type: "update-config", config: { details_tags_open: true } });
+            },
         },
         {
-            label: "closed",
+            label: "close",
             icon: FoldVerticalIcon,
-            value: "closed",
+            selected: !overrides.details_tags_open,
+            onClick: () => {
+                wsRequest({ type: "update-config", config: { details_tags_open: false } });
+            },
         },
     ];
 
@@ -52,6 +68,10 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
         <div
             onClick={(e) => {
                 e.stopPropagation();
+                // a little bit of a hack to close "select" dropdowns.
+                // "select" arrays above are recreated on every render, triggering
+                // a rerender on components that rely on them and thus closing menus
+                setTick(tick + 1);
             }}
             className={cn(
                 "absolute left-14 top-[55px] z-20 w-96 p-2 text-sm",
@@ -63,7 +83,7 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
                 <br />
                 To persist changes, update your{" "}
                 <a
-                    href="https://github.com/wallpants/github-preview.nvim#%EF%B8%8F-configuration"
+                    href="https://github.com/wallpants/github-preview.nvim#%EF%B8%8F-setup"
                     target="_blank"
                     rel="noreferrer"
                 >
@@ -72,38 +92,8 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
                 .
             </p>
             <div className="grid grid-cols-3 gap-4">
-                <Option
-                    name="theme"
-                    cKey="theme"
-                    select={{
-                        selected: themeSelect.find(
-                            ({ value }) => config.overrides.theme === value,
-                        )!,
-                        options: themeSelect,
-                        onChange: (selected) => {
-                            wsRequest({
-                                type: "update-config",
-                                config: { theme: selected.value as Config["theme"] },
-                            });
-                        },
-                    }}
-                />
-                <Option
-                    name="<details>"
-                    cKey="details_tags_open"
-                    select={{
-                        selected: detailsSelect.find(({ value }) =>
-                            config.overrides.details_tags_open ? "open" : "closed" === value,
-                        )!,
-                        options: detailsSelect,
-                        onChange: (selected) => {
-                            wsRequest({
-                                type: "update-config",
-                                config: { details_tags_open: selected.value === "open" },
-                            });
-                        },
-                    }}
-                />
+                <Option name="theme" cKey="theme" select={themeSelect} />
+                <Option name="<details>" cKey="details_tags_open" select={detailsSelect} />
                 <Option
                     name="single-file"
                     cKey="single_file"
@@ -111,7 +101,6 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
                         value: overrides.single_file,
                         onChange: (enabled) => {
                             wsRequest({ type: "update-config", config: { single_file: enabled } });
-                            if (currentPath) wsRequest({ type: "get-entry", path: currentPath });
                         },
                     }}
                     disabled={
