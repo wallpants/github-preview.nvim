@@ -151,6 +151,5 @@ Starts the service if not running or stops it if it's already running.
    - replace mermaid example in features.md with something more legible
    - center svgs
    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
-7. setup dependabot (2 nov)
-8. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
-9. export builtin functions like telescope does and add docs explaining how to use them to setup a user-command or a keymap
+7. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
+8. export builtin functions like telescope does and add docs explaining how to use them to setup a user-command or a keymap
