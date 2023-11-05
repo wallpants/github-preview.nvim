@@ -6,7 +6,7 @@ import { PanelCloseIcon } from "../icons/panel-close.tsx";
 import { PanelOpenIcon } from "../icons/panel-open.tsx";
 import { SettingsIcon } from "../icons/settings.tsx";
 import { websocketContext } from "../websocket-provider/context.ts";
-import { Config } from "./config/index.tsx";
+import { Settings } from "./settings/index.tsx";
 
 export const Header = ({
     isExpanded,
@@ -77,7 +77,7 @@ export const Header = ({
                     setIsExpanded(!isExpanded);
                 }}
             />
-            {configOpen ? <Config isOverriden={isOverriden} /> : null}
+            {configOpen ? <Settings isOverriden={isOverriden} /> : null}
         </div>
     );
 };

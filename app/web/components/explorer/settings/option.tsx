@@ -1,15 +1,20 @@
 import { useContext } from "react";
 import { type GithubPreview } from "../../../../github-preview";
 import { cn, isEqual } from "../../../utils";
+import { Select, type SelectOption } from "../../select";
 import { Toggle } from "../../toggle";
 import { websocketContext } from "../../websocket-provider/context";
-import { Select, type SelectOption } from "./select";
 
 type Props = {
     className?: string;
     name: string;
     cKey: keyof GithubPreview["config"]["overrides"];
-    select?: SelectOption[];
+    disabled?: string;
+    select?: {
+        selected: SelectOption;
+        options: SelectOption[];
+        onChange: (s: SelectOption) => void;
+    };
     toggle?: {
         value: boolean;
         onChange: (v: boolean) => void;
@@ -25,18 +30,17 @@ type Props = {
         step: number;
         onChange: (value: number) => void;
     };
-    disabled?: string | undefined;
 };
 
 export const Option = ({
     name,
     cKey,
+    disabled,
     select,
     color,
     toggle,
     range,
     className,
-    disabled,
 }: Props) => {
     const { config } = useContext(websocketContext);
     if (!config) return null;
@@ -57,7 +61,13 @@ export const Option = ({
             ) : null}
             <p className="!m-0">{name}</p>
             {toggle && <Toggle checked={toggle.value} onChange={toggle.onChange} />}
-            {select && <Select select={select} disabled={disabled} />}
+            {select && (
+                <Select
+                    selected={select.selected}
+                    options={select.options}
+                    onChange={select.onChange}
+                />
+            )}
             {color && (
                 <label className="flex items-center gap-x-4 text-[14px]">
                     <input
@@ -87,6 +97,13 @@ export const Option = ({
                         }}
                     />
                     <span className="ml-2 w-6 text-right">{range.value}</span>
+                </div>
+            )}
+            {disabled && (
+                <div className="group absolute inset-0 cursor-not-allowed rounded hover:bg-github-canvas-subtle">
+                    <div className="invisible absolute inset-0 flex items-center bg-orange-200/10 group-hover:visible">
+                        <p className="!m-0 text-center text-orange-600">{disabled}</p>
+                    </div>
                 </div>
             )}
         </div>
