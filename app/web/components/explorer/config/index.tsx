@@ -99,6 +99,7 @@ export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
                         value: overrides.single_file,
                         onChange: (enabled) => {
                             wsRequest({ type: "update-config", config: { single_file: enabled } });
+                            if (currentPath) wsRequest({ type: "get-entry", path: currentPath });
                         },
                     }}
                     disabled={
