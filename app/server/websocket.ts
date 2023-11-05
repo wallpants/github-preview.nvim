@@ -57,7 +57,7 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
             }
 
             if (browserMessage.type === "get-entry") {
-                // if single-file mode is enabled, dont respond is browser requests
+                // if single-file mode is enabled, dont respond if browser requests
                 // an entry other than the currentPath
                 if (app.config.overrides.single_file && browserMessage.path !== app.currentPath) {
                     return;

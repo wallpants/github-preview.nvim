@@ -10,15 +10,15 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
 
 ## ✨ Features
 
-- [💻 Linux / macOS / WSL](./docs/features.md#linux--macos--wsl)
-- [🔴 LIVE updates](./docs/features.md#live-updates)
-- [♻️ Synced Scrolling](./docs/features.md#synced-scrolling)
-- [🌈 Dark & Light modes](./docs/features.md#light--dark-modes)
-- [🖍️ Cursorline in Preview](./docs/features.md#cursorline-in-preview)
-- [🏞️ Local Image Support](./docs/features.md#local-image-support)
-- [🧜 Mermaid Support](./docs/features.md#mermaid-support)
-- [📄 Single-file mode](./docs/features.md#single-file-mode)
-- [📂 Repository mode](./docs/features.md#repository-mode)
+- [💻 Linux / macOS / WSL](./docs/features.md#-linux--macos--wsl)
+- [🔴 LIVE updates](./docs/features.md#-live-updates)
+- [♻️ Synced Scrolling](./docs/features.md#%EF%B8%8F-synced-scrolling)
+- [🌈 Dark & Light modes](./docs/features.md#-dark--light-modes)
+- [🖍️ Cursorline in Preview](./docs/features.md#%EF%B8%8F-cursorline-in-preview)
+- [🏞️ Local Image Support](./docs/features.md#%EF%B8%8F-local-image-support)
+- [🧜 Mermaid Support](./docs/features.md#-mermaid-support)
+- [📄 Single-file mode](./docs/features.md#-single-file-mode)
+- [📂 Repository mode](./docs/features.md#-repository-mode)
 
 ## ▶️ Demo
 
@@ -142,18 +142,25 @@ Starts the service if not running or stops it if it's already running.
 ## 🚀 Roadmap
 
 1. Update demo gif (2 nov)
-2. Code line highlights when "#" in url (1 nov)
-3. Write development docs (31 oct)
-4. Write issue templates (31 oct)
-5. Dir navigation in markdown container (30 oct)
-6. Better Mermaid support (27 oct)
-   - replace mermaid example in features.md with something more legible
-   - center svgs
-   - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
-7. write checkhealth (23 oct)
-8. setup dependabot (2 nov)
-9. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
-10. update config validation in init.lua (3 nov)
-11. autoclose config select on click away (3 nov)
-12. implement command pallete with plenary.popup to temporarily override settings from neovim (3 nov)
+2. Figure out how to write nvim help.txt
+3. guard websocket "get-entry", dont return anything outside of repo root
+4. rerender markdown when changing details option
+5. set hash to undefined after "consuming" it in a scroll call
+6. rerun mermaid on explorer expand collapse
+7. Code line highlights when "#" in url (1 nov)
+8. Write development docs (31 oct)
+9. add popover on disabled relative links in single-file mode indicating they're disabled because of single-file mode
+10. Write issue templates (31 oct)
+11. Dir navigation in markdown container (30 oct)
+12. Close config modal on browser unfocus
+13. Better Mermaid support (27 oct)
+    - replace mermaid example in features.md with something more legible
+    - center svgs
+    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
+14. write checkhealth (23 oct)
+15. setup dependabot (2 nov)
+16. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
+17. update config validation in init.lua (3 nov)
+18. autoclose config select on click away (3 nov)
+19. implement command pallete with plenary.popup to temporarily override settings from neovim (3 nov)
     - OR we could add the command palette to the webapp & control it from neovim

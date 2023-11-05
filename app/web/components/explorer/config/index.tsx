@@ -77,7 +77,7 @@ export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
                 <br />
                 To persist changes, update your{" "}
                 <a
-                    href="https://github.com/wallpants/github-preview.nvim#setup"
+                    href="https://github.com/wallpants/github-preview.nvim#%EF%B8%8F-setup"
                     target="_blank"
                     rel="noreferrer"
                 >
