@@ -26,7 +26,7 @@ export const WebsocketProvider = ({
     const [repoName, setRepoName] = useState("");
     const [isConnected, setIsConnected] = useState(false);
     const [currentPath, setCurrentPath] = useState<string>();
-    const [hash, setHash] = useState<string | null>(null);
+    const [hash, setHash] = useState<string | null | undefined>(undefined);
     const [config, setConfig] = useState<GithubPreview["config"]>();
     const handlers = useRef(new Map<string, MessageHandler>());
 
@@ -98,11 +98,12 @@ export const WebsocketProvider = ({
     return (
         <websocketContext.Provider
             value={{
-                isConnected,
                 registerHandler,
                 currentPath,
+                isConnected,
                 wsRequest,
                 repoName,
+                setHash,
                 config,
                 hash,
             }}
