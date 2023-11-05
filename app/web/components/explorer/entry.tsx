@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { cn, getSegments } from "../../utils.ts";
-import { ChevronRight } from "../icons/chevron-right.tsx";
+import { ChevronRightIcon } from "../icons/chevron-right.tsx";
 import { DirIcon } from "../icons/dir.tsx";
 import { FileIcon } from "../icons/file.tsx";
 import { OpenDirIcon } from "../icons/open-dir.tsx";
@@ -90,7 +90,7 @@ export const EntryComponent = ({ path, depth, currentPath }: Props) => {
                             // eslint-disable-next-line
                             className="hover:bg-github-border-default mr-1 flex h-full items-center"
                         >
-                            <ChevronRight className={cn(expanded && "rotate-90")} />
+                            <ChevronRightIcon className={cn(expanded && "rotate-90")} />
                         </div>
                     )}
                     {IconMap[isDir ? (expanded ? "openDir" : "dir") : "file"]}

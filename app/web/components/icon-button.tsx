@@ -3,7 +3,7 @@ import { cn } from "../utils.ts";
 
 type Props = {
     Icon: FC<{ className: string }>;
-    onClick: React.MouseEventHandler<HTMLElement>;
+    onClick?: React.MouseEventHandler<HTMLElement>;
     buttonClassName?: string;
     iconClassName?: string | undefined;
     noBorder?: boolean;
@@ -25,8 +25,7 @@ export const IconButton = ({
             onClick={onClick}
             disabled={disabled}
             className={cn(
-                "flex p-2 items-center",
-                "rounded-md border",
+                "flex p-2 items-center rounded-md border",
                 noBorder ? "border-none" : "border-github-border-default",
                 disabled ? "bg-github-border-default" : "hover:bg-github-border-default",
                 buttonClassName,
