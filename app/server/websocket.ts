@@ -63,13 +63,16 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                     return;
                 }
 
+                // is same path, keep cursorLine
+                const cursorLine = browserMessage.path === app.currentPath ? app.cursorLine : null;
+
                 await app.setCurrPath(browserMessage.path);
 
                 const message: WsServerMessage = {
                     type: "entry",
                     currentPath: app.currentPath,
                     lines: app.lines,
-                    cursorLine: null,
+                    cursorLine: cursorLine,
                     hash: hash,
                 };
 

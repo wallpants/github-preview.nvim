@@ -10,7 +10,7 @@ import { Option } from "./option";
 import { type SelectOption } from "./select";
 
 export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
-    const { config, wsRequest } = useContext(websocketContext);
+    const { config, wsRequest, currentPath } = useContext(websocketContext);
     if (!config) return null;
 
     const overrides = config.overrides;
@@ -50,6 +50,8 @@ export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
             selected: overrides.details_tags_open,
             onClick: () => {
                 wsRequest({ type: "update-config", config: { details_tags_open: true } });
+                // re-fetch path to re-render markdown & update <details> tags
+                if (currentPath) wsRequest({ type: "get-entry", path: currentPath });
             },
         },
         {
@@ -58,6 +60,8 @@ export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
             selected: !overrides.details_tags_open,
             onClick: () => {
                 wsRequest({ type: "update-config", config: { details_tags_open: false } });
+                // re-fetch path to re-render markdown & update <details> tags
+                if (currentPath) wsRequest({ type: "get-entry", path: currentPath });
             },
         },
     ];

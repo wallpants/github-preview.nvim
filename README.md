@@ -143,23 +143,22 @@ Starts the service if not running or stops it if it's already running.
 
 1. Update demo gif (2 nov)
 2. Figure out how to write nvim help.txt
-3. rerender markdown when changing details option
-4. set hash to undefined after "consuming" it in a scroll call
-5. rerun mermaid on explorer expand collapse
-6. Code line highlights when "#" in url (1 nov)
-7. Write development docs (31 oct)
-8. add popover on disabled relative links in single-file mode indicating they're disabled because of single-file mode
-9. Write issue templates (31 oct)
-10. Dir navigation in markdown container (30 oct)
-11. Close config modal on browser unfocus
-12. Better Mermaid support (27 oct)
+3. set hash to undefined after "consuming" it in a scroll call
+4. rerun mermaid on explorer expand collapse
+5. Code line highlights when "#" in url (1 nov)
+6. Write development docs (31 oct)
+7. add popover on disabled relative links in single-file mode indicating they're disabled because of single-file mode
+8. Write issue templates (31 oct)
+9. Dir navigation in markdown container (30 oct)
+10. Close config modal on browser unfocus
+11. Better Mermaid support (27 oct)
     - replace mermaid example in features.md with something more legible
     - center svgs
     - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
-13. write checkhealth (23 oct)
-14. setup dependabot (2 nov)
-15. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
-16. update config validation in init.lua (3 nov)
-17. autoclose config select on click away (3 nov)
-18. implement command pallete with plenary.popup to temporarily override settings from neovim (3 nov)
+12. write checkhealth (23 oct)
+13. setup dependabot (2 nov)
+14. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
+15. update config validation in init.lua (3 nov)
+16. autoclose config select on click away (3 nov)
+17. implement command pallete with plenary.popup to temporarily override settings from neovim (3 nov)
     - OR we could add the command palette to the webapp & control it from neovim
