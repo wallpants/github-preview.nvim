@@ -143,22 +143,19 @@ Starts the service if not running or stops it if it's already running.
 
 1. Update demo gif (2 nov)
 2. Figure out how to write nvim help.txt
-3. set hash to undefined after "consuming" it in a scroll call
-4. rerun mermaid on explorer expand collapse
-5. Code line highlights when "#" in url (1 nov)
-6. Write development docs (31 oct)
-7. add popover on disabled relative links in single-file mode indicating they're disabled because of single-file mode
-8. Write issue templates (31 oct)
-9. Dir navigation in markdown container (30 oct)
-10. Close config modal on browser unfocus
-11. Better Mermaid support (27 oct)
-    - replace mermaid example in features.md with something more legible
-    - center svgs
-    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
-12. write checkhealth (23 oct)
-13. setup dependabot (2 nov)
-14. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
-15. update config validation in init.lua (3 nov)
-16. autoclose config select on click away (3 nov)
-17. implement command pallete with plenary.popup to temporarily override settings from neovim (3 nov)
-    - OR we could add the command palette to the webapp & control it from neovim
+3. Code line highlights when "#" in url (1 nov)
+4. Write development docs (31 oct)
+5. add tooltip on disabled relative links in single-file mode indicating they're disabled because of single-file mode
+6. Write issue templates (31 oct)
+7. Dir navigation in markdown container (30 oct)
+8. Update config modal to use headlessui components
+9. Better Mermaid support (27 oct)
+   - rerun mermaid on explorer expand collapse
+   - replace mermaid example in features.md with something more legible
+   - center svgs
+   - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
+10. write checkhealth (23 oct)
+11. setup dependabot (2 nov)
+12. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
+13. update config validation in init.lua (3 nov)
+14. export builtin functions like telescope does and add docs explaining how to use them to setup a user-command or a keymap

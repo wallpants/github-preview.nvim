@@ -122,11 +122,11 @@ export function scroll(
     offsets: Offsets,
     cursorLine: number | null,
     cursorLineElement: HTMLElement,
-    hash: string | null,
+    hash: string | null | undefined,
 ) {
     if (cursorLine === null) {
         cursorLineElement.style.setProperty("visibility", "hidden");
-        if (!hash) {
+        if (hash === null) {
             markdownContainerElement.scrollTo({ top: 0, behavior: "instant" });
         }
         return;

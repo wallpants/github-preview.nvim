@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElement }: Props) => {
-    const { config, registerHandler, hash } = useContext(websocketContext);
+    const { config, registerHandler, setHash, hash } = useContext(websocketContext);
     const [cursorLine, setCursorLine] = useState<number | null>(null);
 
     useEffect(() => {
@@ -36,7 +36,18 @@ export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElemen
             cursorLineElement,
             hash,
         );
-    }, [markdownContainerElement, topOffsetPct, offsets, cursorLine, cursorLineElement, hash]);
+
+        // "consume" null hash
+        if (hash === null) setHash(undefined);
+    }, [
+        markdownContainerElement,
+        topOffsetPct,
+        offsets,
+        cursorLine,
+        cursorLineElement,
+        hash,
+        setHash,
+    ]);
 
     return (
         <div
