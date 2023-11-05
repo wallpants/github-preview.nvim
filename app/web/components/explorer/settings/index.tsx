@@ -1,15 +1,16 @@
 import { useContext } from "react";
+import { type Config } from "../../../../types";
 import { cn } from "../../../utils";
 import { FoldVerticalIcon } from "../../icons/fold-vertical";
 import { MoonIcon } from "../../icons/moon";
 import { SunIcon } from "../../icons/sun";
 import { SystemIcon } from "../../icons/system";
 import { UnfoldVerticalIcon } from "../../icons/unfold-vertical";
+import { type SelectOption } from "../../select";
 import { websocketContext } from "../../websocket-provider/context";
 import { Option } from "./option";
-import { type SelectOption } from "./select";
 
-export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
+export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
     const { config, wsRequest, currentPath } = useContext(websocketContext);
     if (!config) return null;
 
@@ -19,26 +20,17 @@ export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
         {
             label: "System",
             icon: SystemIcon,
-            selected: overrides.theme === "system",
-            onClick: () => {
-                wsRequest({ type: "update-config", config: { theme: "system" } });
-            },
+            value: "system",
         },
         {
             label: "Light",
             icon: SunIcon,
-            selected: overrides.theme === "light",
-            onClick: () => {
-                wsRequest({ type: "update-config", config: { theme: "light" } });
-            },
+            value: "light",
         },
         {
             label: "Dark",
             icon: MoonIcon,
-            selected: overrides.theme === "dark",
-            onClick: () => {
-                wsRequest({ type: "update-config", config: { theme: "dark" } });
-            },
+            value: "dark",
         },
     ];
 
@@ -47,22 +39,12 @@ export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
             label: "open",
             icon: UnfoldVerticalIcon,
             iconClassName: "stroke-github-accent-fg",
-            selected: overrides.details_tags_open,
-            onClick: () => {
-                wsRequest({ type: "update-config", config: { details_tags_open: true } });
-                // re-fetch path to re-render markdown & update <details> tags
-                if (currentPath) wsRequest({ type: "get-entry", path: currentPath });
-            },
+            value: "open",
         },
         {
-            label: "close",
+            label: "closed",
             icon: FoldVerticalIcon,
-            selected: !overrides.details_tags_open,
-            onClick: () => {
-                wsRequest({ type: "update-config", config: { details_tags_open: false } });
-                // re-fetch path to re-render markdown & update <details> tags
-                if (currentPath) wsRequest({ type: "get-entry", path: currentPath });
-            },
+            value: "closed",
         },
     ];
 
@@ -90,8 +72,38 @@ export const Config = ({ isOverriden }: { isOverriden: boolean }) => {
                 .
             </p>
             <div className="grid grid-cols-3 gap-4">
-                <Option name="theme" cKey="theme" select={themeSelect} />
-                <Option name="<details>" cKey="details_tags_open" select={detailsSelect} />
+                <Option
+                    name="theme"
+                    cKey="theme"
+                    select={{
+                        selected: themeSelect.find(
+                            ({ value }) => config.overrides.theme === value,
+                        )!,
+                        options: themeSelect,
+                        onChange: (selected) => {
+                            wsRequest({
+                                type: "update-config",
+                                config: { theme: selected.value as Config["theme"] },
+                            });
+                        },
+                    }}
+                />
+                <Option
+                    name="<details>"
+                    cKey="details_tags_open"
+                    select={{
+                        selected: detailsSelect.find(({ value }) =>
+                            config.overrides.details_tags_open ? "open" : "closed" === value,
+                        )!,
+                        options: detailsSelect,
+                        onChange: (selected) => {
+                            wsRequest({
+                                type: "update-config",
+                                config: { details_tags_open: selected.value === "open" },
+                            });
+                        },
+                    }}
+                />
                 <Option
                     name="single-file"
                     cKey="single_file"
