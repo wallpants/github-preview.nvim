@@ -57,7 +57,7 @@ export const Header = ({
             {isExpanded && <h4 className="!my-0 mr-auto">Files</h4>}
             <div className="relative">
                 <IconButton
-                    buttonClassName={cn(isExpanded ? "ml-4" : "my-2")}
+                    className={cn(isExpanded ? "ml-4" : "my-2")}
                     noBorder={!isExpanded}
                     Icon={SettingsIcon}
                     onClick={(e) => {
@@ -70,7 +70,7 @@ export const Header = ({
                 ) : null}
             </div>
             <IconButton
-                buttonClassName={cn(isExpanded ? "ml-4" : "my-2")}
+                className={cn(isExpanded ? "ml-4" : "my-2")}
                 noBorder={!isExpanded}
                 Icon={isExpanded ? PanelOpenIcon : PanelCloseIcon}
                 onClick={() => {
