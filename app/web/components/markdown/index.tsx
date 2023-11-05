@@ -42,6 +42,7 @@ export const Markdown = ({ className }: { className: string }) => {
     const [markdownContainerElement, setMarkdownContainerElement] = useState<HTMLElement>();
 
     const details_tags_open = config?.overrides.details_tags_open;
+    const single_file = config?.overrides.single_file;
 
     useEffect(() => {
         if (details_tags_open === undefined) return;
@@ -88,9 +89,11 @@ export const Markdown = ({ className }: { className: string }) => {
                         const href = (event.currentTarget as HTMLAnchorElement).href;
                         const base = window.location.origin + "/";
 
+                        // if absolute path, let it allow default behaviour
                         if (!href.startsWith(base)) return;
-                        event.preventDefault();
 
+                        // update path otherwise
+                        event.preventDefault();
                         const pathname = href.slice(base.length);
                         wsRequest({ type: "get-entry", path: pathname });
                     });
@@ -129,6 +132,7 @@ export const Markdown = ({ className }: { className: string }) => {
     }, [
         registerHandler,
         wsRequest,
+        single_file,
         pantsdown,
         markdownElement,
         cursorLineElement,
