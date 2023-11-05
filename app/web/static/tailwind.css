@@ -375,6 +375,10 @@
   display: none
 }
 
+.\!h-3 {
+  height: 0.75rem !important
+}
+
 .h-14 {
   height: 3.5rem
 }
@@ -385,10 +389,6 @@
 
 .h-28 {
   height: 7rem
-}
-
-.h-3 {
-  height: 0.75rem
 }
 
 .h-40 {
@@ -427,6 +427,10 @@
   height: 100vh
 }
 
+.\!w-3 {
+  width: 0.75rem !important
+}
+
 .w-1 {
   width: 0.25rem
 }
@@ -449,10 +453,6 @@
 
 .w-24 {
   width: 6rem
-}
-
-.w-3 {
-  width: 0.75rem
 }
 
 .w-5 {
