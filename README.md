@@ -73,7 +73,7 @@ use {
 
 </details>
 
-## ⚙️ Setup
+## ⚙️ Configuration
 
 `setup` must be called for the plugin to be loaded. Some plugin managers handle this for you.
 

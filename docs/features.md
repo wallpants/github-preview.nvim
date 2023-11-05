@@ -19,7 +19,7 @@ See updates live in your browser as you edit your files.
 ## ♻️ Synced Scrolling
 
 Live Preview auto scrolls following your cursor in Neovim. You can customize/disable scrolling
-in your [Setup](../README.md#%EF%B8%8F-setup).
+in your [config](../README.md#%EF%B8%8F-configuration).
 
 ## 🌈 Dark & Light modes
 
@@ -28,7 +28,7 @@ TODO: add gif or images
 ## 🖍️ Cursorline in Preview
 
 Cursorline position is estimated and may sometimes be a bit off. You can customize/disable
-the cursorline in your [Setup](../README.md#%EF%B8%8F-setup).
+the cursorline in your [config](../README.md#%EF%B8%8F-configuration).
 
 ## 🏞️ Local Image Support
 
