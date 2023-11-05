@@ -142,17 +142,16 @@ Starts the service if not running or stops it if it's already running.
 ## 🚀 Roadmap
 
 1. Update demo gif (2 nov)
-2. Figure out how to write nvim help.txt
-3. Code line highlights when "#" in url (1 nov)
-4. Write development docs (31 oct)
-5. Write issue templates (31 oct)
-6. Dir navigation in markdown container (30 oct)
-7. Better Mermaid support (27 oct)
+1. abs links in readme
+1. Code line highlights when "#" in url (1 nov)
+1. Write development docs (31 oct)
+1. Write issue templates (31 oct)
+1. Dir navigation in markdown container (30 oct)
+1. Better Mermaid support (27 oct)
    - rerun mermaid on explorer expand collapse
    - replace mermaid example in features.md with something more legible
    - center svgs
    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
-8. write checkhealth (23 oct)
-9. setup dependabot (2 nov)
-10. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
-11. export builtin functions like telescope does and add docs explaining how to use them to setup a user-command or a keymap
+1. setup dependabot (2 nov)
+1. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
+1. export builtin functions like telescope does and add docs explaining how to use them to setup a user-command or a keymap
