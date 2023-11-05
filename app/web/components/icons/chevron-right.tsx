@@ -4,7 +4,7 @@ type Props = {
     className?: string;
 };
 
-export const ChevronRight = ({ className }: Props) => (
+export const ChevronRightIcon = ({ className }: Props) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
