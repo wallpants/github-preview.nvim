@@ -145,18 +145,17 @@ Starts the service if not running or stops it if it's already running.
 2. Figure out how to write nvim help.txt
 3. Code line highlights when "#" in url (1 nov)
 4. Write development docs (31 oct)
-5. add tooltip on disabled relative links in single-file mode indicating they're disabled because of single-file mode
-6. Write issue templates (31 oct)
-7. Dir navigation in markdown container (30 oct)
-8. Update config modal to use headlessui components
-9. Better Mermaid support (27 oct)
+5. Write issue templates (31 oct)
+6. Dir navigation in markdown container (30 oct)
+7. Update config modal to use headlessui components
+8. Better Mermaid support (27 oct)
    - rerun mermaid on explorer expand collapse
    - replace mermaid example in features.md with something more legible
    - center svgs
    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
-10. write checkhealth (23 oct)
-11. setup dependabot (2 nov)
-12. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
-13. update config validation in init.lua (3 nov)
-14. export builtin functions like telescope does and add docs explaining how to use them to setup a user-command or a keymap
-15. replace svg icons in toggle with lucide icons
+9. write checkhealth (23 oct)
+10. setup dependabot (2 nov)
+11. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
+12. update config validation in init.lua (3 nov)
+13. export builtin functions like telescope does and add docs explaining how to use them to setup a user-command or a keymap
+14. replace svg icons in toggle with lucide icons
