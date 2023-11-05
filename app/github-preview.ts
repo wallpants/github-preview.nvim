@@ -3,7 +3,7 @@ import { attach, type LogLevel, type Nvim } from "bunvim";
 import { globby } from "globby";
 import { isBinaryFile } from "isbinaryfile";
 import { existsSync } from "node:fs";
-import { basename, dirname, resolve } from "node:path";
+import { basename, dirname, normalize, resolve } from "node:path";
 import { parse } from "valibot";
 import { startServer } from "./server";
 import { UNALIVE_URL } from "./server/http";
@@ -142,6 +142,10 @@ export class GithubPreview {
      * Updates this.currentPath & this.lines based on "path" provided
      */
     async setCurrPath(path: string) {
+        // do not return any entries outside of repo root
+        const normalized = normalize(this.root + this.currentPath);
+        if (normalized.length < this.root.length) return;
+
         this.currentPath = path;
         const entries = await this.getEntries(this.currentPath);
 
