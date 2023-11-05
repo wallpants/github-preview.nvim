@@ -155,5 +155,4 @@ Starts the service if not running or stops it if it's already running.
 8. write checkhealth (23 oct)
 9. setup dependabot (2 nov)
 10. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
-11. update config validation in init.lua (3 nov)
-12. export builtin functions like telescope does and add docs explaining how to use them to setup a user-command or a keymap
+11. export builtin functions like telescope does and add docs explaining how to use them to setup a user-command or a keymap
