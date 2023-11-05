@@ -1,8 +1,8 @@
 # GitHub Markdown Preview
 
-[<img src="docs/nvim.svg" height="60px" align="right" />](https://neovim.io/)
-[<img src="docs/github.svg" height="60px" align="right" />](https://github.com/)
-[<img src="docs/bun.svg" height="60px" align="right" />](https://bun.sh/)
+[<img src="https://raw.githubusercontent.com/wallpants/github-preview.nvim/main/docs/nvim.svg" height="60px" align="right" />](https://neovim.io/)
+[<img src="https://raw.githubusercontent.com/wallpants/github-preview.nvim/main/docs/github.svg" height="60px" align="right" />](https://github.com/)
+[<img src="https://raw.githubusercontent.com/wallpants/github-preview.nvim/main/docs/bun.svg" height="60px" align="right" />](https://bun.sh/)
 
 Live Preview of your Markdown files & local git repositories.
 
@@ -10,15 +10,15 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
 
 ## ✨ Features
 
-- [💻 Linux / macOS / WSL](./docs/features.md#-linux--macos--wsl)
-- [🔴 LIVE updates](./docs/features.md#-live-updates)
-- [♻️ Synced Scrolling](./docs/features.md#%EF%B8%8F-synced-scrolling)
-- [🌈 Dark & Light modes](./docs/features.md#-dark--light-modes)
-- [🖍️ Cursorline in Preview](./docs/features.md#%EF%B8%8F-cursorline-in-preview)
-- [🏞️ Local Image Support](./docs/features.md#%EF%B8%8F-local-image-support)
-- [🧜 Mermaid Support](./docs/features.md#-mermaid-support)
-- [📄 Single-file mode](./docs/features.md#-single-file-mode)
-- [📂 Repository mode](./docs/features.md#-repository-mode)
+- [💻 Linux / macOS / WSL](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-linux--macos--wsl)
+- [🔴 LIVE updates](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-live-updates)
+- [♻️ Synced Scrolling](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#%EF%B8%8F-synced-scrolling)
+- [🌈 Dark & Light modes](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-dark--light-modes)
+- [🖍️ Cursorline in Preview](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#%EF%B8%8F-cursorline-in-preview)
+- [🏞️ Local Image Support](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#%EF%B8%8F-local-image-support)
+- [🧜 Mermaid Support](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-mermaid-support)
+- [📄 Single-file mode](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-single-file-mode)
+- [📂 Repository mode](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-repository-mode)
 
 ## ▶️ Demo
 
@@ -137,21 +137,20 @@ Starts the service if not running or stops it if it's already running.
 
 ## 👷 Development & Contributing
 
-[See documentation](/docs/development.md)
+[See documentation](https://github.com/wallpants/github-preview.nvim/blob/main/docs/development.md)
 
 ## 🚀 Roadmap
 
 1. Update demo gif (2 nov)
-1. abs links in readme
-1. Code line highlights when "#" in url (1 nov)
-1. Write development docs (31 oct)
-1. Write issue templates (31 oct)
-1. Dir navigation in markdown container (30 oct)
-1. Better Mermaid support (27 oct)
+2. Code line highlights when "#" in url (1 nov)
+3. Write development docs (31 oct)
+4. Write issue templates (31 oct)
+5. Dir navigation in markdown container (30 oct)
+6. Better Mermaid support (27 oct)
    - rerun mermaid on explorer expand collapse
    - replace mermaid example in features.md with something more legible
    - center svgs
    - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
-1. setup dependabot (2 nov)
-1. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
-1. export builtin functions like telescope does and add docs explaining how to use them to setup a user-command or a keymap
+7. setup dependabot (2 nov)
+8. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
+9. export builtin functions like telescope does and add docs explaining how to use them to setup a user-command or a keymap
