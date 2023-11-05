@@ -158,4 +158,3 @@ Starts the service if not running or stops it if it's already running.
 11. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
 12. update config validation in init.lua (3 nov)
 13. export builtin functions like telescope does and add docs explaining how to use them to setup a user-command or a keymap
-14. replace svg icons in toggle with lucide icons
