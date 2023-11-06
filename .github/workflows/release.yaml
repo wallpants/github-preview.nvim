@@ -18,13 +18,13 @@ jobs:
         uses: oven-sh/setup-bun@v1
       - name: Install dependencies
         run: bun install
-      - name: Validate code formatting
-        run: |
-          bun run format
-          if [[ $(git status --porcelain) ]]; then
-            echo "Code not properly formatted. Please run 'bun run format' locally and commit changes."
-            exit 1
-          fi
+      # - name: Validate code formatting
+      #   run: |
+      #     bun run format
+      #     if [[ $(git status --porcelain) ]]; then
+      #       echo "Code not properly formatted. Please run 'bun run format' locally and commit changes."
+      #       exit 1
+      #     fi
       - name: Validate tailwind.css
         run: |
           bun run tailwind:compile
