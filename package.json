@@ -17,6 +17,7 @@
   "scripts": {
     "commit": "cz",
     "format": "prettier **.{md,ts,tsx,css} -w",
+    "logs": "bunvim logs github-preview",
     "lint": "tsc -p ./app/tsconfig.json && eslint . --ext ts --ext tsx --report-unused-disable-directives --max-warnings 0",
     "start": "bun run app/index.ts",
     "web:dev": "cd app/web && bun vite --open",
