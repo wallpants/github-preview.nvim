@@ -38,7 +38,7 @@
     "react-dom": "^18.2.0",
     "reconnecting-websocket": "^4.4.0",
     "tailwind-merge": "^2.0.0",
-    "valibot": "^0.18.0"
+    "valibot": "^0.20.1"
   },
   "devDependencies": {
     "@types/eslint": "^8.44.6",
