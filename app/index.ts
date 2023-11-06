@@ -8,8 +8,7 @@ import { type CustomEvents, type WsServerMessage } from "./types.ts";
 const app = await GithubPreview.start();
 
 await onBeforeExit(app, async () => {
-    app.wsSend({ type: "goodbye" });
-    await app.nvim.call("nvim_del_augroup_by_id", [app.augroupId]);
+    await app.goodbye();
     // We're handling an RPCRequest, which means neovim remains blocked
     // until we return something
     return true;

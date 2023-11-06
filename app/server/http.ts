@@ -37,6 +37,7 @@ export function httpHandler(app: GithubPreview) {
         if (pathname === UNALIVE_URL) {
             // This endpoint is called when starting the service to kill
             // github-preview instances started by other nvim instances
+            await app.goodbye();
             app.nvim.detach();
             process.exit(0);
         }
