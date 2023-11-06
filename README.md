@@ -138,17 +138,3 @@ Starts the service if not running or stops it if it's already running.
 ## 👷 Development & Contributing
 
 [See documentation](https://github.com/wallpants/github-preview.nvim/blob/main/docs/development.md)
-
-## 🚀 Roadmap
-
-1. Update demo gif (2 nov)
-2. Code line highlights when "#" in url (1 nov)
-3. Write development docs (31 oct)
-4. Dir navigation in markdown container (30 oct)
-5. Better Mermaid support (27 oct)
-   - rerun mermaid on explorer expand collapse
-   - replace mermaid example in features.md with something more legible
-   - center svgs
-   - memoize svgs (this might fix the scroll jumping when mermaid diagrams above cursor line & improve performance)
-6. fix dark theme flash. when dotfiles theme = light, the app flashes dark before turning light (3 nov)
-7. export builtin functions like telescope does and add docs explaining how to use them to setup a user-command or a keymap
