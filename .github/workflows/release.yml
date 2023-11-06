@@ -38,10 +38,10 @@ jobs:
               run: bun test
 
     Release:
+        needs: [Test]
         permissions:
             contents: write
             issues: write
-        needs: [Test]
         if: |
             github.ref == 'refs/heads/main' &&
             github.event.repository.fork == false
