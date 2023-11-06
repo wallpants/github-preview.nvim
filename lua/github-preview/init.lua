@@ -12,17 +12,13 @@ M.setup = function(config)
 	local function stop_service()
 		if job_id ~= nil then
 			local channel_id = Utils.get_client_channel("github-preview")
-			if channel_id == nil then
-				return
+			if channel_id ~= nil then
+				-- onBeforeExit request closes browser
+				vim.rpcrequest(channel_id, "onBeforeExit")
+				vim.fn.jobstop(job_id)
 			end
-			-- onBeforeExit request closes browser
-			vim.rpcrequest(channel_id, "onBeforeExit")
-			local stopSuccess = vim.fn.jobstop(job_id)
-			if stopSuccess then
-				job_id = nil
-			else
-				vim.notify("github-preview: invalid job_id", vim.log.levels.ERROR)
-			end
+
+			job_id = nil
 		end
 	end
 

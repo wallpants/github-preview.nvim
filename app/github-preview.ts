@@ -195,4 +195,9 @@ export class GithubPreview {
         this.nvim.logger?.verbose({ OUTGOING_WEBSOCKET: m });
         this.server.publish(EDITOR_EVENTS_TOPIC, JSON.stringify(m));
     }
+
+    async goodbye() {
+        this.wsSend({ type: "goodbye" });
+        await this.nvim.call("nvim_del_augroup_by_id", [this.augroupId]);
+    }
 }

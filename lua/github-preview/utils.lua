@@ -8,7 +8,6 @@ M.get_client_channel = function(client_name)
 		end
 	end
 
-	vim.notify("github-preview: channel_id not found", vim.log.levels.ERROR)
 	return nil
 end
 
