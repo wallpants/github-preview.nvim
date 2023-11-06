@@ -8,8 +8,6 @@ Live Preview of your Markdown files & local git repositories.
 
 Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https://github.com/wallpants/pantsdown).
 
-## ▶️ Demo
-
 ![Demo](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/demo.gif)
 
 ## ✨ Features
