@@ -4,10 +4,8 @@
   "plugins": ["prettier-plugin-organize-imports"],
   "overrides": [
     {
-      "files": ["*.json", "*.yaml", "*.md"],
-      "options": {
-        "tabWidth": 2
-      }
+      "files": ["*.json"],
+      "options": { "tabWidth": 2 }
     }
   ]
 }

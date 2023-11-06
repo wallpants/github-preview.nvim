@@ -14,20 +14,20 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
 
 ## ✨ Features
 
-- [💻 Linux / macOS / WSL](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-linux--macos--wsl)
-- [🔴 LIVE updates](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-live-updates)
-- [♻️ Synced Scrolling](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#%EF%B8%8F-synced-scrolling)
-- [🌈 Dark & Light modes](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-dark--light-modes)
-- [🖍️ Cursorline in Preview](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#%EF%B8%8F-cursorline-in-preview)
-- [🏞️ Local Image Support](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#%EF%B8%8F-local-image-support)
-- [🧜 Mermaid Support](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-mermaid-support)
-- [📄 Single-file mode](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-single-file-mode)
-- [📂 Repository mode](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-repository-mode)
+-   [💻 Linux / macOS / WSL](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-linux--macos--wsl)
+-   [🔴 LIVE updates](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-live-updates)
+-   [♻️ Synced Scrolling](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#%EF%B8%8F-synced-scrolling)
+-   [🌈 Dark & Light modes](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-dark--light-modes)
+-   [🖍️ Cursorline in Preview](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#%EF%B8%8F-cursorline-in-preview)
+-   [🏞️ Local Image Support](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#%EF%B8%8F-local-image-support)
+-   [🧜 Mermaid Support](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-mermaid-support)
+-   [📄 Single-file mode](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-single-file-mode)
+-   [📂 Repository mode](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-repository-mode)
 
 ## ✅ Requirements
 
-- [x] [Bun](https://bun.sh)
-- [x] [Neovim](https://neovim.io)
+-   [x] [Bun](https://bun.sh)
+-   [x] [Neovim](https://neovim.io)
 
 ## 📦 Installation
 
