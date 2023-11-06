@@ -52,7 +52,7 @@ export const Select = ({ select, disabled }: Props) => {
                             label={option.label}
                             className={cn(
                                 "mb-0.5 bg-github-canvas-default",
-                                option.selected ? "border-orange-600" : "border-black",
+                                option.selected && "border-orange-600",
                             )}
                             Icon={option.icon}
                             iconClassName={option.iconClassName}
