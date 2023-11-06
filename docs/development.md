@@ -5,11 +5,13 @@
 -   [x] [Bun](https://bun.sh)
 -   [x] [Neovim](https://neovim.io)
 
-## Setup
+## 💻 Setup
 
 The following instructions assume the path `~/Projects/nvim-plugins/` exists.
 If it doesn't exist, create it or make sure to update relevant commands to
 match your file structure.
+
+---
 
 **1. Clone `github-preview.nvim` to `~/Projects/nvim-plugins/github-preview.nvim`
 and install dependencies:**
@@ -20,6 +22,8 @@ git clone git@github.com:wallpants/github-preview.nvim.git
 cd github-preview.nvim
 bun install
 ```
+
+---
 
 **2. Install plugin and setup for development in your plugin manager**
 
@@ -60,6 +64,8 @@ In `github-preview.nvim` _dev-mode_ enables **logging** and _hot-reloading_ of t
 },
 ```
 
+---
+
 **3. Start listening for logs**
 
 Use [bunvim's CLI tool](https://github.com/wallpants/bunvim#console) to listen for logs.
@@ -75,6 +81,8 @@ bun run logs
 
 You should see no output until the plugin is started in the next step.
 
+---
+
 **4. Open Neovim and start the plugin**
 
 Open Neovim, load a markdown file into the current buffer and run `:GithubPreviewToggle`
@@ -89,6 +97,8 @@ Logs that are shown under `:messages` in Neovim, are logs created server-side vi
 sometimes they're hard to follow/read. For a more complete logging experience, use
 [bunvim logging](https://github.com/wallpants/bunvim#%EF%B8%8F-logging).
 
+---
+
 **5. Start editing server-side code**
 
 You can now start working on **server-side** code.
@@ -100,9 +110,11 @@ Changes to the **webapp** will not be reflected even if you manually refresh
 your browser. You'll need to restart the plugin for the **webapp** to update.
 Next step enables _hot-reloading_ for the **webapp**.
 
+---
+
 **6. Start _hot-reloading_ webapp server**
 
-At the repository root `~/Projects/nvim-plugins/github-preview.nvim` run:
+At the repository root `~/Projects/nvim-plugins/github-preview.nvim` in a new terminal run:
 
 ```sh
 bun run web:dev
@@ -113,7 +125,7 @@ tab where any changes you make to the **webapp** code should be applied live.
 
 Dev logs are printed to your browser's console.
 
-> [!WARNING]
+> [!IMPORTANT]
 > Vite's dev server handles css post-processing, <strong>bun does not yet</strong>.
 >
 > This means any changes to tailwind classes are immediately reflected when
@@ -121,9 +133,13 @@ Dev logs are printed to your browser's console.
 > when served directly by bun (in production) we need to manually run the command
 > `bun run tailwind:compile` to generate required CSS.
 
-## Contributing
+---
+
+## 🏗️ Contributing
 
 🚧 Work in progress
+
+Prettier & eslint, commitizen, bun commit, tailwind compile
 
 ### Commits
 
