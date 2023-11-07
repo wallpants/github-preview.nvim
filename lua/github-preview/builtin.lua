@@ -100,6 +100,7 @@ M.toggle = function()
 	end
 end
 
+M.reset_overrides = Utils.update_config("reset_overrides")
 M.single_file_on = Utils.update_config("single_file_on")
 M.single_file_off = Utils.update_config("single_file_off")
 M.details_tags_open = Utils.update_config("details_tags_open")

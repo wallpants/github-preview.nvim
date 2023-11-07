@@ -77,7 +77,7 @@ M.validate_config = function()
 	})
 end
 
----@param update_action "single_file_on" |  "single_file_off" |  "details_tags_open" |  "details_tags_closed" |  "scroll_on" |  "scroll_off" |  "cursorline_on" |  "cursorline_off"
+---@param update_action "reset_overrides" | "single_file_on" |  "single_file_off" |  "details_tags_open" |  "details_tags_closed" |  "scroll_on" |  "scroll_off" |  "cursorline_on" |  "cursorline_off"
 M.update_config = function(update_action)
 	return function()
 		local channel_id = M.get_client_channel()
