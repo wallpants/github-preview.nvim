@@ -2,7 +2,7 @@ local M = {}
 
 M.job_id = nil
 
----@type config
+---@type github_preview_config
 M.config = {
 	-- these are the default values,
 	-- any values you specify will be merged with this dictionary
@@ -64,6 +64,7 @@ M.validate_config = function()
 		single_file = { M.config.single_file, "boolean" },
 		details_tags_open = { M.config.details_tags_open, "boolean" },
 		["cursor_line.color"] = { M.config.cursor_line.color, "string" },
+		["cursor_line.opacity"] = { M.config.cursor_line.opacity, "number" },
 		["cursor_line.disable"] = { M.config.cursor_line.disable, "boolean" },
 		["scroll.disable"] = { M.config.scroll.disable, "boolean" },
 		["scroll.top_offset_pct"] = {
@@ -76,7 +77,7 @@ M.validate_config = function()
 	})
 end
 
----@param update_action "single_file_enable" |  "single_file_disable" |  "details_tags_open" |  "details_tags_closed" |  "scroll_enable" |  "scroll_disable" |  "cursorline_enable" |  "cursorline_disable"
+---@param update_action "single_file_on" |  "single_file_off" |  "details_tags_open" |  "details_tags_closed" |  "scroll_on" |  "scroll_off" |  "cursorline_on" |  "cursorline_off"
 M.update_config = function(update_action)
 	return function()
 		local channel_id = M.get_client_channel()
