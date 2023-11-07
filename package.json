@@ -29,7 +29,7 @@
     }
   },
   "dependencies": {
-    "bunvim": "1.1.4",
+    "bunvim": "1.1.6",
     "clsx": "^2.0.0",
     "globby": "^13.2.2",
     "isbinaryfile": "5.0.0",
