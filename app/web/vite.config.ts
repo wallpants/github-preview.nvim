@@ -7,8 +7,9 @@ export default defineConfig({
     plugins: [react() as any],
     define: {
         __HOST__: JSON.stringify("localhost"),
-        __PORT__: JSON.stringify("6041"),
-        __DEV__: JSON.stringify(true),
+        __PORT__: JSON.stringify(6041),
+        __IS_DEV__: JSON.stringify(true),
+        __THEME__: JSON.stringify("system"),
     },
     server: {
         proxy: {

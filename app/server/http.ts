@@ -49,7 +49,8 @@ export function httpHandler(app: GithubPreview) {
                 define: {
                     __HOST__: JSON.stringify(app.config.dotfiles.host),
                     __PORT__: JSON.stringify(app.config.dotfiles.port),
-                    __DEV__: JSON.stringify(false),
+                    __IS_DEV__: JSON.stringify(false),
+                    __THEME__: JSON.stringify(app.config.overrides.theme),
                 },
             });
 

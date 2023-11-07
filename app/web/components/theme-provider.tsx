@@ -1,18 +1,19 @@
 import { type Mermaid } from "mermaid";
-import { useContext, useEffect, type ReactNode } from "react";
+import { useContext, useLayoutEffect, type ReactNode } from "react";
+import { type Theme } from "../../types";
 import { websocketContext } from "./websocket-provider/context";
 
 declare const mermaid: Mermaid;
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
+export function ThemeProvider({ children, THEME }: { children: ReactNode; THEME: Theme }) {
     const { config } = useContext(websocketContext);
-    const theme = config?.overrides.theme;
+    const theme = config?.overrides.theme ?? THEME;
 
     function getSystemTheme() {
         return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         function handleThemeChange(newTheme: "light" | "dark") {
             const rootHtml = document.getElementsByTagName("html")[0]!;
             rootHtml.className = `pantsdown ${newTheme}`;
@@ -22,10 +23,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
             });
         }
 
-        if (theme) {
-            if (theme === "system") handleThemeChange(getSystemTheme());
-            else handleThemeChange(theme);
-        }
+        if (theme === "system") handleThemeChange(getSystemTheme());
+        else handleThemeChange(theme);
     }, [theme]);
 
     return children;
