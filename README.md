@@ -43,6 +43,7 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
     ---@type github_preview_config
     opts = {
         -- config goes here
+        -- or empty for default settings
     }
 }
 ```
@@ -65,6 +66,7 @@ use {
     config = function()
         require("github-preview").setup({
             -- config goes here
+            -- or empty for default settings
         })
     end,
 }
@@ -74,7 +76,10 @@ use {
 
 ## ⚙️ Configuration
 
-`setup` must be called for the plugin to be loaded. Some plugin managers handle this for you.
+I recommend you start off with the default settings and play around with the UI to figure out
+what settings you want to override before committing to updating your config files.
+
+![Config](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/config.gif)
 
 ```lua
 require("github-preview").setup({
@@ -172,6 +177,8 @@ This command only works if plugin launched in repository mode.
 `github-preview.nvim` exports **builtin functions** for you to do as you please.
 
 ```lua
+require("github-preview").setup({})
+
 local builtin = require("github-preview.builtin")
 
 builtin.start()
