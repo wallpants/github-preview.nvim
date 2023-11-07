@@ -53,13 +53,14 @@ M.setup = function(config)
 		end
 
 		---@type plugin_props
-		vim.g.github_preview_props = {
+		local github_preview_props = {
 			init = {
 				root = root,
 				path = init_path,
 			},
 			config = config,
 		}
+		vim.g.github_preview_props = github_preview_props
 
 		local __filename = debug.getinfo(1, "S").source:sub(2)
 		local plugin_root = vim.fn.fnamemodify(__filename, ":p:h:h:h") .. "/"

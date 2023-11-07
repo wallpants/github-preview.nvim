@@ -1,43 +1,5 @@
 local M = {}
 
----@param client_name string
-M.get_client_channel = function(client_name)
-	for _, chan in ipairs(vim.api.nvim_list_chans()) do
-		if chan.client and chan.client.name == client_name then
-			return chan.id
-		end
-	end
-
-	return nil
-end
-
----@param config config
-M.validate_config = function(config)
-	vim.validate({
-		host = { config.host, "string" },
-		port = { config.port, "number" },
-		theme = {
-			config.theme,
-			function(theme)
-				return (type(theme) == "string") and ((theme == "system") or (theme == "light") or (theme == "dark"))
-			end,
-			'theme must be "system", "light" or "dark"',
-		},
-		single_file = { config.single_file, "boolean" },
-		details_tags_open = { config.details_tags_open, "boolean" },
-		["cursor_line.color"] = { config.cursor_line.color, "string" },
-		["cursor_line.disable"] = { config.cursor_line.disable, "boolean" },
-		["scroll.disable"] = { config.scroll.disable, "boolean" },
-		["scroll.top_offset_pct"] = {
-			config.scroll.top_offset_pct,
-			function(pct)
-				return (type(pct) == "number") and (pct >= 0) and (pct <= 100)
-			end,
-			"number between 0 and 100",
-		},
-	})
-end
-
 ---@type config
 M.default_config = {
 	-- these are the default values,
@@ -75,5 +37,43 @@ M.default_config = {
 		top_offset_pct = 35,
 	},
 }
+
+---@param client_name string
+M.get_client_channel = function(client_name)
+	for _, chan in ipairs(vim.api.nvim_list_chans()) do
+		if chan.client and chan.client.name == client_name then
+			return chan.id
+		end
+	end
+
+	return nil
+end
+
+---@param config config
+M.validate_config = function(config)
+	vim.validate({
+		host = { config.host, "string" },
+		port = { config.port, "number" },
+		theme = {
+			config.theme,
+			function(theme)
+				return (type(theme) == "string") and ((theme == "system") or (theme == "light") or (theme == "dark"))
+			end,
+			'theme must be "system", "light" or "dark"',
+		},
+		single_file = { config.single_file, "boolean" },
+		details_tags_open = { config.details_tags_open, "boolean" },
+		["cursor_line.color"] = { config.cursor_line.color, "string" },
+		["cursor_line.disable"] = { config.cursor_line.disable, "boolean" },
+		["scroll.disable"] = { config.scroll.disable, "boolean" },
+		["scroll.top_offset_pct"] = {
+			config.scroll.top_offset_pct,
+			function(pct)
+				return (type(pct) == "number") and (pct >= 0) and (pct <= 100)
+			end,
+			"number between 0 and 100",
+		},
+	})
+end
 
 return M
