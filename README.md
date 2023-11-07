@@ -40,6 +40,7 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
     -- version = "*", -- latest stable version, may have breaking changes if major version changed
     -- version = "^1.0.0", -- pin major version, include fixes and features that do not have breaking changes
     cmd = { "GithubPreviewStart", "GithubPreviewToggle" },
+    ---@type github_preview_config
     opts = {
         -- config goes here
     }
@@ -60,7 +61,7 @@ use {
     opt = true,
     cmd = { "GithubPreviewStart", "GithubPreviewToggle" },
     -- tag = "*", -- latest stable version, may have breaking changes if major version changed
-    -- tag = "v2.0.0", -- pin specific tag
+    -- tag = "v1.0.0", -- pin specific tag
     config = function()
         require("github-preview").setup({
             -- config goes here
@@ -121,50 +122,70 @@ This might happen again after a plugin update if there were any changes to the p
 
 ### `:GithubPreviewStart`
 
-Start service. If an instance of **github-preview.nvim** is already running,
+**Start** service. If an instance of **github-preview.nvim** is already running,
 be it by the current Neovim instance or another, the older **github-preview.nvim**
 is unalived in favour of the younger one.
 
 ### `:GithubPreviewStop`
 
-Stops the service. Closes browser tab as well.
+**Stops** the service. Closes browser tab as well.
 
 ### `:GithubPreviewToggle`
 
-Starts the service if not running or stops it if it's already running.
+**Starts** the service if not running or **stops** it if it's already running.
+
+### `:GithubPreviewSingleFileOn`
+
+**Force** single-file mode.
+
+### `:GithubPreviewSingleFileOff`
+
+**Disable** single-file mode. If plugin launched in single-file mode, this won't do anything.
+This command only works if plugin launched in repository mode.
+
+### `:GithubPreviewDetailsTagsOpen`
+
+`<details>` tags are rendered **open** on init/content-change.
+
+### `:GithubPreviewDetailsTagsClosed`
+
+`<details>` tags are rendered **closed** on init/content-change.
+
+### `:GithubPreviewScrollOn`
+
+**Enable** synced scrolling.
+
+### `:GithubPreviewScrollOff`
+
+**Disable** synced scrolling.
+
+### `:GithubPreviewCursorlineOn`
+
+**Enable** cursorline.
+
+### `:GithubPreviewCursorlineOff`
+
+**Disable** cursorline.
 
 ## 🧠 Advanced Usage
 
-`github-preview.nvim` exports **builtin functions** for you to register commands/mappings
-to perform plugin actions.
+`github-preview.nvim` exports **builtin functions** for you to do as you please.
 
 ```lua
 local builtin = require("github-preview.builtin")
 
--- create a user command
-vim.api.nvim_create_user_command(
-    "GithubPreviewScrollDisable",
-    builtin.scroll_disable,
-    {}
-)
-
--- set a keymap
-vim.keymap.set('n',  '<leader>gps', builtin.scroll_enable)
+builtin.start()
+builtin.stop()
+builtin.toggle()
+builtin.single_file_on()
+builtin.single_file_off()
+builtin.details_tags_open()
+builtin.details_tags_closed()
+builtin.scroll_on()
+builtin.scroll_off()
+builtin.cursorline_on()
+builtin.cursorline_off()
 ```
-
-Available **builtin functions**:
-
--   start
--   stop
--   toggle
--   single_file_enable
--   single_file_disable
--   details_tags_open
--   details_tags_closed
--   scroll_enable
--   scroll_disable
--   cursorline_enable
--   cursorline_disable
 
 ## 👷 Development & Contributing
 

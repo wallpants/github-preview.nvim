@@ -55,9 +55,12 @@ M.start = function()
 	local command = "bun run start"
 	local env = { IS_DEV = false }
 
+	-- log level not declared in type, because we don't want users to see it
+	---@diagnostic disable-next-line: undefined-field
 	if Utils.config.log_level then
 		command = "bun --hot run start"
 		env.IS_DEV = true
+		---@diagnostic disable-next-line: undefined-field
 		env.LOG_LEVEL = Utils.config.log_level
 	end
 
@@ -97,13 +100,13 @@ M.toggle = function()
 	end
 end
 
-M.single_file_enable = Utils.update_config("single_file_enable")
-M.single_file_disable = Utils.update_config("single_file_disable")
+M.single_file_on = Utils.update_config("single_file_on")
+M.single_file_off = Utils.update_config("single_file_off")
 M.details_tags_open = Utils.update_config("details_tags_open")
 M.details_tags_closed = Utils.update_config("details_tags_closed")
-M.scroll_enable = Utils.update_config("scroll_enable")
-M.scroll_disable = Utils.update_config("scroll_disable")
-M.cursorline_enable = Utils.update_config("cursorline_enable")
-M.cursorline_disable = Utils.update_config("cursorline_disable")
+M.scroll_on = Utils.update_config("scroll_on")
+M.scroll_off = Utils.update_config("scroll_off")
+M.cursorline_on = Utils.update_config("cursorline_on")
+M.cursorline_off = Utils.update_config("cursorline_off")
 
 return M

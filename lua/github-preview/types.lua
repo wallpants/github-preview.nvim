@@ -3,23 +3,23 @@
 ---@field path string
 
 ---@class cursor_line
----@field disable boolean
----@field color string
+---@field disable boolean | nil
+---@field color string | nil
+---@field opacity number | nil
 
 ---@class scroll
----@field disable boolean
----@field top_offset_pct number
+---@field disable boolean | nil
+---@field top_offset_pct number | nil
 
----@class config
----@field host string
----@field port number
----@field theme "system" | "light" | "dark"
----@field single_file boolean
----@field details_tags_open boolean
----@field cursor_line cursor_line
----@field scroll scroll
----@field log_level? string
+---@class github_preview_config
+---@field host string | nil
+---@field port number | nil
+---@field theme "system" | "light" | "dark" | nil
+---@field single_file boolean | nil
+---@field details_tags_open boolean | nil
+---@field cursor_line cursor_line | nil
+---@field scroll scroll | nil
 
 ---@class plugin_props
 ---@field init init
----@field config config
+---@field config github_preview_config

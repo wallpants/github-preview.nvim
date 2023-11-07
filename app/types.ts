@@ -146,14 +146,14 @@ export interface CustomEvents extends BaseEvents {
     requests: {
         on_config_update: [
             update_action:
-                | "single_file_enable"
-                | "single_file_disable"
+                | "single_file_on"
+                | "single_file_off"
                 | "details_tags_open"
                 | "details_tags_closed"
-                | "scroll_enable"
-                | "scroll_disable"
-                | "cursorline_enable"
-                | "cursorline_disable",
+                | "scroll_on"
+                | "scroll_off"
+                | "cursorline_on"
+                | "cursorline_off",
         ];
         on_before_exit: [];
     };

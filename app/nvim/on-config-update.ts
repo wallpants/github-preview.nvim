@@ -13,10 +13,10 @@ export function onConfigUpdate(
         const update: Partial<Config> = {};
 
         switch (update_action) {
-            case "single_file_enable":
+            case "single_file_on":
                 update.single_file = true;
                 break;
-            case "single_file_disable":
+            case "single_file_off":
                 if (app.config.dotfiles.single_file) {
                     await app.nvim.call("nvim_notify", [
                         "github-preview: if plugin launched in single-file mode, it cannot be changed.",
@@ -33,25 +33,25 @@ export function onConfigUpdate(
             case "details_tags_closed":
                 update.details_tags_open = false;
                 break;
-            case "scroll_enable":
+            case "scroll_on":
                 update.scroll = {
                     ...app.config.overrides.scroll,
                     disable: false,
                 };
                 break;
-            case "scroll_disable":
+            case "scroll_off":
                 update.scroll = {
                     ...app.config.overrides.scroll,
                     disable: true,
                 };
                 break;
-            case "cursorline_enable":
+            case "cursorline_on":
                 update.cursor_line = {
                     ...app.config.overrides.cursor_line,
                     disable: false,
                 };
                 break;
-            case "cursorline_disable":
+            case "cursorline_off":
                 update.cursor_line = {
                     ...app.config.overrides.cursor_line,
                     disable: true,
