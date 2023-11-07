@@ -147,11 +147,16 @@ export class GithubPreview {
         if (normalized.length < this.root.length) return;
 
         this.currentPath = path;
-        const entries = await this.getEntries(this.currentPath);
 
-        // TODO: check open buffers and get lines from there before falling back to filesystem.
-        // if buffer exists and is focused, update cursorLine (maybe?)
-        // const cursorLine = (await nvim.call("nvim_win_get_cursor", [0]))[0];
+        // check open buffers and get lines from there before falling back to filesystem.
+        const bufs = await this.nvim.call("nvim_list_bufs", []);
+        for (const buf of bufs) {
+            const name = await this.nvim.call("nvim_buf_get_name", [buf]);
+            if (name === this.root + this.currentPath) {
+                this.lines = await this.nvim.call("nvim_buf_get_lines", [buf, 0, -1, true]);
+                return;
+            }
+        }
 
         if (!existsSync(this.root + this.currentPath)) {
             this.lines = [`Path: ${this.currentPath}`, "", "ERROR: path not found"];
@@ -160,6 +165,7 @@ export class GithubPreview {
 
         const isDir = (this.root + this.currentPath).endsWith("/");
         if (isDir) {
+            const entries = await this.getEntries(this.currentPath);
             // search for readme.md
             const readmePath = entries.find((e) => basename(e).toLowerCase() === "readme.md");
             if (readmePath) this.currentPath = readmePath;
