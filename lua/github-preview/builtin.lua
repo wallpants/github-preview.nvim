@@ -8,7 +8,7 @@ local function update_config(update_action)
 		if channel_id ~= nil then
 			-- vim.rpcrequest seems to be incorrecly typed
 			---@diagnostic disable-next-line: param-type-mismatch
-			vim.rpcrequest(channel_id, "onConfigUpdate", update_action)
+			vim.rpcrequest(channel_id, "on_config_update", update_action)
 		else
 			vim.notify("github-preview: could not find running plugin")
 		end

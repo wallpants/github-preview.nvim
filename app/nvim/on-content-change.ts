@@ -1,6 +1,6 @@
 import { type GithubPreview } from "../github-preview.ts";
 
-const NOTIFICATION = "AttachBuffer";
+const NOTIFICATION = "attach_buffer";
 
 export async function onContentChange(
     app: GithubPreview,

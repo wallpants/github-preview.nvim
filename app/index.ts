@@ -10,7 +10,7 @@ const app = await GithubPreview.start();
 
 onConfigUpdate(app, (configUpdate) => {
     Object.assign(app.config.overrides, configUpdate);
-    app.wsSend({ type: "update-config", config: app.config });
+    app.wsSend({ type: "update_config", config: app.config });
     // We're handling an RPCRequest, which means neovim remains blocked
     // until we return something
     return null;
@@ -25,14 +25,16 @@ await onBeforeExit(app, async () => {
 
 await onCursorMove(
     app,
-    async ([buffer, path, cursorLine]: CustomEvents["notifications"]["CursorMove"]) => {
+    async ([buffer, path, cursor_line]: CustomEvents["notifications"]["cursor_move"]) => {
         const relativePath = relative(app.root, path);
         if (!path || (app.config.overrides.single_file && relativePath !== app.currentPath)) return;
-        app.nvim.logger?.verbose({ ON_CURSOR_MOVE: { buffer, path: relativePath, cursorLine } });
+        app.nvim.logger?.verbose({
+            ON_CURSOR_MOVE: { buffer, path: relativePath, cursorLine: cursor_line },
+        });
 
         const message: WsServerMessage = {
-            type: "cursor-move",
-            cursorLine: cursorLine,
+            type: "cursor_move",
+            cursorLine: cursor_line,
             currentPath: relativePath,
         };
 
@@ -54,7 +56,7 @@ await onContentChange(app, (lines, path) => {
     app.nvim.logger?.verbose({ ON_CONTENT_CHANGE: { lines, path: relativePath } });
 
     const message: WsServerMessage = {
-        type: "content-change",
+        type: "content_change",
         currentPath: relativePath,
         linesCountChange: app.lines.length !== lines.length,
         lines,

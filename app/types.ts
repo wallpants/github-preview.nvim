@@ -98,13 +98,13 @@ export type WsServerMessage =
           hash: string | null;
       }
     | {
-          type: "cursor-move";
+          type: "cursor_move";
           cursorLine: number | null;
           currentPath: string;
           lines?: string[];
       }
     | {
-          type: "content-change";
+          type: "content_change";
           currentPath: string;
           /**
            * Offset recalculation is triggered on markdown container element resize.
@@ -117,7 +117,7 @@ export type WsServerMessage =
           lines: string[];
       }
     | {
-          type: "update-config";
+          type: "update_config";
           config: GithubPreview["config"];
       }
     | {
@@ -129,23 +129,23 @@ export type WsBrowserMessage =
           type: "init";
       }
     | {
-          type: "get-entries";
+          type: "get_entries";
           path: string;
       }
     | {
-          type: "get-entry";
+          type: "get_entry";
           path: string;
       }
     | {
-          type: "update-config";
+          type: "update_config";
           config: Partial<Config>;
       };
 
 // eslint-disable-next-line
 export interface CustomEvents extends BaseEvents {
     requests: {
-        onConfigUpdate: [
-            updateAction:
+        on_config_update: [
+            update_action:
                 | "single_file_enable"
                 | "single_file_disable"
                 | "details_tags_open"
@@ -155,12 +155,12 @@ export interface CustomEvents extends BaseEvents {
                 | "cursorline_enable"
                 | "cursorline_disable",
         ];
-        onBeforeExit: [];
+        on_before_exit: [];
     };
     notifications: {
         // github-preview
-        AttachBuffer: [buffer: number, path: string];
-        CursorMove: [buffer: number, path: string, cursor_line: number];
+        attach_buffer: [buffer: number, path: string];
+        cursor_move: [buffer: number, path: string, cursor_line: number];
 
         // neovim native
         nvim_buf_detach_event: [buffer: number];

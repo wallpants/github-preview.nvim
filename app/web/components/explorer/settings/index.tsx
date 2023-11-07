@@ -23,8 +23,8 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
             icon: SystemIcon,
             selected: overrides.theme === "system",
             onClick: () => {
-                wsRequest({ type: "update-config", config: { theme: "system" } });
-                if (currentPath) wsRequest({ type: "get-entry", path: currentPath });
+                wsRequest({ type: "update_config", config: { theme: "system" } });
+                if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
             },
         },
         {
@@ -32,8 +32,8 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
             icon: SunIcon,
             selected: overrides.theme === "light",
             onClick: () => {
-                wsRequest({ type: "update-config", config: { theme: "light" } });
-                if (currentPath) wsRequest({ type: "get-entry", path: currentPath });
+                wsRequest({ type: "update_config", config: { theme: "light" } });
+                if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
             },
         },
         {
@@ -41,8 +41,8 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
             icon: MoonIcon,
             selected: overrides.theme === "dark",
             onClick: () => {
-                wsRequest({ type: "update-config", config: { theme: "dark" } });
-                if (currentPath) wsRequest({ type: "get-entry", path: currentPath });
+                wsRequest({ type: "update_config", config: { theme: "dark" } });
+                if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
             },
         },
     ];
@@ -54,8 +54,8 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
             iconClassName: "stroke-github-accent-fg",
             selected: overrides.details_tags_open,
             onClick: () => {
-                wsRequest({ type: "update-config", config: { details_tags_open: true } });
-                if (currentPath) wsRequest({ type: "get-entry", path: currentPath });
+                wsRequest({ type: "update_config", config: { details_tags_open: true } });
+                if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
             },
         },
         {
@@ -63,8 +63,8 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
             icon: FoldVerticalIcon,
             selected: !overrides.details_tags_open,
             onClick: () => {
-                wsRequest({ type: "update-config", config: { details_tags_open: false } });
-                if (currentPath) wsRequest({ type: "get-entry", path: currentPath });
+                wsRequest({ type: "update_config", config: { details_tags_open: false } });
+                if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
             },
         },
     ];
@@ -105,8 +105,8 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
                     toggle={{
                         value: overrides.single_file,
                         onChange: (enabled) => {
-                            wsRequest({ type: "update-config", config: { single_file: enabled } });
-                            if (currentPath) wsRequest({ type: "get-entry", path: currentPath });
+                            wsRequest({ type: "update_config", config: { single_file: enabled } });
+                            if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
                         },
                     }}
                     disabled={
@@ -126,7 +126,7 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
                         value: !overrides.cursor_line.disable,
                         onChange: (enabled) => {
                             wsRequest({
-                                type: "update-config",
+                                type: "update_config",
                                 config: {
                                     cursor_line: { ...overrides.cursor_line, disable: !enabled },
                                 },
@@ -137,7 +137,7 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
                         value: overrides.cursor_line.color,
                         onChange: (color) => {
                             wsRequest({
-                                type: "update-config",
+                                type: "update_config",
                                 config: { cursor_line: { ...overrides.cursor_line, color } },
                             });
                         },
@@ -149,7 +149,7 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
                         step: 0.1,
                         onChange: (opacity) => {
                             wsRequest({
-                                type: "update-config",
+                                type: "update_config",
                                 config: {
                                     cursor_line: { ...overrides.cursor_line, opacity },
                                 },
@@ -165,7 +165,7 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
                         value: !overrides.scroll.disable,
                         onChange: (enabled) => {
                             wsRequest({
-                                type: "update-config",
+                                type: "update_config",
                                 config: { scroll: { ...overrides.scroll, disable: !enabled } },
                             });
                         },
@@ -177,7 +177,7 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
                         step: 1,
                         onChange: (top_offset_pct) => {
                             wsRequest({
-                                type: "update-config",
+                                type: "update_config",
                                 config: {
                                     scroll: { ...overrides.scroll, top_offset_pct },
                                 },
@@ -193,7 +193,7 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
                     isOverriden ? "visible" : "invisible",
                 )}
                 onClick={() => {
-                    wsRequest({ type: "update-config", config: config.dotfiles });
+                    wsRequest({ type: "update_config", config: config.dotfiles });
                 }}
             >
                 clear overrides
