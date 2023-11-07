@@ -11,38 +11,31 @@ import { getScrollOffsets, type Offsets } from "./scroll.ts";
 const MARKDOWN_CONTAINER_ID = "markdown-container-id";
 const MARKDOWN_ELEMENT_ID = "markdown-element-id";
 
+const pantsdown = new Pantsdown({
+    renderer: {
+        relativeImageUrlPrefix: "/__github_preview__/image/",
+        detailsTagDefaultOpen: true,
+    },
+});
+
 export const Markdown = ({ className }: { className: string }) => {
-    const { config, registerHandler, wsRequest } = useContext(websocketContext);
-    const [offsets, setOffsets] = useState<Offsets>([]);
-    const [pantsdown, setPantsdown] = useState(
-        new Pantsdown({
-            renderer: {
-                relativeImageUrlPrefix: "/__github_preview__/image/",
-                detailsTagDefaultOpen: config?.overrides.details_tags_open ?? true,
-            },
-        }),
-    );
-    // const mermaids = useRef<Record<string, string>>({});
+    const { currentPath, config, registerHandler, wsRequest } = useContext(websocketContext);
+
+    const details_tags_open = config?.overrides.details_tags_open ?? true;
+    const single_file = config?.overrides.single_file;
 
     const [markdownElement, setMarkdownElement] = useState<HTMLElement>();
     const [cursorLineElement, setCursorLineElement] = useState<HTMLElement>();
     const [lineNumbersElement, setLineNumbersElement] = useState<HTMLElement>();
     const [markdownContainerElement, setMarkdownContainerElement] = useState<HTMLElement>();
-
-    const details_tags_open = config?.overrides.details_tags_open;
-    const single_file = config?.overrides.single_file;
+    const [offsets, setOffsets] = useState<Offsets>([]);
 
     useEffect(() => {
-        if (details_tags_open === undefined) return;
-        setPantsdown(
-            new Pantsdown({
-                renderer: {
-                    relativeImageUrlPrefix: "/__github_preview__/image/",
-                    detailsTagDefaultOpen: details_tags_open,
-                },
-            }),
-        );
-    }, [details_tags_open]);
+        pantsdown.setConfig({ renderer: { detailsTagDefaultOpen: details_tags_open } });
+        // re-request content to trigger re-render with new config
+        if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [details_tags_open, single_file, wsRequest]);
 
     useEffect(() => {
         setMarkdownElement(document.getElementById(MARKDOWN_ELEMENT_ID)!);
@@ -158,7 +151,6 @@ export const Markdown = ({ className }: { className: string }) => {
         registerHandler,
         wsRequest,
         single_file,
-        pantsdown,
         markdownElement,
         cursorLineElement,
         lineNumbersElement,

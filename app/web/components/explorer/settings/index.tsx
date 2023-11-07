@@ -24,7 +24,6 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
             selected: overrides.theme === "system",
             onClick: () => {
                 wsRequest({ type: "update_config", config: { theme: "system" } });
-                if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
             },
         },
         {
@@ -33,7 +32,6 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
             selected: overrides.theme === "light",
             onClick: () => {
                 wsRequest({ type: "update_config", config: { theme: "light" } });
-                if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
             },
         },
         {
@@ -42,7 +40,6 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
             selected: overrides.theme === "dark",
             onClick: () => {
                 wsRequest({ type: "update_config", config: { theme: "dark" } });
-                if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
             },
         },
     ];
@@ -55,7 +52,6 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
             selected: overrides.details_tags_open,
             onClick: () => {
                 wsRequest({ type: "update_config", config: { details_tags_open: true } });
-                if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
             },
         },
         {
@@ -64,7 +60,6 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
             selected: !overrides.details_tags_open,
             onClick: () => {
                 wsRequest({ type: "update_config", config: { details_tags_open: false } });
-                if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
             },
         },
     ];
@@ -106,7 +101,6 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
                         value: overrides.single_file,
                         onChange: (enabled) => {
                             wsRequest({ type: "update_config", config: { single_file: enabled } });
-                            if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
                         },
                     }}
                     disabled={
@@ -178,9 +172,7 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
                         onChange: (top_offset_pct) => {
                             wsRequest({
                                 type: "update_config",
-                                config: {
-                                    scroll: { ...overrides.scroll, top_offset_pct },
-                                },
+                                config: { scroll: { ...overrides.scroll, top_offset_pct } },
                             });
                         },
                     }}
