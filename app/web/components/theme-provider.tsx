@@ -6,7 +6,7 @@ import { websocketContext } from "./websocket-provider/context";
 declare const mermaid: Mermaid;
 
 export function ThemeProvider({ children, THEME }: { children: ReactNode; THEME: Theme }) {
-    const { config } = useContext(websocketContext);
+    const { wsRequest, currentPath, config } = useContext(websocketContext);
     const theme = config?.overrides.theme ?? THEME;
 
     function getSystemTheme() {
@@ -21,11 +21,13 @@ export function ThemeProvider({ children, THEME }: { children: ReactNode; THEME:
                 startOnLoad: false,
                 theme: newTheme === "light" ? "default" : "dark",
             });
+            if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
         }
 
         if (theme === "system") handleThemeChange(getSystemTheme());
         else handleThemeChange(theme);
-    }, [theme]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [theme, wsRequest]);
 
     return children;
 }
