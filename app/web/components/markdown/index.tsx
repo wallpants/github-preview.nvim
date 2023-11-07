@@ -64,7 +64,13 @@ export const Markdown = ({ className }: { className: string }) => {
     }, []);
 
     useEffect(() => {
-        if (!markdownElement || !cursorLineElement || !lineNumbersElement) return;
+        if (
+            !markdownContainerElement ||
+            !markdownElement ||
+            !cursorLineElement ||
+            !lineNumbersElement
+        )
+            return;
         // const serializer = new XMLSerializer();
 
         registerHandler("markdown", async (message) => {
@@ -155,6 +161,10 @@ export const Markdown = ({ className }: { className: string }) => {
 
                 await runMermaid();
             }
+
+            if ("linesCountChange" in message && message.linesCountChange) {
+                setOffsets(getScrollOffsets(markdownContainerElement, markdownElement));
+            }
         });
     }, [
         registerHandler,
@@ -164,6 +174,7 @@ export const Markdown = ({ className }: { className: string }) => {
         markdownElement,
         cursorLineElement,
         lineNumbersElement,
+        markdownContainerElement,
     ]);
 
     useEffect(() => {

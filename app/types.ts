@@ -106,6 +106,14 @@ export type WsServerMessage =
     | {
           type: "content-change";
           currentPath: string;
+          /**
+           * Offset recalculation is triggered on markdown container element resize.
+           * Sometimes adding new lines doesn't change the element size so offsets
+           * are not recalculated, leading to incorrect cursorline position.
+           * To fix that, we notify the browser on linesCountChange
+           * to trigger offset calculation.
+           * */
+          linesCountChange: boolean;
           lines: string[];
       }
     | {

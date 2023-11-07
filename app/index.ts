@@ -47,6 +47,7 @@ await onContentChange(app, (lines, path) => {
     const message: WsServerMessage = {
         type: "content-change",
         currentPath: relativePath,
+        linesCountChange: app.lines.length !== lines.length,
         lines,
     };
 
