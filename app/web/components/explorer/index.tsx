@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { cn } from "../../utils.ts";
+import { runMermaid } from "../markdown/mermaid.ts";
 import { websocketContext } from "../websocket-provider/context.ts";
 import { EntryComponent } from "./entry.tsx";
 import { Footer } from "./footer.tsx";
@@ -13,6 +14,10 @@ export const Explorer = () => {
         const isDir = Boolean(currentPath?.endsWith("/"));
         if (isDir) setIsExpanded(true);
     }, [currentPath]);
+
+    useEffect(() => {
+        void runMermaid();
+    }, [isExpanded]);
 
     return (
         <div

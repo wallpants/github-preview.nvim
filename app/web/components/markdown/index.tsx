@@ -1,4 +1,3 @@
-import { type Mermaid } from "mermaid";
 import { Pantsdown } from "pantsdown";
 import { useContext, useEffect, useState } from "react";
 import { cn, getFileExt } from "../../utils.ts";
@@ -6,22 +5,11 @@ import { websocketContext } from "../websocket-provider/context.ts";
 import { BreadCrumbs } from "./breadcrumbs.tsx";
 import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";
 import { LINE_NUMBERS_ELEMENT_ID, LineNumbers } from "./line-numbers.tsx";
+import { runMermaid } from "./mermaid.ts";
 import { getScrollOffsets, type Offsets } from "./scroll.ts";
 
 const MARKDOWN_CONTAINER_ID = "markdown-container-id";
 const MARKDOWN_ELEMENT_ID = "markdown-element-id";
-
-declare const mermaid: Mermaid;
-
-async function runMermaid() {
-    await mermaid.run({
-        querySelector: ".mermaid",
-        suppressErrors: true,
-        postRenderCallback(_id) {
-            // console.log("id: ", id);
-        },
-    });
-}
 
 export const Markdown = ({ className }: { className: string }) => {
     const { config, registerHandler, wsRequest } = useContext(websocketContext);
