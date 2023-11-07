@@ -2,6 +2,7 @@ import { type BaseEvents } from "bunvim";
 import {
     array,
     boolean,
+    coerce,
     literal,
     maxValue,
     minValue,
@@ -12,6 +13,17 @@ import {
     type Output,
 } from "valibot";
 import { type GithubPreview } from "./github-preview";
+
+export const ThemeSchema = union([literal("system"), literal("light"), literal("dark")]);
+export type Theme = Output<typeof ThemeSchema>;
+
+export const BuildConstsSchema = object({
+    HOST: string(),
+    PORT: coerce(number(), Number),
+    IS_DEV: coerce(boolean(), Boolean),
+    THEME: ThemeSchema,
+});
+export type BuildConsts = Output<typeof BuildConstsSchema>;
 
 export const PluginPropsSchema = object({
     init: object({
@@ -31,7 +43,7 @@ export const PluginPropsSchema = object({
         /** port to host the http/ws server "localhost:\{port\}" */
         port: number(),
         single_file: boolean(),
-        theme: union([literal("system"), literal("light"), literal("dark")]),
+        theme: ThemeSchema,
         details_tags_open: boolean(),
         cursor_line: object({
             disable: boolean(),
@@ -44,6 +56,8 @@ export const PluginPropsSchema = object({
         }),
     }),
 });
+export type PluginProps = Output<typeof PluginPropsSchema>;
+export type Config = PluginProps["config"];
 
 export const CursorMoveSchema = object({
     /**
@@ -54,14 +68,12 @@ export const CursorMoveSchema = object({
     abs_path: string(),
     cursor_line: number(),
 });
+export type CursorMove = Output<typeof CursorMoveSchema>;
 
 export const ContentChangeSchema = object({
     abs_path: string(),
     lines: array(string()),
 });
-
-export type PluginProps = Output<typeof PluginPropsSchema>;
-export type CursorMove = Output<typeof CursorMoveSchema>;
 export type ContentChange = Output<typeof ContentChangeSchema>;
 
 export type WsServerMessage =
@@ -144,5 +156,3 @@ export interface CustomEvents extends BaseEvents {
         nvim_buf_changedtick_event: [buffer: number, changedtick: number];
     };
 }
-
-export type Config = PluginProps["config"];
