@@ -120,19 +120,19 @@ require("github-preview").setup({
 🚨 The first time you run `:GithubPreviewStart`, it might take a few seconds for your browser to open as dependencies are being downloaded.
 This might happen again after a plugin update if there were any changes to the plugin dependencies.
 
+### `:GithubPreviewToggle`
+
+**Starts** the plugin if not running or **stops** it if it's already running.
+
 ### `:GithubPreviewStart`
 
-**Start** service. If an instance of **github-preview.nvim** is already running,
-be it by the current Neovim instance or another, the older **github-preview.nvim**
-is unalived in favour of the younger one.
+**Start** plugin. If the plugin is already running, be it by the current Neovim
+instance or another, the older **github-preview.nvim** is unalived in favour of
+the younger one.
 
 ### `:GithubPreviewStop`
 
-**Stops** the service. Closes browser tab as well.
-
-### `:GithubPreviewToggle`
-
-**Starts** the service if not running or **stops** it if it's already running.
+**Stops** the plugin. Closes browser tab as well.
 
 ### `:GithubPreviewSingleFileOn`
 
