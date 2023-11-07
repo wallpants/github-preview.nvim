@@ -1,5 +1,5 @@
 import { type Server } from "bun";
-import { attach, type LogLevel, type Nvim } from "bunvim";
+import { NVIM_LOG_LEVELS, attach, type LogLevel, type Nvim } from "bunvim";
 import { globby } from "globby";
 import { isBinaryFile } from "isbinaryfile";
 import { existsSync } from "node:fs";
@@ -205,5 +205,6 @@ export class GithubPreview {
     async goodbye() {
         this.wsSend({ type: "goodbye" });
         await this.nvim.call("nvim_del_augroup_by_id", [this.augroupId]);
+        await this.nvim.call("nvim_notify", ["github-preview: goodbye", NVIM_LOG_LEVELS.INFO, {}]);
     }
 }
