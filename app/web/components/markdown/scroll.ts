@@ -38,7 +38,6 @@ export function getScrollOffsets(
     markdownElement: HTMLElement,
 ): Offsets {
     // Elements must be sorted or footnote sourcemaps mess up with offsets.
-    // TODO: We could also think of a way to handle elements not being ordered
     const sortedElements = Array.from(document.querySelectorAll("[line-start]")).sort(
         (a, b) => Number(a.getAttribute("line-start")) - Number(b.getAttribute("line-start")),
     ) as HTMLElement[];
