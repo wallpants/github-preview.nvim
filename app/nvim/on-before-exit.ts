@@ -5,7 +5,7 @@ const REQUEST = "onBeforeExit";
 
 export async function onBeforeExit(
     app: GithubPreview,
-    callback: (args: CustomEvents["requests"][typeof REQUEST]) => unknown,
+    callback: (args: CustomEvents["requests"][typeof REQUEST]) => Promise<null>,
 ) {
     // Request handler
     app.nvim.onRequest(REQUEST, callback);

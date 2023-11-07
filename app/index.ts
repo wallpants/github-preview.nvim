@@ -1,17 +1,26 @@
 import { relative } from "node:path";
 import { GithubPreview } from "./github-preview.ts";
 import { onBeforeExit } from "./nvim/on-before-exit.ts";
+import { onConfigUpdate } from "./nvim/on-config-update.ts";
 import { onContentChange } from "./nvim/on-content-change.ts";
 import { onCursorMove } from "./nvim/on-cursor-move.ts";
 import { type CustomEvents, type WsServerMessage } from "./types.ts";
 
 const app = await GithubPreview.start();
 
+onConfigUpdate(app, (configUpdate) => {
+    Object.assign(app.config.overrides, configUpdate);
+    app.wsSend({ type: "update-config", config: app.config });
+    // We're handling an RPCRequest, which means neovim remains blocked
+    // until we return something
+    return null;
+});
+
 await onBeforeExit(app, async () => {
     await app.goodbye();
     // We're handling an RPCRequest, which means neovim remains blocked
     // until we return something
-    return true;
+    return null;
 });
 
 await onCursorMove(

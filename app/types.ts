@@ -144,6 +144,17 @@ export type WsBrowserMessage =
 // eslint-disable-next-line
 export interface CustomEvents extends BaseEvents {
     requests: {
+        onConfigUpdate: [
+            updateAction:
+                | "single_file_enable"
+                | "single_file_disable"
+                | "details_tags_open"
+                | "details_tags_closed"
+                | "scroll_enable"
+                | "scroll_disable"
+                | "cursorline_enable"
+                | "cursorline_disable",
+        ];
         onBeforeExit: [];
     };
     notifications: {
