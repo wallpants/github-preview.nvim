@@ -10,9 +10,12 @@ export function onConfigUpdate(
 ) {
     // Request handler
     app.nvim.onRequest(REQUEST, async ([update_action]) => {
-        const update: Partial<Config> = {};
+        let update: Partial<Config> = {};
 
         switch (update_action) {
+            case "reset_overrides":
+                update = app.config.dotfiles;
+                break;
             case "single_file_on":
                 update.single_file = true;
                 break;

@@ -86,6 +86,8 @@ require("github-preview").setup({
 	-- these are the default values,
 	-- any values you specify will be merged with this dictionary
 
+	-- you can also temporarily override any of these values through the web UI
+
 	host = "localhost",
 
 	port = 6041,
@@ -139,6 +141,14 @@ the younger one.
 
 **Stops** the plugin. Closes browser tab as well.
 
+### `:GithubPreviewResetOverrides`
+
+Clears any settings overrides applied to the current session and falls back to initial configuration.
+
+---
+
+The following commands override your settings for the current session.
+
 ### `:GithubPreviewSingleFileOn`
 
 **Force** single-file mode.
@@ -184,6 +194,7 @@ local builtin = require("github-preview.builtin")
 builtin.start()
 builtin.stop()
 builtin.toggle()
+builtin.reset_overrides()
 builtin.single_file_on()
 builtin.single_file_off()
 builtin.details_tags_open()
