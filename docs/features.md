@@ -34,7 +34,7 @@ Relative image sources (example: `![image](./docs/github.svg)`) are resolved and
 
 ## 🧜 Mermaid Support
 
-Basic [mermaid](https://mermaid.js.org/) support.
+Basic [mermaid](https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/) support.
 
 The following block would result in the svg below.
 
