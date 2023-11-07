@@ -133,6 +133,39 @@ Stops the service. Closes browser tab as well.
 
 Starts the service if not running or stops it if it's already running.
 
+## 🧠 Advanced Usage
+
+`github-preview.nvim` exports **builtin functions** for you to register commands/mappings
+to perform plugin actions.
+
+```lua
+local builtin = require("github-preview.builtin")
+
+-- create a user command
+vim.api.nvim_create_user_command(
+    "GithubPreviewScrollDisable",
+    builtin.scroll_disable,
+    {}
+)
+
+-- set a keymap
+vim.keymap.set('n',  '<leader>gps', builtin.scroll_enable)
+```
+
+Available **builtin functions**:
+
+-   start
+-   stop
+-   toggle
+-   single_file_enable
+-   single_file_disable
+-   details_tags_open
+-   details_tags_closed
+-   scroll_enable
+-   scroll_disable
+-   cursorline_enable
+-   cursorline_disable
+
 ## 👷 Development & Contributing
 
 [See documentation](https://github.com/wallpants/github-preview.nvim/blob/main/docs/development.md)
