@@ -2,7 +2,7 @@ import { type Awaitable } from "bunvim";
 import { type GithubPreview } from "../github-preview.ts";
 import { type CustomEvents } from "../types.ts";
 
-const NOTIFICATION = "CursorMove";
+const NOTIFICATION = "cursor_move";
 
 export async function onCursorMove(
     app: GithubPreview,

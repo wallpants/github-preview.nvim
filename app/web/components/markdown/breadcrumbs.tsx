@@ -10,7 +10,7 @@ export const BreadCrumbs = () => {
         return () => {
             let path = segments.slice(0, idx).join("/");
             if (path) path += "/";
-            wsRequest({ type: "get-entry", path });
+            wsRequest({ type: "get_entry", path });
         };
     }
 

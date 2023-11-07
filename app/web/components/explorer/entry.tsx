@@ -48,7 +48,7 @@ export const EntryComponent = ({ path, depth, currentPath }: Props) => {
 
     useEffect(() => {
         if (!isConnected || !isDir) return;
-        wsRequest({ type: "get-entries", path: path });
+        wsRequest({ type: "get_entries", path: path });
     }, [wsRequest, path, isConnected, isDir]);
 
     useEffect(() => {
@@ -69,7 +69,7 @@ export const EntryComponent = ({ path, depth, currentPath }: Props) => {
                 <div
                     onClick={() => {
                         setExpanded(true);
-                        wsRequest({ type: "get-entry", path });
+                        wsRequest({ type: "get_entry", path });
                     }}
                     style={{ paddingLeft: depth * 11 + (isDir ? 0 : 20) }}
                     className={cn(

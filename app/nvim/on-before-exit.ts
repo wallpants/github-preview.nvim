@@ -1,7 +1,7 @@
 import { type GithubPreview } from "../github-preview.ts";
 import { type CustomEvents } from "../types.ts";
 
-const REQUEST = "onBeforeExit";
+const REQUEST = "on_before_exit";
 
 export async function onBeforeExit(
     app: GithubPreview,

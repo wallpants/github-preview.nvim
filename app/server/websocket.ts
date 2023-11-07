@@ -2,7 +2,7 @@ import { type WebSocketHandler } from "bun";
 import { type GithubPreview } from "../github-preview.ts";
 import { type WsBrowserMessage, type WsServerMessage } from "../types.ts";
 
-export const EDITOR_EVENTS_TOPIC = "editor-events";
+export const EDITOR_EVENTS_TOPIC = "editor_events";
 
 export function websocketHandler(app: GithubPreview): WebSocketHandler {
     return {
@@ -47,7 +47,7 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                 wsSend(message);
             }
 
-            if (browserMessage.type === "get-entries") {
+            if (browserMessage.type === "get_entries") {
                 const message: WsServerMessage = {
                     type: "entries",
                     path: browserMessage.path,
@@ -56,7 +56,7 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                 wsSend(message);
             }
 
-            if (browserMessage.type === "get-entry") {
+            if (browserMessage.type === "get_entry") {
                 // if single-file mode is enabled, dont respond if browser requests
                 // an entry other than the currentPath
                 if (app.config.overrides.single_file && browserMessage.path !== app.currentPath) {
@@ -79,11 +79,11 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                 wsSend(message);
             }
 
-            if (browserMessage.type === "update-config") {
+            if (browserMessage.type === "update_config") {
                 Object.assign(app.config.overrides, browserMessage.config);
 
                 const message: WsServerMessage = {
-                    type: "update-config",
+                    type: "update_config",
                     config: app.config,
                 };
                 wsSend(message);

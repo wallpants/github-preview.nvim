@@ -90,7 +90,7 @@ export const Markdown = ({ className }: { className: string }) => {
                     element.addEventListener("click", (event) => {
                         event.preventDefault();
                         const pathname = element.href.slice(base.length);
-                        wsRequest({ type: "get-entry", path: pathname });
+                        wsRequest({ type: "get_entry", path: pathname });
                     });
 
                     // overrides applicable to single-file mode

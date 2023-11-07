@@ -14,7 +14,7 @@ M.setup = function(config)
 			local channel_id = Utils.get_client_channel("github-preview")
 			if channel_id ~= nil then
 				-- onBeforeExit request closes browser
-				vim.rpcrequest(channel_id, "onBeforeExit")
+				vim.rpcrequest(channel_id, "on_before_exit")
 				vim.fn.jobstop(job_id)
 			end
 
