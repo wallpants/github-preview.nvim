@@ -39,7 +39,7 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
     "wallpants/github-preview.nvim",
     -- version = "*", -- latest stable version, may have breaking changes if major version changed
     -- version = "^1.0.0", -- pin major version, include fixes and features that do not have breaking changes
-    cmd = { "GithubPreviewStart", "GithubPreviewToggle" },
+    cmd = { "GithubPreviewToggle" },
     ---@type github_preview_config
     opts = {
         -- config goes here
@@ -59,7 +59,7 @@ use {
     "wallpants/github-preview.nvim",
     disable = false,
     opt = true,
-    cmd = { "GithubPreviewStart", "GithubPreviewToggle" },
+    cmd = { "GithubPreviewToggle" },
     -- tag = "*", -- latest stable version, may have breaking changes if major version changed
     -- tag = "v1.0.0", -- pin specific tag
     config = function()
@@ -117,7 +117,7 @@ require("github-preview").setup({
 
 ## 💻 Usage
 
-🚨 The first time you run `:GithubPreviewStart`, it might take a few seconds for your browser to open as dependencies are being downloaded.
+🚨 The first time the plugin runs, it might take a few seconds for your browser to open as dependencies are being downloaded.
 This might happen again after a plugin update if there were any changes to the plugin dependencies.
 
 ### `:GithubPreviewToggle`
