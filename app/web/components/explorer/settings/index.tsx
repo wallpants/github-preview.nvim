@@ -10,7 +10,7 @@ import { Option } from "./option";
 import { type SelectOption } from "./select";
 
 export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
-    const { currentPath, config, wsRequest } = useContext(websocketContext);
+    const { config, wsRequest } = useContext(websocketContext);
     const [tick, setTick] = useState(0);
 
     if (!config) return null;
