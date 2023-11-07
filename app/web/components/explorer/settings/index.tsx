@@ -111,7 +111,7 @@ export const Settings = ({ isOverriden }: { isOverriden: boolean }) => {
                     }}
                     disabled={
                         config.dotfiles.single_file
-                            ? "If app launched in single-file mode, it cannot be changed."
+                            ? "If plugin launched in single-file mode, it cannot be changed."
                             : undefined
                     }
                 />
