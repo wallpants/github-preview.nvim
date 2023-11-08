@@ -14,6 +14,7 @@ import {
     type ContentChange,
     type CustomEvents,
     type PluginProps,
+    type UpdateConfigAction,
     type WsServerMessage,
 } from "./types";
 
@@ -206,5 +207,87 @@ export class GithubPreview {
         this.wsSend({ type: "goodbye" });
         await this.nvim.call("nvim_del_augroup_by_id", [this.augroupId]);
         await this.nvim.call("nvim_notify", ["github-preview: goodbye", NVIM_LOG_LEVELS.INFO, {}]);
+    }
+
+    async updateConfig([action, value]: UpdateConfigAction) {
+        let update: Partial<Config> = {};
+
+        const updateSingleFile = async (dotfileValue: boolean, newValue: boolean) => {
+            // we need a function to validate single-file mode config updates
+            // because single-file mode cannot be disabled if plugin launched
+            // in single-file mode
+            if (dotfileValue && !newValue) {
+                await this.nvim.call("nvim_notify", [
+                    "github-preview: if plugin launched in single-file mode, it cannot be changed.",
+                    NVIM_LOG_LEVELS.WARN,
+                    {},
+                ]);
+            } else {
+                update.single_file = newValue;
+            }
+        };
+
+        const { overrides, dotfiles } = this.config;
+
+        switch (action) {
+            case "set_theme":
+                update.theme = value;
+                break;
+            case "clear_overrides":
+                update = dotfiles;
+                break;
+            case "single_file": {
+                if (value === "toggle") {
+                    await updateSingleFile(dotfiles.single_file, !overrides.single_file);
+                } else {
+                    await updateSingleFile(dotfiles.single_file, value === "on" ? true : false);
+                }
+                break;
+            }
+            case "details_tags":
+                if (value === "toggle") {
+                    update.details_tags_open = !overrides.details_tags_open;
+                } else {
+                    update.details_tags_open = value === "open" ? true : false;
+                }
+                break;
+            case "scroll":
+                if (value === "toggle") {
+                    update.scroll = { ...overrides.scroll, disable: !overrides.scroll.disable };
+                } else {
+                    update.scroll = { ...overrides.scroll, disable: value === "on" ? false : true };
+                }
+                break;
+            case "scroll.offset":
+                update.scroll = { ...overrides.scroll, top_offset_pct: value };
+                break;
+            case "cursorline":
+                if (value === "toggle") {
+                    update.cursor_line = {
+                        ...overrides.cursor_line,
+                        disable: !overrides.cursor_line.disable,
+                    };
+                } else {
+                    update.cursor_line = {
+                        ...overrides.cursor_line,
+                        disable: value === "on" ? false : true,
+                    };
+                }
+                break;
+            case "cursorline.color":
+                update.cursor_line = {
+                    ...overrides.cursor_line,
+                    color: value,
+                };
+                break;
+            case "cursorline.opacity":
+                update.cursor_line = {
+                    ...overrides.cursor_line,
+                    opacity: value,
+                };
+                break;
+        }
+
+        Object.assign(overrides, update);
     }
 }

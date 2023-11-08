@@ -80,8 +80,7 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
             }
 
             if (browserMessage.type === "update_config") {
-                Object.assign(app.config.overrides, browserMessage.config);
-
+                await app.updateConfig(browserMessage.action);
                 const message: WsServerMessage = {
                     type: "update_config",
                     config: app.config,

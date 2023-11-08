@@ -32,7 +32,7 @@ export const Settings = ({
             iconClassName: "stroke-github-accent-fg",
             selected: overrides.details_tags_open,
             onClick: () => {
-                wsRequest({ type: "update_config", config: { details_tags_open: true } });
+                wsRequest({ type: "update_config", action: ["details_tags", "open"] });
             },
         },
         {
@@ -40,7 +40,7 @@ export const Settings = ({
             icon: FoldVerticalIcon,
             selected: !overrides.details_tags_open,
             onClick: () => {
-                wsRequest({ type: "update_config", config: { details_tags_open: false } });
+                wsRequest({ type: "update_config", action: ["details_tags", "closed"] });
             },
         },
     ];
@@ -51,7 +51,7 @@ export const Settings = ({
             icon: SystemIcon,
             selected: overrides.theme === "system",
             onClick: () => {
-                wsRequest({ type: "update_config", config: { theme: "system" } });
+                wsRequest({ type: "update_config", action: ["set_theme", "system"] });
             },
         },
         {
@@ -59,7 +59,7 @@ export const Settings = ({
             icon: SunIcon,
             selected: overrides.theme === "light",
             onClick: () => {
-                wsRequest({ type: "update_config", config: { theme: "light" } });
+                wsRequest({ type: "update_config", action: ["set_theme", "light"] });
             },
         },
         {
@@ -67,7 +67,7 @@ export const Settings = ({
             icon: MoonIcon,
             selected: overrides.theme === "dark",
             onClick: () => {
-                wsRequest({ type: "update_config", config: { theme: "dark" } });
+                wsRequest({ type: "update_config", action: ["set_theme", "dark"] });
             },
         },
     ];
@@ -118,10 +118,10 @@ export const Settings = ({
                         cKey="single_file"
                         toggle={{
                             value: overrides.single_file,
-                            onChange: (enabled) => {
+                            onChange: () => {
                                 wsRequest({
                                     type: "update_config",
-                                    config: { single_file: enabled },
+                                    action: ["single_file", "toggle"],
                                 });
                             },
                         }}
@@ -142,15 +142,10 @@ export const Settings = ({
                         cKey="cursor_line"
                         toggle={{
                             value: !overrides.cursor_line.disable,
-                            onChange: (enabled) => {
+                            onChange: () => {
                                 wsRequest({
                                     type: "update_config",
-                                    config: {
-                                        cursor_line: {
-                                            ...overrides.cursor_line,
-                                            disable: !enabled,
-                                        },
-                                    },
+                                    action: ["cursorline", "toggle"],
                                 });
                             },
                         }}
@@ -159,9 +154,7 @@ export const Settings = ({
                             onChange: (color) => {
                                 wsRequest({
                                     type: "update_config",
-                                    config: {
-                                        cursor_line: { ...overrides.cursor_line, color },
-                                    },
+                                    action: ["cursorline.color", color],
                                 });
                             },
                         }}
@@ -173,9 +166,7 @@ export const Settings = ({
                             onChange: (opacity) => {
                                 wsRequest({
                                     type: "update_config",
-                                    config: {
-                                        cursor_line: { ...overrides.cursor_line, opacity },
-                                    },
+                                    action: ["cursorline.opacity", opacity],
                                 });
                             },
                         }}
@@ -188,12 +179,10 @@ export const Settings = ({
                         cKey="scroll"
                         toggle={{
                             value: !overrides.scroll.disable,
-                            onChange: (enabled) => {
+                            onChange: () => {
                                 wsRequest({
                                     type: "update_config",
-                                    config: {
-                                        scroll: { ...overrides.scroll, disable: !enabled },
-                                    },
+                                    action: ["scroll", "toggle"],
                                 });
                             },
                         }}
@@ -205,7 +194,7 @@ export const Settings = ({
                             onChange: (top_offset_pct) => {
                                 wsRequest({
                                     type: "update_config",
-                                    config: { scroll: { ...overrides.scroll, top_offset_pct } },
+                                    action: ["scroll.offset", top_offset_pct],
                                 });
                             },
                         }}
@@ -220,7 +209,7 @@ export const Settings = ({
                         isOverriden ? "visible" : "invisible",
                     )}
                     onClick={() => {
-                        wsRequest({ type: "update_config", config: config.dotfiles });
+                        wsRequest({ type: "update_config", action: ["clear_overrides"] });
                     }}
                 >
                     clear overrides

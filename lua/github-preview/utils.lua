@@ -77,14 +77,15 @@ M.validate_config = function()
 	})
 end
 
----@param update_action "clear_overrides" | "single_file_toggle" | "single_file_on" |  "single_file_off" | "details_tags_toggle"  | "details_tags_open" |  "details_tags_closed" | "scroll_toggle" | "scroll_on" |  "scroll_off" | "cursorline_toggle" | "cursorline_on" |  "cursorline_off"
-M.update_config = function(update_action)
+---@param update_action string
+---@param value? string
+M.update_config = function(update_action, value)
 	return function()
 		local channel_id = M.get_client_channel()
 		if channel_id ~= nil then
 			-- vim.rpcrequest seems to be incorrecly typed
 			---@diagnostic disable-next-line: param-type-mismatch
-			vim.rpcrequest(channel_id, "on_config_update", update_action)
+			vim.rpcrequest(channel_id, "on_config_update", update_action, value)
 		else
 			vim.notify("github-preview: could not find running plugin")
 		end
