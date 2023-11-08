@@ -40,7 +40,6 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
     -- version = "*", -- latest stable version, may have breaking changes if major version changed
     -- version = "^1.0.0", -- pin major version, include fixes and features that do not have breaking changes
     cmd = { "GithubPreviewToggle" },
-    ---@type github_preview_config
     opts = {
         -- config goes here
         -- or empty for default settings
@@ -149,6 +148,38 @@ trigger stuff in [autocommands](<https://neovim.io/doc/user/api.html#nvim_create
 [create user commands](<https://neovim.io/doc/user/api.html#nvim_create_user_command()>),
 whatever you can imagine.
 
+<details>
+    <summary>
+        Example setup with <a href="https://github.com/folke/lazy.nvim">lazy.nvim</a>
+    </summary>
+
+```lua
+{
+    "wallpants/github-preview.nvim",
+    keys = { "<leader>mpt" },
+    opts = {
+        theme = "light",
+        details_tags_open = false,
+        scroll = {
+            top_offset_pct = 50,
+        },
+    },
+    config = function(_, opts)
+        local gpreview = require("github-preview")
+        gpreview.setup(opts)
+
+        local fns = gpreview.fns
+        vim.keymap.set("n", "<leader>mpt", fns.toggle)
+        vim.keymap.set("n", "<leader>mpc", fns.cursorline_toggle)
+        vim.keymap.set("n", "<leader>mpd", fns.details_tags_toggle)
+    end,
+},
+```
+
+</details>
+
+### Available functions:
+
 ```lua
 local gpreview = require("github-preview")
 local fns = gpreview.fns
@@ -183,37 +214,6 @@ fns.cursorline_toggle()
 fns.cursorline_on()
 fns.cursorline_off()
 ```
-
-<details>
-    <summary>
-        Example setup with <a href="https://github.com/folke/lazy.nvim">lazy.nvim</a>
-    </summary>
-
-```lua
-{
-    "wallpants/github-preview.nvim",
-    keys = { "<leader>mpt" },
-    ---@type github_preview_config
-    opts = {
-        theme = "light",
-        details_tags_open = false,
-        scroll = {
-            top_offset_pct = 50,
-        },
-    },
-    config = function(_, opts)
-        local gpreview = require("github-preview")
-        gpreview.setup(opts)
-
-        local fns = gpreview.fns
-        vim.keymap.set("n", "<leader>mpt", fns.toggle)
-        vim.keymap.set("n", "<leader>mpc", fns.cursorline_toggle)
-        vim.keymap.set("n", "<leader>mpd", fns.details_tags_toggle)
-    end,
-},
-```
-
-</details>
 
 ## 👷 Development & Contributing
 
