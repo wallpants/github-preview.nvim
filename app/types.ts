@@ -146,13 +146,17 @@ export interface CustomEvents extends BaseEvents {
     requests: {
         on_config_update: [
             update_action:
-                | "reset_overrides"
+                | "clear_overrides"
+                | "single_file_toggle"
                 | "single_file_on"
                 | "single_file_off"
+                | "details_tags_toggle"
                 | "details_tags_open"
                 | "details_tags_closed"
+                | "scroll_toggle"
                 | "scroll_on"
                 | "scroll_off"
+                | "cursorline_toggle"
                 | "cursorline_on"
                 | "cursorline_off",
         ];
