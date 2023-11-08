@@ -1,7 +1,5 @@
 # ✨ Features
 
-![Demo](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/demo.gif)
-
 ## 💻 Linux / macOS / WSL
 
 Compatible with Linux, macOS and WSL[^1].
@@ -21,16 +19,40 @@ See updates live in your browser as you edit your files.
 Live Preview auto scrolls following your cursor in Neovim. You can customize/disable scrolling
 in your [config](../README.md#%EF%B8%8F-configuration).
 
+![Demo](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/demo.gif)
+
 ## 🌈 Dark & Light modes
+
+Toggle between light and dark modes.
 
 ## 🖍️ Cursorline in Preview
 
 Cursorline position is estimated and may sometimes be a bit off. You can customize/disable
 the cursorline in your [config](../README.md#%EF%B8%8F-configuration).
 
+![Config](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/config.gif)
+
 ## 🏞️ Local Image Support
 
 Relative image sources (example: `![image](./docs/github.svg)`) are resolved and rendered if found.
+
+## 📄 Single-file mode
+
+When the plugin starts, it attempts to find a `.git` directory to identify a repository root.
+If the plugin can't find a git repository, **_single-file_** mode is enabled.
+
+You can also force **_single-file_** mode in your [config](../README.md#%EF%B8%8F-configuration).
+
+In this mode, the preview is locked to one file.
+
+## 📂 Repository mode
+
+If a git repository is detected, **_repository_** mode is enabled.
+
+You can disable **_repository_** mode in your [config](../README.md#%EF%B8%8F-configuration).
+
+In this mode, the preview will follow your cursor wherever it goes. You can click on
+relative links and browse the repository similar to how you would do it on GitHub.
 
 ## 🧜 Mermaid Support
 
@@ -67,15 +89,3 @@ sequenceDiagram
     John->>Bob: How about you?
     Bob-->>John: Jolly good!
 ```
-
-## 📄 Single-file mode
-
-Run `:GithubPreviewStart` whilst your current buffer contains a file to preview it live.
-If no file has been loaded into the current buffer and your `cwd` is not a GitHub Repository,
-you'll get an error.
-
-## 📂 Repository mode
-
-If your `cwd` is a GitHub Repository or within one, **Repository Mode** will be enabled.
-You can even run `:GithubPreviewStart` without loading a file into the Neovim buffer if
-in a repo.

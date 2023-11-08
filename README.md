@@ -192,6 +192,7 @@ fns.start()
 fns.stop()
 
 -- clear current session's config overrides
+-- and fallback to your config files
 fns.clear_overrides()
 
 -- single-file mode enable/disable
