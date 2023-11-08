@@ -291,6 +291,10 @@
   margin-bottom: 0.5rem
 }
 
+.mb-20 {
+  margin-bottom: 5rem
+}
+
 .mb-4 {
   margin-bottom: 1rem
 }
@@ -679,6 +683,10 @@
   fill: var(--color-icon-directory)
 }
 
+.fill-red-600 {
+  fill: #dc2626
+}
+
 .stroke-\[\#ff00a2\] {
   stroke: #ff00a2
 }
@@ -701,6 +709,10 @@
 
 .stroke-github-icon-file {
   stroke: var(--color-icon-file)
+}
+
+.stroke-green-600 {
+  stroke: #16a34a
 }
 
 .stroke-red-600 {

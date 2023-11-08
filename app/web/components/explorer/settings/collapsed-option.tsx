@@ -18,9 +18,16 @@ type Props = {
     active: boolean;
     setConfigOpen: Dispatch<SetStateAction<null | keyof Config | "no-key">>;
     setSettingsOffset: (o: number) => void;
+    className?: string;
 };
 
-export const CollapsedOption = ({ cKey, active, setConfigOpen, setSettingsOffset }: Props) => {
+export const CollapsedOption = ({
+    cKey,
+    active,
+    setConfigOpen,
+    setSettingsOffset,
+    className,
+}: Props) => {
     const { config } = useContext(websocketContext);
 
     if (!config) return null;
@@ -32,7 +39,7 @@ export const CollapsedOption = ({ cKey, active, setConfigOpen, setSettingsOffset
     const [Icon, iconClassName] = findIcon(cKey, config.overrides);
 
     return (
-        <div className="relative mx-auto">
+        <div className={cn("relative mx-auto", className)}>
             {isOverriden ? (
                 <div className="absolute right-1 top-1 h-2 w-2 rounded-full bg-orange-600" />
             ) : null}
@@ -70,7 +77,7 @@ function findIcon(
     }
 
     if (cKey === "single_file") {
-        if (config[cKey]) return [PinIcon, "stroke-red-600"];
+        if (config[cKey]) return [PinIcon, "stroke-red-600 fill-red-600"];
         return [PinOffIcon, ""];
     }
 
@@ -80,7 +87,7 @@ function findIcon(
     }
 
     if (cKey === "details_tags_open") {
-        if (config[cKey]) return [UnfoldVerticalIcon, "stroke-github-accent-fg"];
+        if (config[cKey]) return [UnfoldVerticalIcon, "stroke-green-600"];
         return [FoldVerticalIcon, ""];
     }
 

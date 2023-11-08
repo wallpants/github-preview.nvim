@@ -138,28 +138,24 @@ export type WsBrowserMessage =
       }
     | {
           type: "update_config";
-          config: Partial<Config>;
+          action: UpdateConfigAction;
       };
+
+export type UpdateConfigAction =
+    | ["clear_overrides"]
+    | ["set_theme", "system" | "light" | "dark"]
+    | ["single_file", "toggle" | "on" | "off"]
+    | ["details_tags", "toggle" | "open" | "closed"]
+    | ["scroll", "toggle" | "on" | "off"]
+    | ["scroll.offset", number]
+    | ["cursorline", "toggle" | "on" | "off"]
+    | ["cursorline.color", string]
+    | ["cursorline.opacity", number];
 
 // eslint-disable-next-line
 export interface CustomEvents extends BaseEvents {
     requests: {
-        on_config_update: [
-            update_action:
-                | "clear_overrides"
-                | "single_file_toggle"
-                | "single_file_on"
-                | "single_file_off"
-                | "details_tags_toggle"
-                | "details_tags_open"
-                | "details_tags_closed"
-                | "scroll_toggle"
-                | "scroll_on"
-                | "scroll_off"
-                | "cursorline_toggle"
-                | "cursorline_on"
-                | "cursorline_off",
-        ];
+        on_config_update: UpdateConfigAction;
         on_before_exit: [];
     };
     notifications: {

@@ -102,20 +102,20 @@ end
 
 M.clear_overrides = Utils.update_config("clear_overrides")
 
-M.single_file_toggle = Utils.update_config("single_file_toggle")
-M.single_file_on = Utils.update_config("single_file_on")
-M.single_file_off = Utils.update_config("single_file_off")
+M.single_file_toggle = Utils.update_config("single_file", "toggle")
+M.single_file_on = Utils.update_config("single_file", "on")
+M.single_file_off = Utils.update_config("single_file", "off")
 
-M.details_tags_toggle = Utils.update_config("details_tags_toggle")
-M.details_tags_open = Utils.update_config("details_tags_open")
-M.details_tags_closed = Utils.update_config("details_tags_closed")
+M.details_tags_toggle = Utils.update_config("details_tags", "toggle")
+M.details_tags_open = Utils.update_config("details_tags", "open")
+M.details_tags_closed = Utils.update_config("details_tags", "closed")
 
-M.scroll_toggle = Utils.update_config("scroll_toggle")
-M.scroll_on = Utils.update_config("scroll_on")
-M.scroll_off = Utils.update_config("scroll_off")
+M.scroll_toggle = Utils.update_config("scroll", "toggle")
+M.scroll_on = Utils.update_config("scroll", "on")
+M.scroll_off = Utils.update_config("scroll", "off")
 
-M.cursorline_toggle = Utils.update_config("cursorline_toggle")
-M.cursorline_on = Utils.update_config("cursorline_on")
-M.cursorline_off = Utils.update_config("cursorline_off")
+M.cursorline_toggle = Utils.update_config("cursorline", "toggle")
+M.cursorline_on = Utils.update_config("cursorline", "on")
+M.cursorline_off = Utils.update_config("cursorline", "off")
 
 return M
