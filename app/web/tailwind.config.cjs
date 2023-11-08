@@ -7,6 +7,7 @@ export default {
     },
     theme: {
         colors: ({ colors }) => ({
+            red: colors.red,
             orange: colors.orange,
             green: colors.green,
             gray: colors.gray,

@@ -1,51 +1,26 @@
-import { useContext, useEffect, useState } from "react";
-import { useOnDocumentClick } from "../../use-on-document-click.ts";
-import { cn, isEqual } from "../../utils.ts";
+import { type Dispatch, type SetStateAction } from "react";
+import { type Config } from "../../../types.ts";
+import { cn } from "../../utils.ts";
 import { IconButton } from "../icon-button.tsx";
 import { PanelCloseIcon } from "../icons/panel-close.tsx";
 import { PanelOpenIcon } from "../icons/panel-open.tsx";
 import { SettingsIcon } from "../icons/settings.tsx";
-import { websocketContext } from "../websocket-provider/context.ts";
-import { Settings } from "./settings/index.tsx";
 
 export const Header = ({
     isExpanded,
     setIsExpanded,
+    setConfigOpen,
     className,
+    isOverriden,
+    setSettingsOffset,
 }: {
     isExpanded: boolean;
     setIsExpanded: (e: boolean) => void;
+    setConfigOpen: Dispatch<SetStateAction<null | keyof Config | "no-key">>;
     className: string;
+    isOverriden: boolean;
+    setSettingsOffset: (o: number) => void;
 }) => {
-    const { config } = useContext(websocketContext);
-    const [configOpen, setConfigOpen] = useState(false);
-    const isOverriden = !isEqual(config?.dotfiles, config?.overrides);
-
-    useOnDocumentClick({
-        disabled: !configOpen,
-        callback: () => {
-            setConfigOpen(false);
-        },
-    });
-
-    useEffect(() => {
-        if (!configOpen) return;
-        // setup listener to close menu on click anywhere
-        const controller = new AbortController();
-
-        document.addEventListener(
-            "click",
-            () => {
-                setConfigOpen(false);
-            },
-            { signal: controller.signal },
-        );
-
-        return () => {
-            controller.abort();
-        };
-    }, [configOpen]);
-
     return (
         <div
             className={cn(
@@ -54,21 +29,26 @@ export const Header = ({
                 className,
             )}
         >
-            {isExpanded && <h4 className="!my-0 mr-auto">Files</h4>}
-            <div className="relative">
-                <IconButton
-                    className={cn(isExpanded ? "ml-4" : "my-2")}
-                    noBorder={!isExpanded}
-                    Icon={SettingsIcon}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        setConfigOpen(!configOpen);
-                    }}
-                />
-                {isOverriden ? (
-                    <div className="absolute right-1 top-3 h-2 w-2 rounded-full bg-orange-600" />
-                ) : null}
-            </div>
+            {isExpanded && (
+                <>
+                    <h4 className="!my-0 mr-auto">Files</h4>
+                    <div className="relative">
+                        <IconButton
+                            className="ml-4"
+                            noBorder={!isExpanded}
+                            Icon={SettingsIcon}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setSettingsOffset(105);
+                                setConfigOpen((c) => (c === "no-key" ? null : "no-key"));
+                            }}
+                        />
+                        {isOverriden ? (
+                            <div className="absolute right-1 top-3 h-2 w-2 rounded-full bg-orange-600" />
+                        ) : null}
+                    </div>
+                </>
+            )}
             <IconButton
                 className={cn(isExpanded ? "ml-4" : "my-2")}
                 noBorder={!isExpanded}
@@ -77,7 +57,6 @@ export const Header = ({
                     setIsExpanded(!isExpanded);
                 }}
             />
-            {configOpen ? <Settings isOverriden={isOverriden} /> : null}
         </div>
     );
 };
