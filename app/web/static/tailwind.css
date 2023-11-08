@@ -291,6 +291,10 @@
   margin-bottom: 0.5rem
 }
 
+.mb-4 {
+  margin-bottom: 1rem
+}
+
 .mb-96 {
   margin-bottom: 24rem
 }
@@ -463,8 +467,8 @@
   width: 20rem
 }
 
-.w-96 {
-  width: 24rem
+.w-\[430px\] {
+  width: 430px
 }
 
 .w-full {
@@ -473,6 +477,10 @@
 
 .w-screen {
   width: 100vw
+}
+
+.min-w-\[120px\] {
+  min-width: 120px
 }
 
 .min-w-max {
@@ -555,6 +563,10 @@
        column-gap: 1rem
 }
 
+.gap-y-3 {
+  row-gap: 0.75rem
+}
+
 .overflow-hidden {
   overflow: hidden
 }
@@ -565,6 +577,10 @@
 
 .overflow-x-hidden {
   overflow-x: hidden
+}
+
+.overflow-y-hidden {
+  overflow-y: hidden
 }
 
 .rounded {
@@ -663,6 +679,10 @@
   fill: var(--color-icon-directory)
 }
 
+.stroke-\[\#ff00a2\] {
+  stroke: #ff00a2
+}
+
 .stroke-github-accent-fg {
   stroke: var(--color-accent-fg)
 }
@@ -681,6 +701,10 @@
 
 .stroke-github-icon-file {
   stroke: var(--color-icon-file)
+}
+
+.stroke-red-600 {
+  stroke: #dc2626
 }
 
 .p-2 {

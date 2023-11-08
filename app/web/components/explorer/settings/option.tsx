@@ -48,7 +48,7 @@ export const Option = ({
     return (
         <div
             className={cn(
-                "relative flex p-3 h-28 flex-col items-center justify-between rounded border border-github-border-default",
+                "relative min-w-[120px] flex p-3 h-28 flex-col items-center justify-between rounded border border-github-border-default",
                 className,
             )}
         >

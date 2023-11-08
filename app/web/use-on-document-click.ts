@@ -15,7 +15,10 @@ export const useOnDocumentClick = ({ disabled, callback }: Props) => {
             () => {
                 callback();
             },
-            { signal: controller.signal },
+            {
+                signal: controller.signal,
+                capture: false,
+            },
         );
 
         return () => {
