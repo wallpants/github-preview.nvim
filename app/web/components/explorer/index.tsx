@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { type Config } from "../../../types.ts";
 import { useOnDocumentClick } from "../../use-on-document-click.ts";
 import { cn, isEqual } from "../../utils.ts";
-import { runMermaid } from "../markdown/mermaid.ts";
+import { mermaidRun } from "../markdown/mermaid.ts";
 import { websocketContext } from "../websocket-provider/context.ts";
 import { EntryComponent } from "./entry.tsx";
 import { Footer } from "./footer.tsx";
@@ -30,7 +30,7 @@ export const Explorer = () => {
     }, [currentPath]);
 
     useEffect(() => {
-        void runMermaid();
+        void mermaidRun();
     }, [isExpanded]);
 
     return (
