@@ -5,7 +5,7 @@ import { websocketContext } from "../websocket-provider/context.ts";
 import { BreadCrumbs } from "./breadcrumbs.tsx";
 import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";
 import { LINE_NUMBERS_ELEMENT_ID, LineNumbers } from "./line-numbers.tsx";
-import { runMermaid } from "./mermaid.ts";
+import { mermaidRun } from "./mermaid.ts";
 import { getScrollOffsets, type Offsets } from "./scroll.ts";
 
 const MARKDOWN_CONTAINER_ID = "markdown-container-id";
@@ -140,7 +140,7 @@ export const Markdown = ({ className }: { className: string }) => {
                     }
                 }
 
-                await runMermaid();
+                await mermaidRun();
             }
 
             if ("linesCountChange" in message && message.linesCountChange) {

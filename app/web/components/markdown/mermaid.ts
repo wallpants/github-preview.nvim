@@ -1,8 +1,12 @@
-import { type Mermaid } from "mermaid";
+import { type Mermaid, type MermaidConfig } from "mermaid";
 
 declare const mermaid: Mermaid;
 
-export async function runMermaid() {
+export function mermaidInit(config: MermaidConfig) {
+    mermaid.initialize(config);
+}
+
+export async function mermaidRun() {
     await mermaid.run({
         querySelector: ".mermaid",
         suppressErrors: true,

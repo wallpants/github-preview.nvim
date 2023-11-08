@@ -1,9 +1,7 @@
-import { type Mermaid } from "mermaid";
 import { useContext, useLayoutEffect, type ReactNode } from "react";
 import { type Theme } from "../../types";
+import { mermaidInit } from "./markdown/mermaid";
 import { websocketContext } from "./websocket-provider/context";
-
-declare const mermaid: Mermaid;
 
 export function ThemeProvider({ children, THEME }: { children: ReactNode; THEME: Theme }) {
     const { wsRequest, currentPath, config } = useContext(websocketContext);
@@ -17,7 +15,7 @@ export function ThemeProvider({ children, THEME }: { children: ReactNode; THEME:
         function handleThemeChange(newTheme: "light" | "dark") {
             const rootHtml = document.getElementsByTagName("html")[0]!;
             rootHtml.className = `pantsdown ${newTheme}`;
-            mermaid.initialize({
+            mermaidInit({
                 startOnLoad: false,
                 theme: newTheme === "light" ? "default" : "dark",
             });
