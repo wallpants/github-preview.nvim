@@ -141,69 +141,79 @@ the younger one.
 
 **Stops** the plugin. Closes browser tab as well.
 
-### `:GithubPreviewResetOverrides`
-
-Clears any settings overrides applied to the current session and falls back to initial configuration.
-
----
-
-The following commands override your settings for the current session.
-
-### `:GithubPreviewSingleFileOn`
-
-**Force** single-file mode.
-
-### `:GithubPreviewSingleFileOff`
-
-**Disable** single-file mode. If plugin launched in single-file mode, this won't do anything.
-This command only works if plugin launched in repository mode.
-
-### `:GithubPreviewDetailsTagsOpen`
-
-`<details>` tags are rendered **open** on init/content-change.
-
-### `:GithubPreviewDetailsTagsClosed`
-
-`<details>` tags are rendered **closed** on init/content-change.
-
-### `:GithubPreviewScrollOn`
-
-**Enable** synced scrolling.
-
-### `:GithubPreviewScrollOff`
-
-**Disable** synced scrolling.
-
-### `:GithubPreviewCursorlineOn`
-
-**Enable** cursorline.
-
-### `:GithubPreviewCursorlineOff`
-
-**Disable** cursorline.
-
 ## 🧠 Advanced Usage
 
-`github-preview.nvim` exports **builtin functions** for you to do as you please.
+This plugin also exports **functions** for you to do as you please.
+You can use them to [set keymaps](<https://neovim.io/doc/user/lua.html#vim.keymap.set()>),
+trigger stuff in [autocommands](<https://neovim.io/doc/user/api.html#nvim_create_autocmd()>),
+[create user commands](<https://neovim.io/doc/user/api.html#nvim_create_user_command()>),
+whatever you can imagine.
 
 ```lua
-require("github-preview").setup({})
+local gpreview = require("github-preview")
+local fns = gpreview.fns
 
-local builtin = require("github-preview.builtin")
+gpreview.setup({ ... })
 
-builtin.start()
-builtin.stop()
-builtin.toggle()
-builtin.reset_overrides()
-builtin.single_file_on()
-builtin.single_file_off()
-builtin.details_tags_open()
-builtin.details_tags_closed()
-builtin.scroll_on()
-builtin.scroll_off()
-builtin.cursorline_on()
-builtin.cursorline_off()
+-- plugin start/stop
+fns.toggle()
+fns.start()
+fns.stop()
+
+-- clear current session's config overrides
+fns.clear_overrides()
+
+-- single-file mode enable/disable
+fns.single_file_toggle()
+fns.single_file_on()
+fns.single_file_off()
+
+-- render <details> tags open/closed
+fns.details_tags_toggle()
+fns.details_tags_open()
+fns.details_tags_closed()
+
+-- synced scroll enable/disable
+fns.scroll_toggle()
+fns.scroll_on()
+fns.scroll_off()
+
+-- cursorline enable/disable
+fns.cursorline_toggle()
+fns.cursorline_on()
+fns.cursorline_off()
 ```
+
+<details>
+    <summary>
+        Example setup with <a href="https://github.com/folke/lazy.nvim">lazy.nvim</a>
+    </summary>
+
+```lua
+{
+    "wallpants/github-preview.nvim",
+    keys = { "<leader>mpt" },
+    ---@type github_preview_config
+    opts = {
+        theme = "light",
+        details_tags_open = false,
+        scroll = {
+            top_offset_pct = 50,
+        },
+    },
+    config = function(_, opts)
+        local gpreview = require("github-preview")
+        gpreview.setup(opts)
+
+        local fns = gpreview.fns
+        vim.keymap.set("n", "<leader>mpt", fns.toggle)
+        vim.keymap.set("n", "<leader>mpc", fns.cursorline_toggle)
+        vim.keymap.set("n", "<leader>mpd", fns.details_tags_toggle)
+    end,
+},
+```
+
+</details>
 
 ## 👷 Development & Contributing
 

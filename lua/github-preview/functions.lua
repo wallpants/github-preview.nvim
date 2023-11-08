@@ -100,13 +100,21 @@ M.toggle = function()
 	end
 end
 
-M.reset_overrides = Utils.update_config("reset_overrides")
+M.clear_overrides = Utils.update_config("clear_overrides")
+
+M.single_file_toggle = Utils.update_config("single_file_toggle")
 M.single_file_on = Utils.update_config("single_file_on")
 M.single_file_off = Utils.update_config("single_file_off")
+
+M.details_tags_toggle = Utils.update_config("details_tags_toggle")
 M.details_tags_open = Utils.update_config("details_tags_open")
 M.details_tags_closed = Utils.update_config("details_tags_closed")
+
+M.scroll_toggle = Utils.update_config("scroll_toggle")
 M.scroll_on = Utils.update_config("scroll_on")
 M.scroll_off = Utils.update_config("scroll_off")
+
+M.cursorline_toggle = Utils.update_config("cursorline_toggle")
 M.cursorline_on = Utils.update_config("cursorline_on")
 M.cursorline_off = Utils.update_config("cursorline_off")
 
