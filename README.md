@@ -158,11 +158,7 @@ whatever you can imagine.
     "wallpants/github-preview.nvim",
     keys = { "<leader>mpt" },
     opts = {
-        theme = "light",
-        details_tags_open = false,
-        scroll = {
-            top_offset_pct = 50,
-        },
+        -- your settings
     },
     config = function(_, opts)
         local gpreview = require("github-preview")
@@ -170,7 +166,7 @@ whatever you can imagine.
 
         local fns = gpreview.fns
         vim.keymap.set("n", "<leader>mpt", fns.toggle)
-        vim.keymap.set("n", "<leader>mpc", fns.cursorline_toggle)
+        vim.keymap.set("n", "<leader>mps", fns.scroll_toggle)
         vim.keymap.set("n", "<leader>mpd", fns.details_tags_toggle)
     end,
 },
