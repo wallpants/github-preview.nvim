@@ -25,11 +25,6 @@ export const Explorer = () => {
     });
 
     useEffect(() => {
-        const isDir = Boolean(currentPath?.endsWith("/"));
-        if (isDir) setIsExpanded(true);
-    }, [currentPath]);
-
-    useEffect(() => {
         void mermaidRun();
     }, [isExpanded]);
 

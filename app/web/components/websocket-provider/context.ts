@@ -8,6 +8,7 @@ export const websocketContext = createContext<{
     isConnected: boolean;
     registerHandler: (id: string, cb: MessageHandler) => void;
     currentPath: string | undefined;
+    currentEntries: string[] | undefined;
     hash: string | null | undefined;
     setHash: (h: string | null | undefined) => void;
     repoName: string;
@@ -17,6 +18,7 @@ export const websocketContext = createContext<{
     isConnected: false,
     registerHandler: () => null,
     currentPath: undefined,
+    currentEntries: undefined,
     hash: null,
     setHash: () => null,
     repoName: "",

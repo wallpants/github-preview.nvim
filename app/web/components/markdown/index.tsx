@@ -19,7 +19,8 @@ const pantsdown = new Pantsdown({
 });
 
 export const Markdown = ({ className }: { className: string }) => {
-    const { currentPath, config, registerHandler, wsRequest } = useContext(websocketContext);
+    const { currentPath, config, currentEntries, registerHandler, wsRequest } =
+        useContext(websocketContext);
 
     const details_tags_open = config?.overrides.details_tags_open ?? true;
     const single_file = config?.overrides.single_file;
@@ -57,7 +58,6 @@ export const Markdown = ({ className }: { className: string }) => {
         registerHandler("markdown", async (message) => {
             if ("lines" in message) {
                 const fileExt = getFileExt(message.currentPath);
-
                 const text = message.lines.join("\n");
                 const markdown = fileExt === "md" ? text : "```" + fileExt + `\n${text}`;
                 markdownElement.innerHTML = pantsdown.parse(markdown);
@@ -187,7 +187,10 @@ export const Markdown = ({ className }: { className: string }) => {
                 cursorLineElement={cursorLineElement}
                 markdownContainerElement={markdownContainerElement}
             />
-            <div id={MARKDOWN_ELEMENT_ID} className="relative mx-auto mb-96" />
+            <div
+                id={MARKDOWN_ELEMENT_ID}
+                className={cn("relative mx-auto mb-96", currentEntries ? "invisible" : "visible")}
+            />
             <LineNumbers offsets={offsets} lineNumbersElement={lineNumbersElement} />
         </div>
     );
