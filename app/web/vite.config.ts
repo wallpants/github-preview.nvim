@@ -9,7 +9,7 @@ export default defineConfig({
         __HOST__: JSON.stringify("localhost"),
         __PORT__: JSON.stringify(6041),
         __IS_DEV__: JSON.stringify(true),
-        __THEME__: JSON.stringify("system"),
+        __THEME__: JSON.stringify({ name: "system", high_contrast: true }),
     },
     server: {
         proxy: {

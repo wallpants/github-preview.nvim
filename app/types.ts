@@ -14,7 +14,10 @@ import {
 } from "valibot";
 import { type GithubPreview } from "./github-preview";
 
-export const ThemeSchema = union([literal("system"), literal("light"), literal("dark")]);
+export const ThemeSchema = object({
+    name: union([literal("system"), literal("light"), literal("dark")]),
+    high_contrast: boolean(),
+});
 export type Theme = Output<typeof ThemeSchema>;
 
 export const BuildConstsSchema = object({
@@ -144,7 +147,8 @@ export type WsBrowserMessage =
 
 export type UpdateConfigAction =
     | ["clear_overrides"]
-    | ["set_theme", "system" | "light" | "dark"]
+    | ["theme_name", "system" | "light" | "dark"]
+    | ["theme_high_contrast", "on" | "off"]
     | ["single_file", "toggle" | "on" | "off"]
     | ["details_tags", "toggle" | "open" | "closed"]
     | ["scroll", "toggle" | "on" | "off"]

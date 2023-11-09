@@ -209,8 +209,8 @@
   top: 0.25rem
 }
 
-.top-1\/4 {
-  top: 25%
+.top-24 {
+  top: 6rem
 }
 
 .top-3 {
@@ -403,6 +403,10 @@
   height: 7rem
 }
 
+.h-36 {
+  height: 9rem
+}
+
 .h-40 {
   height: 10rem
 }
@@ -439,8 +443,8 @@
   height: 100vh
 }
 
-.min-h-\[550px\] {
-  min-height: 550px
+.min-h-\[300px\] {
+  min-height: 300px
 }
 
 .w-1 {
@@ -573,6 +577,10 @@
   justify-content: space-between
 }
 
+.justify-around {
+  justify-content: space-around
+}
+
 .gap-4 {
   gap: 1rem
 }
@@ -656,10 +664,6 @@
   border-top-width: 1px
 }
 
-.border-none {
-  border-style: none
-}
-
 .border-github-border-default {
   border-color: var(--color-border-default)
 }
@@ -669,16 +673,20 @@
   border-color: rgb(234 88 12 / var(--tw-border-opacity))
 }
 
+.border-transparent {
+  border-color: transparent
+}
+
+.border-b-github-border-default {
+  border-bottom-color: var(--color-border-default)
+}
+
 .bg-github-accent-fg {
   background-color: var(--color-accent-fg)
 }
 
 .bg-github-border-default {
   background-color: var(--color-border-default)
-}
-
-.bg-github-border-muted {
-  background-color: var(--color-border-muted)
 }
 
 .bg-github-canvas-default {
@@ -936,6 +944,10 @@
 .after\:content-\[\'\'\]::after {
   --tw-content: '';
   content: var(--tw-content)
+}
+
+.hover\:border-github-border-default:hover {
+  border-color: var(--color-border-default)
 }
 
 .hover\:bg-github-border-default:hover {

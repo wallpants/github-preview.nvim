@@ -14,8 +14,11 @@ M.config = {
 	-- set to "true" to force single-file mode & disable repository mode
 	single_file = false,
 
-	-- "system" | "light" | "dark"
-	theme = "system",
+	theme = {
+		-- "system" | "light" | "dark"
+		name = "system",
+		high_contrast = false,
+	},
 
 	-- define how to render <details> tags on init/content-change
 	-- true: <details> tags are rendered open
@@ -54,8 +57,9 @@ M.validate_config = function()
 	vim.validate({
 		host = { M.config.host, "string" },
 		port = { M.config.port, "number" },
-		theme = {
-			M.config.theme,
+		["theme.high_contrast"] = { M.config.theme.high_contrast, "boolean" },
+		["theme.name"] = {
+			M.config.theme.name,
 			function(theme)
 				return (type(theme) == "string") and ((theme == "system") or (theme == "light") or (theme == "dark"))
 			end,

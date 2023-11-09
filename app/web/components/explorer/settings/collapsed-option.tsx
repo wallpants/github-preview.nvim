@@ -66,8 +66,8 @@ function findIcon(
     config: Config,
 ): [Icon: FC<{ className: string }> | null, className: string] {
     if (cKey === "theme") {
-        if (config[cKey] === "dark") return [MoonIcon, ""];
-        if (config[cKey] === "light") return [SunIcon, ""];
+        if (config[cKey].name === "dark") return [MoonIcon, ""];
+        if (config[cKey].name === "light") return [SunIcon, ""];
         return [SystemIcon, ""];
     }
 
