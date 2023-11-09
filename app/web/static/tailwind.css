@@ -838,10 +838,6 @@
   color: var(--color-accent-fg)
 }
 
-.text-github-fg-default {
-  color: var(--color-fg-default)
-}
-
 .text-github-fg-subtle {
   color: var(--color-fg-subtle)
 }
@@ -968,19 +964,6 @@
 
 .group:hover .group-hover\:visible {
   visibility: visible
-}
-
-.group:hover .group-hover\:block {
-  display: block
-}
-
-.group:hover .group-hover\:border-orange-600 {
-  --tw-border-opacity: 1;
-  border-color: rgb(234 88 12 / var(--tw-border-opacity))
-}
-
-.group:hover .group-hover\:bg-github-canvas-subtle {
-  background-color: var(--color-canvas-subtle)
 }
 
 .group:hover .group-hover\:text-github-accent-fg {
