@@ -7,7 +7,7 @@ import { websocketContext } from "../websocket-provider/context.ts";
 import { EntryComponent } from "./entry.tsx";
 import { Footer } from "./footer.tsx";
 import { Header } from "./header.tsx";
-import { CollapsedOption } from "./settings/collapsed-option.tsx";
+import { CollapsedSettings } from "./settings/collapsed.tsx";
 import { Settings } from "./settings/index.tsx";
 
 export const Explorer = () => {
@@ -58,41 +58,11 @@ export const Explorer = () => {
                 isOverriden={isOverriden}
             />
             {!isExpanded && (
-                <div className="absolute inset-0 overflow-y-hidden">
-                    <div className="absolute inset-0 flex flex-col justify-center gap-y-3">
-                        <CollapsedOption
-                            className="mb-20"
-                            setSettingsOffset={setSettingsOffset}
-                            setConfigOpen={setConfigOpen}
-                            active={"single_file" === configOpen}
-                            cKey="single_file"
-                        />
-                        <CollapsedOption
-                            setSettingsOffset={setSettingsOffset}
-                            setConfigOpen={setConfigOpen}
-                            active={"scroll" === configOpen}
-                            cKey="scroll"
-                        />
-                        <CollapsedOption
-                            setSettingsOffset={setSettingsOffset}
-                            setConfigOpen={setConfigOpen}
-                            active={"cursor_line" === configOpen}
-                            cKey="cursor_line"
-                        />
-                        <CollapsedOption
-                            setSettingsOffset={setSettingsOffset}
-                            setConfigOpen={setConfigOpen}
-                            active={"details_tags_open" === configOpen}
-                            cKey="details_tags_open"
-                        />
-                        <CollapsedOption
-                            setSettingsOffset={setSettingsOffset}
-                            setConfigOpen={setConfigOpen}
-                            active={"theme" === configOpen}
-                            cKey="theme"
-                        />
-                    </div>
-                </div>
+                <CollapsedSettings
+                    setSettingsOffset={setSettingsOffset}
+                    setConfigOpen={setConfigOpen}
+                    configOpen={configOpen}
+                />
             )}
             {configOpen ? (
                 <Settings

@@ -209,6 +209,10 @@
   top: 0.25rem
 }
 
+.top-1\/4 {
+  top: 25%
+}
+
 .top-3 {
   top: 0.75rem
 }
@@ -433,6 +437,10 @@
 
 .h-screen {
   height: 100vh
+}
+
+.min-h-\[550px\] {
+  min-height: 550px
 }
 
 .w-1 {
