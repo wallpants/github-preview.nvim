@@ -1,3 +1,4 @@
+import { type MutableRefObject } from "react";
 import { type Config } from "../../../types";
 import { type WebsocketContext } from "../websocket-provider/context";
 
@@ -5,9 +6,15 @@ type Props = {
     wsRequest: WebsocketContext["wsRequest"];
     markdownElement: HTMLElement;
     single_file: Config["single_file"] | undefined;
+    skipScroll: MutableRefObject<boolean>;
 };
 
-export function postProcessMarkdown({ wsRequest, markdownElement, single_file }: Props) {
+export function postProcessMarkdown({
+    wsRequest,
+    markdownElement,
+    single_file,
+    skipScroll,
+}: Props) {
     // handle links
     const base = window.location.origin + "/";
     markdownElement.querySelectorAll("a").forEach((element) => {
@@ -23,7 +30,7 @@ export function postProcessMarkdown({ wsRequest, markdownElement, single_file }:
             wsRequest({ type: "get_entry", path: pathname });
         });
 
-        // overrides applicable to single-file mode
+        // we only override behaviour for single_file mode
         if (!single_file) return;
 
         // if relative link points to an anchor in currentPath, do nothing
@@ -48,5 +55,20 @@ export function postProcessMarkdown({ wsRequest, markdownElement, single_file }:
             "</div>";
         tooltip.innerHTML = innerHTML;
         element.appendChild(tooltip);
+    });
+
+    // intercept clicks to "details" tags to set a flag to disable scrolling
+    // it's annoying when you open/close a "details" tag and there's an auto scroll
+    markdownElement.querySelectorAll("details").forEach((element, index) => {
+        element.addEventListener(
+            "click",
+            () => {
+                skipScroll.current = true;
+            },
+            {
+                capture: true,
+            },
+        );
+        console.log(`details ${index}: `, element);
     });
 }
