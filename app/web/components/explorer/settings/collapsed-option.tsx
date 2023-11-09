@@ -77,7 +77,7 @@ function findIcon(
     }
 
     if (cKey === "single_file") {
-        if (config[cKey]) return [PinIcon, "stroke-red-600 fill-red-600"];
+        if (config[cKey]) return [PinIcon, "stroke-github-danger-fg fill-github-danger-fg"];
         return [PinOffIcon, ""];
     }
 
@@ -87,7 +87,7 @@ function findIcon(
     }
 
     if (cKey === "details_tags_open") {
-        if (config[cKey]) return [UnfoldVerticalIcon, "stroke-green-600"];
+        if (config[cKey]) return [UnfoldVerticalIcon, "stroke-github-success-fg"];
         return [FoldVerticalIcon, ""];
     }
 

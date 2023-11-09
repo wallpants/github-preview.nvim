@@ -15,7 +15,7 @@ export const DetailsTagsOption = () => {
         {
             label: "open",
             icon: UnfoldVerticalIcon,
-            iconClassName: "stroke-green-600",
+            iconClassName: "stroke-github-success-fg",
             selected: overrides.details_tags_open,
             onClick: () => {
                 wsRequest({ type: "update_config", action: ["details_tags", "open"] });

@@ -7,9 +7,7 @@ export default {
     },
     theme: {
         colors: ({ colors }) => ({
-            red: colors.red,
             orange: colors.orange,
-            green: colors.green,
             gray: colors.gray,
             white: colors.white,
             transparent: colors.transparent,
@@ -41,6 +39,9 @@ export default {
                 },
                 danger: {
                     fg: "var(--color-danger-fg)",
+                },
+                success: {
+                    fg: "var(--color-success-fg)",
                 },
                 done: {
                     fg: "var(--color-done-fg)",

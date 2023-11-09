@@ -13,6 +13,7 @@ module.exports = {
             "warn",
             {
                 whitelist: ["pantsdown", "dark"],
+                callees: ["cn"],
             },
         ],
     },
