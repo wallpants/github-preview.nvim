@@ -18,6 +18,7 @@ export default {
                     default: "var(--color-fg-default)",
                     muted: "var(--color-fg-muted)",
                     subtle: "var(--color-fg-subtle)",
+                    attention: "var(--color-fg-attention)",
                 },
                 canvas: {
                     default: "var(--color-canvas-default)",
@@ -32,14 +33,28 @@ export default {
                 },
                 accent: {
                     fg: "var(--color-accent-fg)",
+                    emphasis: "var(--color-accent-emphasis)",
                 },
                 attention: {
                     subtle: "var(--color-attention-subtle)",
                     muted: "var(--color-attention-muted)",
                 },
+                danger: {
+                    fg: "var(--color-danger-fg)",
+                },
+                done: {
+                    fg: "var(--color-done-fg)",
+                },
                 icon: {
                     directory: "var(--color-icon-directory)",
                     file: "var(--color-icon-file)",
+                },
+                btn: {
+                    bg: "var(--color-btn-bg)",
+                    border: "var(--color-btn-border)",
+                    hover: {
+                        bg: "var(--color-btn-hover-bg)",
+                    },
                 },
             },
         }),

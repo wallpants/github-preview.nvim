@@ -1,7 +1,7 @@
 import { type Dispatch, type SetStateAction } from "react";
 import { type Config } from "../../../../types";
 import { cn } from "../../../utils";
-import { OptionCollapsed } from "./option-collapsed";
+import { CollapsedOption } from "./collapsed-option";
 
 type Props = {
     className?: string;
@@ -17,33 +17,33 @@ export const CollapsedSettings = ({
     configOpen,
 }: Props) => (
     <div className={cn("absolute inset-0 overflow-y-hidden", className)}>
-        <div className="absolute inset-x-0 top-1/4 flex flex-col justify-center gap-y-3">
-            <OptionCollapsed
+        <div className="absolute inset-x-0 top-24 flex flex-col justify-center gap-y-3">
+            <CollapsedOption
                 className="mb-20"
                 setSettingsOffset={setSettingsOffset}
                 setConfigOpen={setConfigOpen}
                 active={"single_file" === configOpen}
                 cKey="single_file"
             />
-            <OptionCollapsed
+            <CollapsedOption
                 setSettingsOffset={setSettingsOffset}
                 setConfigOpen={setConfigOpen}
                 active={"scroll" === configOpen}
                 cKey="scroll"
             />
-            <OptionCollapsed
+            <CollapsedOption
                 setSettingsOffset={setSettingsOffset}
                 setConfigOpen={setConfigOpen}
                 active={"cursor_line" === configOpen}
                 cKey="cursor_line"
             />
-            <OptionCollapsed
+            <CollapsedOption
                 setSettingsOffset={setSettingsOffset}
                 setConfigOpen={setConfigOpen}
                 active={"details_tags_open" === configOpen}
                 cKey="details_tags_open"
             />
-            <OptionCollapsed
+            <CollapsedOption
                 setSettingsOffset={setSettingsOffset}
                 setConfigOpen={setConfigOpen}
                 active={"theme" === configOpen}
