@@ -10,3 +10,17 @@
         stroke-dashoffset: 0;
     }
 }
+
+.disabled-link .tooltip {
+    display: none;
+    position: absolute;
+    width: 200px;
+    left: 120%;
+    top: -10px;
+}
+.disabled-link:hover .tooltip {
+    display: block;
+}
+.disabled-link .tooltip p {
+    color: var(--color-fg-muted);
+}
