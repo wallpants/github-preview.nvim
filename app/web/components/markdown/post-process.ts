@@ -1,5 +1,6 @@
 import { type MutableRefObject } from "react";
 import { type Config } from "../../../types";
+import { appendDisabledLinkTooltip } from "../../utils";
 import { type WebsocketContext } from "../websocket-provider/context";
 
 export function postProcessMarkdown({
@@ -38,21 +39,7 @@ export function postProcessMarkdown({
             return;
         }
 
-        // add "disabled" tooltip if single-file mode
-        element.style.setProperty("position", "relative");
-        element.classList.add("group");
-        const tooltip = document.createElement("div");
-        tooltip.style.setProperty("position", "absolute");
-        tooltip.style.setProperty("top", "-10px");
-        tooltip.style.setProperty("left", "110%");
-        tooltip.style.setProperty("z-index", "10");
-
-        const innerHTML =
-            '<div class="group-hover:bg-github-canvas-subtle border group-hover:block rounded-md group-hover:border-orange-600 hidden" style="width: 200px;">' +
-            '<p class="!m-0 p-2 text-sm text-github-fg-default">relative links are disabled in single-file mode.</p>' +
-            "</div>";
-        tooltip.innerHTML = innerHTML;
-        element.appendChild(tooltip);
+        appendDisabledLinkTooltip(element);
     });
 
     // intercept clicks to "details" tags to set a flag to disable scrolling
