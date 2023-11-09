@@ -77,7 +77,12 @@ export const WebsocketProvider = ({
                 setConfig(message.config);
             }
 
-            setCurrentEntries("currentEntries" in message ? message.currentEntries : undefined);
+            if ("lines" in message && message.lines.length) {
+                // there's either lines content or currentEntries
+                setCurrentEntries(undefined);
+            } else if ("currentEntries" in message) {
+                setCurrentEntries(message.currentEntries);
+            }
 
             if ("currentPath" in message) {
                 setCurrentPath(message.currentPath);

@@ -118,7 +118,6 @@ export class GithubPreview {
     }
 
     async getEntries(path: string): Promise<string[]> {
-        if (this.config.overrides.single_file) return [];
         const currentDir = path.endsWith("/") ? path : dirname(path) + "/";
         const paths = await globby(currentDir + "*", {
             cwd: this.root,
@@ -145,7 +144,7 @@ export class GithubPreview {
      */
     async setCurrPath(path: string): Promise<undefined | string[]> {
         // do not return any entries outside of repo root
-        const normalized = normalize(this.root + this.currentPath);
+        const normalized = normalize(this.root + path);
         if (normalized.length < this.root.length) return;
 
         this.currentPath = path;
