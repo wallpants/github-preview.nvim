@@ -19,7 +19,7 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
 -   [🖍️ Cursorline in Preview](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#%EF%B8%8F-cursorline-in-preview)
 -   [🏞️ Local Image Support](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#%EF%B8%8F-local-image-support)
 -   [🧜 Mermaid Support](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-mermaid-support)
--   [📄 Single-file mode](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-single-file-mode)
+-   [📌 Single-file mode](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-single-file-mode)
 -   [📂 Repository mode](https://github.com/wallpants/github-preview.nvim/blob/main/docs/features.md#-repository-mode)
 
 ## ✅ Requirements

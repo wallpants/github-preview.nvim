@@ -36,7 +36,7 @@ Cursorline position is estimated and may sometimes be a bit off.
 
 Relative image sources (example: `![image](./docs/github.svg)`) are resolved and rendered if found.
 
-## 📄 Single-file mode
+## 📌 Single-file mode
 
 When the plugin starts, it attempts to find a `.git` directory to identify a repository root.
 If no repository is found, **_repository mode_** is disabled and plugin starts
