@@ -63,8 +63,11 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                     return;
                 }
 
+                const isDir = browserMessage.path.endsWith("/");
+
                 // is same path, keep cursorLine
-                const cursorLine = browserMessage.path === app.currentPath ? app.cursorLine : null;
+                const cursorLine =
+                    browserMessage.path === app.currentPath && !isDir ? app.cursorLine : null;
 
                 // list of entries if path is dir, otherwise undefined
                 const entries = await app.setCurrPath(browserMessage.path);

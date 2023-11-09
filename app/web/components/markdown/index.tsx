@@ -4,6 +4,7 @@ import { cn, getFileExt } from "../../utils.ts";
 import { websocketContext } from "../websocket-provider/context.ts";
 import { BreadCrumbs } from "./breadcrumbs.tsx";
 import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";
+import { Explorer } from "./explorer.tsx";
 import { LINE_NUMBERS_ELEMENT_ID, LineNumbers } from "./line-numbers.tsx";
 import { mermaidRun } from "./mermaid.ts";
 import { getScrollOffsets, type Offsets } from "./scroll.ts";
@@ -191,6 +192,9 @@ export const Markdown = ({ className }: { className: string }) => {
                 id={MARKDOWN_ELEMENT_ID}
                 className={cn("relative mx-auto mb-96", currentEntries ? "invisible" : "visible")}
             />
+            <div className="absolute inset-0">
+                <Explorer />
+            </div>
             <LineNumbers offsets={offsets} lineNumbersElement={lineNumbersElement} />
         </div>
     );

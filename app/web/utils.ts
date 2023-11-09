@@ -1,6 +1,14 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+export function getEntryName(path: string) {
+    const isDir = path === "" || path.endsWith("/");
+    const segments = getSegments(path);
+    let name = segments.pop();
+    if (isDir) name = segments.pop();
+    return name;
+}
+
 export function getSegments(path: string | undefined): string[] {
     if (!path) return [];
     return path.split("/");

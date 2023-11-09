@@ -1,5 +1,5 @@
-import { useContext, useEffect, useMemo, useState } from "react";
-import { cn, getSegments } from "../../utils.ts";
+import { useContext, useEffect, useState } from "react";
+import { cn, getEntryName, getSegments } from "../../utils.ts";
 import { ChevronRightIcon } from "../icons/chevron-right.tsx";
 import { DirIcon } from "../icons/dir.tsx";
 import { FileIcon } from "../icons/file.tsx";
@@ -17,7 +17,7 @@ const IconMap = {
 type Props = {
     path: string;
     depth: number;
-    currentPath: string | undefined;
+    currentPath?: string | undefined;
 };
 
 export const EntryComponent = ({ path, depth, currentPath }: Props) => {
@@ -30,13 +30,7 @@ export const EntryComponent = ({ path, depth, currentPath }: Props) => {
     );
 
     const isDir = path === "" || path.endsWith("/");
-
-    const entryName = useMemo(() => {
-        const segments = getSegments(path);
-        let name = segments.pop();
-        if (isDir) name = segments.pop();
-        return name;
-    }, [isDir, path]);
+    const entryName = getEntryName(path);
 
     useEffect(() => {
         registerHandler(`explorer-${path}`, (message) => {

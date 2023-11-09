@@ -4,7 +4,7 @@ import { type WsBrowserMessage, type WsServerMessage } from "../../../types.ts";
 
 export type MessageHandler = (message: WsServerMessage) => void | Promise<void>;
 
-export const websocketContext = createContext<{
+export type WebsocketContext = {
     isConnected: boolean;
     registerHandler: (id: string, cb: MessageHandler) => void;
     currentPath: string | undefined;
@@ -14,7 +14,9 @@ export const websocketContext = createContext<{
     repoName: string;
     wsRequest: (m: WsBrowserMessage) => void;
     config: GithubPreview["config"] | undefined;
-}>({
+};
+
+export const websocketContext = createContext<WebsocketContext>({
     isConnected: false,
     registerHandler: () => null,
     currentPath: undefined,
