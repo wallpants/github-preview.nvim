@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, type MutableRefObject } from "react";
 import { websocketContext } from "../websocket-provider/context.ts";
 import { scroll, type Offsets } from "./scroll.ts";
 
@@ -6,11 +6,17 @@ export const CURSOR_LINE_ELEMENT_ID = "cursor-line-element-id";
 
 type Props = {
     offsets: Offsets;
+    skipScroll: MutableRefObject<boolean>;
     cursorLineElement: HTMLElement | undefined;
     markdownContainerElement: HTMLElement | undefined;
 };
 
-export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElement }: Props) => {
+export const CursorLine = ({
+    offsets,
+    skipScroll,
+    cursorLineElement,
+    markdownContainerElement,
+}: Props) => {
     const { config, registerHandler, setHash, hash } = useContext(websocketContext);
     const [cursorLine, setCursorLine] = useState<number | null>(null);
 
@@ -28,25 +34,30 @@ export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElemen
 
     useEffect(() => {
         if (!cursorLineElement || !markdownContainerElement) return;
-        scroll(
-            markdownContainerElement,
-            topOffsetPct,
-            offsets,
-            cursorLine,
-            cursorLineElement,
-            hash,
-        );
+        if (skipScroll.current) {
+            skipScroll.current = false;
+        } else {
+            scroll(
+                markdownContainerElement,
+                topOffsetPct,
+                offsets,
+                cursorLine,
+                cursorLineElement,
+                hash,
+            );
 
-        // "consume" null hash
-        if (hash === null) setHash(undefined);
+            // "consume" null hash
+            if (hash === null) setHash(undefined);
+        }
     }, [
         markdownContainerElement,
-        topOffsetPct,
-        offsets,
-        cursorLine,
         cursorLineElement,
-        hash,
+        topOffsetPct,
+        skipScroll, // is a ref and doesn't actually trigger useEffect, but eslint cries
+        cursorLine,
+        offsets,
         setHash,
+        hash,
     ]);
 
     return (

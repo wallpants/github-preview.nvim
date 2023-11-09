@@ -1,5 +1,5 @@
 import { Pantsdown } from "pantsdown";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { cn, getFileExt } from "../../utils.ts";
 import { websocketContext } from "../websocket-provider/context.ts";
 import { BreadCrumbs } from "./breadcrumbs.tsx";
@@ -26,6 +26,7 @@ export const Markdown = ({ className }: { className: string }) => {
 
     const details_tags_open = config?.overrides.details_tags_open ?? true;
     const single_file = config?.overrides.single_file;
+    const skipScroll = useRef(false);
 
     const [markdownElement, setMarkdownElement] = useState<HTMLElement>();
     const [cursorLineElement, setCursorLineElement] = useState<HTMLElement>();
@@ -100,7 +101,7 @@ export const Markdown = ({ className }: { className: string }) => {
                     }
                 }
 
-                postProcessMarkdown({ wsRequest, markdownElement, single_file });
+                postProcessMarkdown({ wsRequest, markdownElement, single_file, skipScroll });
                 await mermaidRun();
             }
 
@@ -145,6 +146,7 @@ export const Markdown = ({ className }: { className: string }) => {
             <BreadCrumbs />
             <CursorLine
                 offsets={offsets}
+                skipScroll={skipScroll}
                 cursorLineElement={cursorLineElement}
                 markdownContainerElement={markdownContainerElement}
             />
