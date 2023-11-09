@@ -31,5 +31,7 @@ export const DetailsTagsOption = () => {
         },
     ];
 
-    return <Option name="<details>" cKey="details_tags_open" select={detailsSelect} />;
+    return (
+        <Option className="h-36" name="<details>" cKey="details_tags_open" select={detailsSelect} />
+    );
 };

@@ -18,7 +18,6 @@ export default {
                     default: "var(--color-fg-default)",
                     muted: "var(--color-fg-muted)",
                     subtle: "var(--color-fg-subtle)",
-                    attention: "var(--color-fg-attention)",
                 },
                 canvas: {
                     default: "var(--color-canvas-default)",
@@ -36,6 +35,7 @@ export default {
                     emphasis: "var(--color-accent-emphasis)",
                 },
                 attention: {
+                    fg: "var(--color-attention-fg)",
                     subtle: "var(--color-attention-subtle)",
                     muted: "var(--color-attention-muted)",
                 },

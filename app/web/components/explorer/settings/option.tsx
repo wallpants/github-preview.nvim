@@ -48,7 +48,7 @@ export const Option = ({
     return (
         <div
             className={cn(
-                "relative min-w-[120px] flex p-3 h-28 flex-col items-center justify-between rounded border border-github-border-default",
+                "relative min-w-[120px] flex p-3 h-28 flex-col items-center rounded border border-github-border-default",
                 className,
             )}
         >
@@ -56,39 +56,41 @@ export const Option = ({
                 <div className="absolute right-1 top-1 h-2 w-2 rounded-full bg-orange-600" />
             ) : null}
             <p className="!m-0">{name}</p>
-            {toggle && <Toggle checked={toggle.value} onChange={toggle.onChange} />}
-            {select && <Select select={select} disabled={disabled} />}
-            {color && (
-                <label className="flex items-center gap-x-4 text-[14px]">
-                    <input
-                        type="color"
-                        className="h-6"
-                        value={color.value}
-                        disabled={toggle?.value === false}
-                        onChange={(e) => {
-                            color.onChange(e.target.value);
-                        }}
-                    />
-                    {color.value}
-                </label>
-            )}
-            {range && (
-                <div className="flex gap-x-3">
-                    <input
-                        type="range"
-                        className="w-24"
-                        disabled={toggle?.value === false}
-                        value={range.value}
-                        min={range.min}
-                        max={range.max}
-                        step={range.step}
-                        onChange={(e) => {
-                            range.onChange(Number(e.target.value));
-                        }}
-                    />
-                    <span className="ml-2 w-6 text-right">{range.value}</span>
-                </div>
-            )}
+            <div className="flex grow flex-col items-center justify-around py-1">
+                {toggle && <Toggle checked={toggle.value} onChange={toggle.onChange} />}
+                {select && <Select select={select} disabled={disabled} />}
+                {color && (
+                    <label className="flex items-center gap-x-4 text-[14px]">
+                        <input
+                            type="color"
+                            className="h-6"
+                            value={color.value}
+                            disabled={toggle?.value === false}
+                            onChange={(e) => {
+                                color.onChange(e.target.value);
+                            }}
+                        />
+                        {color.value}
+                    </label>
+                )}
+                {range && (
+                    <div className="flex gap-x-3">
+                        <input
+                            type="range"
+                            className="w-24"
+                            disabled={toggle?.value === false}
+                            value={range.value}
+                            min={range.min}
+                            max={range.max}
+                            step={range.step}
+                            onChange={(e) => {
+                                range.onChange(Number(e.target.value));
+                            }}
+                        />
+                        <span className="ml-2 w-6 text-right">{range.value}</span>
+                    </div>
+                )}
+            </div>
             {disabled && (
                 <div className="group absolute inset-0 cursor-not-allowed rounded hover:bg-github-canvas-subtle">
                     <div className="invisible absolute inset-0 flex items-center bg-orange-200/10 group-hover:visible">

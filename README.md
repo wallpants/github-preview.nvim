@@ -83,8 +83,6 @@ require("github-preview").setup({
 	-- these are the default values,
 	-- any values you specify will be merged with this dictionary
 
-	-- you can also temporarily override any of these values through the web UI
-
 	host = "localhost",
 
 	port = 6041,
@@ -92,8 +90,11 @@ require("github-preview").setup({
 	-- set to "true" to force single-file mode & disable repository mode
 	single_file = false,
 
-	-- "system" | "light" | "dark"
-	theme = "system",
+	theme = {
+		-- "system" | "light" | "dark"
+		name = "system",
+		high_contrast = false,
+	},
 
 	-- define how to render <details> tags on init/content-change
 	-- true: <details> tags are rendered open

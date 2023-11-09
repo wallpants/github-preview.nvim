@@ -10,6 +10,7 @@ export const SingleFileOption = () => {
 
     return (
         <Option
+            className="h-36"
             name="single-file"
             cKey="single_file"
             toggle={{

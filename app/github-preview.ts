@@ -225,8 +225,17 @@ export class GithubPreview {
         const { overrides, dotfiles } = this.config;
 
         switch (action) {
-            case "set_theme":
-                update.theme = value;
+            case "theme_name":
+                update.theme = {
+                    ...overrides.theme,
+                    name: value,
+                };
+                break;
+            case "theme_high_contrast":
+                update.theme = {
+                    ...overrides.theme,
+                    high_contrast: value === "on",
+                };
                 break;
             case "clear_overrides":
                 update = dotfiles;

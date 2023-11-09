@@ -34,7 +34,7 @@
     "globby": "^13.2.2",
     "isbinaryfile": "5.0.0",
     "opener": "^1.5.2",
-    "pantsdown": "1.9.0",
+    "pantsdown": "1.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "reconnecting-websocket": "^4.4.0",
