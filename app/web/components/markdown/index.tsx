@@ -125,7 +125,7 @@ export const Markdown = ({ className }: { className: string }) => {
                 id={MARKDOWN_ELEMENT_ID}
                 className={cn("relative mx-auto mb-96", currentEntries ? "invisible" : "visible")}
             />
-            <div className="absolute inset-0">
+            <div className={cn("absolute inset-0", currentEntries ? "visible" : "invisible")}>
                 <Explorer />
             </div>
             <LineNumbers offsets={offsets} lineNumbersElement={lineNumbersElement} />
