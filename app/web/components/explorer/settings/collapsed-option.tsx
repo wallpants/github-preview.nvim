@@ -21,7 +21,7 @@ type Props = {
     className?: string;
 };
 
-export const OptionCollapsed = ({
+export const CollapsedOption = ({
     cKey,
     active,
     setConfigOpen,
@@ -46,7 +46,7 @@ export const OptionCollapsed = ({
             {Icon && (
                 <IconButton
                     Icon={Icon}
-                    className={cn("mx-auto", active && "bg-github-border-muted")}
+                    className={cn("mx-auto", active && "bg-github-canvas-subtle")}
                     iconClassName={iconClassName}
                     noBorder
                     onClick={(event) => {

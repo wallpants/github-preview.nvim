@@ -31,7 +31,7 @@ export const Select = ({ select, disabled }: Props) => {
         <div className="relative z-20 flex flex-col items-center">
             <IconButton
                 Icon={selected.icon}
-                className="peer"
+                className="peer bg-github-canvas-default"
                 iconClassName={selected.iconClassName}
                 disabled={Boolean(disabled)}
                 onClick={(e) => {

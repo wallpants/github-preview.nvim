@@ -942,10 +942,6 @@
   background-color: var(--color-border-default)
 }
 
-.hover\:bg-github-border-muted:hover {
-  background-color: var(--color-border-muted)
-}
-
 .hover\:bg-github-canvas-subtle:hover {
   background-color: var(--color-canvas-subtle)
 }
