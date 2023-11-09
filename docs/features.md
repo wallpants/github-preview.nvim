@@ -16,21 +16,21 @@ See updates live in your browser as you edit your files.
 
 ## ♻️ Synced Scrolling
 
-Live Preview auto scrolls following your cursor in Neovim. You can customize/disable scrolling
-in your [config](../README.md#%EF%B8%8F-configuration).
+Live Preview auto scrolls following your cursor in Neovim.
 
-![Demo](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/demo.gif)
+![Scroll](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/scroll.gif)
 
 ## 🌈 Dark & Light modes
 
 Toggle between light and dark modes.
 
+![Themes](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/themes.gif)
+
 ## 🖍️ Cursorline in Preview
 
-Cursorline position is estimated and may sometimes be a bit off. You can customize/disable
-the cursorline in your [config](../README.md#%EF%B8%8F-configuration).
+Cursorline position is estimated and may sometimes be a bit off.
 
-![Config](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/config.gif)
+![Cursorline](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/cursorline.gif)
 
 ## 🏞️ Local Image Support
 
@@ -39,17 +39,22 @@ Relative image sources (example: `![image](./docs/github.svg)`) are resolved and
 ## 📄 Single-file mode
 
 When the plugin starts, it attempts to find a `.git` directory to identify a repository root.
-If the plugin can't find a git repository, **_single-file_** mode is enabled.
+If no repository is found, **_repository mode_** is disabled and plugin starts
+in **_single-file mode_**.
 
-You can also force **_single-file_** mode in your [config](../README.md#%EF%B8%8F-configuration).
+You can also force **_single-file mode_** in your [config](../README.md#%EF%B8%8F-configuration),
+toggle it through the web UI, or through the [functions this plugin exposes](../README.md#-advanced-usage).
 
-In this mode, the preview is locked to one file.
+In this mode, the preview is locked to one buffer.
+
+![Single-file](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/single-file.gif)
 
 ## 📂 Repository mode
 
 If a git repository is detected, **_repository_** mode is enabled.
 
-You can disable **_repository_** mode in your [config](../README.md#%EF%B8%8F-configuration).
+You can disable **_repository mode_** in your [config](../README.md#%EF%B8%8F-configuration)
+by forcing **_single-file mode_**.
 
 In this mode, the preview will follow your cursor wherever it goes. You can click on
 relative links and browse the repository similar to how you would do it on GitHub.

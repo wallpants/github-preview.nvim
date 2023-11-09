@@ -78,8 +78,6 @@ use {
 I recommend you start off with the default settings and play around with the UI to figure out
 what settings you want to override before committing to updating your config files.
 
-![Config](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/config.gif)
-
 ```lua
 require("github-preview").setup({
 	-- these are the default values,
@@ -166,7 +164,7 @@ whatever you can imagine.
 
         local fns = gpreview.fns
         vim.keymap.set("n", "<leader>mpt", fns.toggle)
-        vim.keymap.set("n", "<leader>mps", fns.scroll_toggle)
+        vim.keymap.set("n", "<leader>mps", fns.single_file_toggle)
         vim.keymap.set("n", "<leader>mpd", fns.details_tags_toggle)
     end,
 },
