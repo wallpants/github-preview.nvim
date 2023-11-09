@@ -25,6 +25,7 @@ export const WebsocketProvider = ({
     const [repoName, setRepoName] = useState("");
     const [isConnected, setIsConnected] = useState(false);
     const [currentPath, setCurrentPath] = useState<string>();
+    const [currentEntries, setCurrentEntries] = useState<string[] | undefined>(undefined);
     const [hash, setHash] = useState<string | null | undefined>(undefined);
     const [config, setConfig] = useState<GithubPreview["config"]>();
     const handlers = useRef(new Map<string, MessageHandler>());
@@ -76,6 +77,8 @@ export const WebsocketProvider = ({
                 setConfig(message.config);
             }
 
+            setCurrentEntries("currentEntries" in message ? message.currentEntries : undefined);
+
             if ("currentPath" in message) {
                 setCurrentPath(message.currentPath);
             }
@@ -98,6 +101,7 @@ export const WebsocketProvider = ({
         <websocketContext.Provider
             value={{
                 registerHandler,
+                currentEntries,
                 currentPath,
                 isConnected,
                 wsRequest,

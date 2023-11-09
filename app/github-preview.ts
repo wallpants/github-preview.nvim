@@ -140,9 +140,10 @@ export class GithubPreview {
     }
 
     /**
-     * Updates this.currentPath & this.lines based on "path" provided
+     * Updates this.currentPath & this.lines based on "path" provided.
+     * returns entries if path is a dir
      */
-    async setCurrPath(path: string) {
+    async setCurrPath(path: string): Promise<undefined | string[]> {
         // do not return any entries outside of repo root
         const normalized = normalize(this.root + this.currentPath);
         if (normalized.length < this.root.length) return;
@@ -171,14 +172,8 @@ export class GithubPreview {
             const readmePath = entries.find((e) => basename(e).toLowerCase() === "readme.md");
             if (readmePath) this.currentPath = readmePath;
             else {
-                this.lines = [
-                    `Directory: ${this.currentPath}`,
-                    "",
-                    "",
-                    "Entries:",
-                    ...entries.map((entry) => `- ${entry.slice(this.currentPath.length)}`),
-                ];
-                return;
+                this.lines = [];
+                return entries;
             }
         }
 
@@ -196,6 +191,7 @@ export class GithubPreview {
 
         const fileContent = await file.text();
         this.lines = fileContent.split("\n");
+        return;
     }
 
     wsSend(m: WsServerMessage) {

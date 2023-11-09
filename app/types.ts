@@ -96,6 +96,7 @@ export type WsServerMessage =
           lines: string[];
           cursorLine: number | null;
           hash: string | null;
+          currentEntries: string[] | undefined;
       }
     | {
           type: "cursor_move";

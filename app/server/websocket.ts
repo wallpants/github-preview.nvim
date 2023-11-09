@@ -66,7 +66,8 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                 // is same path, keep cursorLine
                 const cursorLine = browserMessage.path === app.currentPath ? app.cursorLine : null;
 
-                await app.setCurrPath(browserMessage.path);
+                // list of entries if path is dir, otherwise undefined
+                const entries = await app.setCurrPath(browserMessage.path);
 
                 const message: WsServerMessage = {
                     type: "entry",
@@ -74,6 +75,7 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                     lines: app.lines,
                     cursorLine: cursorLine,
                     hash: hash,
+                    currentEntries: entries,
                 };
 
                 wsSend(message);
