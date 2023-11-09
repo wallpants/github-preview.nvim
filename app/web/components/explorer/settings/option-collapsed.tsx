@@ -21,7 +21,7 @@ type Props = {
     className?: string;
 };
 
-export const CollapsedOption = ({
+export const OptionCollapsed = ({
     cKey,
     active,
     setConfigOpen,

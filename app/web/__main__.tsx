@@ -25,7 +25,7 @@ const BUILD_CONSTS = parse(BuildConstsSchema, {
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <WebsocketProvider BUILD_CONSTS={BUILD_CONSTS}>
-            <div className="flex h-screen w-screen flex-row-reverse overflow-hidden py-3">
+            <div className="flex h-screen min-h-[550px] w-screen flex-row-reverse overflow-hidden py-3">
                 <Markdown className="mx-4 h-full flex-1 overflow-y-auto overflow-x-hidden" />
                 <Explorer />
             </div>
