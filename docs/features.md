@@ -24,13 +24,13 @@ Live Preview auto scrolls following your cursor in Neovim.
 
 Toggle between light and dark modes.
 
-![Themes](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/themes.gif)
+<img src="https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/themes.gif" height="600px" />
 
 ## 🖍️ Cursorline in Preview
 
 Cursorline position is estimated and may sometimes be a bit off.
 
-![Cursorline](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/cursorline.gif)
+<img src="https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/cursorline.gif" height="600px" />
 
 ## 🏞️ Local Image Support
 
