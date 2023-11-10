@@ -27,7 +27,7 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                 // operations from failing
                 const [path, messageHash] = browserMessage.path.split("#");
                 browserMessage.path = path!;
-                hash = messageHash ?? null;
+                if (messageHash) hash = messageHash;
             }
 
             if (browserMessage.type === "init") {

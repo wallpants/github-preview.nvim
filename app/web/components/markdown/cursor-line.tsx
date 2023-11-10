@@ -34,6 +34,7 @@ export const CursorLine = ({
 
     useEffect(() => {
         if (!cursorLineElement || !markdownContainerElement) return;
+
         if (skipScroll.current) {
             skipScroll.current = false;
         } else {
@@ -46,8 +47,8 @@ export const CursorLine = ({
                 hash,
             );
 
-            // "consume" null hash
-            if (hash === null) setHash(undefined);
+            // "consume" hash
+            setHash(undefined);
         }
     }, [
         markdownContainerElement,

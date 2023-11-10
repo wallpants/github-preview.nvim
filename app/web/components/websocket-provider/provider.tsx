@@ -50,7 +50,8 @@ export const WebsocketProvider = ({
         if (currentPath === undefined) return;
         window.history.replaceState({}, "", "/" + currentPath);
         if (hash) window.location.hash = hash;
-    }, [currentPath, hash]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentPath]);
 
     useEffect(() => {
         // Register websocket listeners
