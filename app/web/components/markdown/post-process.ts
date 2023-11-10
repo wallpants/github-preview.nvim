@@ -1,50 +1,48 @@
 import { type MutableRefObject } from "react";
-import { type Config } from "../../../types";
-import { appendDisabledLinkTooltip } from "../../utils";
 import { type WebsocketContext } from "../websocket-provider/context";
 
-export function postProcessMarkdown({
+export function resolveRelativeLinks({
     wsRequest,
     markdownElement,
-    single_file,
     skipScroll,
+    single_file,
 }: {
     wsRequest: WebsocketContext["wsRequest"];
     markdownElement: HTMLElement;
-    single_file: Config["single_file"] | undefined;
     skipScroll: MutableRefObject<boolean>;
+    single_file: boolean | undefined;
 }) {
-    // handle links
     const base = window.location.origin + "/";
+
+    // override relative links to trigger wsRequest
     markdownElement.querySelectorAll("a").forEach((element) => {
-        if (!element.href.startsWith(base)) {
-            // if link is not relative, fallback to default behaviour
+        const isAbsolute = !element.href.startsWith(base);
+        const isAnchor = element.href
+            .slice((window.location.origin + window.location.pathname).length)
+            .startsWith("#");
+        if (isAbsolute || isAnchor) {
             return;
+        }
+
+        if (single_file) {
+            element.style.setProperty("color", "purple");
+            element.style.setProperty("cursor", "not-allowed");
         }
 
         // override onClick on relative links
         element.addEventListener("click", (event) => {
             event.preventDefault();
+            // if single file, cancel default behaviour and do nothing
+            if (single_file) return;
+
             const pathname = element.href.slice(base.length);
             wsRequest({ type: "get_entry", path: pathname });
         });
-
-        // we only override behaviour for single_file mode
-        if (!single_file) return;
-
-        // if relative link points to an anchor in currentPath, do nothing
-        // and fallback to default behaviour
-        const currentUrl = window.location.origin + window.location.pathname;
-        if (element.href.slice(currentUrl.length).startsWith("#")) {
-            return;
-        }
-
-        appendDisabledLinkTooltip(element);
     });
 
-    // intercept clicks to "details" tags to set a flag to disable scrolling
-    // it's annoying when you open/close a "details" tag and there's an auto scroll
-    markdownElement.querySelectorAll("details").forEach((element, index) => {
+    // intercept clicks to <details> tags to set a flag to disable scrolling.
+    // it's annoying when you open/close a <details> tag and there's an auto scroll
+    markdownElement.querySelectorAll("details").forEach((element) => {
         element.addEventListener(
             "click",
             () => {
@@ -54,7 +52,6 @@ export function postProcessMarkdown({
                 capture: true,
             },
         );
-        console.log(`details ${index}: `, element);
     });
 }
 

@@ -66,7 +66,7 @@ export const WebsocketProvider = ({
             IS_DEV && console.log("received:", message);
 
             if (message.type === "goodbye") {
-                window.close();
+                !IS_DEV && window.close();
             }
 
             if (message.type === "init") {

@@ -1,15 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-export function appendDisabledLinkTooltip(element: HTMLElement) {
-    element.style.setProperty("position", "relative");
-    element.classList.add("disabled-link");
-    const tooltip = document.createElement("div");
-    tooltip.classList.add("tooltip");
-    tooltip.innerHTML = "<p>relative links are disabled in single-file mode.</p>";
-    element.appendChild(tooltip);
-}
-
 export function getEntryName(path: string) {
     const isDir = path === "" || path.endsWith("/");
     const segments = getSegments(path);
