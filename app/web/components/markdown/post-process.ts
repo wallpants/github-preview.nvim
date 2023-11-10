@@ -6,20 +6,24 @@ export function postProcessHrefs({
     markdownElement,
     skipScroll,
     single_file,
+    currentPath,
 }: {
     wsRequest: WebsocketContext["wsRequest"];
     markdownElement: HTMLElement;
     skipScroll: MutableRefObject<boolean>;
     single_file: boolean | undefined;
+    currentPath: string;
 }) {
     const base = window.location.origin + "/";
+    // we use currentPath instead of reading window url,
+    // because window url is updated after render in a useEffect
+    // which happens after this. we use currentPath to get latest value
+    const url = base + currentPath;
 
     // override relative links to trigger wsRequest
     markdownElement.querySelectorAll("a").forEach((element) => {
         const isAbsolute = !element.href.startsWith(base);
-        const isAnchor = element.href
-            .slice((window.location.origin + window.location.pathname).length)
-            .startsWith("#");
+        const isAnchor = element.href.slice(url.length).startsWith("#");
 
         if (isAbsolute || isAnchor) {
             if (isAbsolute) {

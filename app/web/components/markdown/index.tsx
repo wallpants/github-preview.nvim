@@ -21,7 +21,7 @@ const pantsdown = new Pantsdown({
 });
 
 export const Markdown = ({ className }: { className: string }) => {
-    const { currentPath, config, currentEntries, registerHandler, wsRequest } =
+    const { hash, currentPath, config, currentEntries, registerHandler, wsRequest } =
         useContext(websocketContext);
 
     const skipScroll = useRef(false);
@@ -75,7 +75,13 @@ export const Markdown = ({ className }: { className: string }) => {
                     lineNumbersElement,
                 });
                 evalPantsdownScript(markdownElement);
-                postProcessHrefs({ wsRequest, markdownElement, skipScroll, single_file });
+                postProcessHrefs({
+                    wsRequest,
+                    markdownElement,
+                    skipScroll,
+                    single_file,
+                    currentPath: message.currentPath,
+                });
                 await mermaidRun();
             }
 
@@ -131,7 +137,7 @@ export const Markdown = ({ className }: { className: string }) => {
             <div className={cn("absolute inset-0", currentEntries ? "visible" : "invisible")}>
                 <Explorer />
             </div>
-            <LineNumbers offsets={offsets} lineNumbersElement={lineNumbersElement} />
+            <LineNumbers hash={hash} offsets={offsets} lineNumbersElement={lineNumbersElement} />
         </div>
     );
 };

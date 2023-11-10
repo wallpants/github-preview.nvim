@@ -123,6 +123,14 @@ export function scroll(
     cursorLineElement: HTMLElement,
     hash: string | null | undefined,
 ) {
+    if (hash) {
+        const lineRangeRegexp = /^L(\d+)(?:-L(\d+))?$/;
+        const match = lineRangeRegexp.exec(hash);
+        if (match) {
+            cursorLine = Number(match[1]);
+        }
+    }
+
     if (cursorLine === null) {
         cursorLineElement.style.setProperty("visibility", "hidden");
         if (hash === null) {
