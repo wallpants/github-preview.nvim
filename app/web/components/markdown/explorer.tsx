@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { cn, getEntryName, getSegments } from "../../utils";
 import { DirIcon } from "../icons/dir";
 import { FileIcon } from "../icons/file";
-import { OpenDirIcon } from "../icons/open-dir";
 import { websocketContext, type WebsocketContext } from "../websocket-provider/context";
 
 const iconClassName = "mr-3 h-5 w-5";
@@ -10,7 +9,6 @@ const iconClassName = "mr-3 h-5 w-5";
 const IconMap = {
     dir: <DirIcon className={iconClassName} />,
     file: <FileIcon className={iconClassName} />,
-    openDir: <OpenDirIcon className={iconClassName} />,
 };
 
 const Entry = ({
@@ -31,8 +29,8 @@ const Entry = ({
         }}
         style={{ color: single_file ? "purple" : undefined }}
         className={cn(
-            "group flex h-[34px] cursor-pointer items-center px-3 rounded-md",
-            single_file ? "cursor-not-allowed" : "hover:bg-github-canvas-subtle",
+            "group flex h-[38px] cursor-pointer items-center px-3 rounded-md hover:bg-github-canvas-subtle",
+            single_file && "cursor-not-allowed",
         )}
     >
         {IconMap[path.endsWith("/") || isParent ? "dir" : "file"]}
