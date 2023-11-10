@@ -154,8 +154,11 @@ export class GithubPreview {
         for (const buf of bufs) {
             const name = await this.nvim.call("nvim_buf_get_name", [buf]);
             if (name === this.root + this.currentPath) {
-                this.lines = await this.nvim.call("nvim_buf_get_lines", [buf, 0, -1, true]);
-                return;
+                const isLoaded = await this.nvim.call("nvim_buf_is_loaded", [buf]);
+                if (isLoaded) {
+                    this.lines = await this.nvim.call("nvim_buf_get_lines", [buf, 0, -1, true]);
+                    return;
+                }
             }
         }
 
