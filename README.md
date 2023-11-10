@@ -37,13 +37,20 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
 ```lua
 {
     "wallpants/github-preview.nvim",
-    -- version = "*", -- latest stable version, may have breaking changes if major version changed
-    -- version = "^1.0.0", -- pin major version, include fixes and features that do not have breaking changes
     cmd = { "GithubPreviewToggle" },
+    keys = { "<leader>mpt" },
     opts = {
         -- config goes here
-        -- or empty for default settings
-    }
+    },
+    config = function(_, opts)
+        local gpreview = require("github-preview")
+        gpreview.setup(opts)
+
+        local fns = gpreview.fns
+        vim.keymap.set("n", "<leader>mpt", fns.toggle)
+        vim.keymap.set("n", "<leader>mps", fns.single_file_toggle)
+        vim.keymap.set("n", "<leader>mpd", fns.details_tags_toggle)
+    end,
 }
 ```
 
@@ -60,13 +67,17 @@ use {
     disable = false,
     opt = true,
     cmd = { "GithubPreviewToggle" },
-    -- tag = "*", -- latest stable version, may have breaking changes if major version changed
-    -- tag = "v1.0.0", -- pin specific tag
+    keys = { "<leader>mpt" },
     config = function()
-        require("github-preview").setup({
+        local gpreview = require("github-preview")
+        gpreview.setup({
             -- config goes here
-            -- or empty for default settings
         })
+
+        local fns = gpreview.fns
+        vim.keymap.set("n", "<leader>mpt", fns.toggle)
+        vim.keymap.set("n", "<leader>mps", fns.single_file_toggle)
+        vim.keymap.set("n", "<leader>mpd", fns.details_tags_toggle)
     end,
 }
 ```
@@ -141,37 +152,10 @@ the younger one.
 
 ## 🧠 Advanced Usage
 
-This plugin also exports **functions** for you to do as you please.
-You can use them to [set keymaps](<https://neovim.io/doc/user/lua.html#vim.keymap.set()>),
+This plugin also exports **functions** for you to
+[set keymaps](<https://neovim.io/doc/user/lua.html#vim.keymap.set()>),
 trigger stuff in [autocommands](<https://neovim.io/doc/user/api.html#nvim_create_autocmd()>),
-[create user commands](<https://neovim.io/doc/user/api.html#nvim_create_user_command()>),
-whatever you can imagine.
-
-<details>
-    <summary>
-        Example setup with <a href="https://github.com/folke/lazy.nvim">lazy.nvim</a>
-    </summary>
-
-```lua
-{
-    "wallpants/github-preview.nvim",
-    keys = { "<leader>mpt" },
-    opts = {
-        -- your settings
-    },
-    config = function(_, opts)
-        local gpreview = require("github-preview")
-        gpreview.setup(opts)
-
-        local fns = gpreview.fns
-        vim.keymap.set("n", "<leader>mpt", fns.toggle)
-        vim.keymap.set("n", "<leader>mps", fns.single_file_toggle)
-        vim.keymap.set("n", "<leader>mpd", fns.details_tags_toggle)
-    end,
-},
-```
-
-</details>
+[create user commands](<https://neovim.io/doc/user/api.html#nvim_create_user_command()>), etc.
 
 ### Available functions:
 
