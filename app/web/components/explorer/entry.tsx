@@ -68,7 +68,7 @@ export const EntryComponent = ({ path, depth, currentPath }: Props) => {
                     style={{ paddingLeft: depth * 11 + (isDir ? 0 : 20) }}
                     className={cn(
                         "relative group flex h-[34px] cursor-pointer items-center mx-3 rounded-md",
-                        "border-github-border-default hover:bg-github-canvas-subtle",
+                        "hover:bg-github-canvas-subtle",
                         isSelected && "bg-github-canvas-subtle",
                     )}
                 >
