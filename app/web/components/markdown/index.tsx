@@ -37,7 +37,10 @@ export const Markdown = ({ className }: { className: string }) => {
     useEffect(() => {
         pantsdown.setConfig({ renderer: { detailsTagDefaultOpen: details_tags_open } });
         // re-request content to trigger re-render with new config
-        if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
+        if (currentPath) {
+            skipScroll.current = true;
+            wsRequest({ type: "get_entry", path: currentPath });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [details_tags_open, single_file, wsRequest]);
 
