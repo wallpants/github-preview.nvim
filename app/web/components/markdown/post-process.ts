@@ -1,7 +1,7 @@
 import { type MutableRefObject } from "react";
 import { type WebsocketContext } from "../websocket-provider/context";
 
-export function resolveRelativeLinks({
+export function postProcessHrefs({
     wsRequest,
     markdownElement,
     skipScroll,
@@ -20,7 +20,12 @@ export function resolveRelativeLinks({
         const isAnchor = element.href
             .slice((window.location.origin + window.location.pathname).length)
             .startsWith("#");
+
         if (isAbsolute || isAnchor) {
+            if (isAbsolute) {
+                element.target = "_blank";
+                element.rel = "noreferrer noopener";
+            }
             return;
         }
 

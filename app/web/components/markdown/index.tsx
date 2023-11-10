@@ -7,7 +7,7 @@ import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";
 import { Explorer } from "./explorer.tsx";
 import { LINE_NUMBERS_ELEMENT_ID, LineNumbers } from "./line-numbers.tsx";
 import { mermaidRun } from "./mermaid.ts";
-import { evalPantsdownScript, resolveRelativeLinks, updateElementsStyles } from "./post-process.ts";
+import { evalPantsdownScript, postProcessHrefs, updateElementsStyles } from "./post-process.ts";
 import { getScrollOffsets, type Offsets } from "./scroll.ts";
 
 const MARKDOWN_CONTAINER_ID = "markdown-container-id";
@@ -75,7 +75,7 @@ export const Markdown = ({ className }: { className: string }) => {
                     lineNumbersElement,
                 });
                 evalPantsdownScript(markdownElement);
-                resolveRelativeLinks({ wsRequest, markdownElement, skipScroll, single_file });
+                postProcessHrefs({ wsRequest, markdownElement, skipScroll, single_file });
                 await mermaidRun();
             }
 
