@@ -12,18 +12,27 @@ export const Settings = ({
     isOverriden,
     cKey,
     settingsOffset,
+    setStartExit,
 }: {
     isOverriden: boolean;
     cKey: keyof Config | "no-key";
     settingsOffset: number;
+    setStartExit: (s: boolean) => void;
 }) => {
     const { wsRequest } = useContext(websocketContext);
     const [tick, setTick] = useState(0);
 
-    const noKey = cKey === "no-key";
+    const smallSettings = cKey !== "no-key";
 
     return (
         <div
+            id="settings"
+            onMouseEnter={() => {
+                if (smallSettings) setStartExit(false);
+            }}
+            onMouseLeave={() => {
+                if (smallSettings) setStartExit(true);
+            }}
             onClick={(e) => {
                 e.stopPropagation();
                 // a little bit of a hack to close "select" dropdowns.
@@ -35,10 +44,10 @@ export const Settings = ({
             className={cn(
                 "absolute left-14 top-[55px] z-20 p-2 text-sm",
                 "rounded border border-github-border-default bg-github-canvas-subtle",
-                noKey && "w-[430px]",
+                !smallSettings && "w-[430px]",
             )}
         >
-            {noKey && (
+            {!smallSettings && (
                 <p className="!mb-6">
                     <strong>Temporarily</strong> override your settings.
                     <br />
@@ -53,17 +62,21 @@ export const Settings = ({
                     .
                 </p>
             )}
-            <div className={cn(noKey ? "grid grid-cols-3 gap-4 mb-4" : "flex justify-center")}>
-                {(noKey || cKey === "theme") && <ThemeOption />}
-                {(noKey || cKey === "details_tags_open") && <DetailsTagsOption />}
-                {(noKey || cKey === "single_file") && <SingleFileOption />}
+            <div
+                className={cn(
+                    smallSettings ? "flex justify-center" : "grid grid-cols-3 gap-4 mb-4",
+                )}
+            >
+                {(!smallSettings || cKey === "theme") && <ThemeOption />}
+                {(!smallSettings || cKey === "details_tags_open") && <DetailsTagsOption />}
+                {(!smallSettings || cKey === "single_file") && <SingleFileOption />}
             </div>
 
-            <div className={cn(noKey ? "grid grid-cols-2 gap-4" : "flex justify-center")}>
-                {(noKey || cKey === "cursor_line") && <CursorlineOption />}
-                {(noKey || cKey === "scroll") && <ScrollOption />}
+            <div className={cn(smallSettings ? "flex justify-center" : "grid grid-cols-2 gap-4")}>
+                {(!smallSettings || cKey === "cursor_line") && <CursorlineOption />}
+                {(!smallSettings || cKey === "scroll") && <ScrollOption />}
             </div>
-            {noKey && (
+            {!smallSettings && (
                 <button
                     className={cn(
                         "float-right mb-2 mr-2 mt-4 text-orange-600 px-2 py-1 rounded-md",

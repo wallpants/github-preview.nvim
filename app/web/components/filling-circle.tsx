@@ -5,21 +5,30 @@ type Props = {
     background?: string;
     fillBackground?: string;
     animate?: boolean;
+    durationSecs: number;
 };
 
-export const FillingCircle = ({ className, animate, background, fillBackground }: Props) => (
-    <svg style={{ background }} className={cn("rounded-full h-12 w-12", className)}>
+export const FillingCircle = ({
+    className,
+    animate,
+    background,
+    fillBackground,
+    durationSecs,
+}: Props) => (
+    <svg
+        style={{ background: fillBackground ?? "blue" }}
+        className={cn("rounded-full h-12 w-12", className)}
+    >
         <circle
-            stroke={fillBackground ?? "#0063b2"}
+            stroke={background ?? "red"}
             fill="transparent"
             strokeWidth={150}
             strokeDasharray={471}
-            // strokeDashoffset={471}
             strokeDashoffset={0}
             style={{
                 transform: "rotate(-90deg)",
                 transformOrigin: "center",
-                animation: animate ? "clock-animation 2.5s linear" : undefined,
+                animation: animate ? `clock-animation ${durationSecs}s linear` : undefined,
             }}
             cx="50%"
             cy="50%"
