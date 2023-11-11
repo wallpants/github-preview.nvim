@@ -1,6 +1,14 @@
-import { useContext, type Dispatch, type FC, type SetStateAction } from "react";
+import {
+    useContext,
+    useEffect,
+    useState,
+    type Dispatch,
+    type FC,
+    type SetStateAction,
+} from "react";
 import { type Config } from "../../../../types";
 import { cn, isEqual } from "../../../utils";
+import { FillingCircle } from "../../filling-circle";
 import { IconButton } from "../../icon-button";
 import { CursorlineIcon } from "../../icons/cursorline";
 import { FoldVerticalIcon } from "../../icons/fold-vertical";
@@ -19,7 +27,10 @@ type Props = {
     setConfigOpen: Dispatch<SetStateAction<null | keyof Config | "no-key">>;
     setSettingsOffset: (o: number) => void;
     className?: string;
+    startExit: boolean;
 };
+
+const DURATION_SECS = 2.5;
 
 export const CollapsedOption = ({
     cKey,
@@ -27,8 +38,21 @@ export const CollapsedOption = ({
     setConfigOpen,
     setSettingsOffset,
     className,
+    startExit,
 }: Props) => {
     const { config } = useContext(websocketContext);
+    const [isHovering, setIsHovering] = useState(false);
+
+    useEffect(() => {
+        if (!active || !startExit || isHovering) return;
+        const timeout = setTimeout(() => {
+            setConfigOpen(null);
+        }, DURATION_SECS * 1000);
+
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, [startExit, setConfigOpen, active, isHovering]);
 
     if (!config) return null;
 
@@ -44,18 +68,33 @@ export const CollapsedOption = ({
                 <div className="absolute right-1 top-1 h-2 w-2 rounded-full bg-orange-600" />
             ) : null}
             {Icon && (
-                <IconButton
-                    Icon={Icon}
-                    className={cn("mx-auto", active && "bg-github-canvas-subtle")}
-                    iconClassName={iconClassName}
-                    noBorder
-                    onClick={(event) => {
-                        event.stopPropagation();
-                        const element = event.currentTarget;
-                        setSettingsOffset(element.getBoundingClientRect().y);
-                        setConfigOpen((c) => (c === cKey ? null : cKey));
-                    }}
-                />
+                <div className="relative overflow-hidden rounded-md">
+                    <FillingCircle
+                        className="absolute left-1/2 top-1/2 -z-10 h-14 w-14 -translate-x-1/2 -translate-y-1/2"
+                        animate={startExit && active && !isHovering}
+                        background="var(--color-canvas-default)"
+                        fillBackground="var(--color-canvas-subtle)"
+                        durationSecs={DURATION_SECS}
+                    />
+                    <IconButton
+                        Icon={Icon}
+                        onMouseEnter={() => {
+                            setIsHovering(true);
+                        }}
+                        onMouseLeave={() => {
+                            setIsHovering(false);
+                        }}
+                        className={cn("mx-auto", active && !startExit && "bg-github-canvas-subtle")}
+                        iconClassName={iconClassName}
+                        noBorder
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            const element = event.currentTarget;
+                            setSettingsOffset(element.getBoundingClientRect().y);
+                            setConfigOpen((c) => (c === cKey ? null : cKey));
+                        }}
+                    />
+                </div>
             )}
         </div>
     );

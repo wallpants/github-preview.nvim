@@ -14,6 +14,7 @@ export const Explorer = () => {
     const { currentPath, config } = useContext(websocketContext);
     const [configOpen, setConfigOpen] = useState<null | keyof Config | "no-key">(null);
     const [isExpanded, setIsExpanded] = useState(false);
+    const [startExit, setStartExit] = useState(false);
     const [settingsOffset, setSettingsOffset] = useState(0);
     const isOverriden = !isEqual(config?.dotfiles, config?.overrides);
 
@@ -62,6 +63,7 @@ export const Explorer = () => {
                     setSettingsOffset={setSettingsOffset}
                     setConfigOpen={setConfigOpen}
                     configOpen={configOpen}
+                    startExit={startExit}
                 />
             )}
             {configOpen ? (
@@ -69,6 +71,7 @@ export const Explorer = () => {
                     cKey={configOpen}
                     isOverriden={isOverriden}
                     settingsOffset={settingsOffset}
+                    setStartExit={setStartExit}
                 />
             ) : null}
             <Footer isExpanded={isExpanded} />
