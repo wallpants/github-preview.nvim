@@ -36,8 +36,7 @@ export const Settings = ({
             onClick={(e) => {
                 e.stopPropagation();
                 // a little bit of a hack to close "select" dropdowns.
-                // "select" arrays above are recreated on every render, triggering
-                // a rerender on components that rely on them and thus closing menus
+                // by triggering a rerender
                 setTick(tick + 1);
             }}
             style={{ top: settingsOffset - 50 }}
