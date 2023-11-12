@@ -54,12 +54,10 @@ In `github-preview.nvim` _dev-mode_ enables **logging** and _hot-reloading_ of t
     "wallpants/github-preview.nvim",
     -- if dev = true, lazy will look for plugin in "~/Projects/nvim-plugins"
     dev = true,
+    cmd = { "GithubPreviewToggle" },
     opts = {
         -- set to "debug" to include bunvim's internal logs
         log_level = "debug",
-    },
-    keys = {
-        { "<leader>mpt", "<cmd>GithubPreviewToggle<cr>" }
     },
 },
 ```
