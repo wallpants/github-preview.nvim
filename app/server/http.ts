@@ -8,7 +8,9 @@ export const UNALIVE_URL = "/unalive";
 const GP_PREFIX = "/__github_preview__";
 
 // mock loader to prevent crashing production build
-// provider/provider.tsx
+// during dev, we import the file dev-tailwind.css to enable hot-reload with vite,
+// bun does not have a loader for css,
+// that's why we manually run `bun run tailwind:compile`
 const mockCssLoader: BunPlugin = {
     name: "Mock CSS Loader",
     setup(builder) {
