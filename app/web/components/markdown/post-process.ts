@@ -1,16 +1,16 @@
 import { type MutableRefObject } from "react";
-import { type WebsocketContext } from "../websocket-provider/context";
+import { type RefObject, type WebsocketContext } from "../websocket-provider/context";
 
 export function postProcessHrefs({
     wsRequest,
     markdownElement,
-    skipScroll,
+    refObject,
     single_file,
     currentPath,
 }: {
     wsRequest: WebsocketContext["wsRequest"];
     markdownElement: HTMLElement;
-    skipScroll: MutableRefObject<boolean>;
+    refObject: MutableRefObject<RefObject>;
     single_file: boolean | undefined;
     currentPath: string;
 }) {
@@ -55,7 +55,7 @@ export function postProcessHrefs({
         element.addEventListener(
             "click",
             () => {
-                skipScroll.current = true;
+                refObject.current.skipScroll = true;
             },
             {
                 capture: true,

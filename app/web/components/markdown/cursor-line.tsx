@@ -38,7 +38,7 @@ export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElemen
                 offsets,
                 cursorLine,
                 cursorLineElement,
-                refObject.current.hash,
+                refObject,
             );
         }
     }, [markdownContainerElement, cursorLineElement, topOffsetPct, cursorLine, refObject, offsets]);

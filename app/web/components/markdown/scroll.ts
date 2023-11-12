@@ -1,3 +1,4 @@
+import { type MutableRefObject } from "react";
 import { type RefObject } from "../websocket-provider/context";
 
 type Attrs = {
@@ -123,7 +124,7 @@ export function scroll(
     offsets: Offsets,
     cursorLine: number | null,
     cursorLineElement: HTMLElement,
-    hash: RefObject["hash"],
+    refObject: MutableRefObject<RefObject>,
 ) {
     if (!offsets.length) {
         // without offsets we can't scroll
@@ -132,10 +133,10 @@ export function scroll(
 
     cursorLineElement.style.setProperty("display", cursorLine === null ? "none" : "block");
 
-    if (hash.value) {
+    if (refObject.current.hash.value) {
         // "consume" hash
-        window.location.hash = hash.value;
-        hash.value = undefined;
+        window.location.hash = refObject.current.hash.value;
+        refObject.current.hash.value = undefined;
     }
 
     let scrollToLine: number | null = cursorLine;
@@ -146,9 +147,9 @@ export function scroll(
             return;
         }
 
-        if (hash.lineStart) {
+        if (refObject.current.hash.lineStart) {
             // if the hash is a line range, we update the scroll target
-            scrollToLine = hash.lineStart;
+            scrollToLine = refObject.current.hash.lineStart;
         } else {
             // if not, we exit scroll function and let browser handle
             // anchor navigation (to headings and stuff)
