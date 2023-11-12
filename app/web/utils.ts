@@ -9,7 +9,7 @@ export function getEntryName(path: string) {
     return name;
 }
 
-export function getSegments(path: string | undefined): string[] {
+export function getSegments(path: string | null): string[] {
     if (!path) return [];
     return path.split("/");
 }

@@ -1,10 +1,11 @@
 import { useEffect } from "react";
+import { type RefObject } from "../websocket-provider/context.ts";
 import { type Offsets } from "./scroll.ts";
 
 export const LINE_NUMBERS_ELEMENT_ID = "line-numbers-element-id";
 
 type Props = {
-    hash: string | null | undefined;
+    hash: RefObject["hash"];
     offsets: Offsets | null;
     lineNumbersElement: HTMLElement | undefined;
 };
@@ -12,18 +13,6 @@ type Props = {
 export const LineNumbers = ({ hash, offsets, lineNumbersElement }: Props) => {
     useEffect(() => {
         if (!offsets || !lineNumbersElement) return;
-
-        let rangeStart: null | number = null;
-        let rangeEnd: null | number = null;
-
-        if (hash) {
-            const lineRangeRegexp = /^L(\d+)(?:-L(\d+))?$/;
-            const match = lineRangeRegexp.exec(hash);
-            if (match) {
-                rangeStart = Number(match[1]);
-                if (match[2]) rangeEnd = Number(match[2]);
-            }
-        }
 
         const html = offsets.reduce((html, offset, index) => {
             const isFirst = index === 0;
@@ -41,11 +30,11 @@ export const LineNumbers = ({ hash, offsets, lineNumbersElement }: Props) => {
                 "pointer-events: none;" +
                 "text-align: right;";
 
-            if (rangeStart && index >= rangeStart) {
-                if (rangeStart === index) {
+            if (hash.lineStart && index >= hash.lineStart) {
+                if (hash.lineStart === index) {
                     style += "background: var(--color-attention-subtle);";
                 }
-                if (rangeEnd && index <= rangeEnd) {
+                if (hash.lineEnd && index <= hash.lineEnd) {
                     style += "background: var(--color-attention-subtle);";
                 }
             }

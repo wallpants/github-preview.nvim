@@ -1,3 +1,5 @@
+import { type RefObject } from "../websocket-provider/context";
+
 type Attrs = {
     offsetTop: number;
     scrollHeight: number;
@@ -121,36 +123,48 @@ export function scroll(
     offsets: Offsets,
     cursorLine: number | null,
     cursorLineElement: HTMLElement,
-    hash: string | null | undefined,
+    hash: RefObject["hash"],
 ) {
-    if (hash) {
-        const lineRangeRegexp = /^L(\d+)(?:-L(\d+))?$/;
-        const match = lineRangeRegexp.exec(hash);
-        if (match) {
-            cursorLine = Number(match[1]);
-        }
-    }
-
-    if (cursorLine === null) {
-        cursorLineElement.style.setProperty("visibility", "hidden");
-        if (hash === null) {
-            markdownContainerElement.scrollTo({ top: 0, behavior: "instant" });
-        }
+    if (!offsets.length) {
+        // without offsets we can't scroll
         return;
     }
 
-    if (!offsets.length) return;
+    cursorLineElement.style.setProperty("display", cursorLine === null ? "none" : "block");
 
-    let cursorLineOffset = offsets[cursorLine];
+    if (hash.value) {
+        // "consume" hash
+        window.location.hash = hash.value;
+        hash.value = undefined;
+    }
+
+    let scrollToLine: number | null = cursorLine;
+
+    if (scrollToLine === null) {
+        if (!window.location.hash) {
+            markdownContainerElement.scrollTo({ top: 0, behavior: "instant" });
+            return;
+        }
+
+        if (hash.lineStart) {
+            // if the hash is a line range, we update the scroll target
+            scrollToLine = hash.lineStart;
+        } else {
+            // if not, we exit scroll function and let browser handle
+            // anchor navigation (to headings and stuff)
+            return;
+        }
+    }
+
+    let cursorLineOffset = offsets[scrollToLine];
 
     while (!cursorLineOffset) {
         // When adding new lines at the end of the buffer, the offset for the
         // new lines is not available until cursorHold
-        cursorLineOffset = offsets[--cursorLine];
+        cursorLineOffset = offsets[--scrollToLine];
     }
 
     cursorLineElement.style.setProperty("top", `${cursorLineOffset[0]}px`);
-    cursorLineElement.style.setProperty("visibility", "visible");
 
     if (typeof topOffsetPct !== "number") return;
 
@@ -160,6 +174,6 @@ export function scroll(
             cursorLineOffset[0] +
             markdownContainerElement.offsetTop -
             window.screen.height * percent,
-        behavior: "smooth",
+        behavior: cursorLine === null ? "instant" : "smooth",
     });
 }

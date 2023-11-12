@@ -17,11 +17,11 @@ const IconMap = {
 type Props = {
     path: string;
     depth: number;
-    currentPath?: string | undefined;
+    currentPath: string | null;
 };
 
 export const EntryComponent = ({ path, depth, currentPath }: Props) => {
-    const { isConnected, registerHandler, wsRequest } = useContext(websocketContext);
+    const { registerHandler, wsRequest } = useContext(websocketContext);
     const [entries, setEntries] = useState<string[]>([]);
     const [isSelected, setIsSelected] = useState(false);
     const [expanded, setExpanded] = useState(
@@ -41,9 +41,9 @@ export const EntryComponent = ({ path, depth, currentPath }: Props) => {
     }, [path, registerHandler]);
 
     useEffect(() => {
-        if (!isConnected || !isDir) return;
+        if (!isDir) return;
         wsRequest({ type: "get_entries", path: path });
-    }, [wsRequest, path, isConnected, isDir]);
+    }, [wsRequest, path, isDir]);
 
     useEffect(() => {
         const segments = getSegments(currentPath);
