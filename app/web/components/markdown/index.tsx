@@ -1,5 +1,5 @@
 import { Pantsdown } from "pantsdown";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { cn, getFileExt } from "../../utils.ts";
 import { websocketContext } from "../websocket-provider/context.ts";
 import { BreadCrumbs } from "./breadcrumbs.tsx";
@@ -24,7 +24,6 @@ export const Markdown = ({ className }: { className: string }) => {
     const { currentPath, config, refObject, registerHandler, wsRequest } =
         useContext(websocketContext);
 
-    const skipScroll = useRef(false);
     const single_file = config?.overrides.single_file;
     const details_tags_open = config?.overrides.details_tags_open ?? true;
 
@@ -38,7 +37,7 @@ export const Markdown = ({ className }: { className: string }) => {
         pantsdown.setConfig({ renderer: { detailsTagDefaultOpen: details_tags_open } });
         // re-request content to trigger re-render with new config
         if (currentPath) {
-            skipScroll.current = true;
+            refObject.current.skipScroll = true;
             wsRequest({ type: "get_entry", path: currentPath });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,7 +77,7 @@ export const Markdown = ({ className }: { className: string }) => {
                 postProcessHrefs({
                     wsRequest,
                     markdownElement,
-                    skipScroll,
+                    refObject,
                     single_file,
                     currentPath: message.currentPath,
                 });

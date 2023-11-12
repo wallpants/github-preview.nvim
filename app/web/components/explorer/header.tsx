@@ -1,10 +1,11 @@
-import { type Dispatch, type SetStateAction } from "react";
+import { useContext, type Dispatch, type SetStateAction } from "react";
 import { type Config } from "../../../types.ts";
 import { cn } from "../../utils.ts";
 import { IconButton } from "../icon-button.tsx";
 import { PanelCloseIcon } from "../icons/panel-close.tsx";
 import { PanelOpenIcon } from "../icons/panel-open.tsx";
 import { SettingsIcon } from "../icons/settings.tsx";
+import { websocketContext } from "../websocket-provider/context.ts";
 
 export const Header = ({
     isExpanded,
@@ -21,6 +22,8 @@ export const Header = ({
     isOverriden: boolean;
     setSettingsOffset: (o: number) => void;
 }) => {
+    const { refObject } = useContext(websocketContext);
+
     return (
         <div
             className={cn(
@@ -54,6 +57,7 @@ export const Header = ({
                 noBorder={!isExpanded}
                 Icon={isExpanded ? PanelOpenIcon : PanelCloseIcon}
                 onClick={() => {
+                    refObject.current.skipScroll = true;
                     setIsExpanded(!isExpanded);
                 }}
             />
