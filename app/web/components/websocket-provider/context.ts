@@ -1,29 +1,35 @@
-import { createContext } from "react";
+import { createContext, type MutableRefObject } from "react";
+import type ReconnectingWebSocket from "reconnecting-websocket";
 import { type GithubPreview } from "../../../github-preview.ts";
 import { type WsBrowserMessage, type WsServerMessage } from "../../../types.ts";
+
+export type RefObject = {
+    currentEntries: string[] | undefined;
+    ws: ReconnectingWebSocket;
+    skipScroll: boolean;
+    hash: {
+        value: string | undefined;
+        lineStart: number | undefined;
+        lineEnd: number | undefined;
+    };
+};
 
 export type MessageHandler = (message: WsServerMessage) => void | Promise<void>;
 
 export type WebsocketContext = {
-    isConnected: boolean;
     registerHandler: (id: string, cb: MessageHandler) => void;
-    currentPath: string | undefined;
-    currentEntries: string[] | undefined;
-    hash: string | null | undefined;
-    setHash: (h: string | null | undefined) => void;
-    repoName: string;
     wsRequest: (m: WsBrowserMessage) => void;
-    config: GithubPreview["config"] | undefined;
+    currentPath: string | null;
+    repoName: string | null;
+    config: GithubPreview["config"] | null;
+    refObject: MutableRefObject<RefObject>;
 };
 
 export const websocketContext = createContext<WebsocketContext>({
-    isConnected: false,
     registerHandler: () => null,
-    currentPath: undefined,
-    currentEntries: undefined,
-    hash: null,
-    setHash: () => null,
-    repoName: "",
     wsRequest: () => null,
-    config: undefined,
+    currentPath: null,
+    repoName: null,
+    config: null,
+    refObject: { current: {} as RefObject },
 });

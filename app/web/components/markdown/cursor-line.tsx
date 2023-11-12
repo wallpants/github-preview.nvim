@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, type MutableRefObject } from "react";
+import { useContext, useEffect, useState } from "react";
 import { websocketContext } from "../websocket-provider/context.ts";
 import { scroll, type Offsets } from "./scroll.ts";
 
@@ -6,18 +6,12 @@ export const CURSOR_LINE_ELEMENT_ID = "cursor-line-element-id";
 
 type Props = {
     offsets: Offsets;
-    skipScroll: MutableRefObject<boolean>;
     cursorLineElement: HTMLElement | undefined;
     markdownContainerElement: HTMLElement | undefined;
 };
 
-export const CursorLine = ({
-    offsets,
-    skipScroll,
-    cursorLineElement,
-    markdownContainerElement,
-}: Props) => {
-    const { config, registerHandler, setHash, hash } = useContext(websocketContext);
+export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElement }: Props) => {
+    const { config, registerHandler, refObject } = useContext(websocketContext);
     const [cursorLine, setCursorLine] = useState<number | null>(null);
 
     useEffect(() => {
@@ -35,8 +29,8 @@ export const CursorLine = ({
     useEffect(() => {
         if (!cursorLineElement || !markdownContainerElement) return;
 
-        if (skipScroll.current) {
-            skipScroll.current = false;
+        if (refObject.current.skipScroll) {
+            refObject.current.skipScroll = false;
         } else {
             scroll(
                 markdownContainerElement,
@@ -44,22 +38,10 @@ export const CursorLine = ({
                 offsets,
                 cursorLine,
                 cursorLineElement,
-                hash,
+                refObject.current.hash,
             );
-
-            // "consume" hash
-            setHash(undefined);
         }
-    }, [
-        markdownContainerElement,
-        cursorLineElement,
-        topOffsetPct,
-        skipScroll, // is a ref and doesn't actually trigger useEffect, but eslint cries
-        cursorLine,
-        offsets,
-        setHash,
-        hash,
-    ]);
+    }, [markdownContainerElement, cursorLineElement, topOffsetPct, cursorLine, refObject, offsets]);
 
     return (
         <div

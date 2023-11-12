@@ -41,10 +41,10 @@ const Entry = ({
 );
 
 export const Explorer = () => {
-    const { currentEntries, currentPath, config, wsRequest } = useContext(websocketContext);
+    const { currentPath, refObject, config, wsRequest } = useContext(websocketContext);
 
+    if (!refObject.current.currentEntries || !currentPath) return null;
     const segments = getSegments(currentPath);
-    if (!currentEntries) return null;
 
     // path must be empty string "" to request root
     let parent = "";
@@ -67,7 +67,7 @@ export const Explorer = () => {
             {segments.length ? (
                 <Entry isParent path={parent} wsRequest={wsRequest} single_file={single_file} />
             ) : null}
-            {currentEntries.map((path) => (
+            {refObject.current.currentEntries.map((path) => (
                 <Entry key={path} path={path} wsRequest={wsRequest} single_file={single_file} />
             ))}
         </div>

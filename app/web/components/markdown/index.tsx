@@ -21,7 +21,7 @@ const pantsdown = new Pantsdown({
 });
 
 export const Markdown = ({ className }: { className: string }) => {
-    const { hash, currentPath, config, currentEntries, registerHandler, wsRequest } =
+    const { currentPath, config, refObject, registerHandler, wsRequest } =
         useContext(websocketContext);
 
     const skipScroll = useRef(false);
@@ -92,6 +92,7 @@ export const Markdown = ({ className }: { className: string }) => {
     }, [
         registerHandler,
         wsRequest,
+        refObject,
         single_file,
         markdownElement,
         cursorLineElement,
@@ -114,6 +115,8 @@ export const Markdown = ({ className }: { className: string }) => {
         };
     }, [markdownElement, markdownContainerElement]);
 
+    const isDir = currentPath?.endsWith("/");
+
     return (
         <div
             className={cn(
@@ -126,18 +129,23 @@ export const Markdown = ({ className }: { className: string }) => {
             <BreadCrumbs />
             <CursorLine
                 offsets={offsets}
-                skipScroll={skipScroll}
                 cursorLineElement={cursorLineElement}
                 markdownContainerElement={markdownContainerElement}
             />
             <div
                 id={MARKDOWN_ELEMENT_ID}
-                className={cn("relative mx-auto mb-96", currentEntries ? "invisible" : "visible")}
+                className={cn("relative mx-auto mb-96", isDir ? "invisible" : "visible")}
             />
-            <div className={cn("absolute inset-0", currentEntries ? "visible" : "invisible")}>
-                <Explorer />
-            </div>
-            <LineNumbers hash={hash} offsets={offsets} lineNumbersElement={lineNumbersElement} />
+            {isDir ? (
+                <div className="absolute inset-x-0 top-0">
+                    <Explorer />
+                </div>
+            ) : null}
+            <LineNumbers
+                hash={refObject.current.hash}
+                offsets={offsets}
+                lineNumbersElement={lineNumbersElement}
+            />
         </div>
     );
 };

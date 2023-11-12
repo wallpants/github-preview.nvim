@@ -20,14 +20,14 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                 webSocket.send(JSON.stringify(m));
             }
 
-            let hash: string | null = null;
+            let hash: string | undefined;
 
             if ("path" in browserMessage) {
                 // remove hash from browserMessage.path to prevent filesystem
                 // operations from failing
                 const [path, messageHash] = browserMessage.path.split("#");
                 browserMessage.path = path!;
-                if (messageHash) hash = messageHash;
+                hash = messageHash;
             }
 
             if (browserMessage.type === "init") {
