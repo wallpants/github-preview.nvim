@@ -1,21 +1,25 @@
 local M = {}
 
-local get_platform = function()
-	local os_name = vim.loop.os_uname().sysname
-	if os_name == "Windows" then
-		return "win"
-	elseif os_name == "Darwin" then
-		local arch = vim.fn.system("arch")
-		if string.match(arch, "arm64") then
-			return "macos-arm64"
+local function check_platform()
+	local function get_platform()
+		local os_name = vim.loop.os_uname().sysname
+		if os_name == "Windows" then
+			return "win"
+		elseif os_name == "Darwin" then
+			local arch = vim.fn.system("arch")
+			if string.match(arch, "arm64") then
+				return "macos-arm64"
+			end
+			return "macos"
 		end
-		return "macos"
+		return "linux"
 	end
-	return "linux"
+
+	vim.health.info("platform: " .. get_platform())
 end
 
 ---@param command string
-local run_command = function(command)
+local function run_command(command)
 	local output = vim.fn.system(command)
 	if vim.v.shell_error == 0 then
 		if output then
@@ -28,7 +32,7 @@ local run_command = function(command)
 	end
 end
 
-local get_bun_version = function()
+local function check_bun_version()
 	local result = run_command("bun --version")
 	if result == nil then
 		vim.health.error("failed to read bun version")
@@ -37,7 +41,7 @@ local get_bun_version = function()
 	end
 end
 
-local get_current_commit_hash = function()
+local function check_current_commit_hash()
 	local result = run_command("git -C $(dirname " .. vim.fn.shellescape(vim.fn.expand("%:p")) .. ") rev-parse HEAD")
 	if result == nil then
 		vim.health.error("failed to read git-commit hash")
@@ -48,9 +52,9 @@ end
 
 M.check = function()
 	vim.health.start("github-preview.nvim")
-	vim.health.info("platform: " .. get_platform())
-	get_current_commit_hash()
-	get_bun_version()
+	check_platform()
+	check_current_commit_hash()
+	check_bun_version()
 end
 
 return M
