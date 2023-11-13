@@ -41,6 +41,10 @@ M.config = {
 		-- VERY LOW and VERY HIGH numbers might result in cursorline out of screen
 		top_offset_pct = 35,
 	},
+
+	-- for debugging
+	-- nil | "debug" | "verbose"
+	log_level = nil,
 }
 
 M.get_client_channel = function()
@@ -78,7 +82,52 @@ M.validate_config = function()
 			end,
 			"number between 0 and 100",
 		},
+		["log_level"] = {
+			M.config.log_level,
+			function(log_level)
+				local is_nil = type(log_level) == "nil"
+				local is_valid = (type(log_level) == "string") and ((log_level == "debug") or (log_level == "verbose"))
+				return is_nil or is_valid
+			end,
+			'log_level must be nil, "debug" or "verbose"',
+		},
 	})
+end
+
+---@param log_level string
+M.log_exit = function(log_level)
+	if not log_level then
+		return
+	end
+	return function(job_id, exit_code)
+		vim.print("++++++++++++++++")
+		vim.print("job# " .. job_id .. ":")
+		vim.print("exit_code: " .. exit_code)
+	end
+end
+
+---@param log_level string
+M.log_job = function(log_level)
+	-- https://neovim.io/doc/user/channel.html#channel-bytes
+	if not log_level then
+		return
+	end
+	local lines = { "" }
+	return function(job_id, data)
+		local eof = #data > 0 and data[#data] == ""
+		lines[#lines] = lines[#lines] .. data[1]
+		for i = 2, #data do
+			table.insert(lines, data[i])
+		end
+		if eof then
+			vim.print("----------------")
+			vim.print("job# " .. job_id .. ":")
+			for _, line in ipairs(lines) do
+				vim.print(line)
+			end
+			lines = { "" }
+		end
+	end
 end
 
 ---@param update_action string

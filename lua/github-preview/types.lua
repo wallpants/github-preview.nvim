@@ -2,6 +2,10 @@
 ---@field root string
 ---@field path string
 
+---@class env
+---@field LOG_LEVEL string?
+---@field IS_DEV boolean?
+
 ---@class cursor_line
 ---@field disable boolean | nil
 ---@field color string | nil
@@ -23,6 +27,7 @@
 ---@field details_tags_open boolean | nil
 ---@field cursor_line cursor_line | nil
 ---@field scroll scroll | nil
+---@field log_level nil | "verbose" | "debug"
 
 ---@class plugin_props
 ---@field init init
