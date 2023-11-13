@@ -1,3 +1,7 @@
+### [👈 Back to README.md](/README.md)
+
+### [See CONTRIBUTING.md](/docs/CONTRIBUTING.md)
+
 # Development
 
 ## ✅ Requirements
@@ -132,13 +136,3 @@ Dev logs are printed to your browser's console.
 > `bun run tailwind:compile` to generate required CSS.
 
 ---
-
-## 🏗️ Contributing
-
-🚧 Work in progress
-
-Prettier & eslint, commitizen, bun commit, tailwind compile
-
-### Commits
-
-### Pull Requests
