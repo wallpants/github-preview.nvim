@@ -200,4 +200,4 @@ fns.cursorline_off()
 
 ## 👷 Development & Contributing
 
-[See documentation](/docs/DEVELOPMENT.md)
+[See documentation](/docs/CONTRIBUTING.md)
