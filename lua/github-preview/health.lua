@@ -11,8 +11,25 @@ local function check_platform()
 				return "macos-arm64"
 			end
 			return "macos"
+		elseif os_name == "Linux" then
+			-- Check for common Linux distribution files
+			local distro = ""
+			if vim.fn.filereadable("/etc/os-release") then
+				distro = vim.fn.system("grep -E '^ID=' /etc/os-release | cut -d'=' -f2 | tr -d '\"'")
+			elseif vim.fn.filereadable("/etc/lsb-release") then
+				distro = vim.fn.system("grep -E '^DISTRIB_ID=' /etc/lsb-release | cut -d'=' -f2 | tr -d '\"'")
+			end
+
+			-- Trim newline characters at the end
+			distro = distro:gsub("\n*$", "")
+
+			if distro ~= nil and distro ~= "" then
+				return distro
+			end
+
+			return "linux"
 		end
-		return "linux"
+		return "unknown"
 	end
 
 	vim.health.info("platform: " .. get_platform())
@@ -42,7 +59,8 @@ local function check_bun_version()
 end
 
 local function check_current_commit_hash()
-	local result = run_command("git -C $(dirname " .. vim.fn.shellescape(vim.fn.expand("%:p")) .. ") rev-parse HEAD")
+	local result =
+		run_command("git -C $(dirname " .. vim.fn.shellescape(vim.fn.expand("%:p")) .. ") rev-parse --short HEAD")
 	if result == nil then
 		vim.health.error("failed to read git-commit hash")
 	else
