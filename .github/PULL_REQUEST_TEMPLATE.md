@@ -2,8 +2,7 @@
 
 <!-- Description of changes included in PR -->
 
-<!-- #issue this PR fixes or is referencing -->
-
+<!-- issue # this PR fixes or is referencing -->
 <!-- fix # -->
 <!-- ref # -->
 
