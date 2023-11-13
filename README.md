@@ -64,10 +64,9 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
 ```lua
 use {
     "wallpants/github-preview.nvim",
-    disable = false,
-    opt = true,
     cmd = { "GithubPreviewToggle" },
     keys = { "<leader>mpt" },
+    opt = true,
     config = function()
         local gpreview = require("github-preview")
         gpreview.setup({
@@ -128,6 +127,10 @@ require("github-preview").setup({
 		-- VERY LOW and VERY HIGH numbers might result in cursorline out of screen
 		top_offset_pct = 35,
 	},
+
+	-- for debugging
+	-- nil | "debug" | "verbose"
+	log_level = nil,
 })
 ```
 
