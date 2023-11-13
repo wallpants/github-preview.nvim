@@ -5,7 +5,6 @@ local M = {}
 
 ---@param partial_config github_preview_config
 M.setup = function(partial_config)
-	-- deep merge user opts with default opts without overriding user opts
 	Utils.config = vim.tbl_deep_extend("force", Utils.config, partial_config)
 	Utils.validate_config()
 
