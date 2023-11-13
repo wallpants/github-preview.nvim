@@ -1,10 +1,11 @@
-**github-preview.nvim version:**
-
-<!-- The release version or commit hash having the issue -->
-
 ## Description
 
--   Fixes #### (if fixing a known issue; otherwise, describe issue)
+<!-- Description of changes included in PR -->
+
+<!-- #issue this PR fixes or is referencing -->
+
+<!-- fix # -->
+<!-- ref # -->
 
 ## Documentation
 
