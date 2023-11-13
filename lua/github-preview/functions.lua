@@ -44,38 +44,34 @@ M.start = function()
 	local __filename = debug.getinfo(1, "S").source:sub(2)
 	local plugin_root = vim.fn.fnamemodify(__filename, ":p:h:h:h") .. "/"
 
+	local command = "bun run start"
+
+	---@type env
+	local env = { IS_DEV = false }
+
+	if Utils.config.log_level then
+		command = "bun --hot run start"
+		env.IS_DEV = true
+		env.LOG_LEVEL = Utils.config.log_level
+	end
+
 	-- Install Bun dependencies:
 	-- if we try using bun's auto-install feature, web dependencies are not installed,
 	-- because they're not imported until the browser makes the initial http request.
 	local bun_install = vim.fn.jobstart("bun install --frozen-lockfile --production", {
 		cwd = plugin_root,
+		on_exit = Utils.log_exit(env.LOG_LEVEL),
+		on_stdout = Utils.log_job(env.LOG_LEVEL),
+		on_stderr = Utils.log_job(env.LOG_LEVEL),
 	})
 	vim.fn.jobwait({ bun_install })
-
-	local command = "bun run start"
-	local env = { IS_DEV = false }
-
-	-- log level not declared in type, because we don't want users to see it
-	---@diagnostic disable-next-line: undefined-field
-	if Utils.config.log_level then
-		command = "bun --hot run start"
-		env.IS_DEV = true
-		---@diagnostic disable-next-line: undefined-field
-		env.LOG_LEVEL = Utils.config.log_level
-	end
-
-	local function log(_, data)
-		if env.IS_DEV then
-			vim.print(data)
-		end
-	end
 
 	Utils.job_id = vim.fn.jobstart(command, {
 		cwd = plugin_root,
 		stdin = "null",
-		on_exit = log,
-		on_stdout = log,
-		on_stderr = log,
+		on_exit = Utils.log_exit(env.LOG_LEVEL),
+		on_stdout = Utils.log_job(env.LOG_LEVEL),
+		on_stderr = Utils.log_job(env.LOG_LEVEL),
 		env = env,
 	})
 end
