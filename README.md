@@ -197,4 +197,4 @@ fns.cursorline_off()
 
 ## 👷 Development & Contributing
 
-[See documentation](https://github.com/wallpants/github-preview.nvim/blob/main/docs/development.md)
+[See documentation](/docs/DEVELOPMENT.md)
