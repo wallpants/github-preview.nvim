@@ -64,9 +64,6 @@ export const CollapsedOption = ({
 
     return (
         <div className={cn("relative mx-auto", className)}>
-            {isOverriden ? (
-                <div className="absolute right-1 top-1 h-2 w-2 rounded-full bg-orange-600" />
-            ) : null}
             {Icon && (
                 <div className="relative overflow-hidden rounded-md">
                     <FillingCircle
@@ -96,6 +93,9 @@ export const CollapsedOption = ({
                     />
                 </div>
             )}
+            {isOverriden ? (
+                <div className="absolute right-1 top-1 h-2 w-2 rounded-full bg-orange-600" />
+            ) : null}
         </div>
     );
 };
