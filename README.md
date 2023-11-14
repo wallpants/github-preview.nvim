@@ -1,8 +1,8 @@
 # GitHub Markdown Preview
 
-[<img src="https://raw.githubusercontent.com/wallpants/github-preview.nvim/main/docs/nvim.svg" height="60px" align="right" />](https://neovim.io/)
-[<img src="https://raw.githubusercontent.com/wallpants/github-preview.nvim/main/docs/github.svg" height="60px" align="right" />](https://github.com/)
-[<img src="https://raw.githubusercontent.com/wallpants/github-preview.nvim/main/docs/bun.svg" height="60px" align="right" />](https://bun.sh/)
+[<img src="docs/nvim.svg" height="60px" align="right" />](https://neovim.io/)
+[<img src="docs/github.svg" height="60px" align="right" />](https://github.com/)
+[<img src="docs/bun.svg" height="60px" align="right" />](https://bun.sh/)
 
 Live Preview of your Markdown files & local git repositories.
 
@@ -12,15 +12,15 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
 
 ## ✨ Features
 
--   [💻 Linux / macOS / WSL](https://github.com/wallpants/github-preview.nvim/blob/main/docs/FEATURES.md#-linux--macos--wsl)
--   [🔴 LIVE updates](https://github.com/wallpants/github-preview.nvim/blob/main/docs/FEATURES.md#-live-updates)
--   [♻️ Synced Scrolling](https://github.com/wallpants/github-preview.nvim/blob/main/docs/FEATURES.md#%EF%B8%8F-synced-scrolling)
--   [🌈 Dark & Light modes](https://github.com/wallpants/github-preview.nvim/blob/main/docs/FEATURES.md#-dark--light-modes)
--   [🖍️ Cursorline in Preview](https://github.com/wallpants/github-preview.nvim/blob/main/docs/FEATURES.md#%EF%B8%8F-cursorline-in-preview)
--   [🏞️ Local Image Support](https://github.com/wallpants/github-preview.nvim/blob/main/docs/FEATURES.md#%EF%B8%8F-local-image-support)
--   [🧜 Mermaid Support](https://github.com/wallpants/github-preview.nvim/blob/main/docs/FEATURES.md#-mermaid-support)
--   [📌 Single-file mode](https://github.com/wallpants/github-preview.nvim/blob/main/docs/FEATURES.md#-single-file-mode)
--   [📂 Repository mode](https://github.com/wallpants/github-preview.nvim/blob/main/docs/FEATURES.md#-repository-mode)
+-   [💻 Linux / macOS / WSL](/docs/FEATURES.md#-linux--macos--wsl)
+-   [🔴 LIVE updates](/docs/FEATURES.md#-live-updates)
+-   [♻️ Synced Scrolling](/docs/FEATURES.md#%EF%B8%8F-synced-scrolling)
+-   [🌈 Dark & Light modes](/docs/FEATURES.md#-dark--light-modes)
+-   [🖍️ Cursorline in Preview](/docs/FEATURES.md#%EF%B8%8F-cursorline-in-preview)
+-   [🏞️ Local Image Support](/docs/FEATURES.md#%EF%B8%8F-local-image-support)
+-   [🧜 Mermaid Support](/docs/FEATURES.md#-mermaid-support)
+-   [📌 Single-file mode](/docs/FEATURES.md#-single-file-mode)
+-   [📂 Repository mode](/docs/FEATURES.md#-repository-mode)
 
 ## ✅ Requirements
 
