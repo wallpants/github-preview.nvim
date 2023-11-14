@@ -1,50 +1,5 @@
 ### [👈 Back to README.md](/README.md)
 
-# 🏗️ Contributing
-
-## Formatting and Linting
-
-This project uses [prettier](https://prettier.io/) and [eslint](https://eslint.org/)
-to enforce coding style and quality standards.
-
-Make sure to set them up in your editor. You can configure **prettier** to
-_format on save_ or you can manually run the following **package.json**
-script to format files:
-
-```
-bun run format
-```
-
-To ensure that there are no lint issues, you can run the **package.json** script:
-
-```
-bun run lint
-```
-
-If you make any changes to tailwind classes, you must also manually run the
-following **package.json** script to generate relevant CSS files:
-
-```
-bun run tailwind:compile
-```
-
-> [!NOTE]
-> There's a [github action](https://github.com/wallpants/github-preview.nvim/blob/e29bd3dcf7cae32ac95b30122ea6632bf99f9fb2/.github/workflows/release.yml#L12-L38)
-> that verifies if these actions were performed and will notify you if any steps were skipped.
-
-## Git Commits
-
-This project uses [semantic-release](https://github.com/semantic-release/semantic-release) to handle versioning.
-
-**semantic-release** requires commit messages to follow a specific format. To ensure your commits
-follow the format, run the **package.json** script `bun run commit` to perform your commits:
-
-```sh
-touch file.txt
-git add file.txt
-bun run commit
-```
-
 # Development
 
 ## ✅ Requirements
@@ -180,3 +135,48 @@ Dev logs are printed to your browser's console.
 > `bun run tailwind:compile` to generate required CSS.
 
 ---
+
+# 🏗️ Contributing
+
+## Formatting and Linting
+
+This project uses [prettier](https://prettier.io/) and [eslint](https://eslint.org/)
+to enforce coding style and quality standards.
+
+Make sure to set them up in your editor. You can configure **prettier** to
+_format on save_ or you can manually run the following **package.json**
+script to format files:
+
+```
+bun run format
+```
+
+To ensure that there are no lint issues, you can run the **package.json** script:
+
+```
+bun run lint
+```
+
+If you make any changes to tailwind classes, you must also manually run the
+following **package.json** script to generate relevant CSS files:
+
+```
+bun run tailwind:compile
+```
+
+> [!NOTE]
+> There's a [github action](https://github.com/wallpants/github-preview.nvim/blob/e29bd3dcf7cae32ac95b30122ea6632bf99f9fb2/.github/workflows/release.yml#L12-L38)
+> that verifies if these actions were performed and will notify you if any steps were skipped.
+
+## Git Commits
+
+This project uses [semantic-release](https://github.com/semantic-release/semantic-release) to handle versioning.
+
+**semantic-release** requires commit messages to follow a specific format. To ensure your commits
+follow the format, run the **package.json** script `bun run commit` to perform your commits:
+
+```sh
+touch file.txt
+git add file.txt
+bun run commit
+```
