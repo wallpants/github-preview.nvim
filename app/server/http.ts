@@ -78,6 +78,14 @@ export function httpHandler(app: GithubPreview) {
                 });
             }
 
+            if (requested === "/static/mermaid.js") {
+                const mermaid = Bun.resolveSync("mermaid/dist/mermaid.min.js", import.meta.dir);
+                const file = Bun.file(mermaid);
+                return new Response(file, {
+                    headers: { "content-type": "text/javascript" },
+                });
+            }
+
             const file = Bun.file(webRoot + requested);
             return new Response(file);
         }
