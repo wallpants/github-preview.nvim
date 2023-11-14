@@ -1,5 +1,4 @@
 import { type BunPlugin, type Server } from "bun";
-import pantsdownCss from "pantsdown/styles.css";
 import { type GithubPreview } from "../github-preview";
 
 const webRoot = import.meta.dir + "/../web";
@@ -72,6 +71,7 @@ export function httpHandler(app: GithubPreview) {
             }
 
             if (requested === "/static/pantsdown.css") {
+                const pantsdownCss = Bun.resolveSync("pantsdown/styles.css", import.meta.dir);
                 const file = Bun.file(pantsdownCss);
                 return new Response(file, {
                     headers: { "content-type": "text/css" },
