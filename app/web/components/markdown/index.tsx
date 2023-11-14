@@ -6,7 +6,7 @@ import { BreadCrumbs } from "./breadcrumbs.tsx";
 import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";
 import { Explorer } from "./explorer.tsx";
 import { LINE_NUMBERS_ELEMENT_ID, LineNumbers } from "./line-numbers.tsx";
-import { mermaidRun } from "./mermaid.ts";
+import { myMermaid } from "./mermaid.ts";
 import { evalPantsdownScript, postProcessHrefs, updateElementsStyles } from "./post-process.ts";
 import { getScrollOffsets, type Offsets } from "./scroll.ts";
 
@@ -81,7 +81,7 @@ export const Markdown = ({ className }: { className: string }) => {
                     single_file,
                     currentPath: message.currentPath,
                 });
-                await mermaidRun();
+                await myMermaid.run();
             }
 
             if ("linesCountChange" in message && message.linesCountChange) {
