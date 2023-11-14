@@ -1,10 +1,10 @@
-# GitHub Markdown Preview
+# Markdown (GFM) Preview for Neovim
 
 [<img src="docs/nvim.svg" height="60px" align="right" />](https://neovim.io/)
 [<img src="docs/github.svg" height="60px" align="right" />](https://github.com/)
 [<img src="docs/bun.svg" height="60px" align="right" />](https://bun.sh/)
 
-Live Preview of your Markdown files & local git repositories.
+Live Preview of your GitHub Flavored Markdown files & local git repositories.
 
 Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https://github.com/wallpants/pantsdown).
 

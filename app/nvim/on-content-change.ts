@@ -30,7 +30,7 @@ export async function onContentChange(
         }
     });
 
-    // Create autocmd to notify us with event "AttachBuffer"
+    // Create autocmd to notify us with event "attach_buffer"
     await app.nvim.call("nvim_create_autocmd", [
         ["InsertEnter", "TextChanged"],
         {
