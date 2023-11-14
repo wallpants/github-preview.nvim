@@ -1,6 +1,6 @@
 import { useContext, useLayoutEffect, type ReactNode } from "react";
 import { type Theme } from "../../types";
-import { mermaidInit } from "./markdown/mermaid";
+import { myMermaid } from "./markdown/mermaid";
 import { websocketContext } from "./websocket-provider/context";
 
 export function ThemeProvider({ children, THEME }: { children: ReactNode; THEME: Theme }) {
@@ -18,7 +18,7 @@ export function ThemeProvider({ children, THEME }: { children: ReactNode; THEME:
             let className = "pantsdown " + newTheme;
             if (high_contrast) className += " high-contrast";
             rootHtml.className = className;
-            mermaidInit({
+            myMermaid.initialize({
                 startOnLoad: false,
                 theme: newTheme === "light" ? "default" : "dark",
             });
