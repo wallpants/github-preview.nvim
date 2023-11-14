@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { type Config } from "../../../../types";
 import { cn } from "../../../utils";
 import { websocketContext } from "../../websocket-provider/context";
@@ -8,30 +8,37 @@ import { ScrollOption } from "./options/scroll";
 import { SingleFileOption } from "./options/single-file";
 import { ThemeOption } from "./options/theme";
 
-export const Settings = ({
-    isOverriden,
-    cKey,
-    settingsOffset,
-    setStartExit,
-}: {
+type Props = {
     isOverriden: boolean;
     cKey: keyof Config | "no-key";
     settingsOffset: number;
     setStartExit: (s: boolean) => void;
-}) => {
+};
+
+export const Settings = ({ isOverriden, cKey, settingsOffset, setStartExit }: Props) => {
     const { wsRequest } = useContext(websocketContext);
+    const [isHovering, setIsHovering] = useState(false);
+    const [isSelectingColor, setIsSelectingColor] = useState(false);
     const [tick, setTick] = useState(0);
 
     const smallSettings = cKey !== "no-key";
+
+    useEffect(() => {
+        // we need to keep track of `isPickingColor`, because we stop hovering
+        // when picking color, but we don't want the settings modal to close
+        if (smallSettings && !isSelectingColor) {
+            setStartExit(!isHovering);
+        }
+    }, [smallSettings, setStartExit, isHovering, isSelectingColor]);
 
     return (
         <div
             id="settings"
             onMouseEnter={() => {
-                if (smallSettings) setStartExit(false);
+                setIsHovering(true);
             }}
             onMouseLeave={() => {
-                if (smallSettings) setStartExit(true);
+                setIsHovering(false);
             }}
             onClick={(e) => {
                 e.stopPropagation();
@@ -72,7 +79,9 @@ export const Settings = ({
             </div>
 
             <div className={cn(smallSettings ? "flex justify-center" : "grid grid-cols-2 gap-4")}>
-                {(!smallSettings || cKey === "cursor_line") && <CursorlineOption />}
+                {(!smallSettings || cKey === "cursor_line") && (
+                    <CursorlineOption setIsSelectingColor={setIsSelectingColor} />
+                )}
                 {(!smallSettings || cKey === "scroll") && <ScrollOption />}
             </div>
             {!smallSettings && (

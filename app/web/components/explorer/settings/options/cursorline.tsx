@@ -2,7 +2,11 @@ import { useContext } from "react";
 import { websocketContext } from "../../../websocket-provider/context";
 import { Option } from "../option";
 
-export const CursorlineOption = () => {
+type Props = {
+    setIsSelectingColor: (s: boolean) => void;
+};
+
+export const CursorlineOption = ({ setIsSelectingColor }: Props) => {
     const { wsRequest, config } = useContext(websocketContext);
 
     if (!config) return null;
@@ -24,6 +28,7 @@ export const CursorlineOption = () => {
             }}
             color={{
                 value: overrides.cursor_line.color,
+                setIsSelectingColor: setIsSelectingColor,
                 onChange: (color) => {
                     wsRequest({
                         type: "update_config",

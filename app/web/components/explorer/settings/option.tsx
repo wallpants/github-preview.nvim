@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, type ChangeEvent } from "react";
 import { type GithubPreview } from "../../../../github-preview";
 import { cn, isEqual } from "../../../utils";
 import { Toggle } from "../../toggle";
@@ -17,6 +17,7 @@ type Props = {
     color?: {
         value: string;
         onChange: (v: string) => void;
+        setIsSelectingColor: (b: boolean) => void;
     };
     range?: {
         value: number;
@@ -39,6 +40,47 @@ export const Option = ({
     disabled,
 }: Props) => {
     const { config } = useContext(websocketContext);
+
+    useEffect(() => {
+        if (!color) return;
+
+        // we need to do all this to handle color change instead of a simple
+        // onChange handler in the input, because we need a way to know
+        // when the user is picking a color (the native color picker is showing)
+        // and when they're done picking. we need to know this to prevent
+        // the settings modal from closing whilst the user is picking a color.
+        //
+        // According to mozilla: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/color#result
+        // the way to know this is to have a handler for "input" and a handler for "change"
+        // added to the color input, but the react listeners onInput and onChange
+        // are both triggered at the same time every time the color input value changes.
+
+        const input = document.getElementById(`${cKey}-color`);
+        if (!input) return;
+
+        function onInput(event: ChangeEvent<HTMLInputElement>) {
+            color?.onChange(event.target.value);
+            color?.setIsSelectingColor(true);
+        }
+
+        function onChange(event: ChangeEvent<HTMLInputElement>) {
+            color?.onChange(event.target.value);
+            color?.setIsSelectingColor(false);
+        }
+
+        // eslint-disable-next-line
+        input.addEventListener("input", onInput as any);
+        // eslint-disable-next-line
+        input.addEventListener("change", onChange as any);
+
+        return () => {
+            // eslint-disable-next-line
+            input.removeEventListener("input", onInput as any);
+            // eslint-disable-next-line
+            input.removeEventListener("change", onChange as any);
+        };
+    }, [color, cKey]);
+
     if (!config) return null;
 
     const dotfiles = config.dotfiles[cKey];
@@ -63,12 +105,10 @@ export const Option = ({
                     <label className="flex items-center gap-x-4 text-[14px]">
                         <input
                             type="color"
+                            id={`${cKey}-color`}
                             className="h-6"
-                            value={color.value}
+                            defaultValue={color.value}
                             disabled={toggle?.value === false}
-                            onChange={(e) => {
-                                color.onChange(e.target.value);
-                            }}
                         />
                         {color.value}
                     </label>
