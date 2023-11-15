@@ -49,7 +49,8 @@ export function getScrollOffsets(
     const sourceLineOffsets: Offsets = [];
 
     let currLine = 0;
-    const isCode =
+
+    const isCodeFile =
         sortedElements.length === 1 &&
         sortedElements[0]?.tagName === "PRE" &&
         sortedElements[0].firstElementChild?.tagName === "CODE";
@@ -100,17 +101,30 @@ export function getScrollOffsets(
         // +1, because we go up until <= elemEndLine
         let lineRange = elemEndLine + 1 - elemStartLine;
 
-        if (isCode) {
+        if (isCodeFile) {
             // -1, because when rendering only code, we omit
             // the fence closing line ```
             // or at least that's what I think is happening
             lineRange -= 1;
         }
 
+        const isFencedCodeInMarkdown =
+            !isCodeFile &&
+            element.tagName === "PRE" &&
+            element.firstElementChild?.tagName === "CODE";
+
         const perLine = scrollHeight / lineRange;
 
         while (currLine <= elemEndLine) {
-            sourceLineOffsets[currLine++] = [acc, element];
+            sourceLineOffsets[currLine] = [acc, element];
+
+            if (currLine !== elemStartLine && isFencedCodeInMarkdown) {
+                // move offsets up a little bit when in fenced code
+                // in markdown files to center cursorline
+                sourceLineOffsets[currLine]![0] -= 8;
+            }
+
+            currLine++;
             acc += perLine;
         }
     }
