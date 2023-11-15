@@ -291,6 +291,10 @@
   margin-bottom: 1.5rem !important
 }
 
+.-mt-1 {
+  margin-top: -0.25rem
+}
+
 .mb-0 {
   margin-bottom: 0px
 }
@@ -419,6 +423,10 @@
   height: 9rem
 }
 
+.h-4 {
+  height: 1rem
+}
+
 .h-40 {
   height: 10rem
 }
@@ -489,6 +497,10 @@
 
 .w-24 {
   width: 6rem
+}
+
+.w-4 {
+  width: 1rem
 }
 
 .w-5 {
@@ -781,6 +793,10 @@
   stroke: var(--color-success-fg)
 }
 
+.p-0 {
+  padding: 0px
+}
+
 .p-2 {
   padding: 0.5rem
 }
@@ -978,6 +994,10 @@
 
 .hover\:bg-github-border-default:hover {
   background-color: var(--color-border-default)
+}
+
+.hover\:bg-github-canvas-default:hover {
+  background-color: var(--color-canvas-default)
 }
 
 .hover\:bg-github-canvas-subtle:hover {

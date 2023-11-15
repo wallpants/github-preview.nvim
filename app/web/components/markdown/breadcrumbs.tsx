@@ -1,9 +1,13 @@
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useState } from "react";
 import { cn, getSegments } from "../../utils.ts";
+import { IconButton } from "../icon-button.tsx";
+import { CheckIcon } from "../icons/check.tsx";
+import { CopyIcon } from "../icons/copy.tsx";
 import { websocketContext } from "../websocket-provider/context.ts";
 
 export const BreadCrumbs = () => {
     const { config, currentPath, repoName, wsRequest } = useContext(websocketContext);
+    const [copySuccess, setCopySuccess] = useState(false);
     const segments = getSegments(currentPath);
 
     function handleClick(idx: number) {
@@ -45,6 +49,26 @@ export const BreadCrumbs = () => {
                     </Fragment>
                 );
             })}
+            <IconButton
+                Icon={copySuccess ? CheckIcon : CopyIcon}
+                className="-mt-1 ml-2 h-8 w-8 items-center justify-center p-0 hover:bg-github-canvas-default"
+                iconClassName={cn("h-4 w-4", copySuccess && "stroke-github-success-fg")}
+                noBorder
+                onClick={() => {
+                    currentPath &&
+                        navigator.clipboard
+                            .writeText("/" + currentPath)
+                            .then(() => {
+                                setCopySuccess(true);
+                                setTimeout(() => {
+                                    setCopySuccess(false);
+                                }, 1000);
+                            })
+                            .catch(() => {
+                                //
+                            });
+                }}
+            />
         </p>
     );
 };
