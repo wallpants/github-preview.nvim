@@ -1,4 +1,4 @@
-# Markdown (GFM) Preview for Neovim
+# Markdown Live Preview for Neovim
 
 [<img src="docs/nvim.svg" height="60px" align="right" />](https://neovim.io/)
 [<img src="docs/github.svg" height="60px" align="right" />](https://github.com/)
