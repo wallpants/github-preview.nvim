@@ -15,18 +15,22 @@ export const myMermaid = {
         const newMermaids = new Map<string, string>();
         const documentMermaids = document.querySelectorAll(".mermaid");
 
+        let id = 0;
         for (const dMermaid of documentMermaids) {
             const definition = dMermaid.textContent ?? "";
 
             let newSvg = this.mermaids.get(definition);
 
             if (!newSvg) {
-                const type = mermaid.detectType(definition);
-
-                // bindFunctions
-                const { svg } = await mermaid.render(type, definition);
-                newSvg = svg;
+                try {
+                    const { svg } = await mermaid.render(`mermiad-${++id}`, definition);
+                    newSvg = svg;
+                } catch (e) {
+                    //
+                }
             }
+
+            if (!newSvg) return;
 
             newMermaids.set(definition, newSvg);
             dMermaid.innerHTML = newSvg;
