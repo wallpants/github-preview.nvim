@@ -4,8 +4,8 @@
 
 ## ✅ Requirements
 
--   [x] [Bun](https://bun.sh)
--   [x] [Neovim](https://neovim.io)
+- [x] [Bun](https://bun.sh)
+- [x] [Neovim](https://neovim.io)
 
 ## 💻 Setup
 

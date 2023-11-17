@@ -12,20 +12,20 @@ Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https:/
 
 ## ✨ Features
 
--   [💻 Linux / macOS / WSL](/docs/FEATURES.md#-linux--macos--wsl)
--   [🔴 LIVE updates](/docs/FEATURES.md#-live-updates)
--   [♻️ Synced Scrolling](/docs/FEATURES.md#%EF%B8%8F-synced-scrolling)
--   [🌈 Dark & Light modes](/docs/FEATURES.md#-dark--light-modes)
--   [🖍️ Cursorline in Preview](/docs/FEATURES.md#%EF%B8%8F-cursorline-in-preview)
--   [🏞️ Local Image Support](/docs/FEATURES.md#%EF%B8%8F-local-image-support)
--   [🧜 Mermaid Support](/docs/FEATURES.md#-mermaid-support)
--   [📌 Single-file mode](/docs/FEATURES.md#-single-file-mode)
--   [📂 Repository mode](/docs/FEATURES.md#-repository-mode)
+- [💻 Linux / macOS / WSL](/docs/FEATURES.md#-linux--macos--wsl)
+- [🔴 LIVE updates](/docs/FEATURES.md#-live-updates)
+- [♻️ Synced Scrolling](/docs/FEATURES.md#%EF%B8%8F-synced-scrolling)
+- [🌈 Dark & Light modes](/docs/FEATURES.md#-dark--light-modes)
+- [🖍️ Cursorline in Preview](/docs/FEATURES.md#%EF%B8%8F-cursorline-in-preview)
+- [🏞️ Local Image Support](/docs/FEATURES.md#%EF%B8%8F-local-image-support)
+- [🧜 Mermaid Support](/docs/FEATURES.md#-mermaid-support)
+- [📌 Single-file mode](/docs/FEATURES.md#-single-file-mode)
+- [📂 Repository mode](/docs/FEATURES.md#-repository-mode)
 
 ## ✅ Requirements
 
--   [x] [Bun](https://bun.sh)
--   [x] [Neovim](https://neovim.io)
+- [x] [Bun](https://bun.sh)
+- [x] [Neovim](https://neovim.io)
 
 ## 📦 Installation
 
