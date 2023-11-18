@@ -13,6 +13,7 @@ export default defineConfig({
     },
     server: {
         proxy: {
+            // redirect these requests to bun server instead of vite server
             "^/__github_preview__/.*": {
                 target: "http://localhost:6041",
                 changeOrigin: true,
