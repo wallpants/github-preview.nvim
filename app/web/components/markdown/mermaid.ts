@@ -8,6 +8,7 @@ export const myMermaid = {
     mermaids: new Map<string, string>(),
 
     initialize(config: MermaidConfig) {
+        this.mermaids = new Map();
         mermaid.initialize(config);
     },
 
