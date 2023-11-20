@@ -62,7 +62,7 @@
     "prettier-plugin-organize-imports": "^3.2.3",
     "semantic-release": "^22.0.7",
     "tailwindcss": "^3.3.5",
-    "typescript": "^5.2.2",
+    "typescript": "^5.3.2",
     "vite": "^5.0.0"
   }
 }
