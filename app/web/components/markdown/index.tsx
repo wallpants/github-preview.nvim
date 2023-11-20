@@ -7,7 +7,7 @@ import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";
 import { Explorer } from "./explorer.tsx";
 import { LINE_NUMBERS_ELEMENT_ID, LineNumbers } from "./line-numbers.tsx";
 import { myMermaid } from "./mermaid.ts";
-import { evalPantsdownScript, postProcessHrefs, updateElementsStyles } from "./post-process.ts";
+import { postProcessHrefs, updateElementsStyles } from "./post-process.ts";
 import { getScrollOffsets, type Offsets } from "./scroll.ts";
 
 const MARKDOWN_CONTAINER_ID = "markdown-container-id";
@@ -64,7 +64,13 @@ export const Markdown = ({ className }: { className: string }) => {
                 const fileExt = getFileExt(message.currentPath);
                 const text = message.lines.join("\n");
                 const markdown = fileExt === "md" ? text : "```" + fileExt + `\n${text}`;
-                markdownElement.innerHTML = pantsdown.parse(markdown);
+
+                const { html, javascript } = pantsdown.parse(markdown);
+                markdownElement.innerHTML = html;
+
+                const newScript = document.createElement("script");
+                newScript.text = javascript;
+                markdownElement.appendChild(newScript);
 
                 updateElementsStyles({
                     lines: message.lines,
@@ -73,7 +79,6 @@ export const Markdown = ({ className }: { className: string }) => {
                     cursorLineElement,
                     lineNumbersElement,
                 });
-                evalPantsdownScript(markdownElement);
                 postProcessHrefs({
                     wsRequest,
                     markdownElement,
