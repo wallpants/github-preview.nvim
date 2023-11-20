@@ -1,4 +1,4 @@
-### [👈 Back to README.md](/README.md)
+#### [👈 README.md](/README.md)
 
 # ✨ Features
 
@@ -44,8 +44,8 @@ When the plugin starts, it attempts to find a `.git` directory to identify a rep
 If no repository is found, **_repository mode_** is disabled and plugin starts
 in **_single-file mode_**.
 
-You can also force **_single-file mode_** in your [config](../README.md#%EF%B8%8F-configuration),
-toggle it through the web UI, or through the [functions this plugin exposes](../README.md#-advanced-usage).
+You can also force **_single-file mode_** in your [config](/README.md#%EF%B8%8F-configuration),
+toggle it through the web UI, or through the [functions this plugin exposes](/README.md#-advanced-usage).
 
 In this mode, the preview is locked to one buffer.
 
@@ -55,7 +55,7 @@ In this mode, the preview is locked to one buffer.
 
 If a git repository is detected, **_repository_** mode is enabled.
 
-You can disable **_repository mode_** in your [config](../README.md#%EF%B8%8F-configuration)
+You can disable **_repository mode_** in your [config](/README.md#%EF%B8%8F-configuration)
 by forcing **_single-file mode_**.
 
 In this mode, the preview will follow your cursor wherever it goes. You can click on
