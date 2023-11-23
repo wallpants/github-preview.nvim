@@ -8,7 +8,7 @@ Live Preview of your GitHub Flavored Markdown files & local git repositories.
 
 Powered by [Bunvim](https://github.com/wallpants/bunvim) and [Pantsdown](https://github.com/wallpants/pantsdown).
 
-![Demo](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/demo.gif)
+https://github.com/wallpants/github-preview.nvim/assets/47203170/e332a671-0ee4-4f8c-929e-d2c5c5d6f273
 
 ## ✨ Features
 
