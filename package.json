@@ -16,8 +16,13 @@
   },
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "@commitlint/cz-commitlint"
     }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "scripts": {
     "commit": "cz",
@@ -43,6 +48,9 @@
     "valibot": "^0.20.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@commitlint/cz-commitlint": "^18.4.3",
     "@types/eslint": "^8.44.7",
     "@types/opener": "^1.4.3",
     "@types/react": "^18.2.37",
@@ -53,10 +61,11 @@
     "autoprefixer": "^10.4.16",
     "bun-types": "latest",
     "commitizen": "^4.3.0",
-    "cz-conventional-changelog": "^3.3.0",
+    "commitlint": "^18.4.3",
     "eslint": "^8.54.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-tailwindcss": "3.13.0",
+    "inquirer": "8",
     "postcss": "^8.4.31",
     "prettier": "^3.1.0",
     "prettier-plugin-organize-imports": "^3.2.3",
