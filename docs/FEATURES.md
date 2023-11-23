@@ -20,19 +20,19 @@ See updates live in your browser as you edit your files.
 
 Live Preview auto scrolls following your cursor in Neovim.
 
-![Scroll](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/scroll.gif)
+https://github.com/wallpants/github-preview.nvim/assets/47203170/71036418-3517-4f5e-9b6e-6c7004258604
 
 ## 🌈 Dark & Light modes
 
 Toggle between light and dark modes.
 
-<img src="https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/themes.gif" height="600px" />
+https://github.com/wallpants/github-preview.nvim/assets/47203170/fe029bad-25a6-4c4a-be3d-16e5a965c004
 
 ## 🖍️ Cursorline in Preview
 
 Cursorline position is estimated and may sometimes be a bit off.
 
-<img src="https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/cursorline.gif" height="600px" />
+https://github.com/wallpants/github-preview.nvim/assets/47203170/d61958a2-f939-4bde-a2ec-4caaf3434f4b
 
 ## 🏞️ Local Image Support
 
@@ -49,7 +49,7 @@ toggle it through the web UI, or through the [functions this plugin exposes](/RE
 
 In this mode, the preview is locked to one buffer.
 
-![Single-file](https://raw.githubusercontent.com/wallpants/gifs/main/github-preview.nvim/single-file.gif)
+https://github.com/wallpants/github-preview.nvim/assets/47203170/5a3ddbcc-dc4e-4058-910a-61059a9357a5
 
 ## 📂 Repository mode
 
