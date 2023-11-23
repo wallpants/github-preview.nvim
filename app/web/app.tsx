@@ -1,3 +1,5 @@
+import "./static/dev-tailwind.css";
+
 import { parse } from "valibot";
 import { BuildConstsSchema } from "../types.ts";
 import { Explorer } from "./components/explorer/index.tsx";
