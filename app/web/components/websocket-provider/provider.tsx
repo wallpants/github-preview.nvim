@@ -1,5 +1,3 @@
-import "../../static/dev-tailwind.css";
-
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { type GithubPreview } from "../../../github-preview.ts";
