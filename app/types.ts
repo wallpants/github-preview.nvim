@@ -87,6 +87,7 @@ export type WsServerMessage =
           currentPath: string;
           config: GithubPreview["config"];
           cursorLine: number | null;
+          currentEntries: string[] | undefined;
       }
     | {
           type: "entries";

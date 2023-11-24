@@ -22,7 +22,7 @@ export const WebsocketProvider = ({
     BUILD_CONSTS: { HOST, PORT, IS_DEV, THEME },
 }: Props) => {
     const [config, setConfig] = useState<GithubPreview["config"] | null>(null);
-    const [currentPath, setCurrentPath] = useState<string>("");
+    const [currentPath, setCurrentPath] = useState<string | null>(null);
     const handlers = useRef(new Map<string, MessageHandler>());
     const [repoName, setRepoName] = useState("");
 
