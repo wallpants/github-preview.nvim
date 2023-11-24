@@ -28,6 +28,7 @@ export const WebsocketProvider = ({
 
     /** changes to values in this refObject don't trigger re-renders */
     const refObject = useRef<RefObject>({
+        urlMasks: new Map(),
         currentEntries: undefined,
         ws: createWs(HOST, PORT),
         skipScroll: false,

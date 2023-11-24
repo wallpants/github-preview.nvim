@@ -6,37 +6,81 @@ declare const mermaid: Mermaid;
 // and to centralize all mermaid operations
 export const myMermaid = {
     mermaids: new Map<string, string>(),
+    incId: 0,
 
     initialize(config: MermaidConfig) {
         this.mermaids = new Map();
         mermaid.initialize(config);
     },
 
-    async run() {
-        const newMermaids = new Map<string, string>();
-        const documentMermaids = document.querySelectorAll(".mermaid");
+    /**
+     * renders memoized mermaids only so we can run it synchronously
+     */
+    renderMemoized(element?: HTMLElement) {
+        const documentMermaids = (element ?? document).querySelectorAll(".mermaid");
 
-        let id = 0;
+        const memoMermaids = new Map<string, string>();
+        const pendingMermaids: Element[] = [];
+
         for (const dMermaid of documentMermaids) {
-            const definition = dMermaid.textContent ?? "";
+            const renderedDefinition = dMermaid.getAttribute("data-rendered");
+            if (renderedDefinition) {
+                memoMermaids.set(renderedDefinition, dMermaid.innerHTML);
+                continue;
+            }
 
-            let newSvg = this.mermaids.get(definition);
+            const definition = dMermaid.textContent;
+            if (!definition) continue;
 
-            if (!newSvg) {
+            const svg = this.mermaids.get(definition);
+            if (svg) {
+                memoMermaids.set(definition, svg);
+                dMermaid.setAttribute("data-rendered", definition);
+                dMermaid.innerHTML = svg;
+            } else {
+                pendingMermaids.push(dMermaid);
+            }
+        }
+
+        return {
+            memoMermaids,
+            pendingMermaids,
+        };
+    },
+
+    /**
+     * renders all mermaids
+     * uses memoized mermaids if present and generates missing
+     */
+    async renderAsync() {
+        const { memoMermaids, pendingMermaids } = this.renderMemoized();
+
+        for (const dMermaid of pendingMermaids) {
+            const renderedDefinition = dMermaid.getAttribute("data-rendered");
+
+            const definition = renderedDefinition ?? dMermaid.textContent;
+            if (!definition) continue;
+
+            let svg = this.mermaids.get(definition);
+
+            if (!svg) {
                 try {
-                    const { svg } = await mermaid.render(`mermiad-${++id}`, definition);
-                    newSvg = svg;
+                    const { svg: newSvg } = await mermaid.render(
+                        `mermaid-${++this.incId}`,
+                        definition,
+                    );
+                    svg = newSvg;
                 } catch (e) {
                     //
                 }
             }
 
-            if (!newSvg) return;
+            if (!svg) continue;
 
-            newMermaids.set(definition, newSvg);
-            dMermaid.innerHTML = newSvg;
+            memoMermaids.set(definition, svg);
+            dMermaid.innerHTML = svg;
         }
 
-        this.mermaids = newMermaids;
+        this.mermaids = memoMermaids;
     },
 };

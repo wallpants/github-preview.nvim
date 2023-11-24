@@ -34,6 +34,18 @@ Cursorline position is estimated and may sometimes be a bit off.
 
 https://github.com/wallpants/github-preview.nvim/assets/47203170/d61958a2-f939-4bde-a2ec-4caaf3434f4b
 
+## 📹 Video Support
+
+If a an absolute url (e.g. https://...) is detected, the plugin checks if it's a video source,
+and if it is, the video is rendered.
+
+Has only been tested with videos uploaded directly through the GitHub Editor
+[as explained here](https://stackoverflow.com/a/4279746), but any URL that responds with a valid
+video src `<video src="url">` should be rendered as a video. If your internet connection is slow,
+it may take some seconds for the video to render.
+
+https://github.com/wallpants/github-preview.nvim/assets/47203170/a3b03aac-2cd9-4bb9-a68b-3c123c16c651
+
 ## 🏞️ Local Image Support
 
 Relative image sources (example: `![image](./docs/github.svg)`) are resolved and rendered if found.
