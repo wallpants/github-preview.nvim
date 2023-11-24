@@ -4,6 +4,7 @@ import { type GithubPreview } from "../../../github-preview.ts";
 import { type WsBrowserMessage, type WsServerMessage } from "../../../types.ts";
 
 export type RefObject = {
+    urlMasks: Map<string, HTMLElement | null>;
     currentEntries: string[] | undefined;
     ws: ReconnectingWebSocket;
     skipScroll: boolean;

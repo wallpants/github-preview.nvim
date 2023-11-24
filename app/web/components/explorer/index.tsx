@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { type Config } from "../../../types.ts";
 import { useOnDocumentClick } from "../../use-on-document-click.ts";
 import { cn, isEqual } from "../../utils.ts";
-import { myMermaid } from "../markdown/mermaid.ts";
 import { websocketContext } from "../websocket-provider/context.ts";
 import { EntryComponent } from "./entry.tsx";
 import { Footer } from "./footer.tsx";
@@ -24,10 +23,6 @@ export const Explorer = () => {
             setConfigOpen(null);
         },
     });
-
-    useEffect(() => {
-        void myMermaid.run();
-    }, [isExpanded]);
 
     return (
         <div

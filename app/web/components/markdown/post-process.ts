@@ -1,15 +1,64 @@
 import { type MutableRefObject } from "react";
 import { type RefObject, type WebsocketContext } from "../websocket-provider/context";
 
+function replaceIfVideo(a: HTMLAnchorElement, refObject: MutableRefObject<RefObject>) {
+    const memoized = refObject.current.urlMasks.get(a.innerText);
+
+    if (memoized !== undefined) {
+        if (memoized !== null) a.replaceWith(memoized);
+        return;
+    }
+
+    refObject.current.urlMasks.set(a.innerText, null);
+
+    const tempVideo = document.createElement("video");
+    tempVideo.src = a.href;
+
+    tempVideo.oncanplay = () => {
+        const video = document.createElement("video");
+        video.src = a.href;
+        video.setAttribute("controls", "");
+
+        const details = document.createElement("details");
+        details.addEventListener(
+            "click",
+            () => {
+                refObject.current.skipScroll = true;
+            },
+            {
+                capture: true,
+            },
+        );
+        details.setAttribute("open", "");
+        details.classList.add("details-video");
+
+        const summary = document.createElement("summary");
+        summary.innerText = "video.mp4";
+
+        details.append(summary);
+        details.append(video);
+
+        refObject.current.urlMasks.set(a.innerText, details);
+
+        // we query dom again in case previous <a> tag has been rerendered
+        // and our reference to it broke
+        document.querySelectorAll("a").forEach((anchor) => {
+            if (anchor.innerText === a.innerText) {
+                anchor.replaceWith(details);
+            }
+        });
+    };
+}
+
 export function postProcessHrefs({
     wsRequest,
-    markdownElement,
+    tempElement,
     refObject,
     single_file,
     currentPath,
 }: {
     wsRequest: WebsocketContext["wsRequest"];
-    markdownElement: HTMLElement;
+    tempElement: HTMLElement;
     refObject: MutableRefObject<RefObject>;
     single_file: boolean | undefined;
     currentPath: string;
@@ -21,12 +70,13 @@ export function postProcessHrefs({
     const url = base + currentPath;
 
     // override relative links to trigger wsRequest
-    markdownElement.querySelectorAll("a").forEach((element) => {
+    tempElement.querySelectorAll("a").forEach((element) => {
         const isAbsolute = !element.href.startsWith(base);
         const isAnchor = element.href.slice(url.length).startsWith("#");
 
         if (isAbsolute || isAnchor) {
             if (isAbsolute) {
+                replaceIfVideo(element, refObject);
                 element.target = "_blank";
                 element.rel = "noreferrer noopener";
             }
@@ -51,7 +101,7 @@ export function postProcessHrefs({
 
     // intercept clicks to <details> tags to set a flag to disable scrolling.
     // it's annoying when you open/close a <details> tag and there's an auto scroll
-    markdownElement.querySelectorAll("details").forEach((element) => {
+    tempElement.querySelectorAll("details").forEach((element) => {
         element.addEventListener(
             "click",
             () => {

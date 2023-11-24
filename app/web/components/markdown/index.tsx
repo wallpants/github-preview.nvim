@@ -60,18 +60,31 @@ export const Markdown = ({ className }: { className: string }) => {
         )
             return;
 
-        registerHandler("markdown", async (message) => {
+        registerHandler("markdown", (message) => {
             if ("lines" in message) {
                 const fileExt = getFileExt(message.currentPath);
                 const text = message.lines.join("\n");
                 const markdown = fileExt === "md" ? text : "```" + fileExt + `\n${text}`;
 
                 const { html, javascript } = pantsdown.parse(markdown);
-                markdownElement.innerHTML = html;
 
-                const newScript = document.createElement("script");
-                newScript.text = javascript;
-                markdownElement.appendChild(newScript);
+                // We create a tempElement so we can post-process html before actually
+                // adding it to the DOM. This way we can avoid screen jumps caused
+                // by html replacements that happen during post-process.
+                const tempElement = document.createElement("div");
+                tempElement.innerHTML = html;
+
+                postProcessHrefs({
+                    wsRequest,
+                    tempElement,
+                    refObject,
+                    single_file,
+                    currentPath: message.currentPath,
+                });
+
+                myMermaid.renderMemoized(tempElement);
+
+                markdownElement.replaceChildren(...tempElement.children);
 
                 updateElementsStyles({
                     lines: message.lines,
@@ -80,14 +93,12 @@ export const Markdown = ({ className }: { className: string }) => {
                     cursorLineElement,
                     lineNumbersElement,
                 });
-                postProcessHrefs({
-                    wsRequest,
-                    markdownElement,
-                    refObject,
-                    single_file,
-                    currentPath: message.currentPath,
-                });
-                await myMermaid.run();
+
+                const newScript = document.createElement("script");
+                newScript.text = javascript;
+                markdownElement.appendChild(newScript);
+
+                void myMermaid.renderAsync();
             }
 
             if ("linesCountChange" in message && message.linesCountChange) {
