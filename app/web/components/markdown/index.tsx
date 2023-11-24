@@ -1,6 +1,6 @@
 import { Pantsdown } from "pantsdown";
 import { useContext, useEffect, useState } from "react";
-import { cn, getFileExt } from "../../utils.ts";
+import { cn, getFileExt, isEqual } from "../../utils.ts";
 import { websocketContext } from "../websocket-provider/context.ts";
 import { BreadCrumbs } from "./breadcrumbs.tsx";
 import { CURSOR_LINE_ELEMENT_ID, CursorLine } from "./cursor-line.tsx";
@@ -36,7 +36,8 @@ export const Markdown = ({ className }: { className: string }) => {
     useEffect(() => {
         pantsdown.setConfig({ renderer: { detailsTagDefaultOpen: details_tags_open } });
         // re-request content to trigger re-render with new config
-        if (currentPath) {
+        const hasOverrides = !isEqual(config?.dotfiles, config?.overrides);
+        if (currentPath && hasOverrides) {
             refObject.current.skipScroll = true;
             wsRequest({ type: "get_entry", path: currentPath });
         }
