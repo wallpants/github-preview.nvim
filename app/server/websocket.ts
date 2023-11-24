@@ -33,7 +33,7 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
             if (browserMessage.type === "init") {
                 // call "setCurrPath" in case app started in repository mode and no buffer
                 // was loaded. "setCurrPath" should resolve to readme.md if it exists.
-                await app.setCurrPath(app.currentPath);
+                const entries = await app.setCurrPath(app.currentPath);
 
                 const message: WsServerMessage = {
                     type: "init",
@@ -42,8 +42,8 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
                     lines: app.lines,
                     config: app.config,
                     cursorLine: app.cursorLine,
+                    currentEntries: entries,
                 };
-
                 wsSend(message);
             }
 
