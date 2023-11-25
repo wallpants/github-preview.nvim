@@ -20,6 +20,10 @@ function replaceIfVideo(a: HTMLAnchorElement, refObject: MutableRefObject<RefObj
         video.setAttribute("controls", "");
 
         const details = document.createElement("details");
+        details.setAttribute("open", "");
+        details.classList.add("details-video");
+
+        // disable autoscroll on <details> open/close
         details.addEventListener(
             "click",
             () => {
@@ -29,8 +33,6 @@ function replaceIfVideo(a: HTMLAnchorElement, refObject: MutableRefObject<RefObj
                 capture: true,
             },
         );
-        details.setAttribute("open", "");
-        details.classList.add("details-video");
 
         const summary = document.createElement("summary");
         summary.innerText = "video.mp4";
@@ -40,7 +42,7 @@ function replaceIfVideo(a: HTMLAnchorElement, refObject: MutableRefObject<RefObj
 
         refObject.current.urlMasks.set(a.innerText, details);
 
-        // we query dom again in case previous <a> tag has been rerendered
+        // we query DOM again in case <a> tag has been rerendered
         // and our reference to it broke
         document.querySelectorAll("a").forEach((anchor) => {
             if (anchor.innerText === a.innerText) {
@@ -55,19 +57,14 @@ export function postProcessHrefs({
     tempElement,
     refObject,
     single_file,
-    currentPath,
 }: {
     wsRequest: WebsocketContext["wsRequest"];
     tempElement: HTMLElement;
     refObject: MutableRefObject<RefObject>;
     single_file: boolean | undefined;
-    currentPath: string;
 }) {
-    const base = window.location.origin + "/";
-    // we use currentPath instead of reading window url,
-    // because window url is updated after render in a useEffect
-    // which happens after this. we use currentPath to get latest value
-    const url = base + currentPath;
+    const base = window.location.origin;
+    const url = window.location.href;
 
     // override relative links to trigger wsRequest
     tempElement.querySelectorAll("a").forEach((element) => {
@@ -94,13 +91,13 @@ export function postProcessHrefs({
             // if single file, cancel default behaviour and do nothing
             if (single_file) return;
 
-            const pathname = element.href.slice(base.length);
-            wsRequest({ type: "get_entry", path: pathname });
+            // .slice(1) to remove initial "/"
+            const path = element.href.slice(base.length).slice(1);
+            wsRequest({ type: "get_entry", path });
         });
     });
 
-    // intercept clicks to <details> tags to set a flag to disable scrolling.
-    // it's annoying when you open/close a <details> tag and there's an auto scroll
+    // disable autoscroll on <details> open/close
     tempElement.querySelectorAll("details").forEach((element) => {
         element.addEventListener(
             "click",

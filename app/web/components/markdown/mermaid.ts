@@ -2,14 +2,12 @@ import { type Mermaid, type MermaidConfig } from "mermaid";
 
 declare const mermaid: Mermaid;
 
-// this object exists so that we don't need to keep declaring "const mermaid" as above
-// and to centralize all mermaid operations
 export const myMermaid = {
-    mermaids: new Map<string, string>(),
+    memoMermaids: new Map<string, string>(),
     incId: 0,
 
     initialize(config: MermaidConfig) {
-        this.mermaids = new Map();
+        this.memoMermaids = new Map();
         mermaid.initialize(config);
     },
 
@@ -32,7 +30,7 @@ export const myMermaid = {
             const definition = dMermaid.textContent;
             if (!definition) continue;
 
-            const svg = this.mermaids.get(definition);
+            const svg = this.memoMermaids.get(definition);
             if (svg) {
                 memoMermaids.set(definition, svg);
                 dMermaid.setAttribute("data-rendered", definition);
@@ -61,7 +59,7 @@ export const myMermaid = {
             const definition = renderedDefinition ?? dMermaid.textContent;
             if (!definition) continue;
 
-            let svg = this.mermaids.get(definition);
+            let svg = this.memoMermaids.get(definition);
 
             if (!svg) {
                 try {
@@ -81,6 +79,6 @@ export const myMermaid = {
             dMermaid.innerHTML = svg;
         }
 
-        this.mermaids = memoMermaids;
+        this.memoMermaids = memoMermaids;
     },
 };

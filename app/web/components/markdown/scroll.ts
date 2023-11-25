@@ -60,6 +60,9 @@ export function getScrollOffsets(
     for (let index = 0, len = sortedElements.length; index < len; index++) {
         const element = sortedElements[index]!;
 
+        // If the element is not visible, we skip it because element.offsetTop is 0 for
+        // non-visible elements and that messes up with scrollOffsets.
+        // This usually happens with children of <details> tags
         if (!element.checkVisibility()) {
             continue;
         }
@@ -183,7 +186,10 @@ export function scroll(
 
     cursorLineElement.style.setProperty("top", `${cursorLineOffset[0]}px`);
 
-    if (typeof topOffsetPct !== "number") return;
+    if (typeof topOffsetPct !== "number") {
+        // this means the user disabled synced scroll
+        return;
+    }
 
     const percent = topOffsetPct / 100;
     markdownContainerElement.scrollTo({
