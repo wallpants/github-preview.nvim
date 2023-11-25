@@ -159,7 +159,7 @@ export const Markdown = ({ className }: { className: string }) => {
             <LineNumbers
                 hash={refObject.current.hash}
                 offsets={offsets}
-                lineNumbersElement={lineNumbersElement}
+                currentPath={currentPath}
             />
         </div>
     );
