@@ -79,7 +79,6 @@ export const Markdown = ({ className }: { className: string }) => {
                     tempElement,
                     refObject,
                     single_file,
-                    currentPath: message.currentPath,
                 });
 
                 myMermaid.renderMemoized(tempElement);
