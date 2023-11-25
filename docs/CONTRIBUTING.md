@@ -165,7 +165,7 @@ bun run tailwind:compile
 ```
 
 > [!NOTE]
-> There's a [github action](https://github.com/wallpants/github-preview.nvim/blob/e29bd3dcf7cae32ac95b30122ea6632bf99f9fb2/.github/workflows/release.yml#L12-L38)
+> There's a [github action](https://github.com/wallpants/github-preview.nvim/blob/main/.github/workflows/release.yml#L12-L43)
 > that verifies if these actions were performed and will notify you if any steps were skipped.
 
 ## Git Commits
