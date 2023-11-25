@@ -73,6 +73,8 @@ by forcing **_single-file mode_**.
 In this mode, the preview will follow your cursor wherever it goes. You can click on
 relative links and browse the repository similar to how you would do it on GitHub.
 
+https://github.com/wallpants/github-preview.nvim/assets/47203170/092a4658-6f74-4f7b-831c-1b08689929d2
+
 ## 🧜 Mermaid Support
 
 Basic [mermaid](https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/) support.
