@@ -43,23 +43,6 @@ export function httpHandler(app: GithubPreview) {
             process.exit(0);
         }
 
-        if (pathname === "/__main__.tsx") {
-            const { outputs } = await Bun.build({
-                entrypoints: [webRoot + pathname],
-                plugins: [mockCssLoader],
-                define: {
-                    __HOST__: JSON.stringify(app.config.dotfiles.host),
-                    __PORT__: JSON.stringify(app.config.dotfiles.port),
-                    __IS_DEV__: JSON.stringify(false),
-                    __THEME__: JSON.stringify(app.config.overrides.theme),
-                },
-            });
-
-            return new Response(outputs[0], {
-                headers: { "content-type": "text/javascript" },
-            });
-        }
-
         if (pathname.startsWith(GP_PREFIX)) {
             // static files (js, img, css)
             const requested = pathname.slice(GP_PREFIX.length);
@@ -70,7 +53,24 @@ export function httpHandler(app: GithubPreview) {
                 return new Response(file);
             }
 
-            if (requested === "/static/pantsdown.css") {
+            if (requested === "/index.tsx") {
+                const { outputs } = await Bun.build({
+                    entrypoints: [webRoot + requested],
+                    plugins: [mockCssLoader],
+                    define: {
+                        __HOST__: JSON.stringify(app.config.dotfiles.host),
+                        __PORT__: JSON.stringify(app.config.dotfiles.port),
+                        __IS_DEV__: JSON.stringify(false),
+                        __THEME__: JSON.stringify(app.config.overrides.theme),
+                    },
+                });
+
+                return new Response(outputs[0], {
+                    headers: { "content-type": "text/javascript" },
+                });
+            }
+
+            if (requested === "/pantsdown.css") {
                 const pantsdownCss = Bun.resolveSync("pantsdown/styles.css", import.meta.dir);
                 const file = Bun.file(pantsdownCss);
                 return new Response(file, {
@@ -78,7 +78,7 @@ export function httpHandler(app: GithubPreview) {
                 });
             }
 
-            if (requested === "/static/mermaid.js") {
+            if (requested === "/mermaid.js") {
                 const mermaid = Bun.resolveSync("mermaid/dist/mermaid.min.js", import.meta.dir);
                 const file = Bun.file(mermaid);
                 return new Response(file, {
