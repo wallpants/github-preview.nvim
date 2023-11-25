@@ -36,12 +36,12 @@ https://github.com/wallpants/github-preview.nvim/assets/47203170/d61958a2-f939-4
 
 ## 📹 Video Support
 
-If a an absolute url (e.g. https://...) is detected, the plugin checks if it's a video source,
+If an absolute URL (e.g. https://...) is detected, the plugin checks if it's a video source,
 and if it is, the video is rendered.
 
 Has only been tested with videos uploaded directly through the GitHub Editor
 [as explained here](https://stackoverflow.com/a/4279746), but any URL that responds with a valid
-video src `<video src="url">` should be rendered as a video. If your internet connection is slow,
+video src `<video src={url}>` should be rendered as a video. If your internet connection is slow,
 it may take some seconds for the video to render.
 
 https://github.com/wallpants/github-preview.nvim/assets/47203170/a3b03aac-2cd9-4bb9-a68b-3c123c16c651
