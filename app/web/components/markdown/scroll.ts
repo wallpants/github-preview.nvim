@@ -27,6 +27,8 @@ function getAttrs(markdownContainerElement: HTMLElement, element: HTMLElement): 
     let offsetParent = element.offsetParent as HTMLElement | null;
 
     while (offsetParent !== null && offsetParent.id !== markdownContainerElement.id) {
+        // offsetTop is relative to some parent,
+        // we want to recursively add offsetsTop all the way up to the markdownContainerElement
         attrs.offsetTop += offsetParent.offsetTop;
         offsetParent = offsetParent.offsetParent as HTMLElement | null;
     }
