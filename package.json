@@ -67,7 +67,7 @@
     "bun-types": "latest",
     "commitizen": "^4.3.0",
     "commitlint": "^18.4.3",
-    "eslint": "^8.54.0",
+    "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-tailwindcss": "3.13.0",
     "inquirer": "8",
