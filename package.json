@@ -50,7 +50,7 @@
     "react-dom": "^18.2.0",
     "reconnecting-websocket": "^4.4.0",
     "tailwind-merge": "^2.0.0",
-    "valibot": "^0.22.0"
+    "valibot": "^0.24.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
