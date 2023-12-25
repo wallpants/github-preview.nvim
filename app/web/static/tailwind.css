@@ -1057,12 +1057,12 @@
   display: block
 }
 
-:is(.dark .dark\:border-gray-600) {
+:is(:where(.dark) .dark\:border-gray-600) {
   --tw-border-opacity: 1;
   border-color: rgb(75 85 99 / var(--tw-border-opacity))
 }
 
-:is(.dark .dark\:bg-gray-700) {
+:is(:where(.dark) .dark\:bg-gray-700) {
   --tw-bg-opacity: 1;
   background-color: rgb(55 65 81 / var(--tw-bg-opacity))
 }
