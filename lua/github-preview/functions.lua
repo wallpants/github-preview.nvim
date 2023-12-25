@@ -5,12 +5,12 @@ M.start = function()
 	vim.notify("github-preview: init", vim.log.levels.INFO)
 
 	-- should look like "/Users/.../github-preview"
-	local root = vim.fn.finddir(".git", ";")
+	local root = Utils.config.single_file and "" or vim.fn.finddir(".git", ";")
 
 	local buffer_name = vim.api.nvim_buf_get_name(0)
 	local init_path = vim.fn.fnamemodify(buffer_name, ":p")
 
-	if root == "" or Utils.config.single_file then
+	if root == "" then
 		-- if repo root not found or single-file mode is enabled,
 		-- we make sure there's something loaded into the current buffer
 		if vim.fn.fnamemodify(init_path, ":t") == "" then
@@ -20,10 +20,8 @@ M.start = function()
 			)
 			return
 		end
-	end
 
-	if root == "" then
-		-- if root not found, we set root to current path
+		-- if no root, we set root to current path
 		root = vim.fn.fnamemodify(init_path, ":h") .. "/"
 		Utils.config.single_file = true
 	else
