@@ -82,7 +82,7 @@ M.validate_config = function()
 			end,
 			"number between 0 and 100",
 		},
-		["log_level"] = {
+		log_level = {
 			M.config.log_level,
 			function(log_level)
 				local is_nil = type(log_level) == "nil"
