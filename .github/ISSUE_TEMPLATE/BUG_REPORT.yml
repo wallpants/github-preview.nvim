@@ -17,14 +17,8 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-      label: What happened?
+      label: What happened? How were you expecting the plugin to behave?
       description: Include any details you think might be relevant.
-    validations:
-      required: true
-  - type: textarea
-    id: what-is-expected
-    attributes:
-      label: How were you expecting the plugin to behave?
     validations:
       required: true
   # - type: dropdown
