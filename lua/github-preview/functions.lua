@@ -1,3 +1,4 @@
+local Config = require("github-preview.config")
 local Utils = require("github-preview.utils")
 local M = {}
 
@@ -5,7 +6,7 @@ M.start = function()
 	vim.notify("github-preview: init", vim.log.levels.INFO)
 
 	-- should look like "/Users/.../github-preview"
-	local root = Utils.config.single_file and "" or vim.fn.finddir(".git", ";")
+	local root = Config.value.single_file and "" or vim.fn.finddir(".git", ";")
 
 	local buffer_name = vim.api.nvim_buf_get_name(0)
 	local init_path = vim.fn.fnamemodify(buffer_name, ":p")
@@ -23,7 +24,7 @@ M.start = function()
 
 		-- if no root, we set root to current path
 		root = vim.fn.fnamemodify(init_path, ":h") .. "/"
-		Utils.config.single_file = true
+		Config.value.single_file = true
 	else
 		-- if found, path is made absolute & has "/.git/" popped
 		root = vim.fn.fnamemodify(root, ":p:h:h") .. "/"
@@ -35,7 +36,7 @@ M.start = function()
 			root = root,
 			path = init_path,
 		},
-		config = Utils.config,
+		config = Config.value,
 	}
 	-- vim.g.github_preview_props is read by bunvim
 	vim.g.github_preview_props = github_preview_props
@@ -48,10 +49,10 @@ M.start = function()
 	---@type env
 	local env = { IS_DEV = false }
 
-	if Utils.config.log_level then
+	if Config.value.log_level then
 		command = "bun --hot run start"
 		env.IS_DEV = true
-		env.LOG_LEVEL = Utils.config.log_level
+		env.LOG_LEVEL = Config.value.log_level
 	end
 
 	-- Install Bun dependencies:
@@ -65,7 +66,7 @@ M.start = function()
 	})
 	vim.fn.jobwait({ bun_install })
 
-	Utils.job_id = vim.fn.jobstart(command, {
+	Config.job_id = vim.fn.jobstart(command, {
 		cwd = plugin_root,
 		stdin = "null",
 		on_exit = Utils.log_exit(env.LOG_LEVEL),
@@ -80,9 +81,9 @@ M.stop = function()
 	if channel_id ~= nil then
 		-- onBeforeExit request closes browser
 		vim.rpcrequest(channel_id, "on_before_exit")
-		if Utils.job_id then
-			vim.fn.jobstop(Utils.job_id)
-			Utils.job_id = nil
+		if Config.job_id then
+			vim.fn.jobstop(Config.job_id)
+			Config.job_id = nil
 		end
 		return true
 	end
@@ -95,22 +96,37 @@ M.toggle = function()
 	end
 end
 
-M.clear_overrides = Utils.update_config("clear_overrides")
+---@param update_action string
+---@param value? string
+local function update_config(update_action, value)
+	return function()
+		local channel_id = Utils.get_client_channel()
+		if channel_id ~= nil then
+			-- vim.rpcrequest seems to be incorrecly typed
+			---@diagnostic disable-next-line: param-type-mismatch
+			vim.rpcrequest(channel_id, "on_config_update", update_action, value)
+		else
+			vim.notify("github-preview: could not find running plugin")
+		end
+	end
+end
 
-M.single_file_toggle = Utils.update_config("single_file", "toggle")
-M.single_file_on = Utils.update_config("single_file", "on")
-M.single_file_off = Utils.update_config("single_file", "off")
+M.clear_overrides = update_config("clear_overrides")
 
-M.details_tags_toggle = Utils.update_config("details_tags", "toggle")
-M.details_tags_open = Utils.update_config("details_tags", "open")
-M.details_tags_closed = Utils.update_config("details_tags", "closed")
+M.single_file_toggle = update_config("single_file", "toggle")
+M.single_file_on = update_config("single_file", "on")
+M.single_file_off = update_config("single_file", "off")
 
-M.scroll_toggle = Utils.update_config("scroll", "toggle")
-M.scroll_on = Utils.update_config("scroll", "on")
-M.scroll_off = Utils.update_config("scroll", "off")
+M.details_tags_toggle = update_config("details_tags", "toggle")
+M.details_tags_open = update_config("details_tags", "open")
+M.details_tags_closed = update_config("details_tags", "closed")
 
-M.cursorline_toggle = Utils.update_config("cursorline", "toggle")
-M.cursorline_on = Utils.update_config("cursorline", "on")
-M.cursorline_off = Utils.update_config("cursorline", "off")
+M.scroll_toggle = update_config("scroll", "toggle")
+M.scroll_on = update_config("scroll", "on")
+M.scroll_off = update_config("scroll", "off")
+
+M.cursorline_toggle = update_config("cursorline", "toggle")
+M.cursorline_on = update_config("cursorline", "on")
+M.cursorline_off = update_config("cursorline", "off")
 
 return M
