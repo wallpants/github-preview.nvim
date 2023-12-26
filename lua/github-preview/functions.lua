@@ -37,6 +37,7 @@ M.start = function()
 		},
 		config = Utils.config,
 	}
+	-- vim.g.github_preview_props is read by bunvim
 	vim.g.github_preview_props = github_preview_props
 
 	local __filename = debug.getinfo(1, "S").source:sub(2)
