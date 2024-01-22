@@ -29,6 +29,6 @@
 ---@field scroll scroll | nil
 ---@field log_level nil | "verbose" | "debug"
 
----@class plugin_props
+---@class github_preview_props
 ---@field init init
 ---@field config github_preview_config
