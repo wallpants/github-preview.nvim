@@ -30,7 +30,7 @@ M.start = function()
 		root = vim.fn.fnamemodify(root, ":p:h:h") .. "/"
 	end
 
-	---@type plugin_props
+	---@type github_preview_props
 	local github_preview_props = {
 		init = {
 			root = root,
