@@ -1,10 +1,11 @@
 {
   "name": "github-preview.nvim",
+  "author": "wallpants",
   "type": "module",
   "version": "0.0.0",
-  "private": true,
-  "author": "wallpants",
   "license": "MIT",
+  "description": "Live preview of local github repos",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git://github.com/wallpants/github-preview.nvim.git"
