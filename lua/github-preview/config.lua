@@ -4,11 +4,9 @@ M.job_id = nil
 
 ---@type github_preview_config
 M.value = {
-	-- these are the default values,
-	-- any values you specify will be merged with this dictionary
-
 	host = "localhost",
 
+	-- port used by local server
 	port = 6041,
 
 	-- set to "true" to force single-file mode & disable repository mode

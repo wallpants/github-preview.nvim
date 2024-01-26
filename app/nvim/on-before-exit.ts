@@ -2,7 +2,7 @@ import { type Awaitable } from "bunvim";
 import { type GithubPreview } from "../github-preview.ts";
 import { type CustomEvents } from "../types.ts";
 
-const REQUEST = "on_before_exit";
+const REQUEST = "before_exit";
 
 export async function onBeforeExit(
     app: GithubPreview,

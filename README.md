@@ -30,10 +30,7 @@ https://github.com/wallpants/github-preview.nvim/assets/47203170/e332a671-0ee4-4
 
 ## 📦 Installation
 
-<details>
-    <summary>
-        Using <a href="https://github.com/folke/lazy.nvim">lazy.nvim</a>
-    </summary>
+Using <a href="https://github.com/folke/lazy.nvim">lazy.nvim</a>
 
 ```lua
 {
@@ -55,83 +52,55 @@ https://github.com/wallpants/github-preview.nvim/assets/47203170/e332a671-0ee4-4
 }
 ```
 
-</details>
-
-<details>
-    <summary>
-        Using <a href="https://github.com/wbthomason/packer.nvim">packer.nvim</a>
-    </summary>
-
-```lua
-use {
-    "wallpants/github-preview.nvim",
-    cmd = { "GithubPreviewToggle" },
-    keys = { "<leader>mpt" },
-    opt = true,
-    config = function()
-        local gpreview = require("github-preview")
-        gpreview.setup({
-            -- config goes here
-        })
-
-        local fns = gpreview.fns
-        vim.keymap.set("n", "<leader>mpt", fns.toggle)
-        vim.keymap.set("n", "<leader>mps", fns.single_file_toggle)
-        vim.keymap.set("n", "<leader>mpd", fns.details_tags_toggle)
-    end,
-}
-```
-
-</details>
-
 ## ⚙️ Configuration
 
 I recommend you start off with the default settings and play around with the UI to figure out
 what settings you want to override before committing to updating your config files.
 
+All values are optional, you can leave empty to use default values.
+Any values you specify will be deeply merged with this dictionary.
+
 ```lua
 require("github-preview").setup({
-	-- these are the default values,
-	-- any values you specify will be merged with this dictionary
+    host = "localhost",
 
-	host = "localhost",
+    -- port used by local server
+    port = 6041,
 
-	port = 6041,
+    -- set to "true" to force single-file mode & disable repository mode
+    single_file = false,
 
-	-- set to "true" to force single-file mode & disable repository mode
-	single_file = false,
+    theme = {
+        -- "system" | "light" | "dark"
+        name = "system",
+        high_contrast = false,
+    },
 
-	theme = {
-		-- "system" | "light" | "dark"
-		name = "system",
-		high_contrast = false,
-	},
+    -- define how to render <details> tags on init/content-change
+    -- true: <details> tags are rendered open
+    -- false: <details> tags are rendered closed
+    details_tags_open = true,
 
-	-- define how to render <details> tags on init/content-change
-	-- true: <details> tags are rendered open
-	-- false: <details> tags are rendered closed
-	details_tags_open = true,
+    cursor_line = {
+        disable = false,
 
-	cursor_line = {
-		disable = false,
+        -- CSS color
+        -- if you provide an invalid value, cursorline will be invisible
+        color = "#c86414",
+        opacity = 0.2,
+    },
 
-		-- CSS color
-		-- if you provide an invalid value, cursorline will be invisible
-		color = "#c86414",
-		opacity = 0.2,
-	},
+    scroll = {
+        disable = false,
 
-	scroll = {
-		disable = false,
+        -- Between 0 and 100
+        -- VERY LOW and VERY HIGH numbers might result in cursorline out of screen
+        top_offset_pct = 35,
+    },
 
-		-- Between 0 and 100
-		-- VERY LOW and VERY HIGH numbers might result in cursorline out of screen
-		top_offset_pct = 35,
-	},
-
-	-- for debugging
-	-- nil | "debug" | "verbose"
-	log_level = nil,
+    -- for debugging
+    -- nil | "debug" | "verbose"
+    log_level = nil,
 })
 ```
 
@@ -146,9 +115,7 @@ This might happen again after a plugin update if there were any changes to the p
 
 ### `:GithubPreviewStart`
 
-**Start** plugin. If the plugin is already running, be it by the current Neovim
-instance or another, the older **github-preview.nvim** is unalived in favour of
-the younger one.
+**Start** plugin. Any previously created instances are killed.
 
 ### `:GithubPreviewStop`
 

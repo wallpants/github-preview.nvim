@@ -79,8 +79,8 @@ end
 M.stop = function()
 	local channel_id = Utils.get_client_channel()
 	if channel_id ~= nil then
-		-- onBeforeExit request closes browser
-		vim.rpcrequest(channel_id, "on_before_exit")
+		-- before_exit request closes browser
+		vim.rpcrequest(channel_id, "before_exit")
 		if Config.job_id then
 			vim.fn.jobstop(Config.job_id)
 			Config.job_id = nil
@@ -104,7 +104,7 @@ local function update_config(update_action, value)
 		if channel_id ~= nil then
 			-- vim.rpcrequest seems to be incorrecly typed
 			---@diagnostic disable-next-line: param-type-mismatch
-			vim.rpcrequest(channel_id, "on_config_update", update_action, value)
+			vim.rpcrequest(channel_id, "config_update", update_action, value)
 		else
 			vim.notify("github-preview: could not find running plugin")
 		end

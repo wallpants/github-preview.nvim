@@ -2,7 +2,7 @@ import { type Awaitable } from "bunvim";
 import { type GithubPreview } from "../github-preview.ts";
 import { type CustomEvents } from "../types.ts";
 
-const REQUEST = "on_config_update";
+const REQUEST = "config_update";
 
 export function onConfigUpdate(
     app: GithubPreview,

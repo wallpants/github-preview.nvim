@@ -161,8 +161,8 @@ export type UpdateConfigAction =
 // eslint-disable-next-line
 export interface CustomEvents extends BaseEvents {
     requests: {
-        on_config_update: UpdateConfigAction;
-        on_before_exit: [];
+        config_update: UpdateConfigAction;
+        before_exit: [];
     };
     notifications: {
         // github-preview
