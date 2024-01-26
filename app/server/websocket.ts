@@ -9,6 +9,9 @@ export function websocketHandler(app: GithubPreview): WebSocketHandler {
         open(webSocket) {
             // subscribe to a topic so we can publish messages from outside
             // webServer.publish(EDITOR_EVENTS_TOPIC, payload);
+            //
+            // it doesn't matter who's on the other end of the websocket connection,
+            // all clients (browsers) share the same app state
             webSocket.subscribe(EDITOR_EVENTS_TOPIC);
         },
         async message(webSocket, message: string) {
