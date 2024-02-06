@@ -46,7 +46,7 @@
     "isbinaryfile": "5.0.0",
     "mermaid": "^10.6.1",
     "opener": "^1.5.2",
-    "pantsdown": "2.0.5",
+    "pantsdown": "2.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "reconnecting-websocket": "^4.4.0",
