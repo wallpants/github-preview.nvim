@@ -40,7 +40,7 @@
     "tailwind:compile": "tailwindcss -c ./app/web/tailwind.config.cjs -o ./app/web/static/tailwind.css"
   },
   "dependencies": {
-    "bunvim": "1.1.7",
+    "bunvim": "1.1.9",
     "clsx": "^2.1.0",
     "globby": "^13.2.2",
     "isbinaryfile": "5.0.0",
