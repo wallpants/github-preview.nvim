@@ -19,7 +19,7 @@ export const Footer = ({ isExpanded }: { isExpanded: boolean }) => (
                 href="https://wallpants.io"
                 target="_blank"
                 rel="noreferrer"
-                className="h-8 w-8 overflow-hidden rounded-full"
+                className="size-8 overflow-hidden rounded-full"
             >
                 <img src="/__github_preview__/static/wallpants-256.png" />
             </a>

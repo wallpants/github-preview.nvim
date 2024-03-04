@@ -95,7 +95,7 @@ export const Option = ({
             )}
         >
             {isOverriden ? (
-                <div className="absolute right-1 top-1 h-2 w-2 rounded-full bg-orange-600" />
+                <div className="absolute right-1 top-1 size-2 rounded-full bg-orange-600" />
             ) : null}
             <p className="!m-0">{name}</p>
             <div className="flex grow flex-col items-center justify-around py-1">

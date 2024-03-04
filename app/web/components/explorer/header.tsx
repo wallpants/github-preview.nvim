@@ -47,7 +47,7 @@ export const Header = ({
                             }}
                         />
                         {isOverriden ? (
-                            <div className="absolute right-1 top-3 h-2 w-2 rounded-full bg-orange-600" />
+                            <div className="absolute right-1 top-3 size-2 rounded-full bg-orange-600" />
                         ) : null}
                     </div>
                 </>

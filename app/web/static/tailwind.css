@@ -387,16 +387,27 @@
   display: none
 }
 
+.size-14 {
+  width: 3.5rem;
+  height: 3.5rem
+}
+
+.size-2 {
+  width: 0.5rem;
+  height: 0.5rem
+}
+
+.size-8 {
+  width: 2rem;
+  height: 2rem
+}
+
 .h-12 {
   height: 3rem
 }
 
 .h-14 {
   height: 3.5rem
-}
-
-.h-2 {
-  height: 0.5rem
 }
 
 .h-28 {
@@ -421,10 +432,6 @@
 
 .h-6 {
   height: 1.5rem
-}
-
-.h-8 {
-  height: 2rem
 }
 
 .h-\[34px\] {
@@ -471,14 +478,6 @@
   width: 3rem
 }
 
-.w-14 {
-  width: 3.5rem
-}
-
-.w-2 {
-  width: 0.5rem
-}
-
 .w-24 {
   width: 6rem
 }
@@ -497,10 +496,6 @@
 
 .w-6 {
   width: 1.5rem
-}
-
-.w-8 {
-  width: 2rem
 }
 
 .w-80 {
@@ -933,14 +928,10 @@
   top: 0.125rem
 }
 
-.after\:h-5::after {
+.after\:size-5::after {
   content: var(--tw-content);
+  width: 1.25rem;
   height: 1.25rem
-}
-
-.after\:w-5::after {
-  content: var(--tw-content);
-  width: 1.25rem
 }
 
 .after\:rounded-full::after {

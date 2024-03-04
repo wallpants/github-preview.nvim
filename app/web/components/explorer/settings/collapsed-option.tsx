@@ -67,7 +67,7 @@ export const CollapsedOption = ({
             {Icon && (
                 <div className="relative overflow-hidden rounded-md">
                     <FillingCircle
-                        className="absolute left-1/2 top-1/2 -z-10 h-14 w-14 -translate-x-1/2 -translate-y-1/2"
+                        className="absolute left-1/2 top-1/2 -z-10 size-14 -translate-x-1/2 -translate-y-1/2"
                         animate={startExit && active && !isHovering}
                         background="var(--color-canvas-default)"
                         fillBackground="var(--color-canvas-subtle)"
@@ -94,7 +94,7 @@ export const CollapsedOption = ({
                 </div>
             )}
             {isOverriden ? (
-                <div className="absolute right-1 top-1 h-2 w-2 rounded-full bg-orange-600" />
+                <div className="absolute right-1 top-1 size-2 rounded-full bg-orange-600" />
             ) : null}
         </div>
     );

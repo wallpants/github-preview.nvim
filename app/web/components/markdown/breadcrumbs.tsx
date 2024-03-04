@@ -51,7 +51,7 @@ export const BreadCrumbs = () => {
             })}
             <IconButton
                 Icon={copySuccess ? CheckIcon : CopyIcon}
-                className="-mt-1 ml-2 h-8 w-8 items-center justify-center p-0 hover:bg-github-canvas-default"
+                className="-mt-1 ml-2 size-8 items-center justify-center p-0 hover:bg-github-canvas-default"
                 iconClassName={cn("h-4 w-4", copySuccess && "stroke-github-success-fg")}
                 noBorder
                 onClick={() => {
