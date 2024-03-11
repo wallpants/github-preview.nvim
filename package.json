@@ -46,7 +46,7 @@
     "isbinaryfile": "5.0.2",
     "mermaid": "^10.8.0",
     "opener": "^1.5.2",
-    "pantsdown": "2.0.7",
+    "pantsdown": "2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "reconnecting-websocket": "^4.4.0",
@@ -77,6 +77,6 @@
     "semantic-release": "^23.0.2",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
-    "vite": "^5.1.4"
+    "vite": "^5.1.5"
   }
 }
