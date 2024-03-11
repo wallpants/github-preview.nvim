@@ -172,7 +172,8 @@ bun run tailwind:compile
 
 This project uses [semantic-release](https://github.com/semantic-release/semantic-release) to handle versioning.
 
-**semantic-release** requires commit messages to follow a specific format. To ensure your commits
+**semantic-release** requires commit messages to follow the
+[Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/) format. To ensure your commits
 follow the format, run the **package.json** script `bun run commit` to perform your commits:
 
 ```sh
