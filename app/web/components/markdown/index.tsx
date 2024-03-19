@@ -62,7 +62,7 @@ export const Markdown = ({ className }: { className: string }) => {
             if ("lines" in message) {
                 const fileExt = getFileExt(message.currentPath);
                 const text = message.lines.join("\n");
-                const markdown = fileExt === "md" ? text : "```" + fileExt + `\n${text}`;
+                const markdown = fileExt === "md" ? text : "```" + (fileExt ?? "") + `\n${text}`;
 
                 const { html, javascript } = pantsdown.parse(markdown);
 

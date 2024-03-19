@@ -34,7 +34,9 @@
     "commit": "cz",
     "format": "prettier **/*.{md,ts,tsx,css,yml} -w",
     "logs": "bunvim logs github-preview",
-    "lint": "tsc -p ./app/tsconfig.json && eslint . --ext ts --ext tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext ts --ext tsx --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc -p ./app/tsconfig.json",
+    "check": "bun run typecheck && bun run lint",
     "start": "bun run app/index.ts",
     "web:dev": "cd app/web && bun vite --open",
     "tailwind:compile": "tailwindcss -c ./app/web/tailwind.config.cjs -o ./app/web/static/tailwind.css"

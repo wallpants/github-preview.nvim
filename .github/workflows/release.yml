@@ -42,7 +42,7 @@ jobs:
             exit 1
           fi
       - name: Lint & check types
-        run: bun run lint
+        run: bun run check
       - name: Test
         run: bun test
 

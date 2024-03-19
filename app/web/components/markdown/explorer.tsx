@@ -63,7 +63,7 @@ export const Explorer = () => {
     const single_file = config?.overrides.single_file;
 
     return (
-        <div className="mx-auto mt-20 w-[80%] rounded-md border-2 border-github-border-default">
+        <div className="mx-auto mt-20 w-4/5 rounded-md border-2 border-github-border-default">
             {segments.length ? (
                 <Entry isParent path={parent} wsRequest={wsRequest} single_file={single_file} />
             ) : null}

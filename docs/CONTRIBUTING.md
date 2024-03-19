@@ -157,6 +157,12 @@ To ensure that there are no lint issues, you can run the **package.json** script
 bun run lint
 ```
 
+To ensure that there are no TypeScript issues, you can run the **package.json** script:
+
+```
+bun run typecheck
+```
+
 If you make any changes to tailwind classes, you must also manually run the
 following **package.json** script to generate relevant CSS files:
 
@@ -165,7 +171,7 @@ bun run tailwind:compile
 ```
 
 > [!NOTE]
-> There's a [github action](https://github.com/wallpants/github-preview.nvim/blob/main/.github/workflows/release.yml#L12-L43)
+> There's a [github action](https://github.com/wallpants/github-preview.nvim/blob/main/.github/workflows/release.yml)
 > that verifies if these actions were performed and will notify you if any steps were skipped.
 
 ## Git Commits
