@@ -17,7 +17,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./cz-adapter.cjs"
+      "path": "@commitlint/cz-commitlint"
     }
   },
   "commitlint": {
@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^19.1.0",
-    "@commitlint/cz-commitlint": "^19.0.3",
+    "@commitlint/cz-commitlint": "^19.2.0",
     "@types/bun": "latest",
     "@types/eslint": "^8.56.3",
     "@types/opener": "^1.4.3",
@@ -70,7 +70,6 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-tailwindcss": "^3.14.3",
-    "inquirer": "^9.2.16",
     "postcss": "^8.4.35",
     "prettier": "^3.2.5",
     "prettier-plugin-organize-imports": "^3.2.4",
