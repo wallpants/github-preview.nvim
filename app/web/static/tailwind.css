@@ -486,6 +486,10 @@
   width: 1rem
 }
 
+.w-4\/5 {
+  width: 80%
+}
+
 .w-5 {
   width: 1.25rem
 }
@@ -508,10 +512,6 @@
 
 .w-\[45px\] {
   width: 45px
-}
-
-.w-\[80\%\] {
-  width: 80%
 }
 
 .w-full {
