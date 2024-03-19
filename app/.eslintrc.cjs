@@ -14,6 +14,7 @@ module.exports = {
         "plugin:@typescript-eslint/stylistic-type-checked",
     ],
     rules: {
+        "@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/consistent-type-definitions": ["error", "type"],
         "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
