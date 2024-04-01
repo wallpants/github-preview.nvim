@@ -61,7 +61,7 @@
     "@types/bun": "latest",
     "@types/eslint": "^8.56.3",
     "@types/opener": "^1.4.3",
-    "@types/react": "^18.2.67",
+    "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.3.1",
