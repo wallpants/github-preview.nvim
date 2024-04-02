@@ -59,7 +59,7 @@
     "@commitlint/config-conventional": "^19.1.0",
     "@commitlint/cz-commitlint": "^19.2.0",
     "@types/bun": "latest",
-    "@types/eslint": "^8.56.3",
+    "@types/eslint": "^8.56.7",
     "@types/opener": "^1.4.3",
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.22",
