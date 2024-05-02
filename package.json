@@ -76,7 +76,7 @@
     "prettier": "^3.2.5",
     "prettier-plugin-organize-imports": "^3.2.4",
     "semantic-release": "^23.0.5",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^3.4.3",
     "typescript": "^5.4.3",
     "vite": "^5.1.6"
   }
