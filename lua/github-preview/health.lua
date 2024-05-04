@@ -3,7 +3,7 @@ local M = {}
 local function check_platform()
 	local function get_platform()
 		local os_name = vim.loop.os_uname().sysname
-		if os_name == "Windows" then
+		if os_name == "Windows_NT" then
 			return "win"
 		elseif os_name == "Darwin" then
 			local arch = vim.fn.system("arch")
