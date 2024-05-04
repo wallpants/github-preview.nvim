@@ -59,8 +59,7 @@ local function check_bun_version()
 end
 
 local function check_current_commit_hash()
-	local result =
-		run_command("git -C $(dirname " .. vim.fn.shellescape(vim.fn.expand("%:p")) .. ") rev-parse --short HEAD")
+	local result = run_command("git -C " .. debug.getinfo(1).source:sub(2):match("(.*/)") .. " rev-parse --short HEAD")
 	if result == nil then
 		vim.health.error("failed to read git-commit hash")
 	else
