@@ -1,4 +1,11 @@
-#### [👈 README.md](/README.md)
+## Table of Contents
+
+- [Development](#development)
+  - [✅ Requirements](#-requirements)
+  - [💻 Setup](#-setup)
+- [🏗️ Contributing](#%EF%B8%8F-contributing)
+  - [Formatting and Linting](#formatting-and-linting)
+  - [Git Commits](#git-commits)
 
 # Development
 
