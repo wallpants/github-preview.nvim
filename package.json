@@ -74,7 +74,7 @@
     "eslint-plugin-tailwindcss": "^3.15.2",
     "inquirer": "^9.2.23",
     "postcss": "^8.4.38",
-    "prettier": "^3.2.5",
+    "prettier": "^3.3.0",
     "prettier-plugin-organize-imports": "^3.2.4",
     "semantic-release": "^23.1.1",
     "tailwindcss": "^3.4.3",
