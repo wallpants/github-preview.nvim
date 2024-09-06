@@ -21,10 +21,7 @@ const mockCssLoader: BunPlugin = {
 
 export function httpHandler(app: GithubPreview) {
     return async (req: Request, server: Server) => {
-        const upgradedToWs = server.upgrade(req, {
-            data: {}, // this data is available in socket.data
-            headers: {},
-        });
+        const upgradedToWs = server.upgrade(req);
         if (upgradedToWs) {
             // If client (browser) requested to upgrade connection to websocket
             // and we successfully upgraded request
