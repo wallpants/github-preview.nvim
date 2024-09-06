@@ -71,7 +71,7 @@
     "commitlint": "^19.3.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-tailwindcss": "^3.17.0",
+    "eslint-plugin-tailwindcss": "^3.17.4",
     "inquirer": "^9.2.23",
     "postcss": "^8.4.38",
     "prettier": "^3.3.0",
