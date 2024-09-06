@@ -303,10 +303,6 @@
   margin-top: -0.25rem
 }
 
-.mb-0 {
-  margin-bottom: 0px
-}
-
 .mb-0\.5 {
   margin-bottom: 0.125rem
 }
@@ -468,10 +464,6 @@
 
 .min-h-\[300px\] {
   min-height: 300px
-}
-
-.w-1 {
-  width: 0.25rem
 }
 
 .w-1\.5 {
@@ -924,11 +916,6 @@
 .after\:left-\[2px\]::after {
   content: var(--tw-content);
   left: 2px
-}
-
-.after\:top-0::after {
-  content: var(--tw-content);
-  top: 0px
 }
 
 .after\:top-0\.5::after {
