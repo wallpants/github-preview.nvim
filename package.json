@@ -56,7 +56,7 @@
     "valibot": "^0.30.0"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^19.2.2",
+    "@commitlint/config-conventional": "^19.5.0",
     "@commitlint/cz-commitlint": "^19.2.0",
     "@types/bun": "latest",
     "@types/eslint": "^8.56.10",
