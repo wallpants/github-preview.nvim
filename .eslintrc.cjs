@@ -14,10 +14,14 @@ module.exports = {
         "plugin:@typescript-eslint/stylistic-type-checked",
     ],
     rules: {
+        "@typescript-eslint/no-unused-expressions": "off",
         "@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/consistent-type-definitions": ["error", "type"],
-        "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            { argsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" },
+        ],
         "@typescript-eslint/consistent-type-imports": [
             "warn",
             { prefer: "type-imports", fixStyle: "inline-type-imports" },

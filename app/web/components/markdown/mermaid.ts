@@ -68,7 +68,7 @@ export const myMermaid = {
                         definition,
                     );
                     svg = newSvg;
-                } catch (e) {
+                } catch (_) {
                     //
                 }
             }
