@@ -53,7 +53,7 @@
     "react-dom": "^18.3.1",
     "reconnecting-websocket": "^4.4.0",
     "tailwind-merge": "^2.3.0",
-    "valibot": "^0.30.0"
+    "valibot": "^0.42.1"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^19.5.0",
