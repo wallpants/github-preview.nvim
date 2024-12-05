@@ -73,7 +73,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-tailwindcss": "^3.17.5",
     "inquirer": "^9.3.7",
-    "postcss": "^8.4.47",
+    "postcss": "^8.4.49",
     "prettier": "^3.3.3",
     "prettier-plugin-organize-imports": "^4.1.0",
     "semantic-release": "^24.2.0",
