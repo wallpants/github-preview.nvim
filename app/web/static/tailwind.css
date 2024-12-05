@@ -700,7 +700,7 @@
 
 .border-orange-600 {
   --tw-border-opacity: 1;
-  border-color: rgb(234 88 12 / var(--tw-border-opacity))
+  border-color: rgb(234 88 12 / var(--tw-border-opacity, 1))
 }
 
 .border-transparent {
@@ -729,7 +729,7 @@
 
 .bg-gray-200 {
   --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity))
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1))
 }
 
 .bg-orange-200\/10 {
@@ -738,7 +738,7 @@
 
 .bg-orange-600 {
   --tw-bg-opacity: 1;
-  background-color: rgb(234 88 12 / var(--tw-bg-opacity))
+  background-color: rgb(234 88 12 / var(--tw-bg-opacity, 1))
 }
 
 .fill-github-danger-fg {
@@ -882,7 +882,7 @@
 
 .text-orange-600 {
   --tw-text-opacity: 1;
-  color: rgb(234 88 12 / var(--tw-text-opacity))
+  color: rgb(234 88 12 / var(--tw-text-opacity, 1))
 }
 
 .underline {
@@ -942,13 +942,13 @@
 .after\:border-gray-300::after {
   content: var(--tw-content);
   --tw-border-opacity: 1;
-  border-color: rgb(209 213 219 / var(--tw-border-opacity))
+  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1))
 }
 
 .after\:bg-white::after {
   content: var(--tw-content);
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity))
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1))
 }
 
 .after\:transition-all::after {
@@ -1012,7 +1012,7 @@
 .peer:checked ~ .peer-checked\:after\:border-white::after {
   content: var(--tw-content);
   --tw-border-opacity: 1;
-  border-color: rgb(255 255 255 / var(--tw-border-opacity))
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1))
 }
 
 .peer:hover ~ .peer-hover\:block {
@@ -1021,12 +1021,12 @@
 
 .dark\:border-gray-600:is(.dark *) {
   --tw-border-opacity: 1;
-  border-color: rgb(75 85 99 / var(--tw-border-opacity))
+  border-color: rgb(75 85 99 / var(--tw-border-opacity, 1))
 }
 
 .dark\:bg-gray-700:is(.dark *) {
   --tw-bg-opacity: 1;
-  background-color: rgb(55 65 81 / var(--tw-bg-opacity))
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1))
 }
 
 .\[\&\>span\]\:cursor-pointer>span {
