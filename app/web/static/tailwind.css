@@ -303,8 +303,16 @@
   margin-top: -0.25rem
 }
 
+.mb-0 {
+  margin-bottom: 0px
+}
+
 .mb-0\.5 {
   margin-bottom: 0.125rem
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem
 }
 
 .mb-2 {
@@ -321,6 +329,10 @@
 
 .mb-96 {
   margin-bottom: 24rem
+}
+
+.ml-1 {
+  margin-left: 0.25rem
 }
 
 .ml-2 {
@@ -349,6 +361,14 @@
 
 .mr-auto {
   margin-right: auto
+}
+
+.mt-1 {
+  margin-top: 0.25rem
+}
+
+.mt-2 {
+  margin-top: 0.5rem
 }
 
 .mt-20 {
@@ -902,6 +922,14 @@
 
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
+}
+
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms
 }
 
 .ease-out {
