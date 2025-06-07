@@ -34,7 +34,7 @@ const Entry = ({
         )}
     >
         {IconMap[path.endsWith("/") || isParent ? "dir" : "file"]}
-        <span className="text-sm group-hover:text-github-accent-fg group-hover:underline">
+        <span className="group-hover:text-github-accent-fg text-sm group-hover:underline">
             {isParent ? ".." : getEntryName(path)}
         </span>
     </div>
@@ -63,7 +63,7 @@ export const Explorer = () => {
     const single_file = config?.overrides.single_file;
 
     return (
-        <div className="mx-auto mt-20 w-4/5 rounded-md border-2 border-github-border-default">
+        <div className="border-github-border-default mx-auto mt-20 w-4/5 rounded-md border-2">
             {segments.length ? (
                 <Entry isParent path={parent} wsRequest={wsRequest} single_file={single_file} />
             ) : null}

@@ -31,7 +31,7 @@ export const Select = ({ select, disabled }: Props) => {
         <div className="relative z-20 flex flex-col items-center">
             <IconButton
                 Icon={selected.icon}
-                className="peer bg-github-canvas-default"
+                className="bg-github-canvas-default peer"
                 iconClassName={selected.iconClassName}
                 disabled={Boolean(disabled)}
                 onClick={(e) => {
@@ -40,7 +40,7 @@ export const Select = ({ select, disabled }: Props) => {
                 }}
             />
             {disabled && (
-                <div className="absolute left-[120%] top-0 hidden w-56 rounded-md border border-orange-600 bg-github-canvas-subtle peer-hover:block">
+                <div className="bg-github-canvas-subtle absolute left-[120%] top-0 hidden w-56 rounded-md border border-orange-600 peer-hover:block">
                     <p className="!m-3">{disabled}</p>
                 </div>
             )}

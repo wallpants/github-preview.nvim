@@ -39,7 +39,7 @@
     "check": "bun run typecheck && bun run lint",
     "start": "bun run app/index.ts",
     "web:dev": "cd app/web && bun vite --open",
-    "tailwind:compile": "tailwindcss -c ./app/web/tailwind.config.cjs -o ./app/web/static/tailwind.css"
+    "tailwind:compile": "tailwindcss -c ./app/web/tailwind.config.mjs -o ./app/web/static/tailwind.css"
   },
   "dependencies": {
     "bunvim": "1.1.13",

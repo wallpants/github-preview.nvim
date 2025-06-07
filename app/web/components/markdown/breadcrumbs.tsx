@@ -23,7 +23,7 @@ export const BreadCrumbs = () => {
     if (isDir) segmentsLen--;
 
     return (
-        <p className="sticky top-0 z-20 !mb-0 flex h-[40px] min-w-max flex-nowrap overflow-hidden border-b border-b-github-border-default bg-github-canvas-subtle p-2 text-[15px] font-semibold [&>span]:cursor-pointer">
+        <p className="border-b-github-border-default bg-github-canvas-subtle sticky top-0 z-20 !mb-0 flex h-[40px] min-w-max flex-nowrap overflow-hidden border-b p-2 text-[15px] font-semibold [&>span]:cursor-pointer">
             {[repoName].concat(segments).map((segment, idx) => {
                 const isLast = idx === segmentsLen;
 
@@ -32,7 +32,7 @@ export const BreadCrumbs = () => {
                 return (
                     <Fragment key={idx}>
                         {idx ? (
-                            <span className="mx-1 font-normal text-github-fg-subtle">/</span>
+                            <span className="text-github-fg-subtle mx-1 font-normal">/</span>
                         ) : null}
                         <span
                             key={idx}
@@ -51,7 +51,7 @@ export const BreadCrumbs = () => {
             })}
             <IconButton
                 Icon={copySuccess ? CheckIcon : CopyIcon}
-                className="-mt-1 ml-2 size-8 items-center justify-center p-0 hover:bg-github-canvas-default"
+                className="hover:bg-github-canvas-default -mt-1 ml-2 size-8 items-center justify-center p-0"
                 iconClassName={cn("h-4 w-4", copySuccess && "stroke-github-success-fg")}
                 noBorder
                 onClick={() => {

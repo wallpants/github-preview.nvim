@@ -48,6 +48,7 @@ export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElemen
             id={CURSOR_LINE_ELEMENT_ID}
             className="pointer-events-none absolute z-10 h-[36px] w-full"
             style={{
+                // eslint-disable-next-line
                 background: lineColor ? lineColor : "transparent",
                 opacity: overrides?.cursor_line.opacity ?? 0,
             }}

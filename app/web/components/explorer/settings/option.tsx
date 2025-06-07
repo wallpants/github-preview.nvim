@@ -132,7 +132,7 @@ export const Option = ({
                 )}
             </div>
             {disabled && (
-                <div className="group absolute inset-0 cursor-not-allowed rounded hover:bg-github-canvas-subtle">
+                <div className="hover:bg-github-canvas-subtle group absolute inset-0 cursor-not-allowed rounded">
                     <div className="invisible absolute inset-0 flex items-center bg-orange-200/10 group-hover:visible">
                         <p className="!m-0 text-center text-orange-600">{disabled}</p>
                     </div>

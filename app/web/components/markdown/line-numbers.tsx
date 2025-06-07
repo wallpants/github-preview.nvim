@@ -33,7 +33,7 @@ export const LineNumbers = ({ hash, offsets, currentPath }: Props) => (
                     <span
                         key={currentPath + String(index)}
                         style={style}
-                        className="pointer-events-none absolute w-[45px] -translate-y-px text-right text-[13px] text-github-fg-subtle"
+                        className="text-github-fg-subtle pointer-events-none absolute w-[45px] -translate-y-px text-right text-[13px]"
                     >
                         {index}
                     </span>
