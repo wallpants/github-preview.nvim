@@ -75,6 +75,29 @@ export function httpHandler(app: GithubPreview) {
                 });
             }
 
+            if (requested === "/katex.css") {
+                const katexCss = Bun.resolveSync("katex/dist/katex.min.css", import.meta.dir);
+                const file = Bun.file(katexCss);
+                return new Response(file, {
+                    headers: { "content-type": "text/css" },
+                });
+            }
+
+            if (requested.startsWith("/fonts/KaTeX_")) {
+                const fontPath = Bun.resolveSync("katex/dist" + requested, import.meta.dir);
+                const file = Bun.file(fontPath);
+                const ext = requested.split(".").pop();
+                const contentType =
+                    ext === "woff2"
+                        ? "font/woff2"
+                        : ext === "woff"
+                          ? "font/woff"
+                          : "font/ttf";
+                return new Response(file, {
+                    headers: { "content-type": contentType },
+                });
+            }
+
             if (requested === "/mermaid.js") {
                 const mermaid = Bun.resolveSync("mermaid/dist/mermaid.min.js", import.meta.dir);
                 const file = Bun.file(mermaid);
