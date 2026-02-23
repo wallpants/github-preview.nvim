@@ -3,6 +3,14 @@ local Utils = require("github-preview.utils")
 local M = {}
 
 M.start = function()
+	if vim.fn.executable("bun") ~= 1 then
+		vim.notify(
+			"[github-preview.nvim] bun is required but was not found in PATH. Install it from https://bun.sh",
+			vim.log.levels.ERROR
+		)
+		return
+	end
+
 	vim.notify("github-preview: init", vim.log.levels.INFO)
 
 	-- should look like "/Users/.../github-preview"
