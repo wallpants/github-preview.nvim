@@ -204,7 +204,7 @@ export class GithubPreview {
     async goodbye() {
         this.wsSend({ type: "goodbye" });
         await this.nvim.call("nvim_del_augroup_by_id", [this.augroupId]);
-        await this.nvim.call("nvim_notify", ["github-preview: goodbye", NVIM_LOG_LEVELS.INFO, {}]);
+        await this.nvim.call("nvim_echo", [[["github-preview: goodbye", ""]], false, {}]);
     }
 
     async updateConfig([action, value]: UpdateConfigAction) {

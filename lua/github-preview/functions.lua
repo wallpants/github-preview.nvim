@@ -3,8 +3,6 @@ local Utils = require("github-preview.utils")
 local M = {}
 
 M.start = function()
-	vim.notify("github-preview: init", vim.log.levels.INFO)
-
 	-- should look like "/Users/.../github-preview"
 	local root = Config.value.single_file and "" or vim.fn.finddir(".git", ";")
 
