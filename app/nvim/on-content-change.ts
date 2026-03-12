@@ -37,9 +37,12 @@ export async function onContentChange(
             group: app.augroupId,
             desc: "Notify github-preview",
             command: `lua
-            local buffer = vim.api.nvim_get_current_buf()
-            local path = vim.api.nvim_buf_get_name(0)
-            vim.rpcnotify(${app.nvim.channelId}, "${NOTIFICATION}", buffer, path)`,
+            if vim.bo.buftype == "" then
+                local buffer = vim.api.nvim_get_current_buf()
+                local path = vim.api.nvim_buf_get_name(0)
+                vim.rpcnotify(${app.nvim.channelId}, "${NOTIFICATION}", buffer, path)
+            end`,
+
         },
     ]);
 

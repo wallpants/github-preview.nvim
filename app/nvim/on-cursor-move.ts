@@ -18,10 +18,12 @@ export async function onCursorMove(
             group: app.augroupId,
             desc: "Notify github-preview",
             command: `lua
-            local buffer = vim.api.nvim_get_current_buf()
-            local path = vim.api.nvim_buf_get_name(0)
-            local cursor_line = vim.api.nvim_win_get_cursor(0)[1]
-            vim.rpcnotify(${app.nvim.channelId}, "${NOTIFICATION}", buffer, path, cursor_line)`,
+                if vim.bo.buftype == "" then
+                    local buffer = vim.api.nvim_get_current_buf()
+                    local path = vim.api.nvim_buf_get_name(0)
+                    local cursor_line = vim.api.nvim_win_get_cursor(0)[1]
+                    vim.rpcnotify(${app.nvim.channelId}, "${NOTIFICATION}", buffer, path, cursor_line)
+                end`,
         },
     ]);
 }
