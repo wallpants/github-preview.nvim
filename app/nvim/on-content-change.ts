@@ -30,18 +30,21 @@ export async function onContentChange(
       }
    });
 
-   // Create autocmd to notify us with event "attach_buffer"
-   await app.nvim.call("nvim_create_autocmd", [
-      ["InsertEnter", "TextChanged"],
-      {
-         group: app.augroupId,
-         desc: "Notify github-preview",
-         command: `lua
-            local buffer = vim.api.nvim_get_current_buf()
-            local path = vim.api.nvim_buf_get_name(0)
-            vim.rpcnotify(${app.nvim.channelId}, "${NOTIFICATION}", buffer, path)`,
-      },
-   ]);
+    // Create autocmd to notify us with event "attach_buffer"
+    await app.nvim.call("nvim_create_autocmd", [
+        ["InsertEnter", "TextChanged"],
+        {
+            group: app.augroupId,
+            desc: "Notify github-preview",
+            command: `lua
+            local buftype = vim.api.nvim_get_option_value("buftype", { buf = 0 })
+            if buftype == "" then
+                local buffer = vim.api.nvim_get_current_buf()
+                local path = vim.api.nvim_buf_get_name(0)
+                vim.rpcnotify(${app.nvim.channelId}, "${NOTIFICATION}", buffer, path)
+            end`,
+        },
+    ]);
 
    // "nvim_buf_lines_event" and "nvim_buf_changedtick_event" events are
    // only emitted by neovim if we've attached a buffer.
