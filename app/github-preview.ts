@@ -4,7 +4,6 @@ import { type Server } from "bun";
 import { NVIM_LOG_LEVELS, attach, type LogLevel, type Nvim } from "bunvim";
 import { globby } from "globby";
 import { isBinaryFile } from "isbinaryfile";
-import { parse } from "valibot";
 import { startServer } from "./server";
 import { UNALIVE_URL } from "./server/http";
 import { EDITOR_EVENTS_TOPIC } from "./server/websocket";
@@ -46,7 +45,7 @@ export class GithubPreview {
       overrides: Config;
    };
    repoName: string;
-   server: Server;
+   server: Server<undefined>;
    cursorLine: null | number = null;
    lines: ContentChange["lines"] = [];
 
@@ -78,7 +77,7 @@ export class GithubPreview {
       });
 
       const props = (await nvim.call("nvim_get_var", ["github_preview_props"])) as PluginProps;
-      if (ENV.DEV) parse(PluginPropsSchema, props);
+      if (ENV.DEV) PluginPropsSchema.parse(props);
 
       try {
          // try to unalive already running instances of github-preview

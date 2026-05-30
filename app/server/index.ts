@@ -4,7 +4,7 @@ import { type GithubPreview } from "../github-preview.ts";
 import { httpHandler } from "./http.ts";
 import { websocketHandler } from "./websocket.ts";
 
-export function startServer(app: GithubPreview): Server {
+export function startServer<T>(app: GithubPreview): Server<T> {
    const { port, host } = app.config.overrides;
 
    const server = Bun.serve({

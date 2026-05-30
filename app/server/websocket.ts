@@ -4,7 +4,7 @@ import { type WsBrowserMessage, type WsServerMessage } from "../types.ts";
 
 export const EDITOR_EVENTS_TOPIC = "editor_events";
 
-export function websocketHandler(app: GithubPreview): WebSocketHandler {
+export function websocketHandler<T>(app: GithubPreview): WebSocketHandler<T> {
    return {
       open(webSocket) {
          // subscribe to a topic so we can publish messages from outside

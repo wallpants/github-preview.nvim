@@ -1,83 +1,71 @@
 import { type BaseEvents } from "bunvim";
-import {
-   array,
-   boolean,
-   coerce,
-   literal,
-   maxValue,
-   minValue,
-   number,
-   object,
-   string,
-   union,
-   type Output,
-} from "valibot";
+import { z } from "zod";
 import { type GithubPreview } from "./github-preview";
 
-export const ThemeSchema = object({
-   name: union([literal("system"), literal("light"), literal("dark")]),
-   high_contrast: boolean(),
+export const ThemeSchema = z.object({
+   name: z.enum(["system", "light", "dark"]),
+   high_contrast: z.boolean(),
 });
-export type Theme = Output<typeof ThemeSchema>;
+export type Theme = z.infer<typeof ThemeSchema>;
 
-export const BuildConstsSchema = object({
-   HOST: string(),
-   PORT: coerce(number(), Number),
-   IS_DEV: coerce(boolean(), Boolean),
+export const BuildConstsSchema = z.object({
+   HOST: z.string(),
+   PORT: z.coerce.number(),
+   IS_DEV: z.stringbool(),
    THEME: ThemeSchema,
 });
-export type BuildConsts = Output<typeof BuildConstsSchema>;
+export type BuildConsts = z.infer<typeof BuildConstsSchema>;
 
-export const PluginPropsSchema = object({
-   init: object({
+export const PluginPropsSchema = z.object({
+   init: z.object({
       /** dir path where ".git" dir was found */
-      root: string(),
+      root: z.string(),
       /**
        * current path when plugin was loaded
        * if no buffer was loaded when plugin started, path is dir and ends with "/"
        * otherwise path looks something like "/Users/.../README.md"
        * */
-      path: string(),
+      path: z.string(),
    }),
 
-   config: object({
+   config: z.object({
       /** http/ws host "localhost" */
-      host: string(),
+      host: z.string(),
       /** port to host the http/ws server "localhost:\{port\}" */
-      port: number(),
-      single_file: boolean(),
+      port: z.number(),
+      single_file: z.boolean(),
       theme: ThemeSchema,
-      details_tags_open: boolean(),
-      cursor_line: object({
-         disable: boolean(),
-         color: string(),
-         opacity: number([minValue(0), maxValue(1)]),
+      details_tags_open: z.boolean(),
+      cursor_line: z.object({
+         disable: z.boolean(),
+         color: z.string(),
+         opacity: z.number().min(0).max(1),
       }),
-      scroll: object({
-         disable: boolean(),
-         top_offset_pct: number(),
+      scroll: z.object({
+         disable: z.boolean(),
+         top_offset_pct: z.number(),
       }),
    }),
 });
-export type PluginProps = Output<typeof PluginPropsSchema>;
+export type PluginProps = z.infer<typeof PluginPropsSchema>;
 export type Config = PluginProps["config"];
 
-export const CursorMoveSchema = object({
+export const CursorMoveSchema = z.object({
    /**
     * Used to attach & detach buffers (subscribe to buffer changes)
     * as user navigates from buffer to buffer in neovim.
     * */
-   buffer_id: number(),
-   abs_path: string(),
-   cursor_line: number(),
+   buffer_id: z.number(),
+   abs_path: z.string(),
+   cursor_line: z.number(),
 });
-export type CursorMove = Output<typeof CursorMoveSchema>;
+export type CursorMove = z.infer<typeof CursorMoveSchema>;
 
-export const ContentChangeSchema = object({
-   abs_path: string(),
-   lines: array(string()),
+export const ContentChangeSchema = z.object({
+   abs_path: z.string(),
+   lines: z.array(z.string()),
 });
-export type ContentChange = Output<typeof ContentChangeSchema>;
+export type ContentChange = z.infer<typeof ContentChangeSchema>;
 
 export type WsServerMessage =
    | {

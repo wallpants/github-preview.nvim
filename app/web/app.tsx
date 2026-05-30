@@ -1,5 +1,4 @@
 import "./static/dev-tailwind.css";
-import { parse } from "valibot";
 import { BuildConstsSchema } from "../types.ts";
 import { Explorer } from "./components/explorer/index.tsx";
 import { Markdown } from "./components/markdown/index.tsx";
@@ -11,7 +10,7 @@ declare const __PORT__: unknown;
 declare const __IS_DEV__: unknown;
 declare const __THEME__: unknown;
 
-const BUILD_CONSTS = parse(BuildConstsSchema, {
+const BUILD_CONSTS = BuildConstsSchema.parse({
    HOST: __HOST__,
    PORT: __PORT__,
    IS_DEV: __IS_DEV__,
