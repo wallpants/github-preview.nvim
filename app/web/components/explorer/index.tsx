@@ -10,66 +10,64 @@ import { CollapsedSettings } from "./settings/collapsed.tsx";
 import { Settings } from "./settings/index.tsx";
 
 export const Explorer = () => {
-    const { currentPath, config } = useContext(websocketContext);
-    const [configOpen, setConfigOpen] = useState<null | keyof Config | "no-key">(null);
-    const [isExpanded, setIsExpanded] = useState(false);
-    const [startExit, setStartExit] = useState(false);
-    const [settingsOffset, setSettingsOffset] = useState(0);
-    const isOverriden = !isEqual(config?.dotfiles, config?.overrides);
+   const { currentPath, config } = useContext(websocketContext);
+   const [configOpen, setConfigOpen] = useState<null | keyof Config | "no-key">(null);
+   const [isExpanded, setIsExpanded] = useState(false);
+   const [startExit, setStartExit] = useState(false);
+   const [settingsOffset, setSettingsOffset] = useState(0);
+   const isOverriden = !isEqual(config?.dotfiles, config?.overrides);
 
-    useOnDocumentClick({
-        disabled: !configOpen,
-        callback: () => {
-            setConfigOpen(null);
-        },
-    });
+   useOnDocumentClick({
+      disabled: !configOpen,
+      callback: () => {
+         setConfigOpen(null);
+      },
+   });
 
-    return (
-        <div
-            className={cn(
-                "relative rounded-r-md border border-l-0 border-github-border-default",
-                isExpanded ? "w-80" : "w-12",
+   return (
+      <div
+         className={cn(
+            "rounded-r-md border-github-border-default relative border border-l-0",
+            isExpanded ? "w-80" : "w-12",
+         )}
+      >
+         <div
+            className={isExpanded ? "inset-0 pb-56 pt-16 absolute block overflow-y-auto" : "hidden"}
+         >
+            {config?.overrides.single_file ? (
+               <div className="!px-3">
+                  <h3>Single-file mode</h3>
+                  <p>File explorer only available when in repository mode.</p>
+               </div>
+            ) : (
+               <EntryComponent path="" depth={-1} currentPath={currentPath} />
             )}
-        >
-            <div
-                className={
-                    isExpanded ? "absolute inset-0 block overflow-y-auto pb-56 pt-16" : "hidden"
-                }
-            >
-                {config?.overrides.single_file ? (
-                    <div className="!px-3">
-                        <h3>Single-file mode</h3>
-                        <p>File explorer only available when in repository mode.</p>
-                    </div>
-                ) : (
-                    <EntryComponent path="" depth={-1} currentPath={currentPath} />
-                )}
-            </div>
-            <Header
-                className="absolute inset-x-0 top-0 z-10 rounded-tr-md"
-                isExpanded={isExpanded}
-                setIsExpanded={setIsExpanded}
-                setSettingsOffset={setSettingsOffset}
-                setConfigOpen={setConfigOpen}
-                isOverriden={isOverriden}
+         </div>
+         <Header
+            className="inset-x-0 top-0 rounded-tr-md absolute z-10"
+            isExpanded={isExpanded}
+            setIsExpanded={setIsExpanded}
+            setSettingsOffset={setSettingsOffset}
+            setConfigOpen={setConfigOpen}
+            isOverriden={isOverriden}
+         />
+         {!isExpanded && (
+            <CollapsedSettings
+               setSettingsOffset={setSettingsOffset}
+               setConfigOpen={setConfigOpen}
+               configOpen={configOpen}
+               startExit={startExit}
             />
-            {!isExpanded && (
-                <CollapsedSettings
-                    setSettingsOffset={setSettingsOffset}
-                    setConfigOpen={setConfigOpen}
-                    configOpen={configOpen}
-                    startExit={startExit}
-                />
-            )}
-            {configOpen ? (
-                <Settings
-                    cKey={configOpen}
-                    isOverriden={isOverriden}
-                    settingsOffset={settingsOffset}
-                    setStartExit={setStartExit}
-                />
-            ) : null}
-            <Footer isExpanded={isExpanded} />
-        </div>
-    );
+         )}
+         {configOpen ? (
+            <Settings
+               cKey={configOpen}
+               isOverriden={isOverriden}
+               settingsOffset={settingsOffset}
+               setStartExit={setStartExit}
+            />
+         ) : null}
+         <Footer isExpanded={isExpanded} />
+      </div>
+   );
 };

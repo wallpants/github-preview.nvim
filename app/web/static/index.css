@@ -1,64 +1,64 @@
 #markdown-element-id > img {
-    margin-bottom: 16px;
+   margin-bottom: 16px;
 }
 
 @keyframes clock-animation {
-    0% {
-        stroke-dashoffset: 471;
-    }
-    100% {
-        stroke-dashoffset: 0;
-    }
+   0% {
+      stroke-dashoffset: 471;
+   }
+   100% {
+      stroke-dashoffset: 0;
+   }
 }
 
 .disabled-link .tooltip {
-    display: none;
-    position: absolute;
-    width: 200px;
-    left: 120%;
-    top: -10px;
+   display: none;
+   position: absolute;
+   width: 200px;
+   left: 120%;
+   top: -10px;
 }
 .disabled-link:hover .tooltip {
-    display: block;
+   display: block;
 }
 .disabled-link .tooltip p {
-    color: var(--color-fg-muted);
+   color: var(--color-fg-muted);
 }
 
 @keyframes slide-up {
-    0% {
-        transform: translate(0, 100%);
-    }
-    20%,
-    85% {
-        transform: translate(0, 0);
-    }
-    100% {
-        transform: translate(100%, 0);
-    }
+   0% {
+      transform: translate(0, 100%);
+   }
+   20%,
+   85% {
+      transform: translate(0, 0);
+   }
+   100% {
+      transform: translate(100%, 0);
+   }
 }
 @keyframes slide-right {
-    to {
-        transform: translate(0, 0);
-    }
+   to {
+      transform: translate(0, 0);
+   }
 }
 
 .details-video {
-    width: 100%;
-    border: 1px solid var(--color-border-default);
-    overflow: hidden;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+   width: 100%;
+   border: 1px solid var(--color-border-default);
+   overflow: hidden;
+   border-top-left-radius: 10px;
+   border-top-right-radius: 10px;
 }
 
 .details-video summary {
-    padding: 10px;
-    border-bottom: 1px solid var(--color-border-default);
+   padding: 10px;
+   border-bottom: 1px solid var(--color-border-default);
 }
 
 .details-video video {
-    min-height: 200px;
-    max-height: 640px;
-    max-width: 100%;
-    margin-bottom: -7px;
+   min-height: 200px;
+   max-height: 640px;
+   max-width: 100%;
+   margin-bottom: -7px;
 }

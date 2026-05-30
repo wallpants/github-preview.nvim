@@ -1,38 +1,18 @@
 {
   "name": "github-preview.nvim",
-  "author": "wallpants",
-  "type": "module",
   "version": "0.0.0",
-  "license": "MIT",
-  "description": "Live preview of local github repos",
   "private": true,
+  "description": "Live preview of local github repos",
+  "license": "MIT",
+  "author": "wallpants",
   "repository": {
     "type": "git",
     "url": "git://github.com/wallpants/github-preview.nvim.git"
   },
-  "release": {
-    "branches": [
-      "main"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "@commitlint/cz-commitlint"
-    }
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ],
-    "rules": {
-      "body-max-line-length": [
-        0
-      ]
-    }
-  },
+  "type": "module",
   "scripts": {
     "commit": "cz",
-    "format": "prettier **/*.{md,ts,tsx,css,yml} -w",
+    "format": "oxfmt .",
     "logs": "bunvim logs github-preview",
     "lint": "eslint . --ext ts --ext tsx --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc -p ./app/tsconfig.json",
@@ -44,41 +24,61 @@
   "dependencies": {
     "bunvim": "1.1.13",
     "clsx": "^2.1.1",
-    "globby": "^14.0.2",
-    "isbinaryfile": "5.0.4",
-    "mermaid": "^11.4.1",
+    "globby": "^16.2.0",
+    "isbinaryfile": "6.0.0",
+    "mermaid": "^11.15.0",
     "opener": "^1.5.2",
     "pantsdown": "2.2.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
     "reconnecting-websocket": "^4.4.0",
-    "tailwind-merge": "^2.6.0",
-    "valibot": "^0.30.0"
+    "tailwind-merge": "^3.6.0",
+    "valibot": "^1.4.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^19.6.0",
-    "@commitlint/cz-commitlint": "^19.6.1",
-    "@types/bun": "latest",
+    "@commitlint/config-conventional": "^21.0.2",
+    "@commitlint/cz-commitlint": "^21.0.2",
+    "@types/bun": "1.3.14",
     "@types/eslint": "^9.6.1",
     "@types/opener": "^1.4.3",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "@typescript-eslint/eslint-plugin": "^8.19.0",
-    "@typescript-eslint/parser": "^8.19.0",
-    "@vitejs/plugin-react-swc": "^3.7.2",
-    "autoprefixer": "^10.4.20",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.60.0",
+    "@typescript-eslint/parser": "^8.60.0",
+    "@vitejs/plugin-react-swc": "^4.3.1",
+    "autoprefixer": "^10.5.0",
     "commitizen": "^4.3.1",
-    "commitlint": "^19.6.1",
-    "eslint": "^8.57.1",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-tailwindcss": "^3.17.5",
-    "inquirer": "^9.3.7",
-    "postcss": "^8.4.49",
-    "prettier": "^3.4.2",
-    "prettier-plugin-organize-imports": "^4.1.0",
-    "semantic-release": "^24.2.1",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.2",
-    "vite": "^6.0.7"
+    "commitlint": "^21.0.2",
+    "eslint": "^10.4.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-tailwindcss": "^3.18.3",
+    "inquirer": "^12.11.1",
+    "oxfmt": "^0.52.0",
+    "postcss": "^8.5.15",
+    "semantic-release": "^25.0.3",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.14"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "body-max-line-length": [
+        0
+      ]
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  },
+  "release": {
+    "branches": [
+      "main"
+    ]
   }
 }

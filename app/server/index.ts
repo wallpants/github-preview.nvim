@@ -5,14 +5,14 @@ import { httpHandler } from "./http.ts";
 import { websocketHandler } from "./websocket.ts";
 
 export function startServer(app: GithubPreview): Server {
-    const { port, host } = app.config.overrides;
+   const { port, host } = app.config.overrides;
 
-    const server = Bun.serve({
-        port: port,
-        fetch: httpHandler(app),
-        websocket: websocketHandler(app),
-    });
+   const server = Bun.serve({
+      port: port,
+      fetch: httpHandler(app),
+      websocket: websocketHandler(app),
+   });
 
-    opener(`http://${host}:${port}`);
-    return server;
+   opener(`http://${host}:${port}`);
+   return server;
 }

@@ -1,30 +1,30 @@
 import { useEffect } from "react";
 
 type Props = {
-    disabled: boolean;
-    callback: () => void;
+   disabled: boolean;
+   callback: () => void;
 };
 
 export const useOnDocumentClick = ({ disabled, callback }: Props) => {
-    useEffect(() => {
-        if (disabled) return;
-        const controller = new AbortController();
+   useEffect(() => {
+      if (disabled) return;
+      const controller = new AbortController();
 
-        document.addEventListener(
-            "click",
-            () => {
-                callback();
-            },
-            {
-                signal: controller.signal,
-                capture: false,
-            },
-        );
+      document.addEventListener(
+         "click",
+         () => {
+            callback();
+         },
+         {
+            signal: controller.signal,
+            capture: false,
+         },
+      );
 
-        return () => {
-            controller.abort();
-        };
-    }, [disabled, callback]);
+      return () => {
+         controller.abort();
+      };
+   }, [disabled, callback]);
 
-    return null;
+   return null;
 };

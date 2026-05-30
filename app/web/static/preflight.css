@@ -6,15 +6,15 @@
 *,
 ::before,
 ::after {
-    box-sizing: border-box; /* 1 */
-    border-width: 0; /* 2 */
-    border-style: solid; /* 2 */
-    border-color: currentColor; /* 2 */
+   box-sizing: border-box; /* 1 */
+   border-width: 0; /* 2 */
+   border-style: solid; /* 2 */
+   border-color: currentColor; /* 2 */
 }
 
 ::before,
 ::after {
-    --tw-content: "";
+   --tw-content: "";
 }
 
 /*
@@ -27,27 +27,27 @@
 */
 
 html {
-    line-height: 1.5; /* 1 */
-    -webkit-text-size-adjust: 100%; /* 2 */
-    -moz-tab-size: 4; /* 3 */
-    tab-size: 4; /* 3 */
-    font-family: theme(
-        "fontFamily.sans",
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        "Helvetica Neue",
-        Arial,
-        "Noto Sans",
-        sans-serif,
-        "Apple Color Emoji",
-        "Segoe UI Emoji",
-        "Segoe UI Symbol",
-        "Noto Color Emoji"
-    ); /* 4 */
+   line-height: 1.5; /* 1 */
+   -webkit-text-size-adjust: 100%; /* 2 */
+   -moz-tab-size: 4; /* 3 */
+   tab-size: 4; /* 3 */
+   font-family: theme(
+      "fontFamily.sans",
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      "Helvetica Neue",
+      Arial,
+      "Noto Sans",
+      sans-serif,
+      "Apple Color Emoji",
+      "Segoe UI Emoji",
+      "Segoe UI Symbol",
+      "Noto Color Emoji"
+   ); /* 4 */
 }
 
 /*
@@ -56,8 +56,8 @@ html {
 */
 
 body {
-    margin: 0; /* 1 */
-    line-height: inherit; /* 2 */
+   margin: 0; /* 1 */
+   line-height: inherit; /* 2 */
 }
 
 /*
@@ -67,9 +67,9 @@ body {
 */
 
 hr {
-    height: 0; /* 1 */
-    color: inherit; /* 2 */
-    border-top-width: 1px; /* 3 */
+   height: 0; /* 1 */
+   color: inherit; /* 2 */
+   border-top-width: 1px; /* 3 */
 }
 
 /*
@@ -77,7 +77,7 @@ Add the correct text decoration in Chrome, Edge, and Safari.
 */
 
 abbr:where([title]) {
-    text-decoration: underline dotted;
+   text-decoration: underline dotted;
 }
 
 /*
@@ -90,8 +90,8 @@ h3,
 h4,
 h5,
 h6 {
-    font-size: inherit;
-    font-weight: inherit;
+   font-size: inherit;
+   font-weight: inherit;
 }
 
 /*
@@ -99,7 +99,7 @@ Reset links to optimize for opt-in styling instead of opt-out.
 */
 
 a {
-    color: inherit;
+   color: inherit;
 }
 
 /*
@@ -108,7 +108,7 @@ Add the correct font weight in Edge and Safari.
 
 b,
 strong {
-    font-weight: bolder;
+   font-weight: bolder;
 }
 
 /*
@@ -120,18 +120,18 @@ code,
 kbd,
 samp,
 pre {
-    font-family: theme(
-        "fontFamily.mono",
-        ui-monospace,
-        SFMono-Regular,
-        Menlo,
-        Monaco,
-        Consolas,
-        "Liberation Mono",
-        "Courier New",
-        monospace
-    ); /* 1 */
-    font-size: 1em; /* 2 */
+   font-family: theme(
+      "fontFamily.mono",
+      ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      Monaco,
+      Consolas,
+      "Liberation Mono",
+      "Courier New",
+      monospace
+   ); /* 1 */
+   font-size: 1em; /* 2 */
 }
 
 /*
@@ -139,7 +139,7 @@ Add the correct font size in all browsers.
 */
 
 small {
-    font-size: 80%;
+   font-size: 80%;
 }
 
 /*
@@ -148,18 +148,18 @@ Prevent `sub` and `sup` elements from affecting the line height in all browsers.
 
 sub,
 sup {
-    font-size: 75%;
-    line-height: 0;
-    position: relative;
-    vertical-align: baseline;
+   font-size: 75%;
+   line-height: 0;
+   position: relative;
+   vertical-align: baseline;
 }
 
 sub {
-    bottom: -0.25em;
+   bottom: -0.25em;
 }
 
 sup {
-    top: -0.5em;
+   top: -0.5em;
 }
 
 /*
@@ -169,9 +169,9 @@ sup {
 */
 
 table {
-    text-indent: 0; /* 1 */
-    border-color: inherit; /* 2 */
-    border-collapse: collapse; /* 3 */
+   text-indent: 0; /* 1 */
+   border-color: inherit; /* 2 */
+   border-collapse: collapse; /* 3 */
 }
 
 /*
@@ -185,15 +185,15 @@ input,
 optgroup,
 select,
 textarea {
-    font-family: inherit; /* 1 */
-    font-feature-settings: inherit; /* 1 */
-    font-variation-settings: inherit; /* 1 */
-    font-size: 100%; /* 1 */
-    font-weight: inherit; /* 1 */
-    line-height: inherit; /* 1 */
-    color: inherit; /* 1 */
-    margin: 0; /* 2 */
-    padding: 0; /* 3 */
+   font-family: inherit; /* 1 */
+   font-feature-settings: inherit; /* 1 */
+   font-variation-settings: inherit; /* 1 */
+   font-size: 100%; /* 1 */
+   font-weight: inherit; /* 1 */
+   line-height: inherit; /* 1 */
+   color: inherit; /* 1 */
+   margin: 0; /* 2 */
+   padding: 0; /* 3 */
 }
 
 /*
@@ -202,7 +202,7 @@ Remove the inheritance of text transform in Edge and Firefox.
 
 button,
 select {
-    text-transform: none;
+   text-transform: none;
 }
 
 /*
@@ -214,10 +214,10 @@ button,
 [type="button"],
 [type="reset"],
 [type="submit"] {
-    appearance: button;
-    -webkit-appearance: button; /* 1 */
-    background-color: transparent; /* 2 */
-    background-image: none; /* 2 */
+   appearance: button;
+   -webkit-appearance: button; /* 1 */
+   background-color: transparent; /* 2 */
+   background-image: none; /* 2 */
 }
 
 /*
@@ -225,7 +225,7 @@ Use the modern Firefox focus style for all focusable elements.
 */
 
 :-moz-focusring {
-    outline: auto;
+   outline: auto;
 }
 
 /*
@@ -233,7 +233,7 @@ Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/
 */
 
 :-moz-ui-invalid {
-    box-shadow: none;
+   box-shadow: none;
 }
 
 /*
@@ -241,7 +241,7 @@ Add the correct vertical alignment in Chrome and Firefox.
 */
 
 progress {
-    vertical-align: baseline;
+   vertical-align: baseline;
 }
 
 /*
@@ -250,7 +250,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
 
 ::-webkit-inner-spin-button,
 ::-webkit-outer-spin-button {
-    height: auto;
+   height: auto;
 }
 
 /*
@@ -259,9 +259,9 @@ Correct the cursor style of increment and decrement buttons in Safari.
 */
 
 [type="search"] {
-    -webkit-appearance: textfield; /* 1 */
-    outline-offset: -2px; /* 2 */
-    appearance: textfield;
+   -webkit-appearance: textfield; /* 1 */
+   outline-offset: -2px; /* 2 */
+   appearance: textfield;
 }
 
 /*
@@ -269,7 +269,7 @@ Remove the inner padding in Chrome and Safari on macOS.
 */
 
 ::-webkit-search-decoration {
-    -webkit-appearance: none;
+   -webkit-appearance: none;
 }
 
 /*
@@ -278,8 +278,8 @@ Remove the inner padding in Chrome and Safari on macOS.
 */
 
 ::-webkit-file-upload-button {
-    -webkit-appearance: button; /* 1 */
-    font: inherit; /* 2 */
+   -webkit-appearance: button; /* 1 */
+   font: inherit; /* 2 */
 }
 
 /*
@@ -287,7 +287,7 @@ Add the correct display in Chrome and Safari.
 */
 
 summary {
-    display: list-item;
+   display: list-item;
 }
 
 /*
@@ -331,7 +331,7 @@ Removes the default spacing and border for appropriate elements.
 Reset default styling for dialogs.
 */
 dialog {
-    padding: 0;
+   padding: 0;
 }
 
 /*
@@ -339,7 +339,7 @@ Prevent resizing textareas horizontally by default.
 */
 
 textarea {
-    resize: vertical;
+   resize: vertical;
 }
 
 /*
@@ -349,8 +349,8 @@ textarea {
 
 input::placeholder,
 textarea::placeholder {
-    opacity: 1; /* 1 */
-    color: #9ca3af; /* 2 */
+   opacity: 1; /* 1 */
+   color: #9ca3af; /* 2 */
 }
 
 /*
@@ -359,14 +359,14 @@ Set the default cursor for buttons.
 
 button,
 [role="button"] {
-    cursor: pointer;
+   cursor: pointer;
 }
 
 /*
 Make sure disabled buttons don't get the pointer cursor.
 */
 :disabled {
-    cursor: default;
+   cursor: default;
 }
 
 /*
@@ -383,8 +383,8 @@ audio,
 iframe,
 embed,
 object {
-    display: block; /* 1 */
-    vertical-align: middle; /* 2 */
+   display: block; /* 1 */
+   vertical-align: middle; /* 2 */
 }
 
 /*
@@ -399,5 +399,5 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
 
 /* Make elements with the HTML hidden attribute stay hidden by default */
 [hidden] {
-    display: none;
+   display: none;
 }

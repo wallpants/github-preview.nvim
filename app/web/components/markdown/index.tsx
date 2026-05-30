@@ -14,151 +14,147 @@ const MARKDOWN_CONTAINER_ID = "markdown-container-id";
 const MARKDOWN_ELEMENT_ID = "markdown-element-id";
 
 const pantsdown = new Pantsdown({
-    renderer: {
-        relativeImageUrlPrefix: "/__github_preview__/image/",
-        detailsTagDefaultOpen: true,
-    },
+   renderer: {
+      relativeImageUrlPrefix: "/__github_preview__/image/",
+      detailsTagDefaultOpen: true,
+   },
 });
 
 export const Markdown = ({ className }: { className: string }) => {
-    const { currentPath, config, refObject, registerHandler, wsRequest } =
-        useContext(websocketContext);
+   const { currentPath, config, refObject, registerHandler, wsRequest } =
+      useContext(websocketContext);
 
-    const single_file = config?.overrides.single_file;
-    const details_tags_open = config?.overrides.details_tags_open ?? true;
+   const single_file = config?.overrides.single_file;
+   const details_tags_open = config?.overrides.details_tags_open ?? true;
 
-    const [markdownElement, setMarkdownElement] = useState<HTMLElement>();
-    const [cursorLineElement, setCursorLineElement] = useState<HTMLElement>();
-    const [lineNumbersElement, setLineNumbersElement] = useState<HTMLElement>();
-    const [markdownContainerElement, setMarkdownContainerElement] = useState<HTMLElement>();
-    const [offsets, setOffsets] = useState<Offsets>([]);
+   const [markdownElement, setMarkdownElement] = useState<HTMLElement>();
+   const [cursorLineElement, setCursorLineElement] = useState<HTMLElement>();
+   const [lineNumbersElement, setLineNumbersElement] = useState<HTMLElement>();
+   const [markdownContainerElement, setMarkdownContainerElement] = useState<HTMLElement>();
+   const [offsets, setOffsets] = useState<Offsets>([]);
 
-    useEffect(() => {
-        pantsdown.setConfig({ renderer: { detailsTagDefaultOpen: details_tags_open } });
-        if (currentPath) {
-            refObject.current.skipScroll = true;
-            wsRequest({ type: "get_entry", path: currentPath });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [details_tags_open, single_file, wsRequest]);
+   useEffect(() => {
+      pantsdown.setConfig({ renderer: { detailsTagDefaultOpen: details_tags_open } });
+      if (currentPath) {
+         refObject.current.skipScroll = true;
+         wsRequest({ type: "get_entry", path: currentPath });
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [details_tags_open, single_file, wsRequest]);
 
-    useEffect(() => {
-        setMarkdownElement(document.getElementById(MARKDOWN_ELEMENT_ID)!);
-        setCursorLineElement(document.getElementById(CURSOR_LINE_ELEMENT_ID)!);
-        setLineNumbersElement(document.getElementById(LINE_NUMBERS_ELEMENT_ID)!);
-        setMarkdownContainerElement(document.getElementById(MARKDOWN_CONTAINER_ID)!);
-    }, []);
+   useEffect(() => {
+      setMarkdownElement(document.getElementById(MARKDOWN_ELEMENT_ID)!);
+      setCursorLineElement(document.getElementById(CURSOR_LINE_ELEMENT_ID)!);
+      setLineNumbersElement(document.getElementById(LINE_NUMBERS_ELEMENT_ID)!);
+      setMarkdownContainerElement(document.getElementById(MARKDOWN_CONTAINER_ID)!);
+   }, []);
 
-    useEffect(() => {
-        if (
-            !markdownContainerElement ||
-            !markdownElement ||
-            !cursorLineElement ||
-            !lineNumbersElement
-        )
-            return;
+   useEffect(() => {
+      if (
+         !markdownContainerElement ||
+         !markdownElement ||
+         !cursorLineElement ||
+         !lineNumbersElement
+      )
+         return;
 
-        registerHandler("markdown", (message) => {
-            if ("lines" in message) {
-                const fileExt = getFileExt(message.currentPath);
-                const text = message.lines.join("\n");
-                const markdown = fileExt === "md" ? text : "```" + (fileExt ?? "") + `\n${text}`;
+      registerHandler("markdown", (message) => {
+         if ("lines" in message) {
+            const fileExt = getFileExt(message.currentPath);
+            const text = message.lines.join("\n");
+            const markdown = fileExt === "md" ? text : "```" + (fileExt ?? "") + `\n${text}`;
 
-                const { html, javascript } = pantsdown.parse(markdown);
+            const { html, javascript } = pantsdown.parse(markdown);
 
-                // We create a tempElement so we can post-process html before actually
-                // adding it to the DOM. This way we can avoid screen jumps caused
-                // by html replacements that happen during post-process.
-                const tempElement = document.createElement("div");
-                tempElement.innerHTML = html;
+            // We create a tempElement so we can post-process html before actually
+            // adding it to the DOM. This way we can avoid screen jumps caused
+            // by html replacements that happen during post-process.
+            const tempElement = document.createElement("div");
+            tempElement.innerHTML = html;
 
-                postProcessHrefs({
-                    wsRequest,
-                    tempElement,
-                    refObject,
-                    single_file,
-                });
+            postProcessHrefs({
+               wsRequest,
+               tempElement,
+               refObject,
+               single_file,
+            });
 
-                myMermaid.renderMemoized(tempElement);
+            myMermaid.renderMemoized(tempElement);
 
-                markdownElement.replaceChildren(...tempElement.children);
+            markdownElement.replaceChildren(...tempElement.children);
 
-                updateElementsStyles({
-                    lines: message.lines,
-                    fileExt,
-                    markdownElement,
-                    cursorLineElement,
-                    lineNumbersElement,
-                });
+            updateElementsStyles({
+               lines: message.lines,
+               fileExt,
+               markdownElement,
+               cursorLineElement,
+               lineNumbersElement,
+            });
 
-                const newScript = document.createElement("script");
-                newScript.text = javascript;
-                markdownElement.appendChild(newScript);
+            const newScript = document.createElement("script");
+            newScript.text = javascript;
+            markdownElement.appendChild(newScript);
 
-                void myMermaid.renderAsync();
-            }
+            void myMermaid.renderAsync();
+         }
 
-            if ("linesCountChange" in message && message.linesCountChange) {
-                setOffsets(getScrollOffsets(markdownContainerElement, markdownElement));
-            }
-        });
-    }, [
-        registerHandler,
-        wsRequest,
-        refObject,
-        single_file,
-        markdownElement,
-        cursorLineElement,
-        lineNumbersElement,
-        markdownContainerElement,
-    ]);
-
-    useEffect(() => {
-        // recalculate offsets whenever markdownElement's height changes
-        if (!markdownElement || !markdownContainerElement) return;
-
-        const observer = new ResizeObserver(() => {
+         if ("linesCountChange" in message && message.linesCountChange) {
             setOffsets(getScrollOffsets(markdownContainerElement, markdownElement));
-        });
+         }
+      });
+   }, [
+      registerHandler,
+      wsRequest,
+      refObject,
+      single_file,
+      markdownElement,
+      cursorLineElement,
+      lineNumbersElement,
+      markdownContainerElement,
+   ]);
 
-        observer.observe(markdownElement);
+   useEffect(() => {
+      // recalculate offsets whenever markdownElement's height changes
+      if (!markdownElement || !markdownContainerElement) return;
 
-        return () => {
-            observer.disconnect();
-        };
-    }, [markdownElement, markdownContainerElement]);
+      const observer = new ResizeObserver(() => {
+         setOffsets(getScrollOffsets(markdownContainerElement, markdownElement));
+      });
 
-    const isDir = currentPath?.endsWith("/");
+      observer.observe(markdownElement);
 
-    return (
-        <div
-            className={cn(
-                "relative box-border rounded border",
-                "border-github-border-default bg-github-canvas-default",
-                className,
-            )}
-            id={MARKDOWN_CONTAINER_ID}
-        >
-            <BreadCrumbs />
-            <CursorLine
-                offsets={offsets}
-                cursorLineElement={cursorLineElement}
-                markdownContainerElement={markdownContainerElement}
-            />
-            <div
-                id={MARKDOWN_ELEMENT_ID}
-                className={cn("relative mx-auto mb-96", isDir ? "invisible" : "visible")}
-            />
-            {isDir ? (
-                <div className="absolute inset-x-0 top-0">
-                    <Explorer />
-                </div>
-            ) : null}
-            <LineNumbers
-                hash={refObject.current.hash}
-                offsets={offsets}
-                currentPath={currentPath}
-            />
-        </div>
-    );
+      return () => {
+         observer.disconnect();
+      };
+   }, [markdownElement, markdownContainerElement]);
+
+   const isDir = currentPath?.endsWith("/");
+
+   return (
+      <div
+         className={cn(
+            "rounded relative box-border border",
+            "border-github-border-default bg-github-canvas-default",
+            className,
+         )}
+         id={MARKDOWN_CONTAINER_ID}
+      >
+         <BreadCrumbs />
+         <CursorLine
+            offsets={offsets}
+            cursorLineElement={cursorLineElement}
+            markdownContainerElement={markdownContainerElement}
+         />
+         <div
+            id={MARKDOWN_ELEMENT_ID}
+            className={cn("mb-96 relative mx-auto", isDir ? "invisible" : "visible")}
+         />
+         {isDir ? (
+            <div className="inset-x-0 top-0 absolute">
+               <Explorer />
+            </div>
+         ) : null}
+         <LineNumbers hash={refObject.current.hash} offsets={offsets} currentPath={currentPath} />
+      </div>
+   );
 };
