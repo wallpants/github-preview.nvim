@@ -5,9 +5,9 @@ import { type CustomEvents } from "../types.ts";
 const REQUEST = "config_update";
 
 export function onConfigUpdate(
-    app: GithubPreview,
-    callback: (args: CustomEvents["requests"][typeof REQUEST]) => Awaitable<null>,
+   app: GithubPreview,
+   callback: (args: CustomEvents["requests"][typeof REQUEST]) => Awaitable<null>,
 ) {
-    // Request handler
-    app.nvim.onRequest(REQUEST, callback);
+   // Request handler
+   app.nvim.onRequest(REQUEST, callback);
 }

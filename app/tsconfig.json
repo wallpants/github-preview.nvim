@@ -9,14 +9,11 @@
     "noEmit": true,
     "composite": true,
     "strict": true,
-    "downlevelIteration": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "jsx": "react-jsx",
-
-    // strict: https://github.com/tsconfig/bases/blob/main/bases/strictest.json
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
     "exactOptionalPropertyTypes": true,
@@ -29,6 +26,7 @@
     "noUnusedParameters": true,
     "isolatedModules": true,
     "checkJs": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "verbatimModuleSyntax": true
   }
 }
