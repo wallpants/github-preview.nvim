@@ -1,14 +1,15 @@
+import wallpants from "../../static/wallpants-256.png";
 import { cn } from "../../utils.ts";
 
 export const Footer = ({ isExpanded }: { isExpanded: boolean }) => (
    <div
       className={cn(
-         "bottom-0 h-14 inset-x-0 absolute flex items-center justify-center",
-         "border-github-border-default bg-github-canvas-default rounded-br-md border-t",
+         "absolute inset-x-0 bottom-0 flex h-14 items-center justify-center",
+         "rounded-br-md border-t border-github-border-default bg-github-canvas-default",
       )}
    >
       {isExpanded ? (
-         <p className="!mb-0 mr-4 text-sm text-center">
+         <p className="mr-4 !mb-0 text-center text-sm">
             with ♥️ by{" "}
             <a href="https://wallpants.io" target="_blank" rel="noreferrer">
                wallpants.io
@@ -21,7 +22,7 @@ export const Footer = ({ isExpanded }: { isExpanded: boolean }) => (
             rel="noreferrer"
             className="size-8 overflow-hidden rounded-full"
          >
-            <img src="/__github_preview__/static/wallpants-256.png" />
+            <img src={wallpants} />
          </a>
       )}
    </div>

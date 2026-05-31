@@ -1,7 +1,7 @@
-import { type MutableRefObject } from "react";
-import { type RefObject, type WebsocketContext } from "../websocket-provider/context";
+import { type RefObject } from "react";
+import { type RefData, type WebsocketContext } from "../websocket-provider/context";
 
-function replaceIfVideo(a: HTMLAnchorElement, refObject: MutableRefObject<RefObject>) {
+function replaceIfVideo(a: HTMLAnchorElement, refObject: RefObject<RefData>) {
    const memoized = refObject.current.urlMasks.get(a.innerText);
 
    if (memoized !== undefined) {
@@ -60,7 +60,7 @@ export function postProcessHrefs({
 }: {
    wsRequest: WebsocketContext["wsRequest"];
    tempElement: HTMLElement;
-   refObject: MutableRefObject<RefObject>;
+   refObject: RefObject<RefData>;
    single_file: boolean | undefined;
 }) {
    const base = window.location.origin;

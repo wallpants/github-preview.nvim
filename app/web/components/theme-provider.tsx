@@ -1,12 +1,19 @@
 import { useCallback, useContext, useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
-import { type Theme } from "../../types";
+import { ThemeSchema } from "../../types";
 import { myMermaid } from "./markdown/mermaid";
 import { websocketContext } from "./websocket-provider/context";
 
-export function ThemeProvider({ children, THEME }: { children: ReactNode; THEME: Theme }) {
+const DEFAULT_THEME = ThemeSchema.parse(
+   JSON.parse(
+      new URLSearchParams(window.location.search).get("theme") ??
+         '{ "name": "system", "high_contrast": false }',
+   ),
+);
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
    const { wsRequest, currentPath, config } = useContext(websocketContext);
-   const theme = config?.overrides.theme.name ?? THEME.name;
-   const high_contrast = config?.overrides.theme.high_contrast ?? THEME.high_contrast;
+   const theme = config?.overrides.theme.name ?? DEFAULT_THEME.name;
+   const high_contrast = config?.overrides.theme.high_contrast ?? DEFAULT_THEME.high_contrast;
 
    function getSystemTheme() {
       return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -14,7 +21,8 @@ export function ThemeProvider({ children, THEME }: { children: ReactNode; THEME:
 
    const handleThemeChange = useCallback(
       (newTheme: "light" | "dark") => {
-         const rootHtml = document.getElementsByTagName("html")[0]!;
+         const rootHtml = document.getElementsByTagName("html")[0];
+         if (!rootHtml) throw new Error("root html element not found");
          let className = "pantsdown " + newTheme;
          if (high_contrast) className += " high-contrast";
          rootHtml.className = className;
@@ -39,15 +47,11 @@ export function ThemeProvider({ children, THEME }: { children: ReactNode; THEME:
    });
 
    useEffect(() => {
-      window
-         .matchMedia("(prefers-color-scheme: dark)")
-         .addEventListener("change", changeEventHandler.current);
+      const handler = changeEventHandler.current;
 
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", handler);
       return () => {
-         window
-            .matchMedia("(prefers-color-scheme: dark)")
-            // eslint-disable-next-line
-            .removeEventListener("change", changeEventHandler.current);
+         window.matchMedia("(prefers-color-scheme: dark)").removeEventListener("change", handler);
       };
    }, [changeEventHandler]);
 

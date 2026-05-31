@@ -27,8 +27,8 @@ export const Header = ({
    return (
       <div
          className={cn(
-            "border-github-border-default bg-github-canvas-default flex items-center border-b",
-            isExpanded ? "px-4 h-14 justify-between" : "flex-col-reverse justify-center",
+            "flex items-center border-b border-github-border-default bg-github-canvas-default",
+            isExpanded ? "h-14 justify-between px-4" : "flex-col-reverse justify-center",
             className,
          )}
       >
@@ -47,7 +47,7 @@ export const Header = ({
                      }}
                   />
                   {isOverriden ? (
-                     <div className="right-1 top-3 size-2 bg-orange-600 absolute rounded-full" />
+                     <div className="absolute top-3 right-1 size-2 rounded-full bg-orange-600" />
                   ) : null}
                </div>
             </>
@@ -57,6 +57,7 @@ export const Header = ({
             noBorder={!isExpanded}
             Icon={isExpanded ? PanelOpenIcon : PanelCloseIcon}
             onClick={() => {
+               // eslint-disable-next-line
                refObject.current.skipScroll = true;
                setIsExpanded(!isExpanded);
             }}

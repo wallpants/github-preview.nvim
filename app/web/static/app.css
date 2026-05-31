@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+/* Dark mode via class selector */
+@variant dark (&:where(.dark, .dark *));
+
+/* Custom theme colors referencing pantsdown CSS variables */
+@theme {
+   --color-github-fg-default: var(--color-fg-default);
+   --color-github-fg-muted: var(--color-fg-muted);
+   --color-github-fg-subtle: var(--color-fg-subtle);
+
+   --color-github-canvas-default: var(--color-canvas-default);
+   --color-github-canvas-subtle: var(--color-canvas-subtle);
+
+   --color-github-border-default: var(--color-border-default);
+   --color-github-border-muted: var(--color-border-muted);
+
+   --color-github-neutral-muted: var(--color-neutral-muted);
+
+   --color-github-accent-fg: var(--color-accent-fg);
+   --color-github-accent-emphasis: var(--color-accent-emphasis);
+
+   --color-github-attention-fg: var(--color-attention-fg);
+   --color-github-attention-subtle: var(--color-attention-subtle);
+   --color-github-attention-muted: var(--color-attention-muted);
+
+   --color-github-danger-fg: var(--color-danger-fg);
+   --color-github-success-fg: var(--color-success-fg);
+   --color-github-done-fg: var(--color-done-fg);
+
+   --color-github-icon-directory: var(--color-icon-directory);
+   --color-github-icon-file: var(--color-icon-file);
+
+   --color-github-btn-bg: var(--color-btn-bg);
+   --color-github-btn-border: var(--color-btn-border);
+   --color-github-btn-hover-bg: var(--color-btn-hover-bg);
+}

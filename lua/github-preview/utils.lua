@@ -10,7 +10,7 @@ M.get_client_channel = function()
 	return nil
 end
 
----@param log_level string
+---@param log_level? string
 M.log_exit = function(log_level)
 	if not log_level then
 		return
@@ -22,7 +22,7 @@ M.log_exit = function(log_level)
 	end
 end
 
----@param log_level string
+---@param log_level? string
 M.log_job = function(log_level)
 	-- https://neovim.io/doc/user/channel.html#channel-bytes
 	if not log_level then

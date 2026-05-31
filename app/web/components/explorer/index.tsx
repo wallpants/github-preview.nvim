@@ -27,12 +27,12 @@ export const Explorer = () => {
    return (
       <div
          className={cn(
-            "rounded-r-md border-github-border-default relative border border-l-0",
+            "relative rounded-r-md border border-l-0 border-github-border-default",
             isExpanded ? "w-80" : "w-12",
          )}
       >
          <div
-            className={isExpanded ? "inset-0 pb-56 pt-16 absolute block overflow-y-auto" : "hidden"}
+            className={isExpanded ? "absolute inset-0 block overflow-y-auto pt-16 pb-56" : "hidden"}
          >
             {config?.overrides.single_file ? (
                <div className="!px-3">
@@ -44,7 +44,7 @@ export const Explorer = () => {
             )}
          </div>
          <Header
-            className="inset-x-0 top-0 rounded-tr-md absolute z-10"
+            className="absolute inset-x-0 top-0 z-10 rounded-tr-md"
             isExpanded={isExpanded}
             setIsExpanded={setIsExpanded}
             setSettingsOffset={setSettingsOffset}

@@ -107,39 +107,9 @@ sometimes they're hard to follow/read. For a more complete logging experience, u
 
 ---
 
-**6. Start editing server-side code**
+**6. Start editing server-side or webapp code**
 
-You can now start working on **server-side** code.
-
-I haven't fully figured out _hot-reloading_ on **server-side**, so you'll need to
-restart the plugin sometimes for your changes to take effect.
-
-Changes to the **webapp** will not be reflected even if you manually refresh
-your browser. You'll need to restart the plugin for the **webapp** to update.
-Next step enables _hot-reloading_ for the **webapp**.
-
----
-
-**7. Start _hot-reloading_ webapp server**
-
-At the repository root `~/Projects/nvim-plugins/github-preview.nvim` in a new terminal run:
-
-```sh
-bun run web:dev
-```
-
-This will start a [vite dev server](https://vitejs.dev/) and open a new browser
-tab where any changes you make to the **webapp** code should be applied live.
-
-Dev logs are printed to your browser's console.
-
-> [!IMPORTANT]
-> Vite's dev server handles css post-processing, <strong>bun does not yet</strong>.
->
-> This means any changes to tailwind classes are immediately reflected when
-> the webapp is served by vite's dev server, but for the changes to be reflected
-> when served directly by bun (in production) we need to manually run the command
-> `bun run tailwind:compile` to generate required CSS.
+If you specified a `log_level`, hot-reload will be enabled for both changes to the bun app as well as the webapp.
 
 ---
 
@@ -168,13 +138,6 @@ To ensure that there are no TypeScript issues, you can run the **package.json** 
 
 ```
 bun run typecheck
-```
-
-If you make any changes to tailwind classes, you must also manually run the
-following **package.json** script to generate relevant CSS files:
-
-```
-bun run tailwind:compile
 ```
 
 > [!NOTE]

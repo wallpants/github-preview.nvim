@@ -36,6 +36,7 @@ export const Markdown = ({ className }: { className: string }) => {
    useEffect(() => {
       pantsdown.setConfig({ renderer: { detailsTagDefaultOpen: details_tags_open } });
       if (currentPath) {
+         // eslint-disable-next-line
          refObject.current.skipScroll = true;
          wsRequest({ type: "get_entry", path: currentPath });
       }
@@ -43,10 +44,12 @@ export const Markdown = ({ className }: { className: string }) => {
    }, [details_tags_open, single_file, wsRequest]);
 
    useEffect(() => {
+      /* eslint-disable */
       setMarkdownElement(document.getElementById(MARKDOWN_ELEMENT_ID)!);
       setCursorLineElement(document.getElementById(CURSOR_LINE_ELEMENT_ID)!);
       setLineNumbersElement(document.getElementById(LINE_NUMBERS_ELEMENT_ID)!);
       setMarkdownContainerElement(document.getElementById(MARKDOWN_CONTAINER_ID)!);
+      /* eslint-enable */
    }, []);
 
    useEffect(() => {
@@ -133,7 +136,7 @@ export const Markdown = ({ className }: { className: string }) => {
    return (
       <div
          className={cn(
-            "rounded relative box-border border",
+            "relative box-border rounded border",
             "border-github-border-default bg-github-canvas-default",
             className,
          )}
@@ -147,10 +150,10 @@ export const Markdown = ({ className }: { className: string }) => {
          />
          <div
             id={MARKDOWN_ELEMENT_ID}
-            className={cn("mb-96 relative mx-auto", isDir ? "invisible" : "visible")}
+            className={cn("relative mx-auto mb-96", isDir ? "invisible" : "visible")}
          />
          {isDir ? (
-            <div className="inset-x-0 top-0 absolute">
+            <div className="absolute inset-x-0 top-0">
                <Explorer />
             </div>
          ) : null}

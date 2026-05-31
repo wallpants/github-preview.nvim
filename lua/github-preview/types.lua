@@ -2,10 +2,6 @@
 ---@field root string
 ---@field path string
 
----@class env
----@field LOG_LEVEL string?
----@field IS_DEV boolean?
-
 ---@class cursor_line
 ---@field disable boolean | nil
 ---@field color string | nil
@@ -19,6 +15,8 @@
 ---@field name "system" | "light" | "dark" | nil
 ---@field high_contrast boolean | nil
 
+---@alias log_level "verbose" | "debug" | "info"
+
 ---@class github_preview_config
 ---@field host string | nil
 ---@field port number | nil
@@ -27,7 +25,10 @@
 ---@field details_tags_open boolean | nil
 ---@field cursor_line cursor_line | nil
 ---@field scroll scroll | nil
----@field log_level nil | "verbose" | "debug"
+---@field log_level log_level | nil
+
+---@class env
+---@field LOG_LEVEL log_level | "none"
 
 ---@class github_preview_props
 ---@field init init

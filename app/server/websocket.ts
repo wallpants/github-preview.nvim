@@ -29,6 +29,7 @@ export function websocketHandler<T>(app: GithubPreview): WebSocketHandler<T> {
             // remove hash from browserMessage.path to prevent filesystem
             // operations from failing
             const [path, messageHash] = browserMessage.path.split("#");
+            // eslint-disable-next-line
             browserMessage.path = path!;
             hash = messageHash;
          }

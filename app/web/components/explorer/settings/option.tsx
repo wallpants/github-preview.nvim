@@ -1,5 +1,5 @@
 import { useContext, useEffect, type ChangeEvent } from "react";
-import { type GithubPreview } from "../../../../github-preview";
+import type { GithubPreviewConfig } from "../../../../types";
 import { cn, isEqual } from "../../../utils";
 import { Toggle } from "../../toggle";
 import { websocketContext } from "../../websocket-provider/context";
@@ -8,7 +8,7 @@ import { Select, type SelectOption } from "./select";
 type Props = {
    className?: string;
    name: string;
-   cKey: keyof GithubPreview["config"]["overrides"];
+   cKey: keyof GithubPreviewConfig["overrides"];
    select?: SelectOption[];
    toggle?: {
       value: boolean;
@@ -90,19 +90,19 @@ export const Option = ({
    return (
       <div
          className={cn(
-            "p-3 h-28 rounded border-github-border-default relative flex min-w-[120px] flex-col items-center border",
+            "relative flex h-28 min-w-[120px] flex-col items-center rounded border border-github-border-default p-3",
             className,
          )}
       >
          {isOverriden ? (
-            <div className="right-1 top-1 size-2 bg-orange-600 absolute rounded-full" />
+            <div className="absolute top-1 right-1 size-2 rounded-full bg-orange-600" />
          ) : null}
          <p className="!m-0">{name}</p>
-         <div className="py-1 flex grow flex-col items-center justify-around">
+         <div className="flex grow flex-col items-center justify-around py-1">
             {toggle && <Toggle checked={toggle.value} onChange={toggle.onChange} />}
             {select && <Select select={select} disabled={disabled} />}
             {color && (
-               <label className="gap-x-4 flex items-center text-[14px]">
+               <label className="flex items-center gap-x-4 text-[14px]">
                   <input
                      type="color"
                      id={`${cKey}-color`}
@@ -114,7 +114,7 @@ export const Option = ({
                </label>
             )}
             {range && (
-               <div className="gap-x-3 flex">
+               <div className="flex gap-x-3">
                   <input
                      type="range"
                      className="w-24"
@@ -132,9 +132,9 @@ export const Option = ({
             )}
          </div>
          {disabled && (
-            <div className="hover:bg-github-canvas-subtle group inset-0 rounded absolute cursor-not-allowed">
-               <div className="inset-0 bg-orange-200/10 invisible absolute flex items-center group-hover:visible">
-                  <p className="!m-0 text-orange-600 text-center">{disabled}</p>
+            <div className="group absolute inset-0 cursor-not-allowed rounded hover:bg-github-canvas-subtle">
+               <div className="invisible absolute inset-0 flex items-center bg-orange-200/10 group-hover:visible">
+                  <p className="!m-0 text-center text-orange-600">{disabled}</p>
                </div>
             </div>
          )}

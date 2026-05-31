@@ -1,13 +1,13 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": [".github", "tailwind.css"],
+  "ignorePatterns": [".github"],
   "printWidth": 100,
   "tabWidth": 3,
   "sortImports": {
     "newlinesBetween": false
   },
   "sortTailwindcss": {
-    "stylesheet": "./app/web/static/tailwind.css",
+    "stylesheet": "./app/web/static/app.css",
     "functions": ["cn"]
   },
   "overrides": [

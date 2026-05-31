@@ -29,12 +29,12 @@ const Entry = ({
       }}
       style={{ color: single_file ? "purple" : undefined }}
       className={cn(
-         "group px-3 rounded-md hover:bg-github-canvas-subtle flex h-[38px] cursor-pointer items-center",
+         "group flex h-[38px] cursor-pointer items-center rounded-md px-3 hover:bg-github-canvas-subtle",
          single_file && "cursor-not-allowed",
       )}
    >
       {IconMap[path.endsWith("/") || isParent ? "dir" : "file"]}
-      <span className="group-hover:text-github-accent-fg text-sm group-hover:underline">
+      <span className="text-sm group-hover:text-github-accent-fg group-hover:underline">
          {isParent ? ".." : getEntryName(path)}
       </span>
    </div>
@@ -63,7 +63,7 @@ export const Explorer = () => {
    const single_file = config?.overrides.single_file;
 
    return (
-      <div className="border-github-border-default mt-20 rounded-md mx-auto w-4/5 border-2">
+      <div className="mx-auto mt-20 w-4/5 rounded-md border-2 border-github-border-default">
          {segments.length ? (
             <Entry isParent path={parent} wsRequest={wsRequest} single_file={single_file} />
          ) : null}
