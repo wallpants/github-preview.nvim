@@ -30,6 +30,7 @@ export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElemen
       if (!cursorLineElement || !markdownContainerElement) return;
 
       if (refObject.current.skipScroll) {
+         // eslint-disable-next-line
          refObject.current.skipScroll = false;
       } else {
          scroll(
@@ -49,7 +50,7 @@ export const CursorLine = ({ offsets, cursorLineElement, markdownContainerElemen
          className="pointer-events-none absolute z-10 h-[36px] w-full"
          style={{
             // eslint-disable-next-line
-            background: lineColor ? lineColor : "transparent",
+            background: lineColor || "transparent",
             opacity: overrides?.cursor_line.opacity ?? 0,
          }}
       />

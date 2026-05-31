@@ -26,8 +26,8 @@ export const Settings = ({ isOverriden, cKey, settingsOffset, setStartExit }: Pr
    useEffect(() => {
       // we need to keep track of `isPickingColor`, because we stop hovering
       // when picking color, but we don't want the settings modal to close
-      if (smallSettings && !isSelectingColor) {
-         setStartExit(!isHovering);
+      if (smallSettings) {
+         setStartExit(!isHovering && !isSelectingColor);
       }
    }, [smallSettings, setStartExit, isHovering, isSelectingColor]);
 
@@ -48,8 +48,8 @@ export const Settings = ({ isOverriden, cKey, settingsOffset, setStartExit }: Pr
          }}
          style={{ top: settingsOffset - 50 }}
          className={cn(
-            "left-14 p-2 text-sm absolute top-[55px] z-20",
-            "rounded border-github-border-default bg-github-canvas-subtle border",
+            "absolute top-[55px] left-14 z-20 p-2 text-sm",
+            "rounded border border-github-border-default bg-github-canvas-subtle",
             !smallSettings && "w-[430px]",
          )}
       >
@@ -68,13 +68,13 @@ export const Settings = ({ isOverriden, cKey, settingsOffset, setStartExit }: Pr
                .
             </p>
          )}
-         <div className={cn(smallSettings ? "flex justify-center" : "gap-4 mb-4 grid grid-cols-3")}>
+         <div className={cn(smallSettings ? "flex justify-center" : "mb-4 grid grid-cols-3 gap-4")}>
             {(!smallSettings || cKey === "theme") && <ThemeOption />}
             {(!smallSettings || cKey === "details_tags_open") && <DetailsTagsOption />}
             {(!smallSettings || cKey === "single_file") && <SingleFileOption />}
          </div>
 
-         <div className={cn(smallSettings ? "flex justify-center" : "gap-4 grid grid-cols-2")}>
+         <div className={cn(smallSettings ? "flex justify-center" : "grid grid-cols-2 gap-4")}>
             {(!smallSettings || cKey === "cursor_line") && (
                <CursorlineOption setIsSelectingColor={setIsSelectingColor} />
             )}
@@ -83,7 +83,7 @@ export const Settings = ({ isOverriden, cKey, settingsOffset, setStartExit }: Pr
          {!smallSettings && (
             <button
                className={cn(
-                  "mb-2 mr-2 mt-4 text-orange-600 px-2 py-1 rounded-md float-right",
+                  "float-right mt-4 mr-2 mb-2 rounded-md px-2 py-1 text-orange-600",
                   "hover:bg-orange-600/10",
                   isOverriden ? "visible" : "invisible",
                )}

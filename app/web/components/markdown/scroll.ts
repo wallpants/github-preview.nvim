@@ -1,5 +1,5 @@
-import { type MutableRefObject } from "react";
-import { type RefObject } from "../websocket-provider/context";
+import type { RefObject } from "react";
+import { type RefData } from "../websocket-provider/context";
 
 type Attrs = {
    offsetTop: number;
@@ -58,7 +58,8 @@ export function getScrollOffsets(
       sortedElements[0].firstElementChild?.tagName === "CODE";
 
    for (let index = 0, len = sortedElements.length; index < len; index++) {
-      const element = sortedElements[index]!;
+      const element = sortedElements[index];
+      if (!element) throw new Error(`undefined element`);
 
       // If the element is not visible, we skip it because element.offsetTop is 0 for
       // non-visible elements and that messes up with scrollOffsets.
@@ -94,6 +95,7 @@ export function getScrollOffsets(
                // In some cases acc is 0 here
                // it happens inside of <details>, maybe there are other cases.
                // If there's a prev offset already, we copy the value over
+               // eslint-disable-next-line
                sourceLineOffsets[currLine]![0] = sourceLineOffsets[currLine - 1]![0];
             }
 
@@ -124,6 +126,7 @@ export function getScrollOffsets(
          if (currLine !== elemStartLine && isFencedCodeInMarkdown) {
             // move offsets up a little bit when in fenced code
             // in markdown files to center cursorline
+            // eslint-disable-next-line
             sourceLineOffsets[currLine]![0] -= 8;
          }
 
@@ -141,7 +144,7 @@ export function scroll(
    offsets: Offsets,
    cursorLine: number | null,
    cursorLineElement: HTMLElement,
-   refObject: MutableRefObject<RefObject>,
+   refObject: RefObject<RefData>,
 ) {
    if (!offsets.length) {
       // without offsets we can't scroll

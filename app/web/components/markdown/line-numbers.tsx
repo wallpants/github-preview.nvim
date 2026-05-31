@@ -1,11 +1,11 @@
 import { type HTMLAttributes } from "react";
-import { type RefObject } from "../websocket-provider/context.ts";
+import { type RefData } from "../websocket-provider/context.ts";
 import { type Offsets } from "./scroll.ts";
 
 export const LINE_NUMBERS_ELEMENT_ID = "line-numbers-element-id";
 
 type Props = {
-   hash: RefObject["hash"];
+   hash: RefData["hash"];
    offsets: Offsets | null;
    currentPath: string | null;
 };
@@ -33,7 +33,7 @@ export const LineNumbers = ({ hash, offsets, currentPath }: Props) => (
                <span
                   key={currentPath + String(index)}
                   style={style}
-                  className="text-github-fg-subtle pointer-events-none absolute w-[45px] -translate-y-px text-right text-[13px]"
+                  className="pointer-events-none absolute w-[45px] -translate-y-px text-right text-[13px] text-github-fg-subtle"
                >
                   {index}
                </span>

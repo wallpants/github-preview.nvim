@@ -4,7 +4,7 @@ import { onBeforeExit } from "./nvim/on-before-exit.ts";
 import { onConfigUpdate } from "./nvim/on-config-update.ts";
 import { onContentChange } from "./nvim/on-content-change.ts";
 import { onCursorMove } from "./nvim/on-cursor-move.ts";
-import { type CustomEvents, type WsServerMessage } from "./types.ts";
+import type { WsServerMessage, CustomEvents } from "./types.ts";
 
 const app = await GithubPreview.start();
 

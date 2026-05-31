@@ -22,6 +22,7 @@ export const Select = ({ select, disabled }: Props) => {
    useEffect(() => {
       // kind of a hack to close dropdown on settings modal click
       // this relies on `tick` in settings/index.tsx
+      // eslint-disable-next-line
       setIsOpen(false);
    }, [select]);
 
@@ -31,7 +32,7 @@ export const Select = ({ select, disabled }: Props) => {
       <div className="relative z-20 flex flex-col items-center">
          <IconButton
             Icon={selected.icon}
-            className="bg-github-canvas-default peer"
+            className="peer bg-github-canvas-default"
             iconClassName={selected.iconClassName}
             disabled={Boolean(disabled)}
             onClick={(e) => {
@@ -40,12 +41,12 @@ export const Select = ({ select, disabled }: Props) => {
             }}
          />
          {disabled && (
-            <div className="bg-github-canvas-subtle top-0 w-56 rounded-md border-orange-600 absolute left-[120%] hidden border peer-hover:block">
+            <div className="absolute top-0 left-[120%] hidden w-56 rounded-md border border-orange-600 bg-github-canvas-subtle peer-hover:block">
                <p className="!m-3">{disabled}</p>
             </div>
          )}
          {isOpen && (
-            <div className="top-0 absolute flex flex-col">
+            <div className="absolute top-0 flex flex-col">
                {select.map((option) => (
                   <IconButton
                      key={option.label}

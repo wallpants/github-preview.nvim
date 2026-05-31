@@ -1,36 +1,36 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { type GithubPreview } from "../../../github-preview.ts";
-import { type BuildConsts, type WsBrowserMessage, type WsServerMessage } from "../../../types.ts";
+import { ENV } from "../../../env.ts";
+import {
+   type GithubPreviewConfig,
+   type WsBrowserMessage,
+   type WsServerMessage,
+} from "../../../types.ts";
 import { ThemeProvider } from "../theme-provider.tsx";
-import { websocketContext, type MessageHandler, type RefObject } from "./context.ts";
+import { websocketContext, type MessageHandler, type RefData } from "./context.ts";
 
 type Props = {
    children: ReactNode;
-   BUILD_CONSTS: BuildConsts;
 };
 
-function createWs(host: string, port: number) {
-   return new ReconnectingWebSocket(`ws://${host}:${port}`, [], {
+function createWs(host: string) {
+   return new ReconnectingWebSocket(`ws://${host}`, [], {
       maxReconnectionDelay: 1500,
       startClosed: true,
    });
 }
 
-export const WebsocketProvider = ({
-   children,
-   BUILD_CONSTS: { HOST, PORT, IS_DEV, THEME },
-}: Props) => {
-   const [config, setConfig] = useState<GithubPreview["config"] | null>(null);
+export const WebsocketProvider = ({ children }: Props) => {
+   const [config, setConfig] = useState<GithubPreviewConfig | null>(null);
    const [currentPath, setCurrentPath] = useState<string | null>(null);
    const handlers = useRef(new Map<string, MessageHandler>());
    const [repoName, setRepoName] = useState("");
 
    /** changes to values in this refObject don't trigger re-renders */
-   const refObject = useRef<RefObject>({
+   const refObject = useRef<RefData>({
       urlMasks: new Map(),
       currentEntries: undefined,
-      ws: createWs(HOST, PORT),
+      ws: createWs(window.location.host),
       skipScroll: false,
       hash: {
          value: undefined,
@@ -42,17 +42,14 @@ export const WebsocketProvider = ({
    useEffect(() => {
       // we connect in useEffect hook, to wait for children components
       // to have rendered and registered their onWsMessageHandlers
-      IS_DEV && console.log("connecting websocket");
+      if (ENV.IS_DEV) console.log("connecting websocket");
       refObject.current.ws.reconnect();
-   }, [IS_DEV]);
+   }, []);
 
-   const wsRequest = useCallback(
-      (message: WsBrowserMessage) => {
-         IS_DEV && console.log(`requesting '${message.type}'`, message);
-         refObject.current.ws.send(JSON.stringify(message));
-      },
-      [IS_DEV],
-   );
+   const wsRequest = useCallback((message: WsBrowserMessage) => {
+      if (ENV.IS_DEV) console.log(`requesting '${message.type}'`, message);
+      refObject.current.ws.send(JSON.stringify(message));
+   }, []);
 
    useEffect(() => {
       // Register websocket listeners
@@ -61,10 +58,10 @@ export const WebsocketProvider = ({
       };
       refObject.current.ws.onmessage = (event) => {
          const message = JSON.parse(String(event.data)) as WsServerMessage;
-         IS_DEV && console.log("received:", message);
+         if (ENV.IS_DEV) console.log("received:", message);
 
          if (message.type === "goodbye") {
-            !IS_DEV && window.close();
+            if (!ENV.IS_DEV) window.close();
          }
 
          if ("repoName" in message) setRepoName(message.repoName);
@@ -98,7 +95,7 @@ export const WebsocketProvider = ({
             void handler(message);
          });
       };
-   }, [wsRequest, IS_DEV]);
+   }, [wsRequest]);
 
    const registerHandler = useCallback((id: string, handler: MessageHandler) => {
       handlers.current.set(id, handler);
@@ -115,7 +112,7 @@ export const WebsocketProvider = ({
             refObject,
          }}
       >
-         <ThemeProvider THEME={THEME}>{children}</ThemeProvider>
+         <ThemeProvider>{children}</ThemeProvider>
       </websocketContext.Provider>
    );
 };

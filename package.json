@@ -14,25 +14,24 @@
     "commit": "cz",
     "format": "oxfmt .",
     "logs": "bunvim logs github-preview",
-    "lint": "eslint . --ext ts --ext tsx --report-unused-disable-directives --max-warnings 0",
-    "typecheck": "tsc -p ./app/tsconfig.json",
-    "check": "bun run typecheck && bun run lint",
-    "start": "bun run app/index.ts",
-    "web:dev": "cd app/web && bun vite --open",
-    "tailwind:compile": "tailwindcss -c ./app/web/tailwind.config.mjs -o ./app/web/static/tailwind.css"
+    "lint": "eslint .",
+    "typecheck": "tsc",
+    "check": "bun run typecheck && bun run lint"
   },
   "dependencies": {
+    "bun-plugin-tailwind": "^0.1.2",
     "bunvim": "1.1.13",
     "clsx": "^2.1.1",
     "globby": "^16.2.0",
     "isbinaryfile": "6.0.0",
     "mermaid": "^11.15.0",
     "opener": "^1.5.2",
-    "pantsdown": "2.2.3",
+    "pantsdown": "2.2.4",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "reconnecting-websocket": "^4.4.0",
     "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -45,20 +44,18 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.60.0",
     "@typescript-eslint/parser": "^8.60.0",
-    "@vitejs/plugin-react-swc": "^4.3.1",
-    "autoprefixer": "^10.5.0",
     "commitizen": "^4.3.1",
     "commitlint": "^21.0.2",
-    "eslint": "^10.4.1",
+    "eslint": "^9.39.4",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import-x": "^4.16.2",
+    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-tailwindcss": "^3.18.3",
     "inquirer": "^12.11.1",
     "oxfmt": "^0.52.0",
-    "postcss": "^8.5.15",
     "semantic-release": "^25.0.3",
-    "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3",
-    "vite": "^8.0.14"
+    "typescript-eslint": "^8.60.0"
   },
   "commitlint": {
     "extends": [

@@ -18,8 +18,8 @@ export const CollapsedSettings = ({
    configOpen,
    startExit,
 }: Props) => (
-   <div className={cn("inset-0 absolute overflow-y-hidden", className)}>
-      <div className="inset-x-0 top-24 gap-y-3 absolute flex flex-col justify-center">
+   <div className={cn("absolute inset-0 overflow-y-hidden", className)}>
+      <div className="absolute inset-x-0 top-24 flex flex-col justify-center gap-y-3">
          <CollapsedOption
             className="mb-20"
             setSettingsOffset={setSettingsOffset}

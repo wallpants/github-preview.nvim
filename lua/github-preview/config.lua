@@ -74,10 +74,11 @@ M.validate = function()
 			M.value.log_level,
 			function(log_level)
 				local is_nil = type(log_level) == "nil"
-				local is_valid = (type(log_level) == "string") and ((log_level == "debug") or (log_level == "verbose"))
+				local is_valid = (type(log_level) == "string")
+					and ((log_level == "debug") or (log_level == "verbose") or (log_level == "info"))
 				return is_nil or is_valid
 			end,
-			'log_level must be nil, "debug" or "verbose"',
+			'log_level must be nil, "debug", "verbose" or "info"',
 		},
 	})
 end

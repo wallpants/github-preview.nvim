@@ -1,6 +1,6 @@
 import { type Awaitable } from "bunvim";
 import { type GithubPreview } from "../github-preview.ts";
-import { type CustomEvents } from "../types.ts";
+import type { CustomEvents } from "../types.ts";
 
 const REQUEST = "config_update";
 

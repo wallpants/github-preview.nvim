@@ -2,8 +2,42 @@ local Config = require("github-preview.config")
 local Utils = require("github-preview.utils")
 local M = {}
 
+local MIN_BUN_MAJOR = 1
+local MIN_BUN_MINOR = 3
+
 M.start = function()
-	vim.notify("github-preview: init", vim.log.levels.INFO)
+	local min_bun_version = string.format("%d.%d", MIN_BUN_MAJOR, MIN_BUN_MINOR)
+
+	-- Check if bun is installed
+	if vim.fn.executable("bun") ~= 1 then
+		vim.notify(
+			"github-preview: Bun is not installed. Please install Bun >= " .. min_bun_version .. " from https://bun.sh",
+			vim.log.levels.ERROR
+		)
+		return
+	end
+
+	-- Check bun version meets minimum requirement
+	local bun_version_output = vim.fn.system("bun --version")
+	local major, minor = bun_version_output:match("(%d+)%.(%d+)")
+	if not major or not minor then
+		vim.notify(
+			"github-preview: Could not determine Bun version. Please ensure Bun >= "
+				.. min_bun_version
+				.. " is installed.",
+			vim.log.levels.ERROR
+		)
+		return
+	end
+
+	major, minor = tonumber(major), tonumber(minor)
+	if major < MIN_BUN_MAJOR or (major == MIN_BUN_MAJOR and minor < MIN_BUN_MINOR) then
+		vim.notify(
+			string.format("github-preview: Bun %d.%d found, but >= %s is required.", major, minor, min_bun_version),
+			vim.log.levels.ERROR
+		)
+		return
+	end
 
 	-- should look like "/Users/.../github-preview"
 	local root = Config.value.single_file and "" or vim.fn.finddir(".git", ";")
@@ -44,35 +78,31 @@ M.start = function()
 	local __filename = debug.getinfo(1, "S").source:sub(2)
 	local plugin_root = vim.fn.fnamemodify(__filename, ":p:h:h:h") .. "/"
 
-	local command = "bun run start"
-
-	---@type env
-	local env = { IS_DEV = false }
-
-	if Config.value.log_level then
-		command = "bun --hot run start"
-		env.IS_DEV = true
-		env.LOG_LEVEL = Config.value.log_level
-	end
-
 	-- Install Bun dependencies:
 	-- if we try using bun's auto-install feature, web dependencies are not installed,
 	-- because they're not imported until the browser makes the initial http request.
 	local bun_install = vim.fn.jobstart("bun install --production", {
 		cwd = plugin_root,
-		on_exit = Utils.log_exit(env.LOG_LEVEL),
-		on_stdout = Utils.log_job(env.LOG_LEVEL),
-		on_stderr = Utils.log_job(env.LOG_LEVEL),
+		on_exit = Utils.log_exit(Config.value.log_level),
+		on_stdout = Utils.log_job(Config.value.log_level),
+		on_stderr = Utils.log_job(Config.value.log_level),
 	})
 	vim.fn.jobwait({ bun_install })
+
+	local command = Config.value.log_level and "bun --hot run app/index.ts" or "bun run app/index.ts"
+
+	vim.notify("github-preview: init", vim.log.levels.INFO)
 
 	Config.job_id = vim.fn.jobstart(command, {
 		cwd = plugin_root,
 		stdin = "null",
-		on_exit = Utils.log_exit(env.LOG_LEVEL),
-		on_stdout = Utils.log_job(env.LOG_LEVEL),
-		on_stderr = Utils.log_job(env.LOG_LEVEL),
-		env = env,
+		on_exit = Utils.log_exit(Config.value.log_level),
+		on_stdout = Utils.log_job(Config.value.log_level),
+		on_stderr = Utils.log_job(Config.value.log_level),
+		-- LOG_LEVEL must always be defined, if it's not bun
+		-- doesn't replace process.env.LOG_LEVEL in the webapp
+		-- and everything crashes
+		env = { LOG_LEVEL = Config.value.log_level or "none" },
 	})
 end
 

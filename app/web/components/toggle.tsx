@@ -15,7 +15,6 @@ export const Toggle = ({ checked, onChange }: Props) => (
             onChange(e.target.checked);
          }}
       />
-      {/* eslint-disable-next-line */}
-      <div className="peer-checked:bg-github-success-fg peer h-6 w-11 bg-gray-200 after:top-0.5 after:size-5 after:border-gray-300 after:bg-white peer-checked:after:border-white dark:border-gray-600 dark:bg-gray-700 rounded-full after:absolute after:left-[2px] after:rounded-full after:border after:transition-all after:content-[''] peer-checked:after:translate-x-full"></div>
+      <div className="peer h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-github-success-fg after:absolute after:top-0.5 after:left-[2px] after:size-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white dark:border-gray-600 dark:bg-gray-700"></div>
    </label>
 );

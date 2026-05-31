@@ -1,27 +1,22 @@
 import { existsSync } from "node:fs";
 import { basename, dirname, normalize, resolve } from "node:path";
 import { type Server } from "bun";
-import { NVIM_LOG_LEVELS, attach, type LogLevel, type Nvim } from "bunvim";
+import { NVIM_LOG_LEVELS, attach, type Nvim } from "bunvim";
 import { globby } from "globby";
 import { isBinaryFile } from "isbinaryfile";
-import { startServer } from "./server";
-import { UNALIVE_URL } from "./server/http";
+import { ENV } from "./env";
+import { startServer, UNALIVE_URL } from "./server";
 import { EDITOR_EVENTS_TOPIC } from "./server/websocket";
 import {
    PluginPropsSchema,
    type Config,
    type ContentChange,
-   type CustomEvents,
+   type GithubPreviewConfig,
    type PluginProps,
    type UpdateConfigAction,
    type WsServerMessage,
+   type CustomEvents,
 } from "./types";
-
-const ENV = {
-   NVIM: process.env["NVIM"],
-   LOG_LEVEL: process.env["LOG_LEVEL"] as LogLevel | undefined,
-   DEV: Boolean(process.env["IS_DEV"]),
-};
 
 export class GithubPreview {
    nvim: Nvim<CustomEvents>;
@@ -40,10 +35,7 @@ export class GithubPreview {
     * currentPath: relative to root
     */
    currentPath: string;
-   config: {
-      dotfiles: Config;
-      overrides: Config;
-   };
+   config: GithubPreviewConfig;
    repoName: string;
    server: Server<undefined>;
    cursorLine: null | number = null;
@@ -62,7 +54,7 @@ export class GithubPreview {
 
       // must be called at end of constructor,
       // because it requires the values set above
-      this.server = startServer(this);
+      this.server = startServer(this, ENV.IS_DEV);
    }
 
    static async start() {
@@ -73,17 +65,16 @@ export class GithubPreview {
       const nvim = await attach<CustomEvents>({
          socket: ENV.NVIM,
          client: { name: "github-preview" },
-         logging: { level: ENV.LOG_LEVEL },
+         logging: { level: ENV.LOG_LEVEL === "none" ? undefined : ENV.LOG_LEVEL },
       });
 
       const props = (await nvim.call("nvim_get_var", ["github_preview_props"])) as PluginProps;
-      if (ENV.DEV) PluginPropsSchema.parse(props);
+      if (ENV.IS_DEV) PluginPropsSchema.parse(props);
 
       try {
          // try to unalive already running instances of github-preview
          await fetch(`http://${props.config.host}:${props.config.port}${UNALIVE_URL}`);
-         // eslint-disable-next-line
-      } catch (err) {}
+      } catch (_err) {}
 
       const repoName = await GithubPreview.getRepoName({ root: props.init.root });
       const augroupId = await nvim.call("nvim_create_augroup", ["github-preview", { clear: true }]);

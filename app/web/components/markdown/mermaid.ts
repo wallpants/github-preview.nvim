@@ -1,6 +1,4 @@
-import { type Mermaid, type MermaidConfig } from "mermaid";
-
-declare const mermaid: Mermaid;
+import mermaid, { type MermaidConfig } from "mermaid";
 
 export const myMermaid = {
    memoMermaids: new Map<string, string>(),

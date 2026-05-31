@@ -1,12 +1,13 @@
-/// <reference lib="dom" />
-/// <reference lib="dom.iterable" />
-
-import React from "react";
-import ReactDOM from "react-dom/client";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { App } from "./app.tsx";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-   <React.StrictMode>
+const root = document.getElementById("root");
+
+if (!root) throw new Error("root element not found");
+
+createRoot(root).render(
+   <StrictMode>
       <App />
-   </React.StrictMode>,
+   </StrictMode>,
 );

@@ -1,6 +1,5 @@
 import { type BaseEvents } from "bunvim";
 import { z } from "zod";
-import { type GithubPreview } from "./github-preview";
 
 export const ThemeSchema = z.object({
    name: z.enum(["system", "light", "dark"]),
@@ -9,9 +8,7 @@ export const ThemeSchema = z.object({
 export type Theme = z.infer<typeof ThemeSchema>;
 
 export const BuildConstsSchema = z.object({
-   HOST: z.string(),
-   PORT: z.coerce.number(),
-   IS_DEV: z.stringbool(),
+   IS_DEV: z.boolean(),
    THEME: ThemeSchema,
 });
 export type BuildConsts = z.infer<typeof BuildConstsSchema>;
@@ -50,22 +47,44 @@ export const PluginPropsSchema = z.object({
 export type PluginProps = z.infer<typeof PluginPropsSchema>;
 export type Config = PluginProps["config"];
 
-export const CursorMoveSchema = z.object({
-   /**
-    * Used to attach & detach buffers (subscribe to buffer changes)
-    * as user navigates from buffer to buffer in neovim.
-    * */
-   buffer_id: z.number(),
-   abs_path: z.string(),
-   cursor_line: z.number(),
-});
-export type CursorMove = z.infer<typeof CursorMoveSchema>;
+export type ContentChange = {
+   abs_path: string;
+   lines: string[];
+};
 
-export const ContentChangeSchema = z.object({
-   abs_path: z.string(),
-   lines: z.array(z.string()),
-});
-export type ContentChange = z.infer<typeof ContentChangeSchema>;
+export type UpdateConfigAction =
+   | ["clear_overrides"]
+   | ["theme_name", "system" | "light" | "dark"]
+   | ["theme_high_contrast", "on" | "off"]
+   | ["single_file", "toggle" | "on" | "off"]
+   | ["details_tags", "toggle" | "open" | "closed"]
+   | ["scroll", "toggle" | "on" | "off"]
+   | ["scroll.offset", number]
+   | ["cursorline", "toggle" | "on" | "off"]
+   | ["cursorline.color", string]
+   | ["cursorline.opacity", number];
+
+export type WsBrowserMessage =
+   | {
+        type: "init";
+     }
+   | {
+        type: "get_entries";
+        path: string;
+     }
+   | {
+        type: "get_entry";
+        path: string;
+     }
+   | {
+        type: "update_config";
+        action: UpdateConfigAction;
+     };
+
+export type GithubPreviewConfig = {
+   dotfiles: Config;
+   overrides: Config;
+};
 
 export type WsServerMessage =
    | {
@@ -73,7 +92,7 @@ export type WsServerMessage =
         lines: string[];
         repoName: string;
         currentPath: string;
-        config: GithubPreview["config"];
+        config: GithubPreviewConfig;
         cursorLine: number | null;
         currentEntries: string[] | undefined;
      }
@@ -111,40 +130,11 @@ export type WsServerMessage =
      }
    | {
         type: "update_config";
-        config: GithubPreview["config"];
+        config: GithubPreviewConfig;
      }
    | {
         type: "goodbye";
      };
-
-export type WsBrowserMessage =
-   | {
-        type: "init";
-     }
-   | {
-        type: "get_entries";
-        path: string;
-     }
-   | {
-        type: "get_entry";
-        path: string;
-     }
-   | {
-        type: "update_config";
-        action: UpdateConfigAction;
-     };
-
-export type UpdateConfigAction =
-   | ["clear_overrides"]
-   | ["theme_name", "system" | "light" | "dark"]
-   | ["theme_high_contrast", "on" | "off"]
-   | ["single_file", "toggle" | "on" | "off"]
-   | ["details_tags", "toggle" | "open" | "closed"]
-   | ["scroll", "toggle" | "on" | "off"]
-   | ["scroll.offset", number]
-   | ["cursorline", "toggle" | "on" | "off"]
-   | ["cursorline.color", string]
-   | ["cursorline.opacity", number];
 
 // eslint-disable-next-line
 export interface CustomEvents extends BaseEvents {

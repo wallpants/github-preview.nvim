@@ -24,11 +24,11 @@ export const IconButton = ({
          disabled={disabled}
          {...rest}
          className={cn(
-            "p-2 rounded-md flex items-center border",
+            "flex items-center rounded-md border p-2",
             noBorder ? "border-transparent" : "border-github-border-default",
             disabled
                ? "bg-github-border-default"
-               : "hover:bg-github-canvas-subtle hover:border-github-border-default",
+               : "hover:border-github-border-default hover:bg-github-canvas-subtle",
             className,
          )}
       >
