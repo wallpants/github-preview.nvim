@@ -13,9 +13,12 @@ import { getScrollOffsets, type Offsets } from "./scroll.ts";
 const MARKDOWN_CONTAINER_ID = "markdown-container-id";
 const MARKDOWN_ELEMENT_ID = "markdown-element-id";
 
+const IMAGE_PREFIX = "/__github_preview__/image/";
+
 const pantsdown = new Pantsdown({
    renderer: {
-      relativeImageUrlPrefix: "/__github_preview__/image/",
+      relativeImageUrlPrefix: IMAGE_PREFIX,
+      absoluteImageUrlPrefix: IMAGE_PREFIX,
       detailsTagDefaultOpen: true,
    },
 });
@@ -66,6 +69,11 @@ export const Markdown = ({ className }: { className: string }) => {
             const fileExt = getFileExt(message.currentPath);
             const text = message.lines.join("\n");
             const markdown = fileExt === "md" ? text : "```" + (fileExt ?? "") + `\n${text}`;
+
+            const path = message.currentPath.slice(0, message.currentPath.lastIndexOf("/") + 1);
+            pantsdown.setConfig({
+               renderer: { relativeImageUrlPrefix: IMAGE_PREFIX + path },
+            });
 
             const { html, javascript } = pantsdown.parse(markdown);
 

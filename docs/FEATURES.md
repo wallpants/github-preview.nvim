@@ -50,6 +50,10 @@ https://github.com/wallpants/github-preview.nvim/assets/47203170/a3b03aac-2cd9-4
 
 Relative image sources (example: `![image](./docs/github.svg)`) are resolved and rendered if found.
 
+Images outside of the root of the workspace will not be resolved.
+
+If using _Single-file mode_, images at the same level as the file or deeper can be resolved, but images in parent directories will not be resolved.
+
 ## 📌 Single-file mode
 
 When the plugin starts, it attempts to find a `.git` directory to identify a repository root.
