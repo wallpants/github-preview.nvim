@@ -12,7 +12,7 @@
         "isbinaryfile": "6.0.0",
         "mermaid": "^11.15.0",
         "opener": "^1.5.2",
-        "pantsdown": "2.2.4",
+        "pantsdown": "2.2.6",
         "react": "^19.2.6",
         "react-dom": "^19.2.6",
         "reconnecting-websocket": "^4.4.0",
@@ -1296,7 +1296,7 @@
 
     "package-manager-detector": ["package-manager-detector@1.6.0", "", {}, "sha512-61A5ThoTiDG/C8s8UMZwSorAGwMJ0ERVGj2OjoW5pAalsNOg15+iQiPzrLJ4jhZ1HJzmC2PIHT2oEiH3R5fzNA=="],
 
-    "pantsdown": ["pantsdown@2.2.4", "", { "dependencies": { "github-slugger": "^2.0.0", "highlight.js": "^11.11.1", "katex": "^0.17.0" } }, "sha512-B+LJIpWIxMVQqYmBEEW3zfgWGVgGAvIXHesBP6dXJ8v8NouxPSe4Ci0KqeTBftff5mxAhp4PMdOQkFFXsRGZWg=="],
+    "pantsdown": ["pantsdown@2.2.6", "", { "dependencies": { "github-slugger": "^2.0.0", "highlight.js": "^11.11.1", "katex": "^0.17.0" } }, "sha512-sknLbX0aztlPuyYcKKoNqDTDKCBQJQEKYckfP77P052Gu19gZmh+M9zKNjMwo9umaP0+aOMG3T8mayUJEqY7Qw=="],
 
     "parent-module": ["parent-module@1.0.1", "", { "dependencies": { "callsites": "^3.0.0" } }, "sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g=="],
 
