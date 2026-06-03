@@ -27,7 +27,7 @@
     "mermaid": "^11.15.0",
     "opener": "^1.5.2",
     "pantsdown": "2.2.6",
-    "react": "^19.2.6",
+    "react": "^19.2.7",
     "react-dom": "^19.2.6",
     "reconnecting-websocket": "^4.4.0",
     "tailwind-merge": "^3.6.0",
