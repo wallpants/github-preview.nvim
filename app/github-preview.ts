@@ -191,7 +191,10 @@ export class GithubPreview {
    async goodbye() {
       this.wsSend({ type: "goodbye" });
       await this.nvim.call("nvim_del_augroup_by_id", [this.augroupId]);
-      await this.nvim.call("nvim_notify", ["github-preview: goodbye", NVIM_LOG_LEVELS.INFO, {}]);
+      await this.nvim.call("nvim_exec_lua", [
+         "vim.notify(...)",
+         ["github-preview: goodbye", NVIM_LOG_LEVELS.INFO],
+      ]);
    }
 
    async updateConfig([action, value]: UpdateConfigAction) {
@@ -202,10 +205,12 @@ export class GithubPreview {
          // because single-file mode cannot be disabled if plugin launched
          // in single-file mode
          if (dotfileValue && !newValue) {
-            await this.nvim.call("nvim_notify", [
-               "github-preview: if plugin launched in single-file mode, it cannot be changed.",
-               NVIM_LOG_LEVELS.WARN,
-               {},
+            await this.nvim.call("nvim_exec_lua", [
+               "vim.notify(...)",
+               [
+                  "github-preview: if plugin launched in single-file mode, it cannot be changed.",
+                  NVIM_LOG_LEVELS.WARN,
+               ],
             ]);
          } else {
             update.single_file = newValue;
