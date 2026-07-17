@@ -42,7 +42,7 @@ export class GithubPreview {
    lines: ContentChange["lines"] = [];
 
    private constructor(nvim: Nvim, augroupId: number, repoName: string, props: PluginProps) {
-      this.nvim = nvim as Nvim<CustomEvents>;
+      this.nvim = nvim;
       this.augroupId = augroupId;
       this.repoName = repoName;
       this.config = {
@@ -74,7 +74,9 @@ export class GithubPreview {
       try {
          // try to unalive already running instances of github-preview
          await fetch(`http://${props.config.host}:${props.config.port}${UNALIVE_URL}`);
-      } catch (_err) {}
+      } catch (_err) {
+         // no other instance running
+      }
 
       const repoName = await GithubPreview.getRepoName({ root: props.init.root });
       const augroupId = await nvim.call("nvim_create_augroup", ["github-preview", { clear: true }]);
