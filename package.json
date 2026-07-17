@@ -16,7 +16,9 @@
     "logs": "bunvim logs github-preview",
     "lint": "oxlint .",
     "typecheck": "tsc",
-    "check": "bun run typecheck && bun run lint"
+    "test": "bun test",
+    "test:nvim": "nvim --headless --noplugin -u tests/minimal_init.lua -c \"PlenaryBustedDirectory tests/ {minimal_init = 'tests/minimal_init.lua'}\"",
+    "check": "bun run typecheck && bun run lint && bun run test"
   },
   "dependencies": {
     "bun-plugin-tailwind": "^0.1.2",

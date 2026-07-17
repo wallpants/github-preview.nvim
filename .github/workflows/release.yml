@@ -35,12 +35,27 @@ jobs:
             exit 1
           fi
       - name: Lint & check types
-        run: bun run check
-      # - name: Test
-      #   run: bun test
+        run: bun run typecheck && bun run lint
+      - name: Test
+        run: bun test
+
+  Test-Neovim:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Install Neovim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: stable
+      - name: Install plenary.nvim
+        run: git clone --depth=1 https://github.com/nvim-lua/plenary.nvim /tmp/plenary.nvim
+      - name: Run lua tests
+        run: nvim --headless --noplugin -u tests/minimal_init.lua -c "PlenaryBustedDirectory tests/ {minimal_init = 'tests/minimal_init.lua'}"
 
   Release:
-    needs: [Test]
+    needs: [Test, Test-Neovim]
     permissions:
       contents: write
       issues: write
