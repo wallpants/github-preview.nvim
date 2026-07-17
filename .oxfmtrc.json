@@ -1,6 +1,5 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": [".github"],
   "printWidth": 100,
   "tabWidth": 3,
   "sortImports": {
@@ -12,7 +11,7 @@
   },
   "overrides": [
     {
-      "files": ["*.json", "*.md"],
+      "files": ["*.json", "*.md", "*.yaml", "*.yml"],
       "options": {
         "tabWidth": 2
       }
