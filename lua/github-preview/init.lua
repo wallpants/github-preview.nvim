@@ -3,9 +3,9 @@ local Fns = require("github-preview.functions")
 
 local M = {}
 
----@param partial_config github_preview_config
+---@param partial_config? github_preview_config
 M.setup = function(partial_config)
-	Config.value = vim.tbl_deep_extend("force", Config.value, partial_config)
+	Config.value = vim.tbl_deep_extend("force", Config.value, partial_config or {})
 	Config.validate()
 
 	vim.api.nvim_create_user_command("GithubPreviewStop", Fns.stop, {})
