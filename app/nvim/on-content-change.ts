@@ -1,3 +1,4 @@
+import { relative } from "node:path";
 import { type GithubPreview } from "../github-preview.ts";
 
 const NOTIFICATION = "attach_buffer";
@@ -15,19 +16,28 @@ export async function onContentChange(
       if (attachedBuffer === buffer) attachedBuffer = null;
    });
 
-   // Notification handler
-   app.nvim.onNotification(NOTIFICATION, async ([buffer, path]) => {
+   // Notification handler.
+   // Handled through a queue: rapid buffer switches could otherwise interleave
+   // across the awaits below and detach/attach the wrong buffer
+   let attachQueue = Promise.resolve();
+   app.nvim.onNotification(NOTIFICATION, ([buffer, path]) => {
       if (!path) return;
 
-      if (attachedBuffer !== buffer) {
-         if (attachedBuffer !== null) {
-            await app.nvim.call("nvim_buf_detach", [attachedBuffer]);
-            attachedBuffer = null;
-         }
-         // attach to buffer to receive content change notifications
-         const attached = await app.nvim.call("nvim_buf_attach", [buffer, true, {}]);
-         if (attached) attachedBuffer = buffer;
-      }
+      attachQueue = attachQueue
+         .then(async () => {
+            if (attachedBuffer === buffer) return;
+
+            if (attachedBuffer !== null) {
+               await app.nvim.call("nvim_buf_detach", [attachedBuffer]);
+               attachedBuffer = null;
+            }
+            // attach to buffer to receive content change notifications
+            const attached = await app.nvim.call("nvim_buf_attach", [buffer, true, {}]);
+            if (attached) attachedBuffer = buffer;
+         })
+         .catch((err: unknown) => {
+            app.nvim.logger?.error({ attach_buffer_error: err });
+         });
    });
 
    // Create autocmd to notify us with event "attach_buffer"
@@ -53,10 +63,19 @@ export async function onContentChange(
       async ([buffer, _changedtick, firstline, lastline, linedata, _more]) => {
          const path = await app.nvim.call("nvim_buf_get_name", [buffer]);
          const replaceAll = lastline === -1 && firstline === 0;
-         const deleteCount = lastline - firstline;
-         const newContent = replaceAll
-            ? linedata
-            : app.lines.toSpliced(firstline, deleteCount, ...linedata);
+
+         let newContent: string[];
+         if (replaceAll) {
+            newContent = linedata;
+         } else if (relative(app.root, path) === app.currentPath) {
+            const deleteCount = lastline - firstline;
+            newContent = app.lines.toSpliced(firstline, deleteCount, ...linedata);
+         } else {
+            // app.lines mirrors a different file (e.g. browser navigated away),
+            // an incremental splice would corrupt it. Fetch the full buffer instead.
+            newContent = await app.nvim.call("nvim_buf_get_lines", [buffer, 0, -1, true]);
+         }
+
          callback(newContent, path);
       },
    );

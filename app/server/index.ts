@@ -1,5 +1,7 @@
+import { normalize } from "node:path";
 import { type Server } from "bun";
 import opener from "opener";
+import { IMAGE_PREFIX } from "../consts.ts";
 import { type GithubPreview } from "../github-preview.ts";
 import index from "../web/index.html";
 import { websocketHandler } from "./websocket.ts";
@@ -12,13 +14,23 @@ export function startServer<T>(app: GithubPreview, isDev: boolean): Server<T> {
    const server = Bun.serve({
       port: port,
       routes: {
-         "/__github_preview__/image/*": (req) => {
+         [IMAGE_PREFIX + "*"]: (req: Request) => {
             app.nvim.logger?.info({ route: req.url });
             const pathname = new URL(req.url).pathname;
-            const filePath = pathname.replace("/__github_preview__/image/", "");
-            app.nvim.logger?.info({ filePath: app.root + filePath });
+            let filePath: string;
+            try {
+               filePath = decodeURIComponent(pathname.replace(IMAGE_PREFIX, ""));
+            } catch (_err) {
+               return new Response(null, { status: 400 });
+            }
+            // do not serve any files outside of repo root
+            const fullPath = normalize(app.root + filePath);
+            if (!fullPath.startsWith(app.root)) {
+               return new Response(null, { status: 404 });
+            }
+            app.nvim.logger?.info({ filePath: fullPath });
             // images with relative sources
-            const file = Bun.file(app.root + filePath);
+            const file = Bun.file(fullPath);
             return new Response(file);
          },
          [UNALIVE_URL]: async (req) => {
