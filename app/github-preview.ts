@@ -68,6 +68,11 @@ export class GithubPreview {
          logging: { level: ENV.LOG_LEVEL === "none" ? undefined : ENV.LOG_LEVEL },
       });
 
+      nvim.onDisconnect(() => {
+         // neovim is gone, don't linger as an orphaned server process
+         process.exit(0);
+      });
+
       const props = (await nvim.call("nvim_get_var", ["github_preview_props"])) as PluginProps;
       if (ENV.IS_DEV) PluginPropsSchema.parse(props);
 
@@ -107,6 +112,9 @@ export class GithubPreview {
    }
 
    async getEntries(path: string): Promise<string[]> {
+      // do not return any entries outside of repo root
+      if (!normalize(this.root + path).startsWith(this.root)) return [];
+
       const currentDir = path.endsWith("/") ? path : dirname(path) + "/";
       const paths = await globby(currentDir + "*", {
          cwd: this.root,
@@ -134,7 +142,7 @@ export class GithubPreview {
    async setCurrPath(path: string): Promise<undefined | string[]> {
       // do not return any entries outside of repo root
       const normalized = normalize(this.root + path);
-      if (normalized.length < this.root.length) return;
+      if (!normalized.startsWith(this.root)) return;
 
       this.currentPath = path;
 

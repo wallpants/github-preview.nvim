@@ -1,5 +1,6 @@
 import { Pantsdown } from "pantsdown";
 import { useContext, useEffect, useState } from "react";
+import { IMAGE_PREFIX } from "../../../consts.ts";
 import { cn, getFileExt } from "../../utils.ts";
 import { websocketContext } from "../websocket-provider/context.ts";
 import { BreadCrumbs } from "./breadcrumbs.tsx";
@@ -12,8 +13,6 @@ import { getScrollOffsets, type Offsets } from "./scroll.ts";
 
 const MARKDOWN_CONTAINER_ID = "markdown-container-id";
 const MARKDOWN_ELEMENT_ID = "markdown-element-id";
-
-const IMAGE_PREFIX = "/__github_preview__/image/";
 
 const pantsdown = new Pantsdown({
    renderer: {

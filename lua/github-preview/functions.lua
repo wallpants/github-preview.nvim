@@ -39,11 +39,17 @@ M.start = function()
 		return
 	end
 
-	-- should look like "/Users/.../github-preview"
-	local root = Config.value.single_file and "" or vim.fn.finddir(".git", ";")
+	-- single-file mode may also be enabled as a fallback when no repo is found.
+	-- keep it local so the fallback doesn't stick to Config.value across starts
+	local single_file = Config.value.single_file
 
 	local buffer_name = vim.api.nvim_buf_get_name(0)
 	local init_path = vim.fn.fnamemodify(buffer_name, ":p")
+
+	-- search for ".git" upwards starting from the current file's directory,
+	-- not from cwd: the file being edited may live outside of nvim's cwd.
+	-- should look like "/Users/.../github-preview/.git"
+	local root = single_file and "" or vim.fn.finddir(".git", vim.fn.fnamemodify(init_path, ":h") .. ";")
 
 	if root == "" then
 		-- if repo root not found or single-file mode is enabled,
@@ -58,7 +64,7 @@ M.start = function()
 
 		-- if no root, we set root to current path
 		root = vim.fn.fnamemodify(init_path, ":h") .. "/"
-		Config.value.single_file = true
+		single_file = true
 	else
 		-- if found, path is made absolute & has "/.git/" popped
 		root = vim.fn.fnamemodify(root, ":p:h:h") .. "/"
@@ -70,7 +76,7 @@ M.start = function()
 			root = root,
 			path = init_path,
 		},
-		config = Config.value,
+		config = vim.tbl_deep_extend("force", Config.value, { single_file = single_file }),
 	}
 	-- vim.g.github_preview_props is read by bunvim
 	vim.g.github_preview_props = github_preview_props
