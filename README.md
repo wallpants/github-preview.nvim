@@ -37,6 +37,7 @@ Using <a href="https://github.com/folke/lazy.nvim">lazy.nvim</a>
     "wallpants/github-preview.nvim",
     cmd = { "GithubPreviewToggle" },
     keys = { "<leader>mpt" },
+    ---@type github_preview_config
     opts = {
         -- config goes here
     },
