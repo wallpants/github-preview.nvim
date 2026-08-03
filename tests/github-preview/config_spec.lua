@@ -51,4 +51,10 @@ describe("config", function()
 		config.value.single_file = "yes"
 		assert.has_error(config.validate)
 	end)
+
+	it("rejects non-boolean allow_multiple_instances", function()
+		local config = fresh_config()
+		config.value.allow_multiple_instances = 1
+		assert.has_error(config.validate)
+	end)
 end)

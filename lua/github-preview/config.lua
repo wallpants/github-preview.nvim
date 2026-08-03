@@ -9,6 +9,11 @@ M.value = {
 	-- port used by local server
 	port = 6041,
 
+	-- true: instances started by other neovim processes are left running
+	--       and a free port is picked by incrementing "port" until one is available
+	-- false: starting the plugin kills any other running instance
+	allow_multiple_instances = false,
+
 	-- set to "true" to force single-file mode & disable repository mode
 	single_file = false,
 
@@ -49,6 +54,7 @@ M.validate = function()
 	vim.validate({
 		host = { M.value.host, "string" },
 		port = { M.value.port, "number" },
+		allow_multiple_instances = { M.value.allow_multiple_instances, "boolean" },
 		["theme.high_contrast"] = { M.value.theme.high_contrast, "boolean" },
 		["theme.name"] = {
 			M.value.theme.name,

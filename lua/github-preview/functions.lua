@@ -39,6 +39,13 @@ M.start = function()
 		return
 	end
 
+	-- if an instance is already running in this neovim, restart it.
+	-- instances started by other neovim processes are handled by the app:
+	-- killed by default, left alone when allow_multiple_instances is enabled
+	if Utils.get_client_channel() ~= nil then
+		M.stop()
+	end
+
 	-- single-file mode may also be enabled as a fallback when no repo is found.
 	-- keep it local so the fallback doesn't stick to Config.value across starts
 	local single_file = Config.value.single_file

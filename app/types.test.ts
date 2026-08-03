@@ -5,6 +5,7 @@ import { PluginPropsSchema, ThemeSchema, type PluginProps } from "./types.ts";
 export const defaultConfig: PluginProps["config"] = {
    host: "localhost",
    port: 6041,
+   allow_multiple_instances: false,
    single_file: false,
    theme: {
       name: "system",
