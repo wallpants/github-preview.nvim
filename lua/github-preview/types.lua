@@ -20,6 +20,7 @@
 ---@class github_preview_config
 ---@field host string | nil
 ---@field port number | nil
+---@field allow_multiple_instances boolean | nil
 ---@field theme theme | nil
 ---@field single_file boolean | nil
 ---@field details_tags_open boolean | nil

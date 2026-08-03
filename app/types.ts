@@ -30,6 +30,12 @@ export const PluginPropsSchema = z.object({
       host: z.string(),
       /** port to host the http/ws server "localhost:\{port\}" */
       port: z.number(),
+      /**
+       * if true, other running github-preview instances are left alone and
+       * "port" is incremented until a free one is found.
+       * if false, other instances are killed on startup and "port" is used as is.
+       */
+      allow_multiple_instances: z.boolean(),
       single_file: z.boolean(),
       theme: ThemeSchema,
       details_tags_open: z.boolean(),

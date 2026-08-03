@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import { basename, dirname, normalize, resolve } from "node:path";
 import { type Server } from "bun";
-import { NVIM_LOG_LEVELS, attach, type Nvim } from "bunvim";
+import { attach, NVIM_LOG_LEVELS, type Nvim } from "bunvim";
 import { globby } from "globby";
 import { isBinaryFile } from "isbinaryfile";
 import { ENV } from "./env";
@@ -11,11 +11,11 @@ import {
    PluginPropsSchema,
    type Config,
    type ContentChange,
+   type CustomEvents,
    type GithubPreviewConfig,
    type PluginProps,
    type UpdateConfigAction,
    type WsServerMessage,
-   type CustomEvents,
 } from "./types";
 
 export class GithubPreview {
@@ -76,11 +76,13 @@ export class GithubPreview {
       const props = (await nvim.call("nvim_get_var", ["github_preview_props"])) as PluginProps;
       if (ENV.IS_DEV) PluginPropsSchema.parse(props);
 
-      try {
-         // try to unalive already running instances of github-preview
-         await fetch(`http://${props.config.host}:${props.config.port}${UNALIVE_URL}`);
-      } catch (_err) {
-         // no other instance running
+      if (!props.config.allow_multiple_instances) {
+         try {
+            // try to unalive already running instances of github-preview
+            await fetch(`http://${props.config.host}:${props.config.port}${UNALIVE_URL}`);
+         } catch (_err) {
+            // no other instance running
+         }
       }
 
       const repoName = await GithubPreview.getRepoName({ root: props.init.root });

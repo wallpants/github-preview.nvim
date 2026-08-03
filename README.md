@@ -67,6 +67,11 @@ require("github-preview").setup({
     -- port used by local server
     port = 6041,
 
+    -- true: instances started by other neovim processes are left running
+    --       and a free port is picked by incrementing "port" until one is available
+    -- false: starting the plugin kills any other running instance
+    allow_multiple_instances = false,
+
     -- set to "true" to force single-file mode & disable repository mode
     single_file = false,
 
@@ -115,7 +120,8 @@ This might happen again after a plugin update if there were any changes to the p
 
 ### `:GithubPreviewStart`
 
-**Start** plugin. Any previously created instances are killed.
+**Start** plugin. If an instance is already running in the current Neovim, it is restarted.
+Instances started by other Neovim processes are killed unless `allow_multiple_instances` is enabled.
 
 ### `:GithubPreviewStop`
 
