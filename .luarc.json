@@ -1,0 +1,10 @@
+{
+  "runtime": {
+    "version": "LuaJIT"
+  },
+  "workspace": {
+    "library": ["$VIMRUNTIME/lua", "${3rd}/luv/library"],
+    "checkThirdParty": false,
+    "ignoreDir": ["node_modules", "app", "tests", "docs"]
+  }
+}

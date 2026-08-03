@@ -56,7 +56,8 @@ M.start = function()
 	-- search for ".git" upwards starting from the current file's directory,
 	-- not from cwd: the file being edited may live outside of nvim's cwd.
 	-- should look like "/Users/.../github-preview/.git"
-	local root = single_file and "" or vim.fn.finddir(".git", vim.fn.fnamemodify(init_path, ":h") .. ";")
+	-- finddir only returns a list when called with a {count} argument
+	local root = single_file and "" or vim.fn.finddir(".git", vim.fn.fnamemodify(init_path, ":h") .. ";") --[[@as string]]
 
 	if root == "" then
 		-- if repo root not found or single-file mode is enabled,
