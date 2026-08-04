@@ -1,7 +1,10 @@
 import mermaid, { type MermaidConfig } from "mermaid";
 
 export const myMermaid = {
-   memoMermaids: new Map<string, string>(),
+   // null marks a definition that failed to render: mermaid parse errors are
+   // deterministic, so the same source is never re-attempted (fixing the
+   // diagram changes the source and therefore the key)
+   memoMermaids: new Map<string, string | null>(),
    incId: 0,
 
    initialize(config: MermaidConfig) {
@@ -15,13 +18,20 @@ export const myMermaid = {
    renderMemoized(element?: HTMLElement) {
       const documentMermaids = (element ?? document).querySelectorAll(".mermaid");
 
-      const memoMermaids = new Map<string, string>();
+      const memoMermaids = new Map<string, string | null>();
       const pendingMermaids: Element[] = [];
 
       for (const dMermaid of documentMermaids) {
          const renderedDefinition = dMermaid.getAttribute("data-rendered");
          if (renderedDefinition) {
-            memoMermaids.set(renderedDefinition, dMermaid.innerHTML);
+            // carry the clean svg forward instead of re-reading innerHTML:
+            // pantsdown's script wraps the svg with pan/zoom controls after
+            // render, and serializing those back into the memo would
+            // duplicate them (dead, listener-less) on every re-render
+            memoMermaids.set(
+               renderedDefinition,
+               this.memoMermaids.get(renderedDefinition) ?? dMermaid.innerHTML,
+            );
             continue;
          }
 
@@ -33,6 +43,9 @@ export const myMermaid = {
             memoMermaids.set(definition, svg);
             dMermaid.setAttribute("data-rendered", definition);
             dMermaid.innerHTML = svg;
+         } else if (svg === null) {
+            // known-broken definition: keep showing the source, don't retry
+            memoMermaids.set(definition, null);
          } else {
             pendingMermaids.push(dMermaid);
          }
@@ -59,18 +72,18 @@ export const myMermaid = {
 
          let svg = this.memoMermaids.get(definition);
 
-         if (!svg) {
+         if (svg === undefined) {
             try {
                const { svg: newSvg } = await mermaid.render(`mermaid-${++this.incId}`, definition);
                svg = newSvg;
             } catch (_) {
-               //
+               svg = null;
             }
          }
 
+         memoMermaids.set(definition, svg);
          if (!svg) continue;
 
-         memoMermaids.set(definition, svg);
          dMermaid.innerHTML = svg;
       }
 
