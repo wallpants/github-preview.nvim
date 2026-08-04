@@ -18,7 +18,8 @@
     "typecheck": "tsc",
     "test": "bun test",
     "test:nvim": "nvim --headless --noplugin -u tests/minimal_init.lua -c \"PlenaryBustedDirectory tests/ {minimal_init = 'tests/minimal_init.lua'}\"",
-    "check": "bun run typecheck && bun run lint && bun run test"
+    "check": "bun run typecheck && bun run lint && bun run test",
+    "prepare": "husky"
   },
   "dependencies": {
     "bun-plugin-tailwind": "^0.1.2",
@@ -37,6 +38,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.1",
     "@commitlint/config-conventional": "^21.2.0",
     "@commitlint/cz-commitlint": "^21.2.0",
     "@types/bun": "1.3.14",
@@ -44,7 +46,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "commitizen": "^4.3.2",
-    "commitlint": "^21.2.1",
+    "husky": "^9.1.7",
     "inquirer": "^12.11.1",
     "oxfmt": "^0.61.0",
     "oxlint": "^1.76.0",
