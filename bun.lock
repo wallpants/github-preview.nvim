@@ -12,7 +12,7 @@
         "isbinaryfile": "6.0.0",
         "mermaid": "^11.16.0",
         "opener": "^1.5.2",
-        "pantsdown": "2.2.8",
+        "pantsdown": "2.3.0",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
         "reconnecting-websocket": "^4.4.0",
@@ -988,7 +988,7 @@
 
     "package-manager-detector": ["package-manager-detector@1.7.0", "", {}, "sha512-xg1eHpwYL/D/HEdWw2goFZP6vV0FH7W+PZ5rFkGjdIDLtxq7EkzBUeT3m+lndYCt8wKbmofUu1MUdMCXkCk9ZQ=="],
 
-    "pantsdown": ["pantsdown@2.2.8", "", { "dependencies": { "github-slugger": "^2.0.0", "highlight.js": "^11.11.1", "katex": "^0.18.0" } }, "sha512-fARVV5orolh9FP8cP0vsCUqgWp56B4Tcj7qhXH8dNLkA3CoeVu5/tK02dvWk7mDW0eVB9rSlrVMmRdZlYPwSIw=="],
+    "pantsdown": ["pantsdown@2.3.0", "", { "dependencies": { "github-slugger": "^2.0.0", "highlight.js": "^11.11.1", "katex": "^0.18.1" } }, "sha512-pkAfc4FraYphkalL0HYmLxJUZ4M/mC3hW82vm+7gbfEqsuYbPrx09RvCxFcCyryPpO9eyV57QSvFZ6RK66eioA=="],
 
     "parent-module": ["parent-module@1.0.1", "", { "dependencies": { "callsites": "^3.0.0" } }, "sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g=="],
 
@@ -1616,7 +1616,7 @@
 
     "ora/is-unicode-supported": ["is-unicode-supported@0.1.0", "", {}, "sha512-knxG2q4UC3u8stRGyAVJCOdxFmv5DZiRcdlIaAQXAbSfJya+OhopNotLQrstBhququ4ZpuKbDc/8S6mgXgPFPw=="],
 
-    "pantsdown/katex": ["katex@0.18.0", "", { "dependencies": { "commander": "^8.3.0" }, "bin": { "katex": "cli.js" } }, "sha512-rZ4Sw94Oja12Ib4+ee7inAr//yxj0G8RaAlh+ZpzfFhwTifGeJbqJ7D0FStcv6EV8DeNNU9Y8rPeg6vPUizlqg=="],
+    "pantsdown/katex": ["katex@0.18.1", "", { "dependencies": { "commander": "^8.3.0" }, "bin": { "katex": "cli.js" } }, "sha512-Td8GCYSxDAoMhHOlKmCFMJ/hz5qlAAb71n66Dryw9nfCVfumLo7nhuotbvKom/XPADmrYC3O5QR71EPq4DarJQ=="],
 
     "parse5-htmlparser2-tree-adapter/parse5": ["parse5@6.0.1", "", {}, "sha512-Ofn/CTFzRGTTxwpNEs9PP93gXShHcTq255nzRYSKe8AkVpZY7e1fpmTfOyoIvjP5HG7Z2ZM7VS9PPhQGW2pOpw=="],
 
