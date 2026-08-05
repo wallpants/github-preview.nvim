@@ -117,10 +117,10 @@ If you specified a `log_level`, hot-reload will be enabled for both changes to t
 
 ## Formatting and Linting
 
-This project uses [prettier](https://prettier.io/) and [eslint](https://eslint.org/)
+This project uses [oxfmt](https://oxc.rs/docs/guide/usage/formatter) and [oxlint](https://oxc.rs/docs/guide/usage/linter)
 to enforce coding style and quality standards.
 
-Make sure to set them up in your editor. You can configure **prettier** to
+Make sure to set them up in your editor. You can configure **oxfmt** to
 _format on save_ or you can manually run the following **package.json**
 script to format files:
 
