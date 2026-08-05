@@ -81,7 +81,9 @@ https://github.com/wallpants/github-preview.nvim/assets/47203170/092a4658-6f74-4
 
 ## 🧜 Mermaid Support
 
-Basic [mermaid](https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/) support.
+[Mermaid](https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/) support.
+
+Rendered diagrams are interactive: `cmd/ctrl + drag` pans, `cmd/ctrl + scroll` zooms.
 
 The following block would result in the svg below.
 
