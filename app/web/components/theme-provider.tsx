@@ -29,6 +29,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
          myMermaid.initialize({
             startOnLoad: false,
             theme: newTheme === "light" ? "default" : "dark",
+            // mermaid 12 defaults to elk + neo; keep the pre-12 look
+            layout: "dagre",
+            look: "classic",
          });
          if (currentPath) wsRequest({ type: "get_entry", path: currentPath });
       },
