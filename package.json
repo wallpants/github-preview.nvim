@@ -31,7 +31,7 @@
     "opener": "^1.5.2",
     "pantsdown": "2.3.4",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0",
+    "react-dom": "^19.3.1",
     "reconnecting-websocket": "^4.4.0",
     "tailwind-merge": "^3.7.0",
     "tailwindcss": "^4.3.3",
